@@ -1,0 +1,82 @@
+geneticAlgorithm	14
+0	#CEP  - Classical Evolutionary Programming
+8	#Proportional / From Worst / Basic Sampling
+7	1	#SBX_CROSSOVER
+1	#Normal - All points
+0	#NO_NEED_REPLACEMENT
+0	#Select Best
+7	0.005	#MUTATIVE_SEPARATED
+1	#Nb Repeats
+250000	#Max nb of simulations-costs
+1000	#Population Size
+0.2	#Proportion of CrossOver (vs offspring) in new individuals
+0.5	#Fork coeff (%renewed each generation)
+
+48
+	0	5	15	#flu_peak / peak of flu effect in days
+	1	0.5	10	#flu_std / width of flu effect (stddev)
+	2	0.001	1	#fETP_tDN / DN thymic Inflow
+	3	0.01	10	#ptDN / prolif DN
+	4	0.001	10	#ftDN_tDP / conversion DN to DP
+	5	0.01	10	#pdDP / proliferation DP (low)
+	6	0.001	10	#ftDP_tTConv / conversion from DP to Tconv
+	7	0.001	10	#ftDP_tTregP25 / conversion DP to shieh precursors
+	8	0.001	10	#ftDP_tTregFP3 / conversion DP to singer precursors
+	9	0.001	10	#ftDP_tSP8 / conversion DP to SP8
+	10	0.001	10	#out_tDP / outflow of DP
+	11	0.01	10	#ptTregP25 / prolif shieh precursors
+	12	0.001	1	#ftTregP25_tDPTreg / conversion shieh to mature Tregs
+	13	0.001	1	#out_tTregP25 / outflow shieh precursors
+	14	0.01	10	#ptTregFP3 / prolif singer precursors
+	15	0.001	10	#ftTregFP3_tDPTreg / conversion singer to mature Tregs
+	16	0.001	10	#out_tTregFP3 / outflow singer precursors
+	17	0.0001	1	#in_tTregPFP3 / inflow singer precursors
+	18	0.01	10	#ptDPTregs / prolif mature Tregs
+	19	0.001	10	#out_tDPTregs / outflow mature Tregs
+	20	0.0001	1	#in_tDPTregs / inflow (recirculation) mature Tregs
+	21	0.01	10	#ptTconv / prolif Tconvs
+	22	0.001	10	#out_tTconv / outflow of Tconvs
+	23	0.0001	1	#in_tTconv / inflow of Tconvs
+	24	0.01	10	#ptSP8 / prolif SP8
+	25	0.001	10	#out_SP8 / outflow SP8
+	26	0.0001	1	#in_SP8 / inflow (recirculation) SP8
+	27	0.001	10	#dtDN / death DN
+	28	0.001	10	#dtDP / death DP
+	29	0.001	10	#dtTregP25 / death shiesh precursors
+	30	0.001	10	#dtTregFP3 / death singer precursors
+	31	0.001	10	#dtDPTregs / death mature Tregs
+	32	0.001	10	#dtTconv / death Tconv
+	33	0.001	10	#dtSP8 / death SP8
+	34	0.0001	1	#fracTtoS / frac. of thym out reaching SPL
+	35	0.001	10	#dsTconv / death splenic Tconv
+	36	0.001	10	#dsTreg / death splenic Tregs
+	37	0.001	10	#dsCD8 / death splenic CD8
+	38	0.001	10	#dsBcells / death splenic B cells
+	39	0.001	10	#decayRag / decay of Rag-GFP
+	40	0.05	20	#	hypInflowCoeffETP	
+	41	0.05	20	#	hypDeathCoeffDP	
+	42	0.05	20	#	hypDeathCoeffTconv	
+#	43	0.05	20	#	hypDeathCoeffProFp3	
+#	44	0.05	20	#	hypDeathCoeffPro25	
+#	45	0.05	20	#	hypDeathCoeffDPTregs	
+#	46	0.05	20	#	hypDeathCoeffSP8	
+#	47	0.05	20	#	hypOutputCoeffOutDP	
+#	48	0.05	20	#	hypOutputCoeffOutTconv	
+#	49	0.05	20	#	hypOutputCoeffOutDPTregs	
+	50	0.05	20	#	hypOutputCoeffOutProFP3	
+	51	0.05	20	#	hypOutputCoeffOutPro25	
+#	52	0.05	20	#	hypOutputCoeffOutSP8	
+#	53	0.05	20	#	hypFasterCoeffDNtoDP	
+	54	0.05	20	#	hypFasterCoeffProFP3	
+	55	0.05	20	#	hypFasterCoeffPro25	
+#	56	0.05	20	#	hypFasterCoeffTconv	
+#	57	0.05	20	#	hypFasterCoeffSP8	
+	58	0.05	20	#	hypSpaceOutputCoeff	
+
+
+0
+Exponential
+0
+
+0
+
