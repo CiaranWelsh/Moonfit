@@ -1,12 +1,10 @@
 // ------- Automatically generated model -------- //
-#include "../../common.h"
-
 #include "modele3MultiDiv.h"
 
-modele3MultiDiv::modele3MultiDiv() : Modele(NbVariables, NbParameters), background(Back::WT) {
+modele3MultiDiv::modele3MultiDiv() : Model(NbVariables, NbParameters), background(Back::WT) {
     name = string("modeleCombinedManesso-Vaslin-MultiGen");
     dt = 0.001; // initial time step -> then it is adaptive
-    print_all_secs = 1200; //every how many seconds it is plotting
+    print_every_dt = 1200; //every how many seconds it is plotting
 
     // 0 ---------------- The evil Flu
     names[flu] = string("flu");
@@ -126,68 +124,68 @@ modele3MultiDiv::modele3MultiDiv() : Modele(NbVariables, NbParameters), backgrou
 
 
     // the names of variables that can be accessed by outside (global name-space)
-    extNames[tDN1s] = N::tDN1;
-    extNames[tDN2] = N::tDN2;
-    extNames[tDN3] = N::tDN3;
-    extNames[tDN4] = N::tDN4;
+    extNames[tDN1s] = GlobalName(N::tDN1);
+    extNames[tDN2] = GlobalName(N::tDN2);
+    extNames[tDN3] = GlobalName(N::tDN3);
+    extNames[tDN4] = GlobalName(N::tDN4);
 
 #ifdef ReducedParams
     //names[fracInPreDN1] = string("fracInPreDN1"); // Fraction of all injected + DN cells in all DN1-4
-    extNames[fracInDN1]    = N::ProDN1Potritt;
-    extNames[fracInDN2]    = N::ProDN2Potritt;
-    extNames[fracInDN3]    = N::ProDN3Potritt;
-    extNames[fracInDN4]    = N::ProDN4Potritt;
-    extNames[fracInDN1New] = N::ProDN1PotrittNew;
-    extNames[fracInDN2New] = N::ProDN2PotrittNew;
-    extNames[fracInDN34New] = N::ProDN34Potritt;
+    extNames[fracInDN1]    = GlobalName(N::ProDN1Potritt);
+    extNames[fracInDN2]    = GlobalName(N::ProDN2Potritt);
+    extNames[fracInDN3]    = GlobalName(N::ProDN3Potritt);
+    extNames[fracInDN4]    = GlobalName(N::ProDN4Potritt);
+    extNames[fracInDN1New] = GlobalName(N::ProDN1Potritt);
+    extNames[fracInDN2New] = GlobalName(N::ProDN2Potritt);
+    extNames[fracInDN34New] = GlobalName(N::ProDN34Potritt);
 #endif
 
-    extNames[ttotal] = N::ttotal;
-    extNames[DNtot] = N::tDN;
-    extNames[DPtot] = N::tDP;
-    //extNames[SP8totTV] = N::tSP8;
-    //extNames[SP4totTV] = N::tSP4;
-    extNames[tSP8] = N::tSP8;
-    extNames[tSP4] = N::tSP4;
-    extNames[tTconv] = N::tTconv;
-    extNames[tTRegP25] = N::tTRegP25;
-    extNames[tTRegPFp3] = N::tTRegPFp3;
-    extNames[tTreg] = N::tTreg;
-    extNames[tSP8RagN] = N::tSP8RagN;
-    extNames[tSP4RagN] = N::tSP4RagN;
-    extNames[tTconvRagN] = N::tTconvRagN;
-    extNames[tTregP1RagN] = N::tTregP1RagN;
-    extNames[tTregP2RagN] = N::tTregP2RagN;
-    extNames[tTregRagN] = N::tTregRagN;
-    extNames[pctDN] =     N::pctDN;
-    extNames[pctDP] =  N::pctDP;
-    extNames[pctSP8] =  N::pctSP8;
-    extNames[pctSP4] =   N::pctSP4;
-    extNames[pctTconv] =   N::pctTconv;
-    extNames[pctTRegP1] =  N::pctTRegP1;
-    extNames[pctTRegP2] =  N::pctTRegP2;
-    extNames[pctTreg] = N::pctTreg;
-    extNames[pctSP8RagN] =N::pctSP8RagN;
-    extNames[pctSP4RagN] = N::pctSP4RagN;
-    extNames[pctTconvRagN] = N::pctTconvRagN;
-    extNames[pctTRegP1RagN] = N::pctTRegP1RagN;
-    extNames[pctTRegP2RagN] = N::pctTRegP2RagN;
-    extNames[pctTregRagN] =N::pctTregRagN;
-    extNames[stotal] = N::stotal;
-    extNames[sTconv] = N::sTconv;
-    extNames[sTreg] = N::sTreg;
-    extNames[sCD8] = N::sCD8;
-    extNames[sBcells] = N::sBcells;
-    extNames[sTconvRagN] = N::sTconvRagN;
-    extNames[sTregRagN] = N::sTregRagN;
-    extNames[sCD8RagN] = N::sCD8RagN;
-    extNames[pcsTconv] = N::pcsTconv;
-    extNames[pcsTreg] = N::pcsTreg;
-    extNames[pcsCD8] = N::pcsCD8;
-    extNames[pcsBcells] = N::pcsBcells;
-    extNames[pcsTconvRagN] = N::pcsTconvRagN;
-    extNames[pcsTregRagN] = N::pcsTregRagN;
-    extNames[pcsCD8RagN] = N::pcsCD8RagN;
+    extNames[ttotal] = GlobalName(N::ttotal);
+    extNames[DNtot] = GlobalName(N::tDN);
+    extNames[DPtot] = GlobalName(N::tDP);
+    extNames[SP8totTV] = GlobalName(N::tSP8tot);
+    extNames[SP4totTV] = GlobalName(N::tSP4tot);
+    extNames[tSP8] = GlobalName(N::tSP8P);
+    extNames[tSP4] = GlobalName(N::tSP4P);
+    extNames[tTconv] = GlobalName(N::tTconvP);
+    extNames[tTRegP25] = GlobalName(N::tTRegP1P);
+    extNames[tTRegPFp3] = GlobalName(N::tTRegP2P);
+    extNames[tTreg] = GlobalName(N::tTregP);
+    extNames[tSP8RagN] = GlobalName(N::tSP8RagN);
+    extNames[tSP4RagN] = GlobalName(N::tSP4RagN);
+    extNames[tTconvRagN] = GlobalName(N::tTconvRagN);
+    extNames[tTregP1RagN] = GlobalName(N::tTregP1RagN);
+    extNames[tTregP2RagN] = GlobalName(N::tTregP2RagN);
+    extNames[tTregRagN] = GlobalName(N::tTregRagN);
+    extNames[pctDN] =     GlobalName(N::pctDN);
+    extNames[pctDP] =  GlobalName(N::pctDP);
+    extNames[pctSP8] =  GlobalName(N::pctSP8);
+    extNames[pctSP4] =   GlobalName(N::pctSP4);
+    extNames[pctTconv] =   GlobalName(N::pctTconvP);
+    extNames[pctTRegP1] =  GlobalName(N::pctTRegP1P);
+    extNames[pctTRegP2] =  GlobalName(N::pctTRegP2P);
+    extNames[pctTreg] = GlobalName(N::pctTregP);
+    extNames[pctSP8RagN] =GlobalName(N::pctSP8RagN);
+    extNames[pctSP4RagN] = GlobalName(N::pctSP4RagN);
+    extNames[pctTconvRagN] = GlobalName(N::pctTconvRagN);
+    extNames[pctTRegP1RagN] = GlobalName(N::pctTRegP1RagN);
+    extNames[pctTRegP2RagN] = GlobalName(N::pctTRegP2RagN);
+    extNames[pctTregRagN] =GlobalName(N::pctTregRagN);
+    extNames[stotal] = GlobalName(N::stotal);
+    extNames[sTconv] = GlobalName(N::sTconv);
+    extNames[sTreg] = GlobalName(N::sTreg);
+    extNames[sCD8] = GlobalName(N::sCD8);
+    extNames[sBcells] = GlobalName(N::sBcells);
+    extNames[sTconvRagN] = GlobalName(N::sTconvRagN);
+    extNames[sTregRagN] = GlobalName(N::sTregRagN);
+    extNames[sCD8RagN] = GlobalName(N::sCD8RagN);
+    extNames[pcsTconv] = GlobalName(N::pcsTconv);
+    extNames[pcsTreg] = GlobalName(N::pcsTreg);
+    extNames[pcsCD8] = GlobalName(N::pcsCD8);
+    extNames[pcsBcells] = GlobalName(N::pcsBcells);
+    extNames[pcsTconvRagN] = GlobalName(N::pcsTconvRagN);
+    extNames[pcsTregRagN] = GlobalName(N::pcsTregRagN);
+    extNames[pcsCD8RagN] = GlobalName(N::pcsCD8RagN);
 
     // Name of parameters
     paramNames[flu_peak] = "flu_peak / peak of flu effect in days";
@@ -397,8 +395,6 @@ modele3MultiDiv::modele3MultiDiv() : Modele(NbVariables, NbParameters), backgrou
     paramLowBounds[	hypLessDivCD8	] = 	0.01	;				paramUpBounds[hypLessDivCD8] = 	20	;
     paramLowBounds[ logisticThymus ] = 0.1;                         paramUpBounds[logisticThymus] = 500;
     paramLowBounds[ logisticStrength] = 0.1;                        paramUpBounds[logisticStrength] = 10;
-    backSimulated.clear();
-	backSimulated.push_back(Back::WT);
 }
 
 void modele3MultiDiv::setBaseParameters(){
@@ -554,6 +550,9 @@ void modele3MultiDiv::initialise(long long _background){ // don't touch to param
     init[fracInDN34New] = 0;
 #endif
 
+
+    params[commitDN1to2] = 1 - params[deathDN1];
+
     // steady state Manesso
     if(background & Back::B_StartSteadyState){
         init[tPreDN1] =  params[decayDN1pre] * params[fETP_tDN];
@@ -563,11 +562,11 @@ void modele3MultiDiv::initialise(long long _background){ // don't touch to param
         }
     //    init[tDN1g11] = 20.853;
         init[tDN2] = - ((params[cycleDN2])/(1-2*params[commitDN2to3]-2*params[deathDN2])) * (params[commitDN1to2] * init[tDN1g11]) / (params[cycleDN1] + 1e-12);
-        cout << "initDN2= " << init[tDN2] << endl;
+        //cout << "initDN2= " << init[tDN2] << endl;
         init[tDN3] =  - ((params[cycleDN3])/(1-2*params[commitDN3to4]-2*params[deathDN3])) * (params[commitDN2to3] * init[tDN2]) / (params[cycleDN2] + 1e-12);;
-        cout << "initDN3= " << init[tDN3] << endl;
+        //cout << "initDN3= " << init[tDN3] << endl;
         init[tDN4] =  - ((params[cycleDN4])/(1-2*params[commitDN4toDP]-2*params[deathDN4])) * (params[commitDN3to4] * init[tDN3]) / (params[cycleDN3] + 1e-12);;
-        cout << "initDN4= " << init[tDN4] << endl;
+        //cout << "initDN4= " << init[tDN4] << endl;
 
 
         // steady state TVaslin

@@ -1,10 +1,10 @@
-#ifndef modele1ThymusSpl_H
-#define modele1ThymusSpl_H
-#include "../../common.h"
-#include "../../Framework/modele.h"
+#ifndef modele0Manesso_H
+#define modele0Manesso_H
+#include "../../Moonfit/moonfit.h"
+
 #include "../namesThymus.h"
 
-struct modele0ManessoOnly : public Modele {
+struct modele0ManessoOnly : public Model {
     modele0ManessoOnly();
     enum{
         flu,

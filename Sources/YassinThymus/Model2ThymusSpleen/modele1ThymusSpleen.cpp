@@ -1,6 +1,4 @@
 // ------- Automatically generated model -------- //
-#include "../../common.h"
-
 #include "modele1ThymusSpleen.h"
 
 /*
@@ -65,10 +63,10 @@ exp(pC6*t)*((SP8init*pC6^3 + infloSP8*pC6^2 + f1*f5*infloDN + f1*f2*infloSP8 + f
 
 */
 
-modele1ThymusSpleen::modele1ThymusSpleen() : Modele(NbVariables, NbParameters), background(Back::WT) {
+modele1ThymusSpleen::modele1ThymusSpleen() : Model(NbVariables, NbParameters), background(Back::WT) {
     name = string("modele1ThymusSpleen");
     dt = 0.001; // initial time step -> then it is adaptive
-    print_all_secs = 1200; //every how many seconds it is plotting
+    print_every_dt = 1200; //every how many seconds it is plotting
     // Name of variables
     names[flu] = string("flu");
     names[ttotal] = string("total thymocytes");
@@ -118,50 +116,50 @@ modele1ThymusSpleen::modele1ThymusSpleen() : Modele(NbVariables, NbParameters), 
 
 
 	// the names of variables that can be accessed by outside (global name-space)
-    extNames[ttotal] = N::ttotal;
-    extNames[tDN] = N::tDN;
-    extNames[tDP] = N::tDP;
-    extNames[tSP8] = N::tSP8;
-    extNames[tSP4] = N::tSP4;
-    extNames[tTconv] = N::tTconv;
-    extNames[tTRegP25] = N::tTRegP25;
-    extNames[tTRegPFp3] = N::tTRegPFp3;
-    extNames[tTreg] = N::tTreg;
-    extNames[tSP8RagN] = N::tSP8RagN;
-    extNames[tSP4RagN] = N::tSP4RagN;
-    extNames[tTconvRagN] = N::tTconvRagN;
-    extNames[tTregP1RagN] = N::tTregP1RagN;
-    extNames[tTregP2RagN] = N::tTregP2RagN;
-    extNames[tTregRagN] = N::tTregRagN;
-    extNames[pctDN] =     N::pctDN;
-    extNames[pctDP] =  N::pctDP;
-    extNames[pctSP8] =  N::pctSP8;
-    extNames[pctSP4] =   N::pctSP4;
-    extNames[pctTconv] =   N::pctTconv;
-    extNames[pctTRegP1] =  N::pctTRegP1;
-    extNames[pctTRegP2] =  N::pctTRegP2;
-    extNames[pctTreg] = N::pctTreg;
-    extNames[pctSP8RagN] =N::pctSP8RagN;
-    extNames[pctSP4RagN] = N::pctSP4RagN;
-    extNames[pctTconvRagN] = N::pctTconvRagN;
-    extNames[pctTRegP1RagN] = N::pctTRegP1RagN;
-    extNames[pctTRegP2RagN] = N::pctTRegP2RagN;
-    extNames[pctTregRagN] =N::pctTregRagN;
-    extNames[stotal] = N::stotal;
-    extNames[sTconv] = N::sTconv;
-    extNames[sTreg] = N::sTreg;
-    extNames[sCD8] = N::sCD8;
-    extNames[sBcells] = N::sBcells;
-    extNames[sTconvRagN] = N::sTconvRagN;
-    extNames[sTregRagN] = N::sTregRagN;
-    extNames[sCD8RagN] = N::sCD8RagN;
-    extNames[pcsTconv] = N::pcsTconv;
-    extNames[pcsTreg] = N::pcsTreg;
-    extNames[pcsCD8] = N::pcsCD8;
-    extNames[pcsBcells] = N::pcsBcells;
-    extNames[pcsTconvRagN] = N::pcsTconvRagN;
-    extNames[pcsTregRagN] = N::pcsTregRagN;
-    extNames[pcsCD8RagN] = N::pcsCD8RagN;
+    extNames[ttotal] = GlobalName(N::ttotal);
+    extNames[tDN] = GlobalName(N::tDN);
+    extNames[tDP] = GlobalName(N::tDP);
+    extNames[tSP8] = GlobalName(N::tSP8P);
+    extNames[tSP4] = GlobalName(N::tSP4P);
+    extNames[tTconv] = GlobalName(N::tTconvP);
+    extNames[tTRegP25] = GlobalName(N::tTRegP1P);
+    extNames[tTRegPFp3] = GlobalName(N::tTRegP2P);
+    extNames[tTreg] = GlobalName(N::tTregP);
+    extNames[tSP8RagN] = GlobalName(N::tSP8RagN);
+    extNames[tSP4RagN] = GlobalName(N::tSP4RagN);
+    extNames[tTconvRagN] = GlobalName(N::tTconvRagN);
+    extNames[tTregP1RagN] = GlobalName(N::tTregP1RagN);
+    extNames[tTregP2RagN] = GlobalName(N::tTregP2RagN);
+    extNames[tTregRagN] = GlobalName(N::tTregRagN);
+    extNames[pctDN] =     GlobalName(N::pctDN);
+    extNames[pctDP] =  GlobalName(N::pctDP);
+    extNames[pctSP8] =  GlobalName(N::pctSP8);
+    extNames[pctSP4] =   GlobalName(N::pctSP4);
+    extNames[pctTconv] =   GlobalName(N::pctTconvP);
+    extNames[pctTRegP1] =  GlobalName(N::pctTRegP1P);
+    extNames[pctTRegP2] =  GlobalName(N::pctTRegP2P);
+    extNames[pctTreg] = GlobalName(N::pctTregP);
+    extNames[pctSP8RagN] =GlobalName(N::pctSP8RagN);
+    extNames[pctSP4RagN] = GlobalName(N::pctSP4RagN);
+    extNames[pctTconvRagN] = GlobalName(N::pctTconvRagN);
+    extNames[pctTRegP1RagN] = GlobalName(N::pctTRegP1RagN);
+    extNames[pctTRegP2RagN] = GlobalName(N::pctTRegP2RagN);
+    extNames[pctTregRagN] =GlobalName(N::pctTregRagN);
+    extNames[stotal] = GlobalName(N::stotal);
+    extNames[sTconv] = GlobalName(N::sTconv);
+    extNames[sTreg] = GlobalName(N::sTreg);
+    extNames[sCD8] = GlobalName(N::sCD8);
+    extNames[sBcells] = GlobalName(N::sBcells);
+    extNames[sTconvRagN] = GlobalName(N::sTconvRagN);
+    extNames[sTregRagN] = GlobalName(N::sTregRagN);
+    extNames[sCD8RagN] = GlobalName(N::sCD8RagN);
+    extNames[pcsTconv] = GlobalName(N::pcsTconv);
+    extNames[pcsTreg] = GlobalName(N::pcsTreg);
+    extNames[pcsCD8] = GlobalName(N::pcsCD8);
+    extNames[pcsBcells] = GlobalName(N::pcsBcells);
+    extNames[pcsTconvRagN] = GlobalName(N::pcsTconvRagN);
+    extNames[pcsTregRagN] = GlobalName(N::pcsTregRagN);
+    extNames[pcsCD8RagN] = GlobalName(N::pcsCD8RagN);
 
     // Name of parameters
     paramNames[flu_peak] = "flu_peak / peak of flu effect in days";
@@ -307,8 +305,6 @@ modele1ThymusSpleen::modele1ThymusSpleen() : Modele(NbVariables, NbParameters), 
     paramLowBounds[	hypLessDivCD8	] = 	0.01	;				paramUpBounds[hypLessDivCD8] = 	20	;
     paramLowBounds[ logisticThymus ] = 0.1;                         paramUpBounds[logisticThymus] = 500;
     paramLowBounds[ logisticStrength] = 0.1;                        paramUpBounds[logisticStrength] = 10;
-    backSimulated.clear();
-	backSimulated.push_back(Back::WT);
 }
 
 void modele1ThymusSpleen::setBaseParameters(){

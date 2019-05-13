@@ -1,6 +1,4 @@
 // ------- Automatically generated model -------- //
-#include "../../common.h"
-
 #include "modele1ThymusOnly.h"
 
 /*
@@ -65,10 +63,10 @@ exp(pC6*t)*((SP8init*pC6^3 + infloSP8*pC6^2 + f1*f5*infloDN + f1*f2*infloSP8 + f
 
 */
 
-modele1ThymusOnly::modele1ThymusOnly() : Modele(NbVariables, NbParameters), background(Back::WT) {
+modele1ThymusOnly::modele1ThymusOnly() : Model(NbVariables, NbParameters), background(Back::WT) {
     name = string("modeleLeishmania");
     dt = 0.001; // initial time step -> then it is adaptive
-    print_all_secs = 1200; //every how many seconds it is plotting
+    print_every_dt = 1200; //every how many seconds it is plotting
 	// Name of variables           
     names[tDN] = string("thymic DN");
     names[tDP] = string("thymic DP");
@@ -90,14 +88,14 @@ modele1ThymusOnly::modele1ThymusOnly() : Modele(NbVariables, NbParameters), back
     names[pcTotTregs] = string("% total Tregs / CD4");
 
 	// the names of variables that can be accessed by outside (global name-space)
-    extNames[tDN] = N::tDN;
-    extNames[tDP] = N::tDP;
-    extNames[tTconv] = N::tTconv;
-    extNames[tTRegP25] = N::tTRegP25;
-    extNames[tTRegPFp3] = N::tTRegPFp3;
-    extNames[tDPTreg] = N::tTreg;
-    extNames[tSP8] = N::tSP8;
-    extNames[tSP4] = N::tSP4;
+    extNames[tDN] = GlobalName(N::tDN);
+    extNames[tDP] = GlobalName(N::tDP);
+    extNames[tTconv] = GlobalName(N::tTconvtot);
+    extNames[tTRegP25] = GlobalName(N::tTRegP1tot);
+    extNames[tTRegPFp3] = GlobalName(N::tTRegP2tot);
+    extNames[tDPTreg] = GlobalName(N::tTregtot);
+    extNames[tSP8] = GlobalName(N::tSP8tot);
+    extNames[tSP4] = GlobalName(N::tSP4tot);
 
 	// Name of parameters
 
@@ -210,18 +208,6 @@ modele1ThymusOnly::modele1ThymusOnly() : Modele(NbVariables, NbParameters), back
     paramLowBounds[hypFasterCoeffTconv] = 1;		paramUpBounds[hypFasterCoeffTconv] = 1;
     paramLowBounds[hypFasterCoeffSP8] = 1;		paramUpBounds[hypFasterCoeffSP8] = 1;
     paramLowBounds[hypSpaceOutputCoeff] = 1;		paramUpBounds[hypSpaceOutputCoeff] = 1;
-
-
-
-
-
-
-
-
-
-
-    backSimulated.clear();
-	backSimulated.push_back(Back::WT);
 }
 
 void modele1ThymusOnly::setBaseParameters(){

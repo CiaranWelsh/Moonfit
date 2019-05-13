@@ -1,14 +1,13 @@
 // ------- Automatically generated model -------- //
 #ifndef modele1ThymusSpl_H
 #define modele1ThymusSpl_H
-#include "../../common.h"
-#include "../../Framework/modele.h"
+#include "../../Moonfit/moonfit.h"
 #include "../namesThymus.h"
 
 
 
 
-struct modele1ThymusSpleen : public Modele {
+struct modele1ThymusSpleen : public Model {
     modele1ThymusSpleen();
     enum{
         flu,

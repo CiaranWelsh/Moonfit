@@ -1,15 +1,14 @@
 // ------- Automatically generated model -------- //
 #ifndef modele3Combined_H
 #define modele3Combined_H
-#include "../../common.h"
-#include "../../Framework/modele.h"
+#include "../../Moonfit/moonfit.h"
 #include "../namesThymus.h"
 
 
 #define ReducedParams
 
 
-struct modele3MultiDiv : public Modele {
+struct modele3MultiDiv : public Model {
     modele3MultiDiv();
     enum{
 

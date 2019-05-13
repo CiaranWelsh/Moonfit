@@ -2,11 +2,10 @@
 #ifndef modeleThomasVasin_h
 #define modeleThomasVasin_h
 
-#include "../../common.h"
-#include "../../Framework/modele.h"
+#include "../../Moonfit/moonfit.h"
 #include "../namesThymus.h"
 
-struct ModeleTVaslin2007 : public Modele {
+struct ModeleTVaslin2007 : public Model {
     ModeleTVaslin2007();
     enum {flu,
 

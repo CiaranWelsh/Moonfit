@@ -1,14 +1,13 @@
 // ------- Automatically generated model -------- //
 #ifndef modele1Thymus_H
 #define modele1Thymus_H
-#include "../../common.h"
-#include "../../Framework/modele.h"
+#include "../../Moonfit/moonfit.h"
 #include "../namesThymus.h"
 
 
 
 
-struct modele1ThymusOnly : public Modele {
+struct modele1ThymusOnly : public Model {
     modele1ThymusOnly();
     enum{
         tDN, tDP, tTconv, tTRegP25, tTRegPFp3, tDPTreg, tSP8, tSP4, pcDN, pcDP, pcSP4, pcSP8, pcDPTreg, pcSingerP, pcFp3P, pcTotTregs, NbVariables};

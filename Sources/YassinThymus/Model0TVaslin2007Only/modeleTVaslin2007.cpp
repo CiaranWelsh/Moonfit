@@ -1,16 +1,14 @@
 // ------- Automatically generated model -------- //
-#include "../../common.h"
-
 #include "modeleTVaslin2007.h"
 
 //#include <sstream>
 
-ModeleTVaslin2007::ModeleTVaslin2007() : Modele(NBVAR, NBPARAM), background(Back::WT) {
+ModeleTVaslin2007::ModeleTVaslin2007() : Model(NBVAR, NBPARAM), background(Back::WT) {
 
 
     name = string("modele0Thomas-Vaslin2007 (JI)");
     dt = 0.00001; // initial time step -> then it is adaptive
-    print_all_secs = 1200; //every how many seconds it is plotting
+    print_every_dt = 1200; //every how many seconds it is plotting
 
 //        divDNg0, divDNg1, divDNg2, divDNg3, divDNg4, divDNg5, divDNg6, eDPg0, eDPGg1, eDPg2, eDPg3, eDPg4, eDPg5, eDPg6, lDP, divSP4g0, divSP4g1, divSP4g2, restSP4, divSP8g0, divSP8g1, divSP8g2, restSP8, DNtot, DPtot, SP4tot, SP8tot,
 //        infloDN, NdivDN, pDN, dDN, NdivDP, peDP, deDP, prestDP, drestDP, diffDPtoSP4, diffDPtoSP8, pSP4, dSP4, NdivSP4, pSP8, dSP8, NdivSP8,
@@ -64,10 +62,10 @@ ModeleTVaslin2007::ModeleTVaslin2007() : Modele(NBVAR, NBPARAM), background(Back
     names[ flowSP8toDead] = string("flowSP8toDead");
 
 	// the names of variables that can be accessed by outside (by setValue and getValue)
-    extNames[DNtot] = N::tDN;
-    extNames[DPtot] = N::tDP;
-    extNames[SP4tot] = N::tSP4;
-    extNames[SP8tot] = N::tSP8;
+    extNames[DNtot] = GlobalName(N::tDN);
+    extNames[DPtot] = GlobalName(N::tDP);
+    extNames[SP4tot] = GlobalName(N::tSP4tot);
+    extNames[SP8tot] = GlobalName(N::tSP8tot);
 
     paramNames[flu_peak] = "flu_peak / peak of flu effect in days";
     paramNames[flu_std]  = "flu_std / width of flu effect (stddev)";
@@ -148,9 +146,6 @@ ModeleTVaslin2007::ModeleTVaslin2007() : Modele(NBVAR, NBPARAM), background(Back
     paramLowBounds[	hypLessDivCD8	] = 	0.01	;				paramUpBounds[hypLessDivCD8] = 	20	;
     paramLowBounds[ logisticThymus ] = 0.1;                         paramUpBounds[logisticThymus] = 500;
     paramLowBounds[ logisticStrength] = 0.1;                        paramUpBounds[logisticStrength] = 10;
-
-	backSimulated.clear();
-	backSimulated.push_back(Back::WT);
 }
 
 void ModeleTVaslin2007::setBaseParameters(){

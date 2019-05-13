@@ -1,0 +1,46 @@
+geneticAlgorithm	14
+0	#CEP  - Classical Evolutionary Programming
+8	#Proportional / From Worst / Basic Sampling
+7	1	#SBX_CROSSOVER
+1	#Normal - All points
+0	#NO_NEED_REPLACEMENT
+0	#Select Best
+7	0.005	#MUTATIVE_SEPARATED
+1	#Nb Repeats
+50000	#Max nb of simulations-costs
+250	#Population Size
+0.2	#Proportion of CrossOver (vs offspring) in new individuals
+0.5	#Fork coeff (%renewed each generation)
+
+9
+#	0	5	15	#flu_peak / peak of flu effect in days
+#	1	0.5	10	#flu_std / width of flu effect (stddev)
+#	2	0	0	#fETP_tDN / DN thymic Inflow
+#	3	1	4	#decayDN1pre
+#	4	0.5	1	#commitDN1to2
+#	5	0	0.4	#deathDN1
+#	6	0.8	1.3	#cycleDN1
+	7	0.3	0.9	#commitDN2to3
+	8	0	0.4	#deathDN2
+	9	0.3	5	#cycleDN2
+	10	0.1	0.8	#commitDN3to4
+	11	0	0.4	#deathDN3
+	12	0.3	5	#cycleDN3
+	13	0.1	0.9	#commitDN4toDP
+	14	0	0.4	#deathDN4
+	15	0.3	3	#cycleDN4
+#	16	0.05	20	#	hypInflowCoeffETP	
+#	17	0.05	20	#hypDeathCoeffDN1
+#	18	0.05	20	#hypDeathCoeffDN2
+#	19	0.05	20	#hypDeathCoeffDN3
+#	20	0.05	20	#hypDeathCoeffDN4
+#	21	0.1	500	#
+#	22	0.1	10	#
+
+
+0
+Exponential
+0
+
+0
+
