@@ -30,7 +30,7 @@ QColor grapheCustom::baseList(int i){
     case 7: {return QColor(204, 0, 0);} // darkred
     case 8: {return QColor(153,0,204);}
     case 9: {return QColor(Qt::magenta);}
-    case 10: {return QColor(Qt::yellow);}
+    case 10: {return QColor(Qt::black);}
     case 11: {return QColor(Qt::red);}
     case 12: {return QColor(Qt::lightGray);}
     case 13: {return QColor(Qt::yellow);}

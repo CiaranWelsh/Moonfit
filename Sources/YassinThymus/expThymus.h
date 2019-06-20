@@ -57,11 +57,11 @@ struct expDNPotritt: public Experiment {
     void simulate(int IdExp, Evaluator* E = NULL, bool force = false); // if no E is given, VTG[i] is used
 };
 
-struct expCompParameterSets: public Experiment {
+/*struct expCompParameterSets: public Experiment {
     expCompParameterSets(Model* _m, vector< vector<double> *> _parameterSets);
     vector< vector<double> *> parameterSets;
     void simulate(int IdExp, Evaluator* E = NULL, bool force = false); // if no E is given, VTG[i] is used
-};
+};*/
 
 
 

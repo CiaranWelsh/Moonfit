@@ -45,7 +45,6 @@ HEADERS += \
     $$PWD/common.h \
     $$PWD/moonfit.h \
     $$PWD/Framework/evaluator.h \
-    $$PWD/Framework/Experiment.h \
     $$PWD/Framework/generate.h \
     $$PWD/Framework/modele.h \
     $$PWD/Framework/overrider.h \
@@ -93,7 +92,8 @@ HEADERS += \
     $$PWD/Interface/grapheCustom.h \
     $$PWD/Interface/QCustomPlot/qcustomplot.h \
     $$PWD/Interface/starter.h \
-    $$PWD/Interface/simuwin.h
+    $$PWD/Interface/simuwin.h \
+    $$PWD/Framework/experiment.h
    
 SOURCES += \
     $$PWD/Framework/evaluator.cpp \

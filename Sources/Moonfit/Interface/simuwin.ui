@@ -204,7 +204,7 @@
    <widget class="QPushButton" name="pushButtonResetParams">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>310</x>
       <y>45</y>
       <width>91</width>
       <height>21</height>
@@ -217,7 +217,7 @@
    <widget class="QPushButton" name="pushButtonSaveSet">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>200</x>
       <y>45</y>
       <width>101</width>
       <height>21</height>
@@ -230,7 +230,7 @@
    <widget class="QPushButton" name="pushButtonLoadSet">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>90</x>
       <y>45</y>
       <width>101</width>
       <height>21</height>
@@ -243,7 +243,7 @@
    <widget class="QPushButton" name="pushButtonSaveConfig">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>200</x>
       <y>10</y>
       <width>101</width>
       <height>31</height>
@@ -256,7 +256,7 @@
    <widget class="QPushButton" name="pushButtonLoadConfig">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>90</x>
       <y>10</y>
       <width>101</width>
       <height>31</height>
@@ -269,7 +269,7 @@
    <widget class="QPushButton" name="pushButtonReport">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>310</x>
       <y>10</y>
       <width>91</width>
       <height>31</height>
@@ -282,7 +282,7 @@
    <widget class="QPushButton" name="pushButtonSensitivity">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>410</x>
       <y>10</y>
       <width>101</width>
       <height>31</height>
@@ -295,7 +295,7 @@
    <widget class="QPushButton" name="pushButtonIdentifiability">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>520</x>
       <y>10</y>
       <width>101</width>
       <height>31</height>
@@ -303,52 +303,6 @@
     </property>
     <property name="text">
      <string>Identifiability</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBoxOnlyComb">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>50</y>
-      <width>141</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Show Only Comb nr</string>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="spinBoxOnlyComb">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>50</y>
-      <width>51</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="doubleSpinBoxLastParam">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>50</y>
-      <width>101</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelLastParam">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>20</y>
-      <width>121</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Change Last Param:</string>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -367,7 +321,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabParameters">
      <attribute name="title">
@@ -377,10 +331,59 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>20</y>
         <width>691</width>
-        <height>661</height>
+        <height>631</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBoxOnlyComb">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>0</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Show Only Combination nr</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBoxOnlyComb">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>0</y>
+        <width>71</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelLastParam">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>0</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Value last changed parameter</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="doubleSpinBoxLastParam">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>0</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>6</number>
       </property>
      </widget>
     </widget>
@@ -568,6 +571,32 @@
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButtonPerturb">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>45</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Modulate</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonCompare">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>45</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Compare Sets</string>
+    </property>
    </widget>
   </widget>
   <widget class="QComboBox" name="comboBoxSubExperiment">

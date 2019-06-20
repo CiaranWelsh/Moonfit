@@ -282,13 +282,13 @@ void ModeleTVaslin2007::derivatives(const vector<double> &x, vector<double> &dxd
     double          DeathCoeffDP = 1;
     double          DeathCoeffTconv = 1;
     double          DeathCoeffSP8 = 1;
-    double          OutputCoeffOutDP = 1; // similar to death !!!
-    double          OutputCoeffOutTconv = 1;
-    double          OutputCoeffOutSP8 = 1;
+    //double          OutputCoeffOutDP = 1; // similar to death !!!
+    //double          OutputCoeffOutTconv = 1;
+    //double          OutputCoeffOutSP8 = 1;
     double          FasterCoeffDNtoDP = 1;
     double          FasterCoeffTconv = 1;
     double          FasterCoeffSP8 = 1;
-    double          SpaceOutputCoeff = 1;
+    //double          SpaceOutputCoeff = 1;
     double          LessDivCoeffDN = 1;
     double          LessDivCoeffDP = 1;
     double          LessDivCoeffTconv = 1;

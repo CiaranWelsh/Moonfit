@@ -864,7 +864,7 @@ void modele4MegaThymus::derivatives(const vector<double> &x, vector<double> &dxd
     double          DeathCoeffDPTregs = 1;
     double          DeathCoeffSP8 = 1;
     double          DeathCoeffEarlyDP = 0; // attention !
-    double          OutputCoeffOutDP = 1;
+    //double          OutputCoeffOutDP = 1;
     double          OutputCoeffOutTconv = 1;
     double          OutputCoeffOutDPTregs = 1;
     double          OutputCoeffOutProFP3 = 1;
@@ -906,7 +906,7 @@ void modele4MegaThymus::derivatives(const vector<double> &x, vector<double> &dxd
         DeathCoeffEarlyDP         = 0 * (1 - x[flu]) + x[flu] * params[hypDeathCoeffAddEarlyDP];
     }
     if(background & Back::B_MoreOutputThymus){
-        OutputCoeffOutDP	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutDP	];
+        //OutputCoeffOutDP	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutDP	];
         OutputCoeffOutTconv	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutTconv	];
         OutputCoeffOutDPTregs	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutDPTregs	];
         OutputCoeffOutProFP3	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutProFP3	];
@@ -1008,9 +1008,10 @@ void modele4MegaThymus::derivatives(const vector<double> &x, vector<double> &dxd
     double dynamicNDiv = FasterCoeffDNtoDP *  params[NdivDN];
     int N = (int) dynamicNDiv;
     double divFloat = dynamicNDiv - (double) N;
-    double T_DN = 1 / (max(params[pDN] + params[dDN], 1e-12));
-    double C = 0;
-    if(divFloat < 1e-12) {N = max(0,N-1);} else {C = min(100., (1 / T_DN) * ((1 / divFloat) - 1));}
+    //double T_DN = 1 / (max(params[pDN] + params[dDN], 1e-12));
+    //double C = 0;
+    if(divFloat < 1e-12) {N = max(0,N-1);}
+    //else {C = min(100., (1 / T_DN) * ((1 / divFloat) - 1));}
     N = min(6,N); // to avoid segfault
 
     vector<double> CoeffPerGen = vector<double>(7, 0);

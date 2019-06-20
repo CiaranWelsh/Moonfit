@@ -1,7 +1,7 @@
 #ifndef FITTE_H
 #define FITTE_H
 
-#include "../Framework/Experiment.h"
+#include "../Framework/experiment.h"
 //#include "../Extreminator/optimizers/baseOptimizer.h"
 //#include "../Extreminator/common/myRandom.h"
 #include "../Extreminator/baseProblem.h"

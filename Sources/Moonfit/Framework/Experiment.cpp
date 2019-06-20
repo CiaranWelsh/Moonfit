@@ -1,4 +1,4 @@
-#include "Experiment.h"
+#include "experiment.h"
 
 #include <iostream>
 #include <fstream>
@@ -6,11 +6,12 @@
 
 void    Experiment::simulate(int /*IdExp*/, Evaluator* /*E*/,  bool force){cerr << "ERR: Experiment::simulate() should be reimplemented in daughter class\n";}
 int     Experiment::getNbCond(){return names_exp.size();}
-string  Experiment::getNameCondition(int i){if((i >= 0) && (i < getNbCond())) return names_exp[i]; else {cerr << "ERR: Experiment::expName(" << i << "), index out of scope\n"; return string("");}}
+string  Experiment::getConditionName(int i){if((i >= 0) && (i < getNbCond())) return names_exp[i]; else {cerr << "ERR: Experiment::expName(" << i << "), index out of scope\n"; return string("");}}
 
 Experiment::Experiment(Model* _m, int _nbConditions, string _Identification) : m(_m), nbConditions(_nbConditions), Identification(_Identification), totalPenalities(0.0) {
     if((_nbConditions < 0) || (_nbConditions > 100000)) {cerr << "ERR : Experiment::Experiment(m, nbConditions=" << _nbConditions << "), invalid nb of Experiment\n"; return;}
     names_exp.resize(nbConditions, string("NoName"));
+    if(!m) cerr << "ERR: creating an experiment from a NULL model" << endl;
     Overs.resize(nbConditions, NULL);
     VTG.resize(nbConditions, NULL);
     ExpData.resize(nbConditions);       // to avoid segfault at reset
@@ -173,7 +174,7 @@ void Experiment::loadEvaluators(){
                 }
             }
             VTG[i]->recordingCompleted();
-            cout << "   -> Data recorded for condition " << getNameCondition(i) << endl;
+            cout << "   -> Data recorded for condition " << getConditionName(i) << endl;
         }
     }
     if(!evaluatorLoaded) evaluatorLoaded = true;
@@ -286,7 +287,7 @@ string Experiment::extractData(vector<int> timePoints, vector<string> extNamesTo
     for(int i = 0; i < nbIdExps; ++i){
         fi << "\n" << IDexps[i];
         //if(isDoable(IDexps[i])){  // is doable removed from Moonfit V2.0
-            fi << "\t" << nbTP << "\t" << nbGlVars << "\t#" << getNameCondition(IDexps[i]) << "\n";
+            fi << "\t" << nbTP << "\t" << nbGlVars << "\t#" << getConditionName(IDexps[i]) << "\n";
 
             Evaluator* locE = EVs[i];
             if(! locE) {cerr << "ERR: GenerateDataFile Part, Evaluators are not defined, seg faults on approach ...\n";};
@@ -325,10 +326,10 @@ string Experiment::print(){
     res << m->print();
     res << "\n---------- " << nbConditions << " Experiments declared\n\n";
     for(int i = 0; i < nbConditions; ++i){
-        res << "\t" << i << "\t" << getNameCondition(i); // << (isDoable(i) ? "\tCan Be Simulated\n" : "\tNot doable with this model\n");
+        res << "\t" << i << "\t" << getConditionName(i); // << (isDoable(i) ? "\tCan Be Simulated\n" : "\tNot doable with this model\n");
     }
     for(int i = 0; i < nbConditions; ++i){
-        res << "\n---------- Additional information for " << getNameCondition(i) << "\n\n";
+        res << "\n---------- Additional information for " << getConditionName(i) << "\n\n";
         if((! VTG[i]) || (VTG[i]->size() == 0)) res << "No Evaluator / Empty evaluator for this experiment\n";
         else{ res << VTG[i]->printState();}
         int S = ExpData[i].size();
@@ -547,3 +548,205 @@ void MultiExperiments::overrideVariable(string extNameVar, bool override){
         ListBigExperiments[i]->overrideVariable( extNameVar, override, -1);
     }
 }
+
+
+
+
+
+
+expCompParameterSets::expCompParameterSets(Experiment* Exp, vector< vector<double> *> _parameterSets, int _IDconditionToUse) :
+    Experiment((Exp)? Exp->m : NULL, _parameterSets.size()){
+    if(!Exp)    {cerr << "ERR: expCompParameterSetsm empty experiment given" << endl; return;}
+    if(!Exp->m) {cerr << "ERR: expCompParameterSetsm empty model in given experiment" << endl; return;}
+    builtOnExperiment = Exp;
+    Identification = Exp->Identification + string(" -> Parameter sets comparison");
+    IDconditionToUse = _IDconditionToUse;
+    if(Exp->getNbCond() == 0){cerr << "ERR: creating an expCompareParameterSets from an experiment without condition" << endl; return;}
+    if((_IDconditionToUse < 0) || (_IDconditionToUse >= Exp->getNbCond())){cerr << "ERR: defining an expCompParameterSets with out of bound condition (ID=" << _IDconditionToUse << ")" << endl; _IDconditionToUse = 0;}
+    parameterSets = _parameterSets;
+    for(int i = 0; i < (int) parameterSets.size(); ++ i){
+        stringstream nm; nm << "P" << i;
+        names_exp[i] = nm.str();
+    }
+    m->setBaseParameters();
+}
+
+void expCompParameterSets::simulate(int IdExp, Evaluator* E, bool force){
+    if(motherPrepareSimulate(IdExp, E, force)){
+        if((IdExp < 0) || (IdExp >= (int) parameterSets.size())) cerr << "expCompParameterSets, Problem between Nb Exp and Nb of given parameter sets " << endl;
+        vector<double>* v = parameterSets[IdExp];
+        if(!v) cerr << "ERR: expCompParameterSets, non-existing parameter set" << endl;
+        m->setParameters(*v);
+        builtOnExperiment->simulate(IDconditionToUse, E, force); // will do the init
+    }
+}
+
+expChangeOneParameter::expChangeOneParameter(Experiment* Exp, vector<double> &_parameterSet, int _parameterToChange, int _IDconditionToUse , int _nbCurves) :
+    Experiment((Exp)? Exp->m : NULL, _nbCurves), parameter(_parameterToChange), nbCurves(_nbCurves) {
+
+
+    // test input
+    if(!Exp)    {cerr << "ERR: expChangeOneParameter empty experiment given" << endl; return;}
+    if(!Exp->m) {cerr << "ERR: expChangeOneParameter empty model in given experiment" << endl; return;
+    parameterSet = _parameterSet; //new vector<double>(_parameterSet); // this copy is not done, why?
+    if((int) parameterSet.size() != Exp->m->getNbParams()) cerr << "ERR: expChangeOneParameter, parameter set size " << parameterSet.size() << " not compatible with model that has " << Exp->m->getNbParams() << " parameters " << endl; return;}
+    if((parameter < 0) || (parameter >= Exp->m->getNbParams())) {cerr << "ERR: expChangeOneParameter, ID of parameter is out of bound (" << parameter << "), while model has " << Exp->m->getNbParams() << endl; return;}
+    if((nbCurves < 0) || (nbCurves > NbVariantes)) {cerr << "ERR: expChangeOneParameter, nb of curves should be [1.." << NbVariantes << "], and not " << nbCurves << " -> take 10" << endl; nbCurves = 10;}
+    //valueAround = parameterSet->at(parameter);
+    valueAround = _parameterSet.at(parameter);
+    builtOnExperiment = Exp;
+    Identification = Exp->Identification + string("-> Modif ") + Exp->m->getParamName(parameter);
+    IDconditionToUse = _IDconditionToUse;
+}
+
+/// 2018-11-21 Should not use the parameter value from creation, but the current from the model
+void expChangeOneParameter::init(){
+    cout << "INIT called - victory" << endl;
+    valueAround = m->getParam(parameter);
+    //if(parameterSet) delete parameterSet;
+    //parameterSet = new vector<double>(m->getParameters());
+    parameterSet = m->getParameters();
+    motherInit();
+
+    // give names to each curbe : value + '=x%'
+    stringstream valInString; valInString << valueAround; string val = valInString.str();
+    if(nbCurves > Param005) names_exp[Param005] = string("5%");
+    if(nbCurves > Param01) names_exp[Param01] = string("10%");
+    if(nbCurves > Param02) names_exp[Param02] = string("20%");
+    if(nbCurves > Param05) names_exp[Param05] = string("50%");
+    if(nbCurves > Param08) names_exp[Param08] = string("80%");
+    if(nbCurves > Param12) names_exp[Param12] = string("120%");
+    if(nbCurves > Param15) names_exp[Param15] = string("150%");
+    if(nbCurves > Param20) names_exp[Param20] = string("x2");
+    if(nbCurves > Param50) names_exp[Param50] = string("x5");
+    if(nbCurves > Param100) names_exp[Param100] = string("x10");
+    // the last one is always 'ParamDefault'
+    names_exp[nbCurves-1] = string("default=") + val;
+    //m->setBaseParameters();
+}
+
+/// Careful, this function should restore the exact same paameter values as before being called
+//void init();
+void expChangeOneParameter::simulate(int IdExp, Evaluator* E, bool force) {// if no E is given, VTG[i] is used
+    if(motherPrepareSimulate(IdExp, E, force)){
+        if((IdExp == nbCurves-1) || (IdExp == ParamDefault)){ // can not use nbCurves in the switch, too bad! so put it here
+            // cheating: make sure to finish by the original parameter value to restore the good parameter set at the end
+            m->setParam(parameter, valueAround);
+            cerr << " value for param " << m->getParamName(parameter) << " is " << valueAround << endl;
+            builtOnExperiment->simulate(IDconditionToUse, E, force);
+        } else {
+            switch(IdExp){
+            case Param005:{
+                m->setParam(parameter, valueAround * 0.05);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param01:{
+                m->setParam(parameter, valueAround * 0.1);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param02:{
+                m->setParam(parameter, valueAround * 0.2);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param05:{
+                m->setParam(parameter, valueAround * 0.5);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param08:{
+                m->setParam(parameter, valueAround * 0.8);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param12:{
+                m->setParam(parameter, valueAround * 1.2);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param15:{
+                m->setParam(parameter, valueAround * 1.5);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param20:{
+                m->setParam(parameter, valueAround * 2.0);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param50:{
+                m->setParam(parameter, valueAround * 5.0);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            case Param100:{
+                m->setParam(parameter, valueAround * 10.0);
+                builtOnExperiment->simulate(IDconditionToUse, E, force); break;}
+            default:{}
+            }
+        }
+        m->setOverrider(NULL);
+    }
+}
+
+
+/*
+
+struct InitialPopulation : public Experiment {
+    enum{DoseDefault,Dose1k,Dose3k,Dose5k,Dose7k,Dose9k,Dose10k,Dose15k,Dose30k,Dose50k,Dose75k,Dose100k,NbInitDoses};    // experiments    - use InitialPopulation::Small_Dose
+    InitialPopulation(Model* _m) : Experiment(_m, NbInitDoses) {
+
+        Identification = string("Initial Dose leishmaniasis");
+        names_exp[DoseDefault] = string("dose default");
+//        names_exp[Dose1k] = string("dose 1k");
+        names_exp[Dose3k] = string("dose 3k");
+        names_exp[Dose5k] = string("dose 5k");
+        names_exp[Dose10k] = string("dose 10k");
+        names_exp[Dose15k] = string("dose 15k");
+        names_exp[Dose30k] = string("dose 30k");
+        names_exp[Dose50k] = string("dose 50k");
+        names_exp[Dose75k] = string("dose 75k");
+        names_exp[Dose100k] = string("dose 100k");
+//        names_exp[Dose7k] = string("dose 7k");
+//        names_exp[Dose9k] = string("dose 9k");
+
+        //m->setBaseParameters();
+    }
+
+    //void init();
+    void simulate(int IdExp, Evaluator* E = NULL, bool force = false) {// if no E is given, VTG[i] is used
+        if(motherPrepareSimulate(IdExp, E, force)){
+            switch(IdExp){
+
+            default: {m->initialise(Back::WT); break;}
+            }
+            switch(IdExp){
+            case DoseDefault:{
+                m->setValue("P", 29200); // 3391
+                m->simulate(150, E); break;}
+//            case Dose1k:{
+//                m->setValue("P", 1000);
+//                m->simulate(130, E); break;}
+            case Dose3k:{
+                m->setValue("P", 3000);
+                m->simulate(150, E); break;}
+            case Dose5k:{
+                m->setValue("P", 5000); //5000
+                m->simulate(150, E); break;}
+//            case Dose7k:{
+//                m->setValue("P", 7000); //7000
+//                m->simulate(130, E); break;}
+            case Dose10k:{
+                m->setValue("P", 10000);
+                m->simulate(150, E); break;}
+//            case Dose9k:{
+//                m->setValue("P", 9000); //9000
+//                m->simulate(130, E); break;}
+            case Dose15k:{
+                m->setValue("P", 15000);
+                m->simulate(150, E); break;}
+            case Dose30k:{
+                m->setValue("P", 30000);
+                m->simulate(150, E); break;}
+            case Dose50k:{
+                m->setValue("P", 50000);
+                m->simulate(150, E); break;}
+            case Dose75k:{
+                m->setValue("P", 75000);
+                m->simulate(150, E); break;}
+            case Dose100k:{
+                m->setValue("P", 100000);
+                m->simulate(150, E); break;}
+        }
+            m->setOverrider(NULL);
+        }
+    }
+};*/
+
+
+
+

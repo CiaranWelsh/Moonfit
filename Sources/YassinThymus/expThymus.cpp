@@ -70,7 +70,7 @@ void expDNPotritt::simulate(int IdExp, Evaluator* E, bool force){
 }
 
 
-expCompParameterSets::expCompParameterSets(Model* _m, vector< vector<double> *> _parameterSets) : Experiment(_m, _parameterSets.size()){
+/*expCompParameterSets::expCompParameterSets(Model* _m, vector< vector<double> *> _parameterSets) : Experiment(_m, _parameterSets.size()){
     Identification = string("Comparison of different parameter sets");
     parameterSets = _parameterSets;
     for(int i = 0; i < (int) parameterSets.size(); ++ i){
@@ -91,7 +91,7 @@ void expCompParameterSets::simulate(int IdExp, Evaluator* E, bool force){
         m->simulate(40, E);
         m->setOverrider(NULL);
     }
-}
+}*/
 
 
 expStopProlif::expStopProlif(Model* _m) : Experiment(_m, 7){

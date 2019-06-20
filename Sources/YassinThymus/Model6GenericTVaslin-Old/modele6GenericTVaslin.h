@@ -6,9 +6,6 @@
 
 #define ReducedParams
 
-//#define DPtoFp3Prec
-#define DPto25Prec
-
 
 
 struct modele6GenericTVaslin : public Model {

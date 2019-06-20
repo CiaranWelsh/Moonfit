@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "../Framework/modele.h"
-#include "../Framework/Experiment.h"
+#include "../Framework/experiment.h"
 #include "simuwin.h"
 
 

@@ -4,25 +4,7 @@
 #include "modele6GenericTVaslin.h"
 
 modele6GenericTVaslin::modele6GenericTVaslin() : Model(NbVariables, NbParameters), background(Back::WT) {
-
     name = string("Generic DN + TVaslin + single ODEs");
-    # ifdef DPtoFp3Prec
-    name = string("DP->Fp3") + name;
-    #endif
-    # ifdef DPto25Prec
-    name = string("DP->25, ") + name;
-    #endif
-
-    #ifndef DPtoFp3Prec
-        #ifndef DPto25Prec
-        name = string("Tconv->Treg") + name;
-        #endif
-    #endif
-
-    #ifdef equalProlif
-    name = string("EqualPro+") + name;
-    #endif
-
     dt = 0.001;             // initial time step -> then it is adaptive
     print_every_dt = 0.3;   //every how many seconds it is plotting
 
@@ -206,16 +188,8 @@ modele6GenericTVaslin::modele6GenericTVaslin() : Model(NbVariables, NbParameters
     paramNames[dtSP8] =             "dtSP8";
     paramNames[diffSP8P69PosToNeg] ="diffSP8P69PosToNeg";
     paramNames[out_SP8] =           "out_SP8";
-#ifdef DPtoFp3Prec
-    paramNames[ftDP_tTregFP3] =     "ftDP_tTregFP3";
-#else
-    paramNames[ftDP_tTregFP3] =     "ftTcon_tTregFP3";
-#endif
-#ifdef DPto25Prec
     paramNames[ftDP_tTregP25] =     "ftDP_tTregP25";
-#else
-    paramNames[ftDP_tTregP25] =     "ftTcon_tTregP25";
-#endif
+    paramNames[ftDP_tTregFP3] =     "ftDP_tTregFP3";
     paramNames[ptTregP25] =         "ptTregP25";
     paramNames[ftTregP25_tDPTreg] =	"ftTregP25_tDPTreg";
     paramNames[dtTregP25] =         "dtTregP25";
@@ -566,11 +540,10 @@ void modele6GenericTVaslin::initialise(long long _background){ // don't touch to
     params[dtTregFP3] = 1.9 * params[dtTconv];
     params[dtTregP25] = 3.67 * params[dtDPTregs];
 
-#ifdef equalProlif
-    params[hypDeathCoeffDPTregs] =  params[hypDeathCoeffTconv];
-    params[hypDeathCoeffPro25] =    params[hypDeathCoeffTconv];
-    params[hypDeathCoeffProFp3] =   params[hypDeathCoeffTconv];
-#endif
+    //params[hypDeathCoeffDPTregs] =  params[hypDeathCoeffTconv];
+    //params[hypDeathCoeffPro25] =    params[hypDeathCoeffTconv];
+    //params[hypDeathCoeffProFp3] =   params[hypDeathCoeffTconv];
+
 
     if(background & Back::B_StartSteadyState){
 
@@ -602,18 +575,7 @@ void modele6GenericTVaslin::initialise(long long _background){ // don't touch to
             outflowTolateDP += 2*(1 - DoProlifDP[i]) * params[peDP] * init[eDPg0 + i]; // No 2 here, they do not divide ??
         }
 
-        double denominator = params[prestDP] + params[drestDP] + params[diffDPtoSP4] + params[diffDPtoSP8];
-        #ifdef DPtoFp3Prec
-        denominator += params[ftDP_tTregFP3];
-        #endif
-        #ifdef DPto25Prec
-        denominator += params[ftDP_tTregP25] ;
-        #endif
-        init[ lDP] = outflowTolateDP / (max(1e-12, denominator));
-
-        //init[ lDP] = outflowTolateDP / (max(1e-12, params[prestDP] + params[drestDP] + params[diffDPtoSP4] + params[diffDPtoSP8] + params[ftDP_tTregP25] + params[ftDP_tTregFP3]));
-        //init[ lDP] = outflowTolateDP / (max(1e-12, params[prestDP] + params[drestDP] + params[diffDPtoSP4] + params[diffDPtoSP8])); //  40.29;
-
+        init[ lDP] = outflowTolateDP / (max(1e-12, params[prestDP] + params[drestDP] + params[diffDPtoSP4] + params[diffDPtoSP8])); //  40.29;
 
         // original code for TVaslin
         //        double fastDiv = 100;
@@ -655,35 +617,14 @@ void modele6GenericTVaslin::initialise(long long _background){ // don't touch to
         //        init[sCD8RagN] = 4;
 
         // only done the first time (steady state). The second experiment will reuse the parameter values
-
         params[ptTconv] = -(init[lDP]  * params[diffDPtoSP4]) / init[tTconvP] + params[out_tTconv]  + params[dtTconv];
-        #ifndef DPtoFp3Prec
-        params[ptTconv] += params[ftDP_tTregFP3];
-        #endif
-        #ifndef DPto25Prec
-        params[ptTconv] += params[ftDP_tTregP25];
-        #endif
-
-        #ifdef DPtoFp3Prec
-                params[ptTregFP3] = ( - init[lDP] * params[ftDP_tTregFP3]) / init[tTRegPFp3P] + params[out_tTregFP3] + params[ftTregFP3_tDPTreg] + params[dtTregFP3];
-        #else
-                params[ptTregFP3] = ( - init[tTconvP] * params[ftDP_tTregFP3]) / init[tTRegPFp3P] + params[out_tTregFP3] + params[ftTregFP3_tDPTreg] + params[dtTregFP3];
-        #endif
-
-        #ifdef DPto25Prec
-                params[ptTregP25] = - init[lDP] * params[ftDP_tTregP25] / init[tTRegP25P]  + params[out_tTregP25] + params[ftTregP25_tDPTreg] + params[dtTregP25];
-        #else
-                params[ptTregP25] = - init[tTconvP] * params[ftDP_tTregP25] / init[tTRegP25P]  + params[out_tTregP25] + params[ftTregP25_tDPTreg] + params[dtTregP25];
-        #endif
-
+        params[ptTregP25] = - init[lDP] * params[ftDP_tTregP25] / init[tTRegP25P]  + params[out_tTregP25] + params[ftTregP25_tDPTreg] + params[dtTregP25];
+        params[ptTregFP3] = ( - init[lDP] * params[ftDP_tTregFP3]) / init[tTRegPFp3P] + params[out_tTregFP3] + params[ftTregFP3_tDPTreg] + params[dtTregFP3];
         params[ptDPTregs] = ( - init[tTRegP25P] * params[ftTregP25_tDPTreg] - init[tTRegPFp3P] * params[ftTregFP3_tDPTreg]) / init[tTregP] +
                 params[out_tDPTregs] + params[dtDPTregs];
         params[ptSP8] = ( -  init[lDP] * params[diffDPtoSP8]) / init[tSP8P] +
                 params[out_SP8] + params[dtSP8];
 
-        //
-        //params[ptTconv] = -(init[lDP]  * params[diffDPtoSP4]) / init[tTconvP] + params[out_tTconv]  + params[dtTconv];
-        //params[ptTconv] = -(init[lDP]  * params[diffDPtoSP4]) / init[tTconvP] + params[out_tTconv]  + params[dtTconv] + params[ftDP_tTregP25] + params[ftDP_tTregFP3]; // OK
         //
 
         double SteadySP4stage69hi = 0.6 * init[tTconvP];
@@ -927,23 +868,9 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
         outflowTolateDP += 2*(1 - DoProlifDP[i]) * params[peDP] * LessProlifSpeedDP * x[eDPg0 + i]; // No 2 here, they do not divide ??
     }
 
-    double coeffEvoDP = - params[drestDP] * DeathCoeffDP - params[diffDPtoSP4]* FasterCoeffTconv - params[diffDPtoSP8] * FasterCoeffSP8;
-    # ifdef DPtoFp3Prec
-    coeffEvoDP += - FasterCoeffProFP3 * params[ftDP_tTregFP3];
-    #endif
-    # ifdef DPto25Prec
-    coeffEvoDP += - FasterCoeffPro25  * params[ftDP_tTregP25];
-    #endif
     if(!over(lDP)) {
-        dxdt[lDP] 	= outflowTolateDP + ( coeffEvoDP ) * x[lDP];
+        dxdt[lDP] 	= outflowTolateDP + (- params[drestDP] * DeathCoeffDP - params[diffDPtoSP4]* FasterCoeffTconv - params[diffDPtoSP8] * FasterCoeffSP8) * x[lDP];
     }
-
-    //# ifdef DPtoFp3Prec
-    //#else
-    //    if(!over(lDP)) {
-    //        dxdt[lDP] 	= outflowTolateDP + (- params[drestDP] * DeathCoeffDP - params[diffDPtoSP4]* FasterCoeffTconv - params[diffDPtoSP8] * FasterCoeffSP8 ) * x[lDP];
-    //    }
-    //#endif
 
     // old code from Thomas-Vaslin
     //    double fastDiv = 100.0;
@@ -972,6 +899,7 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
     //    if(!over( lDP)) {
     //        dxdt[lDP] 	= (4.5*(- 1 + 2*1.1397 /0.94)) * x[eDPg5] + fastDiv *  x[eDPg6] + 2*params[peDP] * LessProlifSpeedDP * x[eDPg6] + (- params[drestDP] * DeathCoeffDP - params[diffDPtoSP4]* FasterCoeffTconv - params[diffDPtoSP8] * FasterCoeffSP8) * x[lDP];
     //    }
+
 
     // If SP4 and SP8 are simulated by thomas-vaslin
     if(!over( divSP4g0)) {
@@ -1012,39 +940,15 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
    if(!over(tSP8P)) {
         dxdt[tSP8P] 	=       x[lDP] * FasterCoeffSP8    * params[diffDPtoSP8]                                    + x[tSP8P] *      (- SpaceOutputCoeffAll * OutputCoeffOutSP8 *     params[out_SP8]         + LessProlifSpeedCD8 * params[ptSP8]                                            - DeathCoeffSP8 * params[dtSP8]);
    }
-
-
-   #ifdef DPtoFp3Prec
-   if(!over(tTRegPFp3P)) {
-       dxdt[tTRegPFp3P] 	=   x[lDP] * FasterCoeffProFP3 * params[ftDP_tTregFP3]                                  + x[tTRegPFp3P] * ( - SpaceOutputCoeffAll * OutputCoeffOutProFP3 * params[out_tTregFP3]    + LessProlifSpeedTregProFP3 * params[ptTregFP3] - params[ftTregFP3_tDPTreg]     - DeathCoeffProFp3 * params[dtTregFP3]);
+   if(!over(tTconvP)) {
+        dxdt[tTconvP] 	=       x[lDP] * FasterCoeffTconv  * params[diffDPtoSP4]                                    + x[tTconvP] *    (- SpaceOutputCoeffAll * OutputCoeffOutTconv *   params[out_tTconv]      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
    }
-   #else
-   if(!over(tTRegPFp3P)) {
-       dxdt[tTRegPFp3P] 	=   x[tTconvP] * FasterCoeffProFP3 * params[ftDP_tTregFP3]                                  + x[tTRegPFp3P] * ( - SpaceOutputCoeffAll * OutputCoeffOutProFP3 * params[out_tTregFP3]    + LessProlifSpeedTregProFP3 * params[ptTregFP3] - params[ftTregFP3_tDPTreg]     - DeathCoeffProFp3 * params[dtTregFP3]);
-   }
-   #endif
-
-   #ifdef DPto25Prec
    if(!over(tTRegP25P)) {
-       dxdt[tTRegP25P] 	=   x[lDP] * FasterCoeffPro25  * params[ftDP_tTregP25]                                  + x[tTRegP25P] *  (- SpaceOutputCoeffAll * OutputCoeffOutPro25 *   params[out_tTregP25]    + LessProlifSpeedTregPro25 * params[ptTregP25] - params[ftTregP25_tDPTreg]      - DeathCoeffPro25 * params[dtTregP25]);
+        dxdt[tTRegP25P] 	=   x[lDP] * FasterCoeffPro25  * params[ftDP_tTregP25]                                  + x[tTRegP25P] *  (- SpaceOutputCoeffAll * OutputCoeffOutPro25 *   params[out_tTregP25]    + LessProlifSpeedTregPro25 * params[ptTregP25] - params[ftTregP25_tDPTreg]      - DeathCoeffPro25 * params[dtTregP25]);
    }
-   #else
-   if(!over(tTRegP25P)) {       // changed here
-       dxdt[tTRegP25P] 	=   x[tTconvP] * FasterCoeffPro25  * params[ftDP_tTregP25]                              + x[tTRegP25P] *  (- SpaceOutputCoeffAll * OutputCoeffOutPro25 *   params[out_tTregP25]    + LessProlifSpeedTregPro25 * params[ptTregP25] - params[ftTregP25_tDPTreg]      - DeathCoeffPro25 * params[dtTregP25]);
+   if(!over(tTRegPFp3P)) {
+        dxdt[tTRegPFp3P] 	=   x[lDP] * FasterCoeffProFP3 * params[ftDP_tTregFP3]                                  + x[tTRegPFp3P] * ( - SpaceOutputCoeffAll * OutputCoeffOutProFP3 * params[out_tTregFP3]    + LessProlifSpeedTregProFP3 * params[ptTregFP3] - params[ftTregFP3_tDPTreg]     - DeathCoeffProFp3 * params[dtTregFP3]);
    }
-   #endif
-
-    double coeffEvoTconv = - SpaceOutputCoeffAll * OutputCoeffOutTconv *   params[out_tTconv] + LessProlifSpeedTconv * params[ptTconv] - DeathCoeffTconv * params[dtTconv];
-    #ifndef DPtoFp3Prec
-    coeffEvoTconv += -FasterCoeffProFP3 * params[ftDP_tTregFP3];
-    #endif
-    #ifndef DPto25Prec
-    coeffEvoTconv += - FasterCoeffPro25  * params[ftDP_tTregP25] ;
-    #endif
-    if(!over(tTconvP)) {
-         dxdt[tTconvP] = x[lDP] * FasterCoeffTconv  * params[diffDPtoSP4] + x[tTconvP] *    (coeffEvoTconv);
-    }
-
    if(!over(tTregP)) {
         dxdt[tTregP]        =   x[tTRegP25P] * params[ftTregP25_tDPTreg] + x[tTRegPFp3P] * params[ftTregFP3_tDPTreg]+ x[tTregP] *     (- SpaceOutputCoeffAll * OutputCoeffOutDPTregs * params[out_tDPTregs]    + LessProlifSpeedDPTreg * params[ptDPTregs]                                     - DeathCoeffDPTregs * params[dtDPTregs]);
    }
@@ -1088,8 +992,8 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
        dxdt[sCD8RagN] = x[sCD8] * params[decayRag] + params[out_SP8] * params[fracTtoS] * x[tSP8RagN] - x[sCD8RagN] * (params[in_SP8] + params[dsCD8]);
    }*/
 
-
 }
+
 
 /*if(background == Back::WT){}
  if(background == Back::B_ReducedInflow){}

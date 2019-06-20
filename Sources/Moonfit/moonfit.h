@@ -7,7 +7,7 @@
 #include "common.h"
 
 #include "Framework/modele.h"
-#include "Framework/Experiment.h"
+#include "Framework/experiment.h"
 #include "Framework/tableCourse.h"
 #include "Framework/evaluator.h"
 #include "Framework/overrider.h"

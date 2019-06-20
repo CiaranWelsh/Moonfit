@@ -831,7 +831,7 @@ void modele3MultiDiv::derivatives(const vector<double> &x, vector<double> &dxdt,
     double          DeathCoeffDPTregs = 1;
     double          DeathCoeffSP8 = 1;
     double          DeathCoeffEarlyDP = 0; // attention !
-    double          OutputCoeffOutDP = 1;
+    //double          OutputCoeffOutDP = 1;
     double          OutputCoeffOutTconv = 1;
     double          OutputCoeffOutDPTregs = 1;
     double          OutputCoeffOutProFP3 = 1;
@@ -873,7 +873,7 @@ void modele3MultiDiv::derivatives(const vector<double> &x, vector<double> &dxdt,
         DeathCoeffEarlyDP         = 0 * (1 - x[flu]) + x[flu] * params[hypDeathCoeffAddEarlyDP];
     }
     if(background & Back::B_MoreOutputThymus){
-        OutputCoeffOutDP	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutDP	];
+        //OutputCoeffOutDP	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutDP	];
         OutputCoeffOutTconv	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutTconv	];
         OutputCoeffOutDPTregs	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutDPTregs	];
         OutputCoeffOutProFP3	= 1 * (1 - x[flu]) + x[flu] * params[	hypOutputCoeffOutProFP3	];

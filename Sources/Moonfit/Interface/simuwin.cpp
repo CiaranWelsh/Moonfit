@@ -31,11 +31,9 @@ double manageSims::getCost(){
    cerr << ".Cost." << endl;                                                        //if(dimension > currentModel->getNbParams()) {cerr << "Optimizer has more parameters than model\n"; return -1;}      // commented because would cause delay,
                                               // this function is used during optimization, where the optimizer use manageSims as a 'generalImplementation' and gives parameters to the 'parameter' field and then call 'getCost'. Therefore, this function has to use the values in parameters[] to launch simulation and retrieve the cost.
     #ifdef ALLOW_OPTIMIZE                               // this requires the field 'parameters' inherited from the class generalImplementation --> need ALLOW_OPTIMIZE
-
         int NPs =  currentModel->getNbParams();
         for(int i = 0; i < NPs; ++i){                       // the parameters to optimize are real values, the other ones are NAN so they are not used to override the model's parameters.
             if(!std::isnan(parameters[i])) currentModel->setParam(i, parameters[i]);}
-
     #else
     cerr << "ERR: manageSims::getCost(), ALLOW_OPTIMIZE should be defined to use this function for optimization. Instead, the current parameter values from the model are taken for this time.\n";
     #endif
@@ -43,7 +41,7 @@ double manageSims::getCost(){
     simulate();
 
     double v1 = NAN, v2 = NAN;
-    if(currentMode == MONO_EXPERIMENT){
+    if(currentMode != MULTI_EXPERIMENT){
         v1 = currentExperiment->costVariableInModel();
         v2 = currentExperiment->getPenalities();
     } else {
@@ -59,7 +57,7 @@ double manageSims::getCost(){
 void manageSims::simulate(){
     currentExperiment->init();                      // This looks important, to clear the evaluators ...
     currentModel->setPrintMode(false, 25000);
-    if(currentMode == MONO_EXPERIMENT){             // model initialization is done inside the function experiment->simulationsPart/simulate, no need to do it here
+    if(currentMode != MULTI_EXPERIMENT){             // model initialization is done inside the function experiment->simulationsPart/simulate, no need to do it here
         currentExperiment->simulateAll(true);
     } else {
         listExperiments->simulateAll(true);
@@ -392,6 +390,217 @@ vector<double> manageSims::useParamSetFromHistory(int indexSet, int indexCombToO
 
 
 
+
+void simuWin::buttonPerturbatePushed(){
+    if(currentMode == modePerturbate){
+        ui->pushButtonPerturb->setText(QString("Modulate"));
+        ui->pushButtonPerturb->setStyleSheet("background-color: rgb(190, 190, 190)");
+        switchBackNormalMode();
+        return;
+    }
+    if(currentMode == MONO_EXPERIMENT){
+
+        int NP = currentModel->getNbParams();
+        QStringList items;
+        for(int i = 0; i < NP; ++i){
+            items << QString::number(i) + QString("-") + QString(currentModel->getParamName(i).c_str());
+        }
+        bool okPressed = false;
+        QString chosenTextParameter = QInputDialog::getItem(this, QString("Choose Parameter"),QString("One parameter perturbation "), items,0, false, &okPressed);
+        int chosenParameter = -1;
+        for(int i = 0; i < NP; ++i){
+            if(!(QString::number(i) + QString("-") + QString(currentModel->getParamName(i).c_str())).compare(chosenTextParameter)) chosenParameter = i;
+        }
+        if(chosenParameter < 0) {cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << endl; return;}
+        if(!okPressed) return;
+
+
+        NP = currentExperiment->getNbCond();
+        int chosenCondition = 0;
+        if(NP < 1) {cerr << "ERR: buttonPerturbatePushed, Empty experiment!" << endl; return;}
+        if(NP > 1){
+            QStringList items;
+            for(int i = 0; i < NP; ++i){
+                items << QString::number(i) + QString("-") + QString(currentExperiment->getConditionName(i).c_str());
+            }
+            QString chosenTextCondition = QInputDialog::getItem(this, QString("Choose Condition"),QString("One parameter perturbation "), items,0, false, &okPressed);
+            for(int i = 0; i < NP; ++i){
+                if(!(QString::number(i) + QString("-") + QString(currentExperiment->getConditionName(i).c_str())).compare(chosenTextCondition)) chosenCondition = i;
+            }
+            if(chosenCondition < 0) {cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << endl; return;}
+            if(!okPressed) return;
+        }
+
+
+        switchToPerturbatedExperiment(chosenCondition, chosenParameter, expChangeOneParameter::NbVariantes);
+
+        // if success
+        if(currentMode == modePerturbate){
+            ui->pushButtonPerturb->setText(QString("Back"));
+            ui->pushButtonPerturb->setStyleSheet("background-color: rgb(255, 190, 190)");
+        }
+    }
+
+}
+
+void simuWin::buttonParamSetsPushed(){
+    if(currentMode == modeComparison){
+        ui->pushButtonCompare->setText(QString("Compare Sets"));
+        ui->pushButtonCompare->setStyleSheet("background-color: rgb(190, 190, 190)");
+        switchBackNormalMode();
+        return;
+    }
+
+    if(currentMode == MONO_EXPERIMENT){
+
+        bool okPressed;
+        int NP = currentExperiment->getNbCond();
+        int chosenCondition = 0;
+        if(NP < 1) {cerr << "ERR: buttonPerturbatePushed, Empty experiment!" << endl; return;}
+        if(NP > 1){
+            QStringList items;
+            for(int i = 0; i < NP; ++i){
+                items << QString::number(i) + QString("-") + QString(currentExperiment->getConditionName(i).c_str());
+            }
+            QString chosenTextCondition = QInputDialog::getItem(this, QString("Choose Condition"),QString("One parameter perturbation "), items,0, false, &okPressed);
+            for(int i = 0; i < NP; ++i){
+                if(!(QString::number(i) + QString("-") + QString(currentExperiment->getConditionName(i).c_str())).compare(chosenTextCondition)) chosenCondition = i;
+            }
+            if(chosenCondition < 0) {cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << endl; return;}
+            if(!okPressed) return;
+        }
+
+        int nbSets = QInputDialog::getInt(this, QString("How many sets to compare from History?"), QString("Number Sets?"), 5, 1, 1000, 1, &okPressed);
+        if(!okPressed) return;
+
+        switchToComparingExperiment(chosenCondition, nbSets);
+
+        // if worked, then
+        if(currentMode == modeComparison){
+            ui->pushButtonCompare->setText(QString("Back"));
+            ui->pushButtonCompare->setStyleSheet("background-color: rgb(255, 190, 255)");
+        }
+
+    }
+}
+
+
+
+void manageSims::switchToPerturbatedExperiment(int IDcondition, int IDparameter, int nbCurves){
+    if(currentMode != MONO_EXPERIMENT) return;
+
+    savedExperiment = currentExperiment;
+
+    vector<double> paramSet = currentModel->getParameters();
+    currentExperiment = new expChangeOneParameter(savedExperiment, paramSet, IDparameter, IDcondition, nbCurves);
+
+    currentData.clear();
+    currentData.resize(currentExperiment->getNbCond(), NULL);
+    // stores the current data
+//    int ND = currentData.size();
+//    savedCurrentData.clear();
+//    savedCurrentData.resize(ND, NULL);
+//    for(int i = 0; i < ND ; ++i){
+//        savedCurrentData[i] = currentData[i];
+//    }
+//    currentData.clear();
+//    currentData.resize(currentExperiment->getNbCond(), NULL);
+//    if(savedCurrentData.at(IDcondition)){
+//        currentData[0] = savedCurrentData.at(IDcondition); // only keeping the data from this condition
+//    }
+
+
+    int sizeExpDataToCopy = savedExperiment->ExpData[IDcondition].size();
+    currentExperiment->ExpData[0].resize(sizeExpDataToCopy);
+    for(int i = 0; i < sizeExpDataToCopy; ++i){
+        currentExperiment->ExpData[0][i] = savedExperiment->ExpData[IDcondition][i];
+    }
+    int sizeExpDataStdToCopy = savedExperiment->ExpStdDevs[IDcondition].size();
+    currentExperiment->ExpStdDevs[0].resize(sizeExpDataStdToCopy);
+    for(int i = 0; i < sizeExpDataStdToCopy; ++i){
+        currentExperiment->ExpStdDevs[0][i] = savedExperiment->ExpStdDevs[IDcondition][i];
+    }
+
+    currentMode = modePerturbate;
+    simulate();
+}
+
+void manageSims::switchToComparingExperiment(int IDcondition, int nbSetsToComp){
+    if(currentMode != MONO_EXPERIMENT) return;
+
+    savedExperiment = currentExperiment;
+    vector< vector<double> *> parameterSets;
+
+    vector<oneSet*> v = history.toVector();
+    reverse(v.begin(), v.end());    // such that first is best
+    int s = v.size();
+    if(s == 0) {cerr << "ERR: No parameter set in History - please load or optimize or save sets in history" << endl; return;}
+    nbSetsToComp = min(nbSetsToComp, s);
+
+    for(int i = 0; i < nbSetsToComp; ++i){
+        oneSet* theSet = v[i];
+        vector<double>* copySet = new vector<double>(theSet->v.size(), 0);
+        for(int j = 0; j < (int) theSet->v.size(); ++j){
+            (*copySet)[j] = theSet->v[j];
+        }
+        parameterSets.push_back(copySet);
+    }
+    currentExperiment = new expCompParameterSets(savedExperiment, parameterSets, IDcondition);
+
+    int sizeExpDataToCopy = savedExperiment->ExpData[IDcondition].size();
+    currentExperiment->ExpData[0].resize(sizeExpDataToCopy);
+    for(int i = 0; i < sizeExpDataToCopy; ++i){
+        currentExperiment->ExpData[0][i] = savedExperiment->ExpData[IDcondition][i];
+    }
+    int sizeExpDataStdToCopy = savedExperiment->ExpStdDevs[IDcondition].size();
+    currentExperiment->ExpStdDevs[0].resize(sizeExpDataStdToCopy);
+    for(int i = 0; i < sizeExpDataStdToCopy; ++i){
+        currentExperiment->ExpStdDevs[0][i] = savedExperiment->ExpStdDevs[IDcondition][i];
+    }
+
+    currentData.clear();
+    currentData.resize(currentExperiment->getNbCond(), NULL);
+
+//    int ND = currentData.size();
+//    savedCurrentData.clear();
+//    savedCurrentData.resize(ND, NULL);
+//    for(int i = 0; i < ND ; ++i){
+//        savedCurrentData[i] = currentData[i];
+//    }
+//    currentData.clear();
+//    currentData.resize(currentExperiment->getNbCond(), NULL);
+//    if(savedCurrentData.at(IDcondition)){
+//        currentData[0] = savedCurrentData.at(IDcondition); // only keeping the data from this condition
+//    }
+    currentMode = modeComparison;
+    simulate();
+
+}
+
+void manageSims::switchBackNormalMode(){
+    if((currentMode == modePerturbate) || (currentMode == modeComparison)) {
+        // would need to delete the currentExperiment. Not sure the desctructor is ok now, need to work on it
+        if(!savedExperiment){cerr << "ERR: simuwin, switchBackNormalMode, saved experiment is NULL" << endl; return;}
+        currentExperiment = savedExperiment;
+        currentMode = MONO_EXPERIMENT;
+
+        currentData.clear();
+        currentData.resize(currentExperiment->getNbCond(), NULL);
+
+
+//        int ND = savedCurrentData.size();
+//        currentData.clear();
+//        currentData.resize(ND, NULL);
+//        for(int i = 0; i < ND ; ++i){
+//            currentData[i] = savedCurrentData[i];
+//        }
+        simulate();
+    }
+}
+
+
+
+
 /// Optimizes according to the current settings of the model:
 /// overriding variables and defining parameter boundaries should have been done before calling this function.
 void manageSims::motherOptimize(string optFileName, int nbSetsToRecord){
@@ -482,7 +691,7 @@ void manageSims::motherOverrideUsingComb(int newIndex){
         for(int j = combStart; j <= combEnd; ++j){              // override only if all selected combinations override (i.e. override the minimum, simulate the maximum)
             override = override && (!currentConfig[i+NP][4+j].compare("1"));
         }
-        if(currentMode == MONO_EXPERIMENT){
+        if(currentMode != MULTI_EXPERIMENT){
             override = override && (currentExperiment->canOverride(currentModel->getExternalName(i)));      // ... and if the variable has data to be overrided
             currentExperiment->overrideVariable(currentModel->getExternalName(i), override);
 
@@ -809,7 +1018,7 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
     stringstream head;
     head << "PointNr\tIDparam\tValue\tCost\tNbExps\t";
     for(int i = 0; i < NE; ++i){
-        head << "\"" << currentExperiment->getNameCondition(i) << "\"\t";
+        head << "\"" << currentExperiment->getConditionName(i) << "\"\t";
     }
     head << "NbVars\t";
     for(int i = 0; i < NV; ++i){
@@ -868,7 +1077,7 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
         Rscr << "legend(\"topright\", inset=0.05, legend=c(\"Average\",";
         for(int i = 0; i < NE; ++i){
             if(i > 0) Rscr << ",";
-            Rscr << "\"" << currentExperiment->getNameCondition(i) << "\"";
+            Rscr << "\"" << currentExperiment->getConditionName(i) << "\"";
         }
         Rscr << "), lwd=c(1,1), lty=c(1,1), pch=c(1,2), pt.cex=c(1,1),";
         Rscr << "col=c(\"mediumorchid4\"";
@@ -983,7 +1192,7 @@ void manageSims::nextValues(int parameterIndex){
 
 }
 */
-
+// change all _ into - for latex
 string cure(string tocure){
     replace( tocure.begin(), tocure.end(), '_', '-');
     return tocure;
@@ -1150,7 +1359,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
         if(currentData[i]) {delete currentData[i]; currentData[i] = NULL;}
         currentData[i] = new TableCourse(currentModel->getCinetique());
         if(currentModel->penalities > 0){
-            f << "Note : simulation diverged for experiment (" << currentExperiment->getNameCondition(i) << ") with penalty " << currentExperiment->m->penalities << "\n";
+            f << "Note : simulation diverged for experiment (" << currentExperiment->getConditionName(i) << ") with penalty " << currentExperiment->m->penalities << "\n";
         }
         f << currentModel->getCinetique().print();
     }
@@ -1318,7 +1527,7 @@ void simuWin::updateCostLabel(){
 // not : didn't test whether reset() can be called multiple times ...
 void simuWin::reset(){
     if(!currentModel) {cerr << "simuWin::reset() was called from a non-existing model"; return;}
-    if((currentMode == MONO_EXPERIMENT) && (!currentExperiment)) {cerr << "simuWin()::reset() was called from a non-existing experiment (MONO_exp mode)\n"; return;}
+    if((currentMode != MULTI_EXPERIMENT) && (!currentExperiment)) {cerr << "simuWin()::reset() was called from a non-existing experiment (MONO_exp mode)\n"; return;}
     if((currentMode == MULTI_EXPERIMENT) && (!listExperiments)) {cerr << "simuWin()::reset() was called from a non-existing group of experiment (MULTI_exp mode)\n"; return;}
 
     nbCombs = 0;                    // empty configuration to start ...
@@ -1582,6 +1791,8 @@ void simuWin::reset(){
     QObject::connect(ui->pushButtonSaveSet, SIGNAL(released()), this, SLOT(saveSet()));
     QObject::connect(ui->pushButtonLoadConfig, SIGNAL(released()), this, SLOT(loadConfig()));
     QObject::connect(ui->pushButtonSaveConfig, SIGNAL(released()), this, SLOT(saveConfig()));
+    QObject::connect(ui->pushButtonCompare, SIGNAL(released()), this, SLOT(buttonParamSetsPushed()));
+    QObject::connect(ui->pushButtonPerturb, SIGNAL(released()), this, SLOT(buttonPerturbatePushed()));
     QObject::connect(ui->pushButtonStop, SIGNAL(released()), this, SLOT(stopOptimization()));
     QObject::connect(ui->pushButtonExpandPlot, SIGNAL(released()), this, SLOT(expandPlot()));
     QObject::connect(ui->comboBoxVariable, SIGNAL(activated(int)), this, SLOT(varChanged(int)));
@@ -1629,7 +1840,7 @@ void simuWin::coefficientsChanged(QModelIndex left, QModelIndex right){
     int row = left.row();
     int column = left.column();
     if((right.row() != row) || (right.column() != column)) cerr << "ERR: simuWin::coefficientsChanged, you are not supposed to change more than one cell at a time" << endl;
-    if(currentMode == MONO_EXPERIMENT) return;
+    if(currentMode != MULTI_EXPERIMENT) return;
     if((column == 0) && (row >= 0) && (row < listExperiments->nbBigExp())) {
         double paramValue = this->tableMultiExpCosts->item(row, column)->text().toDouble();
         listExperiments->setCoefficient(row, paramValue);
@@ -1672,9 +1883,9 @@ void simuWin::currentExperimentChanged(){
     cout << "       Nb Conditions (sub-exp) : " << NC << endl;
     ui->comboBoxSubExperiment->clear();
     for(int i = 0; i < NC; ++i){
-        listSubExps->addItem(currentExperiment->getNameCondition(i).c_str());
+        listSubExps->addItem(currentExperiment->getConditionName(i).c_str());
         //if(currentExperiment->isDoable(i)){
-              cout << "       - " << currentExperiment->getNameCondition(i).c_str() << endl;
+              cout << "       - " << currentExperiment->getConditionName(i).c_str() << endl;
         //} else {
         //    QListWidgetItem *item = listSubExps->item(i);
         //    item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
@@ -1852,7 +2063,7 @@ void simuWin::changeOverride(int newState){
     int z = sender()->property("VarIndex").toInt();
     if(recording) currentMacro << "macro" << macroID << ".currentModel->applyOverride(macro" << macroID << ".currentModel->getExternalName(" << z << "), " << (newState > 0 ? "true" : "false") << ")\n";
     cout << "Change override of var " << z << " to " << newState << endl;
-    if(currentMode == MONO_EXPERIMENT){
+    if(currentMode != MULTI_EXPERIMENT){
         if(currentExperiment->canOverride(currentModel->getExternalName(z))){
             currentExperiment->overrideVariable(currentModel->getExternalName(z), (newState > 0));
         }
@@ -1897,12 +2108,12 @@ void simuWin::simulate(){
                 // SIMULATE !!
                 currentExperiment->simulate(i, NULL, true);
                 if(ui->checkBoxDisplayCurves->isChecked()){
-                    if( currentData[i]) {delete currentData[i]; currentData[i] = NULL;}
+                    if(currentData[i]) {delete currentData[i]; currentData[i] = NULL;}
                     if(i > (int) currentData.size()) cerr << "Something happened to currentData" << endl;
                     currentData[i] = new TableCourse(currentExperiment->m->getCinetique());
                     if(!currentlyOptimizing) ui->progressBar->setValue((100 * (i+1)) / nbExp);
                     if(currentExperiment->m->penalities > 0){
-                        ui->textBrowserStatus->append(QString("ERR : simulation diverged for ") + QString(currentExperiment->getNameCondition(i).c_str()) + QString(", penality : ") + QString::number(currentExperiment->m->penalities));
+                        ui->textBrowserStatus->append(QString("ERR : simulation diverged for ") + QString(currentExperiment->getConditionName(i).c_str()) + QString(", penality : ") + QString::number(currentExperiment->m->penalities));
                     }
                 }
             }
@@ -2007,7 +2218,7 @@ void simuWin::varChanged(int idVar){
                     //for(int l = 0; l < nbTp; ++l){
                     //    Xs[l] = Xs[l]; // / 3600.0;
                     //}
-                    currentGraphe->Plot(2*i, Ys, Xs, QString(currentExperiment->getNameCondition(i).c_str()), currentGraphe->baseList(i));
+                    currentGraphe->Plot(2*i, Ys, Xs, QString(currentExperiment->getConditionName(i).c_str()), currentGraphe->baseList(i));
 
                     // Now plots the experimental data: cerr << currentGraphe->nbCurves << " Curves and nbexp" << currentExperiment->nbCond() << endl;
                     int S = currentExperiment->ExpData[i].size();
@@ -2230,7 +2441,7 @@ double simuWin::getCost(){
 
     simulate();             // does currentExperiment->init() inside
     double v1 = NAN, v2 = NAN;
-    if(currentMode == MONO_EXPERIMENT){
+    if(currentMode != MULTI_EXPERIMENT){
         v1 = currentExperiment->costVariableInModel();
         v2 = currentExperiment->getPenalities();         // penalty in case of divergence
     } else {

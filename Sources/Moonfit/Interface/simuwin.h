@@ -55,7 +55,7 @@ int anOldMain(int argc, char *argv[])
 
 #include "../Framework/modele.h"
 #include "../Framework/tableCourse.h"
-#include "../Framework/Experiment.h"
+#include "../Framework/experiment.h"
 #include "../Framework/parameterSets.h"
 
 #include <vector>
@@ -134,7 +134,7 @@ class Optimizer;
 /// Basically, we give it to the optimizer, optimizer does what he wants and this class records the
 /// sets it was asked to simulate.
 // Common storage and functions to be shared between this mother class and the interface
-enum modes {MONO_EXPERIMENT, MULTI_EXPERIMENT};
+enum modes {MONO_EXPERIMENT, MULTI_EXPERIMENT, modePerturbate, modeComparison};
 
 class manageSims
         #ifdef ALLOW_OPTIMIZE
@@ -156,6 +156,7 @@ public:
         optFileNamesIdentifiability.resize(_Exp->m->getNbParams());
         currentlyOptimizing = false;
         stopOpt = false;
+        savedExperiment = NULL;
     }
 
     // second way to launch it : with a group of experiments (MultiExperiments)
@@ -173,6 +174,7 @@ public:
         optFileNamesIdentifiability.resize(_Exp->m->getNbParams());
         currentlyOptimizing = false;
         stopOpt = false;
+        savedExperiment = NULL;
     }
 
 
@@ -253,9 +255,11 @@ public:
     virtual ~manageSims(){} // for the subclass simuWin
 
 
-
-
-
+    // Module 6: Perturbate one parameter, one curve per value; Compare the best N parameter sets. Only worksfor monoexp
+    void switchToPerturbatedExperiment(int IDcondition, int IDparameter, int nbCurves);
+    void switchToComparingExperiment(int IDcondition, int nbSetsToComp);
+    void switchBackNormalMode();
+    Experiment* savedExperiment;
 };
 
 
@@ -368,6 +372,8 @@ public slots:
     void sensitivity();
     void identifiability();
     void stopOptimization();
+    void buttonPerturbatePushed();
+    void buttonParamSetsPushed();
 
 private:
     //QStandardItemModel* m;

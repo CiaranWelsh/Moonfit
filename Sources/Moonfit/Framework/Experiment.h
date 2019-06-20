@@ -46,7 +46,7 @@ struct Experiment{
 
     // Basic I/O functions
     int getNbCond();                    // gives names_exp.size()
-    string getNameCondition(int i);          // reads names_exp[i]
+    string getConditionName(int i);          // reads names_exp[i]
     string print();
 
     // In order to store a list of points to simulate and record (avoids to record all the kinetics of all variables at all dt ...)
@@ -125,5 +125,46 @@ struct MultiExperiments{
 
     virtual ~MultiExperiments(){}
 };
+
+
+
+// you give an experiment, and a list of parameter sets, it creates a new experiment whose conditions are each parameter set.
+//    if the original experiment has 1 condition, nothing to do
+//    if ----------------------- had more than 1 condition, choose which condition to compare.
+//    - Be careful that each parameter set will be used to call 'initialize' from the experiment successively, make sure
+//      it has no effect on the next parameter set.
+//    - Note that only the experimental data from the chosen condition will be taken //TODO//.
+struct expCompParameterSets: public Experiment {
+    expCompParameterSets(Experiment* Exp, vector< vector<double> *> _parameterSets, int _IDconditionToUse = 0);
+    vector< vector<double> *> parameterSets;
+    Experiment* builtOnExperiment;
+    int IDconditionToUse;
+    void simulate(int IdExp, Evaluator* E = NULL, bool force = false);
+};
+
+
+
+
+
+
+struct expChangeOneParameter: public Experiment {
+    enum {Param05, Param20, Param01, Param100, Param08, Param12, Param02, Param15, Param005, Param50, ParamDefault, NbVariantes};
+    expChangeOneParameter(Experiment* Exp, vector<double> & _parameterSet, int _parameterToChange, int _IDconditionToUse = 0, int _nbCurves = expChangeOneParameter::NbVariantes);
+    void init();
+    vector<double> parameterSet; // this is the initial one, will be updated from the model each time simulated
+    int parameter;
+    int nbCurves;
+    double valueAround;
+    Experiment* builtOnExperiment;
+    int IDconditionToUse;
+    void simulate(int IdExp, Evaluator* E = NULL, bool force = false);
+};
+
+
+
+
+
+
+
 
 #endif // Experiment_H

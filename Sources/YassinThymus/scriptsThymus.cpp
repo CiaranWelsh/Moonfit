@@ -67,7 +67,7 @@ void bacicScript(int nb = -1,string newConfigFile = string(""), string newParame
 /// @brief Main : to get help, launch without any argument. Graphical window will open, and when quitted, all options will be displayed.
 int main(int argc, char *argv[]){
 
-    string currentProjectFolder = "YassinThymus";
+    string currentProjectFolder = "../YassinThymus";
 
     // ------------------ Step 3b finding folders when starting ...
 
@@ -212,6 +212,7 @@ void bacicScript(int nb,string newConfigFile, string newParameterSet){
     switch(nb){
 
     case 0: { // DN1-4 model (Manesso 2009) + Pottritt 2003 data
+        exit(-1);
         currentModel = new modele0ManessoOnly();
         //currentExperiment = new expDNPotritt(currentModel);
 
@@ -224,7 +225,7 @@ void bacicScript(int nb,string newConfigFile, string newParameterSet){
             cout << "Got P" << i << "=" << printVector(*v1) << endl;
             parameterSets.push_back(v1);
         }
-        currentExperiment = new expCompParameterSets(currentModel, parameterSets);
+        //currentExperiment = new expCompParameterSets(currentModel, parameterSets);
         configFile=string("Model0ManessoOnly/ConfigManessoBasic.txt");
 
         TableCourse* Data_OnlyPotritt = new TableCourse(folder + string("DATA/DNsOnlyPotritt.txt"));
@@ -401,6 +402,21 @@ void bacicScript(int nb,string newConfigFile, string newParameterSet){
 //            OverData_new->learnSpl(extVarName,Data_all->getTimePoints(i), Data_all->getTimeCourse(i), useSplines);
 //        }
         currentExperiment->setOverrider(0, OverData_new);
+
+    /*    // manually create a multi experiment for testing
+        Experiment* save = currentExperiment;
+        vector< vector<double> *> _parameterSets;
+        for(int i = 0; i < 5; ++i){
+            currentModel->setParam(modele6GenericTVaslin::flu_peak, currentModel->getParam(modele6GenericTVaslin::flu_peak) * 1.1);
+            _parameterSets.push_back(new vector<double>(currentModel->getParameters()));
+        }
+        int _IDconditionToUse = 0;
+        currentExperiment = new expCompParameterSets(save, _parameterSets, _IDconditionToUse);
+
+        // manually create a multi experiment for testing
+        vector<double> paramSet = currentModel->getParameters();
+        currentExperiment = new expChangeOneParameter(save, paramSet, modele6GenericTVaslin::flu_peak, _IDconditionToUse, expChangeOneParameter::NbVariantes );
+        */
 
         break;
     }
