@@ -67,7 +67,7 @@ void bacicScript(int nb = -1,string newConfigFile = string(""), string newParame
 /// @brief Main : to get help, launch without any argument. Graphical window will open, and when quitted, all options will be displayed.
 int main(int argc, char *argv[]){
 
-    string currentProjectFolder = "../YassinThymus";
+    string currentProjectFolder = "YassinThymus/";
 
     // ------------------ Step 3b finding folders when starting ...
 
@@ -81,6 +81,8 @@ int main(int argc, char *argv[]){
     sourceFolder = getParentFolder(getParentFolder( getParentFolder(  getParentFolder(  currentDir() ))))  + string("Sources/");
     if(!dirExists(sourceFolder)) cerr << "!! ERR: could not locate where are the files of your project. !! " << endl << "   ... " << sourceFolder << " doesn't exist" << endl;
     #endif
+
+    sourceFolder = "/home/phr13/Archeopteryx/2019-06-20-Yassin3struct/Balthyse/Sources/";
 
     // 2-Finds/defines the current project folder and creastes a result folder aside Sources, in case.
     folder = sourceFolder + currentProjectFolder + "/";
@@ -402,6 +404,8 @@ void bacicScript(int nb,string newConfigFile, string newParameterSet){
 //            OverData_new->learnSpl(extVarName,Data_all->getTimePoints(i), Data_all->getTimeCourse(i), useSplines);
 //        }
         currentExperiment->setOverrider(0, OverData_new);
+
+        configFile = string("../ConfFlexOUTPUTS.txt");
 
     /*    // manually create a multi experiment for testing
         Experiment* save = currentExperiment;

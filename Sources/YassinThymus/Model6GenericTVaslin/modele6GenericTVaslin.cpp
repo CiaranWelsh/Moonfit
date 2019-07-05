@@ -23,6 +23,14 @@ modele6GenericTVaslin::modele6GenericTVaslin() : Model(NbVariables, NbParameters
     name = string("EqualPro+") + name;
     #endif
 
+    #ifdef equalExportTregs
+    name = string("ExpTregs+") + name;
+    #endif
+#ifdef equalExportAll
+name = string("ExpAll+") + name;
+#endif
+
+
     dt = 0.001;             // initial time step -> then it is adaptive
     print_every_dt = 0.3;   //every how many seconds it is plotting
 
@@ -492,15 +500,20 @@ void modele6GenericTVaslin::calculateParameters(double xFlu){
         DeathCoeffSP8        = 1 * (1 - xFlu) + xFlu * params[hypDeathCoeffSP8];
         DeathCoeffEarlyDP         = 0 * (1 - xFlu) + xFlu * params[hypDeathCoeffAddEarlyDP];
     }
+    //Philippe: 02/07/2019, now decide all export are additive, to be fair between variables
     if(background & Back::B_MoreOutputThymus){
         OutputCoeffDNtoDP  = 0 * (1 - xFlu) + xFlu * params[hypOutputCoeffDNtoDP];
         OutputCoeffOutDP	= 0 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutDP	];
-        OutputCoeffOutTconv	= 1 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutTconv	];
-        OutputCoeffOutDPTregs	= 1 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutDPTregs	];
-        OutputCoeffOutProFP3	= 1 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutProFP3	];
-        OutputCoeffOutPro25	= 1 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutPro25	];
-        OutputCoeffOutSP8	= 1 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutSP8	];
+        OutputCoeffOutTconv	= /*1 * (1 - xFlu) */ + xFlu * params[	hypOutputCoeffOutTconv	];
+        OutputCoeffOutDPTregs	=/* 1 * (1 - xFlu)*/ + xFlu * params[	hypOutputCoeffOutDPTregs	];
+        OutputCoeffOutProFP3	= 0 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutProFP3	];
+        OutputCoeffOutPro25	= 0 * (1 - xFlu) + xFlu * params[	hypOutputCoeffOutPro25	];
+        OutputCoeffOutSP8	= /* 1 * (1 - xFlu)*/ + xFlu * params[	hypOutputCoeffOutSP8	];
     }
+
+
+
+
     // concretely, that means less divisions so go faster to next!
     if(background & Back::B_FasterDifferentiation){
         LessDivisionsDN	= 1 * (1 - xFlu) + xFlu * params[	hypFasterCoeffDNtoDP	];
@@ -570,6 +583,21 @@ void modele6GenericTVaslin::initialise(long long _background){ // don't touch to
     params[hypDeathCoeffDPTregs] =  params[hypDeathCoeffTconv];
     params[hypDeathCoeffPro25] =    params[hypDeathCoeffTconv];
     params[hypDeathCoeffProFp3] =   params[hypDeathCoeffTconv];
+#endif
+
+#ifdef equalExportAll
+    params[hypOutputCoeffOutDPTregs] = params[hypOutputCoeffOutTconv];
+    params[hypOutputCoeffOutPro25] = params[hypOutputCoeffOutTconv];
+    params[hypOutputCoeffOutProFP3] = params[hypOutputCoeffOutTconv];
+    params[hypOutputCoeffOutSP8] = params[hypOutputCoeffOutTconv];
+#endif
+#ifdef equalExportTregs
+    params[hypOutputCoeffOutPro25] = params[hypOutputCoeffOutDPTregs];
+    params[hypOutputCoeffOutProFP3] = params[hypOutputCoeffOutDPTregs];
+#endif
+
+#ifdef equalExportSP4SP8
+    params[hypOutputCoeffOutSP8] = params[hypOutputCoeffOutTconv];
 #endif
 
     if(background & Back::B_StartSteadyState){
@@ -999,18 +1027,18 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
          dxdt[SP4stage69hi] 	=       x[lDP] * FasterCoeffTconv  * params[diffDPtoSP4]                                    + x[SP4stage69hi] *    (-  params[diffSP4P69PosToNeg]      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
     }
     if(!over(SP4stage69lo)) {
-         dxdt[SP4stage69lo] 	=       x[SP4stage69hi] * params[diffSP4P69PosToNeg]                                    + x[SP4stage69lo] *    (- SpaceOutputCoeffAll * OutputCoeffOutTconv *   params[out_tTconv]      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
+         dxdt[SP4stage69lo] 	=       x[SP4stage69hi] * params[diffSP4P69PosToNeg]                                    + x[SP4stage69lo] *    (- SpaceOutputCoeffAll * (OutputCoeffOutTconv +  params[out_tTconv])      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
     }
     if(!over(SP8stage69hi)) {
          dxdt[SP8stage69hi] 	=       x[lDP] * FasterCoeffTconv  * params[diffDPtoSP8]                                    + x[SP8stage69hi] *    (-  params[diffSP8P69PosToNeg]      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
     }
     if(!over(SP8stage69lo)) {
-         dxdt[SP8stage69lo] 	=       x[SP8stage69hi] * params[diffSP8P69PosToNeg]                                    + x[SP8stage69lo] *    (- SpaceOutputCoeffAll * OutputCoeffOutTconv *   params[out_tTconv]      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
+         dxdt[SP8stage69lo] 	=       x[SP8stage69hi] * params[diffSP8P69PosToNeg]                                    + x[SP8stage69lo] *    (- SpaceOutputCoeffAll * (OutputCoeffOutTconv +   params[out_tTconv])      + LessProlifSpeedTconv * params[ptTconv]                                        - DeathCoeffTconv * params[dtTconv]);
     }
 
    // If SP4 and SP8 are simulated as simple ODEs, just the RAG+ subset first
    if(!over(tSP8P)) {
-        dxdt[tSP8P] 	=       x[lDP] * FasterCoeffSP8    * params[diffDPtoSP8]                                    + x[tSP8P] *      (- SpaceOutputCoeffAll * OutputCoeffOutSP8 *     params[out_SP8]         + LessProlifSpeedCD8 * params[ptSP8]                                            - DeathCoeffSP8 * params[dtSP8]);
+        dxdt[tSP8P] 	=       x[lDP] * FasterCoeffSP8    * params[diffDPtoSP8]                                    + x[tSP8P] *      (- SpaceOutputCoeffAll * (OutputCoeffOutSP8 +     params[out_SP8]) /* changed here */        + LessProlifSpeedCD8 * params[ptSP8]                                            - DeathCoeffSP8 * params[dtSP8]);
    }
 
 
@@ -1020,7 +1048,7 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
    }
    #else
    if(!over(tTRegPFp3P)) {
-       dxdt[tTRegPFp3P] 	=   x[tTconvP] * FasterCoeffProFP3 * params[ftDP_tTregFP3]                                  + x[tTRegPFp3P] * ( - SpaceOutputCoeffAll * OutputCoeffOutProFP3 * params[out_tTregFP3]    + LessProlifSpeedTregProFP3 * params[ptTregFP3] - params[ftTregFP3_tDPTreg]     - DeathCoeffProFp3 * params[dtTregFP3]);
+       dxdt[tTRegPFp3P] 	=   x[tTconvP] * FasterCoeffProFP3 * params[ftDP_tTregFP3]                                  + x[tTRegPFp3P] * ( - SpaceOutputCoeffAll * (OutputCoeffOutProFP3 + params[out_tTregFP3])    + LessProlifSpeedTregProFP3 * params[ptTregFP3] - params[ftTregFP3_tDPTreg]     - DeathCoeffProFp3 * params[dtTregFP3]);
    }
    #endif
 
@@ -1030,11 +1058,11 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
    }
    #else
    if(!over(tTRegP25P)) {       // changed here
-       dxdt[tTRegP25P] 	=   x[tTconvP] * FasterCoeffPro25  * params[ftDP_tTregP25]                              + x[tTRegP25P] *  (- SpaceOutputCoeffAll * OutputCoeffOutPro25 *   params[out_tTregP25]    + LessProlifSpeedTregPro25 * params[ptTregP25] - params[ftTregP25_tDPTreg]      - DeathCoeffPro25 * params[dtTregP25]);
+       dxdt[tTRegP25P] 	=   x[tTconvP] * FasterCoeffPro25  * params[ftDP_tTregP25]                              + x[tTRegP25P] *  (- SpaceOutputCoeffAll * (OutputCoeffOutPro25 +   params[out_tTregP25])    + LessProlifSpeedTregPro25 * params[ptTregP25] - params[ftTregP25_tDPTreg]      - DeathCoeffPro25 * params[dtTregP25]);
    }
    #endif
 
-    double coeffEvoTconv = - SpaceOutputCoeffAll * OutputCoeffOutTconv *   params[out_tTconv] + LessProlifSpeedTconv * params[ptTconv] - DeathCoeffTconv * params[dtTconv];
+    double coeffEvoTconv = - SpaceOutputCoeffAll * (OutputCoeffOutTconv +   params[out_tTconv]) + LessProlifSpeedTconv * params[ptTconv] - DeathCoeffTconv * params[dtTconv];
     #ifndef DPtoFp3Prec
     coeffEvoTconv += -FasterCoeffProFP3 * params[ftDP_tTregFP3];
     #endif
@@ -1046,7 +1074,7 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
     }
 
    if(!over(tTregP)) {
-        dxdt[tTregP]        =   x[tTRegP25P] * params[ftTregP25_tDPTreg] + x[tTRegPFp3P] * params[ftTregFP3_tDPTreg]+ x[tTregP] *     (- SpaceOutputCoeffAll * OutputCoeffOutDPTregs * params[out_tDPTregs]    + LessProlifSpeedDPTreg * params[ptDPTregs]                                     - DeathCoeffDPTregs * params[dtDPTregs]);
+        dxdt[tTregP]        =   x[tTRegP25P] * params[ftTregP25_tDPTreg] + x[tTRegPFp3P] * params[ftTregFP3_tDPTreg]+ x[tTregP] *     (- SpaceOutputCoeffAll * (OutputCoeffOutDPTregs + params[out_tDPTregs])    + LessProlifSpeedDPTreg * params[ptDPTregs]                                     - DeathCoeffDPTregs * params[dtDPTregs]);
    }
 
    // Careful, make the rag- as an exit the pool of Rag+

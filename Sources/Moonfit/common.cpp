@@ -167,7 +167,7 @@ string currentDir(){
     getcwd(originalDirectory, 1024);
     string res = string(originalDirectory);
     replace(res.begin(), res.end(), '\\', '/');
-    return res;
+    return res + string("/");
 }
 #endif
 
@@ -286,7 +286,7 @@ vector<string> listFilesInDir(string namedir, string containing)
 }
 #endif
 
-#ifdef UNIX
+#ifdef MAC
 // here, keep the whole path
 vector<string> listFilesInDir(string namedir, string containing)
 {

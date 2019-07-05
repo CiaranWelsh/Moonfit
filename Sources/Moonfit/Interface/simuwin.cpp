@@ -117,7 +117,7 @@ string manageSims::loadConfig(string _name){
 
     cout << "   -> Reading configuration file " << _name;
     ifstream f(_name.c_str(), ios::in);
-    if(!f) {return string("ERR: loadConfig, file couldn't be opened '") + _name + string("'\n");}
+    if(!f) {return string("ERR: loadConfig, file couldn't be opened '") + _name + string("'\n"); return string("");}
     stringstream listErrors;
     string moreInfo = string("   Expected file format :\n      NbParameters NbVariables NbCombinaisons, \n      followed by a table of NbParameters + NbVariables rows \n      and Nbcomnbinaisons + 4 columns : \n      Param_value ParamMin ParamMax Opt? Comb1 Comb2 ... (one line for each parameter)\n      .<tab>.<tab>.<tab> Simulate?  Comb1 Comb2 ... (one line for each variable) ");
 

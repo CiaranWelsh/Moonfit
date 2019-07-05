@@ -97,7 +97,7 @@ HEADERS += \
    
 SOURCES += \
     $$PWD/Framework/evaluator.cpp \
-    $$PWD/Framework/Experiment.cpp \
+    $$PWD/Framework/experiment.cpp \
     $$PWD/Framework/generate.cpp \
     $$PWD/Framework/modele.cpp \
     $$PWD/Framework/overrider.cpp \
