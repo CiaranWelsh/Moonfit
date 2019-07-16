@@ -1,7 +1,7 @@
 include("../Moonfit/moonfit.pri")
 
 #name of the executable file generated
-TARGET = YassinSplThym4.5-StructA-equalAll
+TARGET = YassinSplThym4.6-StructC-AllExp
 #put += console to run in a separate terminal
 #CONFIG += console
 

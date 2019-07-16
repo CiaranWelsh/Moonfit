@@ -4,15 +4,16 @@
 #include "../namesThymus.h"
 
 //1: choose model structure, A, B or C
-#define modelStructureB
+// careful of capital letters !!!
+#define ModelStructureB
 
 //2: for hypotheses with coupled parameters, meaning factorF has same impact on multiple outputs, choose:
 
 //- for increased export of all SP cells equally, including SP8 [the parameter for Tconv applies to all then]
-#define equalExportAll
+//#define equalExportAll
 
 //- if not, for equal increased export of Tregs and progenitors, [the parameter for mature DPTregs applies to all then]
-//#define equalExportTregs
+#define equalExportTregs
 
 // and/or, for equal increased export of Tconv and SP8 [the parameter for Tconv applies to SP8], but Tregs have their own differen export,
 //#define equalExportSP4SP8
