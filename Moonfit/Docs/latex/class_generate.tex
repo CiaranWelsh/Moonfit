@@ -1,0 +1,111 @@
+\hypertarget{class_generate}{}\doxysection{Generate Class Reference}
+\label{class_generate}\index{Generate@{Generate}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_generate_ae5dd9bbf98cd15c311b05982c5977df9}\label{class_generate_ae5dd9bbf98cd15c311b05982c5977df9}} 
+\mbox{\hyperlink{class_generate_ae5dd9bbf98cd15c311b05982c5977df9}{Generate}} (string \+\_\+\+M\+Name)
+\begin{DoxyCompactList}\small\item\em ================================= 2 -\/ Basic definitions of \mbox{\hyperlink{class_generate}{Generate}} Class ======================================== \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_a922ed6fe37d987719af986f2267e1b07}\label{class_generate_a922ed6fe37d987719af986f2267e1b07}} 
+void {\bfseries add\+Var} (string name\+Var, D deg\+Policy=P\+R\+O\+P\+\_\+\+D\+EG, B basal\+Policy=C\+S\+T\+\_\+\+F\+R\+O\+M\+\_\+\+EQ, string global\+Name=string(\char`\"{}\char`\"{}), int \mbox{\hyperlink{structtype_var}{type\+Var}}=-\/1)
+\item 
+\mbox{\Hypertarget{class_generate_af0b6c415ad5150ce4b3d5cf543e58e2c}\label{class_generate_af0b6c415ad5150ce4b3d5cf543e58e2c}} 
+void \mbox{\hyperlink{class_generate_af0b6c415ad5150ce4b3d5cf543e58e2c}{add\+Reaction}} (string Var1, string Var2, int I\+Dfunction)
+\begin{DoxyCompactList}\small\item\em to declare a new variable. Warning \+: Erase existing reactions ! Please define variables first and then reactions \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_a6efd8291583569dd66698ba21879232a}\label{class_generate_a6efd8291583569dd66698ba21879232a}} 
+void \mbox{\hyperlink{class_generate_a6efd8291583569dd66698ba21879232a}{use\+Reactions\+From\+Graph}} (\mbox{\hyperlink{struct_graphe}{Graphe}} G)
+\begin{DoxyCompactList}\small\item\em to declare a new interaction (reaction). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_ac878f9b69e5ceacf7d1d98aa13c951c0}\label{class_generate_ac878f9b69e5ceacf7d1d98aa13c951c0}} 
+void \mbox{\hyperlink{class_generate_ac878f9b69e5ceacf7d1d98aa13c951c0}{clear\+Reactions}} ()
+\begin{DoxyCompactList}\small\item\em Keep the same variables (nodes), but use the reactions from another graph (G) -\/ it erases the current graph and replaces it by G. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_aecfd70f3338db3a02b7a2dce1cefee59}\label{class_generate_aecfd70f3338db3a02b7a2dce1cefee59}} 
+void \mbox{\hyperlink{class_generate_aecfd70f3338db3a02b7a2dce1cefee59}{set\+Border\+Policy}} (vector$<$ \mbox{\hyperlink{structtype_var}{type\+Var}} $>$ policy)
+\begin{DoxyCompactList}\small\item\em remove all existing reactions \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_ae87830c218c8ced0ba07dbe69148d4ba}\label{class_generate_ae87830c218c8ced0ba07dbe69148d4ba}} 
+void {\bfseries add\+Include} (string file\+Name)
+\item 
+vector$<$ string $>$ \mbox{\hyperlink{class_generate_a406f3c8cbfcaf4563e06857a69ac4c9a}{generate\+Parameters}} ()
+\begin{DoxyCompactList}\small\item\em to include headers, add\+Include(\char`\"{}file\+To\+Include.\+h\char`\"{}) or add\+Include(\char`\"{}$<$library\+To\+Include.\+h$>$\char`\"{}) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_a7dbbae2cd600cffb3766fb8eddb9953f}\label{class_generate_a7dbbae2cd600cffb3766fb8eddb9953f}} 
+string \mbox{\hyperlink{class_generate_a7dbbae2cd600cffb3766fb8eddb9953f}{generate\+Activ\+Function}} (int nb\+Act, int nb\+Inh)
+\begin{DoxyCompactList}\small\item\em ================================= \mbox{\hyperlink{class_generate}{Generate}} A\+C\+T\+I\+V\+A\+T\+I\+ON F\+U\+N\+C\+T\+I\+O\+NS ======================================== \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_afb0c42f290b29734c0b16ca7094780fa}\label{class_generate_afb0c42f290b29734c0b16ca7094780fa}} 
+string {\bfseries generate\+Basal\+Parameters} ()
+\item 
+string \mbox{\hyperlink{class_generate_a7f53880bf446d7ced7533b27e6f02ea1}{generate\+Equations}} ()
+\item 
+\mbox{\Hypertarget{class_generate_a47663fed42e002e784d2d55168efcf19}\label{class_generate_a47663fed42e002e784d2d55168efcf19}} 
+string {\bfseries generate\+Latex} ()
+\item 
+\mbox{\Hypertarget{class_generate_a6149fb1043d0596a1f3a807c67606c8a}\label{class_generate_a6149fb1043d0596a1f3a807c67606c8a}} 
+string \mbox{\hyperlink{class_generate_a6149fb1043d0596a1f3a807c67606c8a}{generate\+Code\+Header}} ()
+\begin{DoxyCompactList}\small\item\em ================================= \mbox{\hyperlink{class_generate}{Generate}} M\+O\+D\+EL H\+E\+A\+D\+ER ======================================== \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{class_generate_a205f2f1c4dfa14f31ef08e7422c00c27}{generate\+Code\+Source}} ()
+\item 
+\mbox{\Hypertarget{class_generate_a474361454fd2a8728d955bfc50850da3}\label{class_generate_a474361454fd2a8728d955bfc50850da3}} 
+string {\bfseries generate\+Param\+Borders} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_generate_ac8b0ab48abe44c361a3e37ee32bb8775}\label{class_generate_ac8b0ab48abe44c361a3e37ee32bb8775}} 
+string {\bfseries M\+Name}
+\item 
+\mbox{\Hypertarget{class_generate_a7bd950ac5eee564e558fd5abad0025ef}\label{class_generate_a7bd950ac5eee564e558fd5abad0025ef}} 
+int {\bfseries nb\+Var}
+\item 
+\mbox{\Hypertarget{class_generate_a9b57ba78cbb55cfbcdef788b0d58d084}\label{class_generate_a9b57ba78cbb55cfbcdef788b0d58d084}} 
+\mbox{\hyperlink{struct_graphe}{Graphe}} \mbox{\hyperlink{class_generate_a9b57ba78cbb55cfbcdef788b0d58d084}{g}}
+\begin{DoxyCompactList}\small\item\em to give parameter boundaries depending on their type \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_generate_aee7e2616154617525fa8807d349fca9c}\label{class_generate_aee7e2616154617525fa8807d349fca9c}} 
+vector$<$ string $>$ {\bfseries Var\+Enum}
+\item 
+\mbox{\Hypertarget{class_generate_a3c07c9746c52ce6d251bca2ce04cbd48}\label{class_generate_a3c07c9746c52ce6d251bca2ce04cbd48}} 
+vector$<$ string $>$ {\bfseries Glob\+Var\+Enum}
+\item 
+\mbox{\Hypertarget{class_generate_ae0b1d6257eb6fe1499d8b93ae0ef1beb}\label{class_generate_ae0b1d6257eb6fe1499d8b93ae0ef1beb}} 
+vector$<$ D $>$ {\bfseries Degradation}
+\item 
+\mbox{\Hypertarget{class_generate_a630a5070bf8cc772606006a00ce0db4c}\label{class_generate_a630a5070bf8cc772606006a00ce0db4c}} 
+vector$<$ B $>$ {\bfseries Basal}
+\item 
+\mbox{\Hypertarget{class_generate_ab16d9ded21a6beb60301ee2b6c7a1688}\label{class_generate_ab16d9ded21a6beb60301ee2b6c7a1688}} 
+vector$<$ int $>$ {\bfseries Types}
+\item 
+\mbox{\Hypertarget{class_generate_ab7ca5aad4869f355a71f6265ead95b3d}\label{class_generate_ab7ca5aad4869f355a71f6265ead95b3d}} 
+vector$<$ \mbox{\hyperlink{structtype_var}{type\+Var}} $>$ {\bfseries Param\+Borders\+Policy}
+\item 
+\mbox{\Hypertarget{class_generate_a4763e326c8110658398e23512e8f3b4c}\label{class_generate_a4763e326c8110658398e23512e8f3b4c}} 
+vector$<$ string $>$ \mbox{\hyperlink{class_generate_a4763e326c8110658398e23512e8f3b4c}{files\+To\+Include}}
+\begin{DoxyCompactList}\small\item\em I/O parts \+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_generate_a205f2f1c4dfa14f31ef08e7422c00c27}\label{class_generate_a205f2f1c4dfa14f31ef08e7422c00c27}} 
+\index{Generate@{Generate}!generateCodeSource@{generateCodeSource}}
+\index{generateCodeSource@{generateCodeSource}!Generate@{Generate}}
+\doxysubsubsection{\texorpdfstring{generateCodeSource()}{generateCodeSource()}}
+{\footnotesize\ttfamily string Generate\+::generate\+Code\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+T\+O\+DO\mbox{\Hypertarget{class_generate_a7f53880bf446d7ced7533b27e6f02ea1}\label{class_generate_a7f53880bf446d7ced7533b27e6f02ea1}} 
+\index{Generate@{Generate}!generateEquations@{generateEquations}}
+\index{generateEquations@{generateEquations}!Generate@{Generate}}
+\doxysubsubsection{\texorpdfstring{generateEquations()}{generateEquations()}}
+{\footnotesize\ttfamily string Generate\+::generate\+Equations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+N\+EW trick !!\mbox{\Hypertarget{class_generate_a406f3c8cbfcaf4563e06857a69ac4c9a}\label{class_generate_a406f3c8cbfcaf4563e06857a69ac4c9a}} 
+\index{Generate@{Generate}!generateParameters@{generateParameters}}
+\index{generateParameters@{generateParameters}!Generate@{Generate}}
+\doxysubsubsection{\texorpdfstring{generateParameters()}{generateParameters()}}
+{\footnotesize\ttfamily vector$<$ string $>$ Generate\+::generate\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+to include headers, add\+Include(\char`\"{}file\+To\+Include.\+h\char`\"{}) or add\+Include(\char`\"{}$<$library\+To\+Include.\+h$>$\char`\"{}) 
+
+================================= \mbox{\hyperlink{class_generate}{Generate}} the L\+I\+ST of P\+A\+R\+A\+M\+E\+T\+E\+RS ======================================== 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Framework/generate.\+h\item 
+Framework/generate.\+cpp\end{DoxyCompactItemize}

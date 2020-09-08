@@ -1,0 +1,44 @@
+\hypertarget{evaluator_8cpp}{}\doxysection{C\+:/\+Users/pprobert/\+Desktop/\+New\+Archaeropteryx/\+Sources/\+Moonfit/\+Framework/evaluator.cpp File Reference}
+\label{evaluator_8cpp}\index{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/evaluator.cpp@{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/evaluator.cpp}}
+{\ttfamily \#include \char`\"{}evaluator.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$set$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{evaluator_8cpp_ab1ef2b030ae9022d3591e93a72d75605}{penalty\+Not\+Recorded}}~0.\+0
+\begin{DoxyCompactList}\small\item\em Here, you can define a penalty in the cost when the simulation stopped before this point, so no data was recorded for that point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}{set\+Type\+Cost}} (int \+\_\+type\+Cost)
+\begin{DoxyCompactList}\small\item\em Change the type of Cost. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}{set\+Type\+Norm}} (int \+\_\+type\+Norm)
+\begin{DoxyCompactList}\small\item\em Change the type of Normalization. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{evaluator_8cpp_a3355962a14e4d9ec0c0a652ff4aa272c}{bounded\+Log}} (double x)
+\item 
+double \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function}} (double value\+To\+Compare, double ref\+Expected\+Value, double Std\+Dev)
+\begin{DoxyCompactList}\small\item\em Main function to calculate the cost for one data-\/point. This function can calculate the different possible costs defined inside the costconfig. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}{test\+Fitness\+Function}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{evaluator_8cpp_ab1ef2b030ae9022d3591e93a72d75605}\label{evaluator_8cpp_ab1ef2b030ae9022d3591e93a72d75605}} 
+\index{evaluator.cpp@{evaluator.cpp}!penaltyNotRecorded@{penaltyNotRecorded}}
+\index{penaltyNotRecorded@{penaltyNotRecorded}!evaluator.cpp@{evaluator.cpp}}
+\doxysubsubsection{\texorpdfstring{penaltyNotRecorded}{penaltyNotRecorded}}
+{\footnotesize\ttfamily \#define penalty\+Not\+Recorded~0.\+0}
+
+
+
+Here, you can define a penalty in the cost when the simulation stopped before this point, so no data was recorded for that point. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{evaluator_8cpp_a3355962a14e4d9ec0c0a652ff4aa272c}\label{evaluator_8cpp_a3355962a14e4d9ec0c0a652ff4aa272c}} 
+\index{evaluator.cpp@{evaluator.cpp}!boundedLog@{boundedLog}}
+\index{boundedLog@{boundedLog}!evaluator.cpp@{evaluator.cpp}}
+\doxysubsubsection{\texorpdfstring{boundedLog()}{boundedLog()}}
+{\footnotesize\ttfamily double bounded\+Log (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})}
+

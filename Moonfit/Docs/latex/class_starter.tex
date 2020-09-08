@@ -1,0 +1,83 @@
+\hypertarget{class_starter}{}\doxysection{Starter Class Reference}
+\label{class_starter}\index{Starter@{Starter}}
+Inheritance diagram for Starter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_starter}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_starter_af0f200e13d65cb752f475691d39a0631}\label{class_starter_af0f200e13d65cb752f475691d39a0631}} 
+void {\bfseries model\+Changed} (int)
+\item 
+\mbox{\Hypertarget{class_starter_a26eb2ad2beed6c84821fb1916308fefa}\label{class_starter_a26eb2ad2beed6c84821fb1916308fefa}} 
+void {\bfseries ask\+New\+Working\+Folder} ()
+\item 
+\mbox{\Hypertarget{class_starter_a3290545a9e5b57187baab1d08eb8ed4f}\label{class_starter_a3290545a9e5b57187baab1d08eb8ed4f}} 
+void {\bfseries ask\+New\+Configuration\+File} ()
+\item 
+\mbox{\Hypertarget{class_starter_a1f0bb232916ec0a412b1042c9f83478c}\label{class_starter_a1f0bb232916ec0a412b1042c9f83478c}} 
+void {\bfseries ask\+New\+Param\+Set} ()
+\item 
+\mbox{\Hypertarget{class_starter_afda0134a8176627b001a268944c18a93}\label{class_starter_afda0134a8176627b001a268944c18a93}} 
+void {\bfseries check\+Fitte\+Only\+Conf} (int new\+State)
+\item 
+\mbox{\Hypertarget{class_starter_ae7d087acf2ebbad36cfd74c14e122f73}\label{class_starter_ae7d087acf2ebbad36cfd74c14e122f73}} 
+void {\bfseries check\+Identif\+Only\+Param} (int new\+State)
+\item 
+\mbox{\Hypertarget{class_starter_ab7a34c7dc2e1a031d46c4b276f948e58}\label{class_starter_ab7a34c7dc2e1a031d46c4b276f948e58}} 
+void {\bfseries comb\+To\+Identif\+Changed} (int new\+Combination\+Value)
+\item 
+\mbox{\Hypertarget{class_starter_a0bbf4e5b9bad59b88451650990b38813}\label{class_starter_a0bbf4e5b9bad59b88451650990b38813}} 
+void {\bfseries radio\+Buttons\+Changed} ()
+\item 
+\mbox{\Hypertarget{class_starter_a73431080407407ef6eaeedff1e7df39a}\label{class_starter_a73431080407407ef6eaeedff1e7df39a}} 
+void {\bfseries go} ()
+\item 
+\mbox{\Hypertarget{class_starter_aacbad9557267754fe6fb2fbbceacb681}\label{class_starter_aacbad9557267754fe6fb2fbbceacb681}} 
+void {\bfseries quit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_starter_a8221936dab5531e574cc519b7e883e71}\label{class_starter_a8221936dab5531e574cc519b7e883e71}} 
+{\bfseries Starter} (string working\+Folder=string(\char`\"{}\char`\"{}), Q\+Widget $\ast$parent=0)
+\item 
+\mbox{\Hypertarget{class_starter_a2177541877ddb71833f757d2089225e9}\label{class_starter_a2177541877ddb71833f757d2089225e9}} 
+void {\bfseries add\+Model} (string name\+In\+Combo, \mbox{\hyperlink{struct_model}{Model}} $\ast$pointer\+Of\+Created\+Model, string config\+File=string(\char`\"{}\char`\"{}))
+\item 
+\mbox{\Hypertarget{class_starter_af1bacc76b9eb0284611c105331de7171}\label{class_starter_af1bacc76b9eb0284611c105331de7171}} 
+void {\bfseries set\+Default\+Model} (string name\+In\+Combo)
+\item 
+\mbox{\Hypertarget{class_starter_ad64219dab8f8dd6e4307c7bebdad41c7}\label{class_starter_ad64219dab8f8dd6e4307c7bebdad41c7}} 
+pair$<$ int, float $>$ {\bfseries get\+Final\+Choice} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_starter_a966e0ac7ac9550cd7058dd2de12a5c62}\label{class_starter_a966e0ac7ac9550cd7058dd2de12a5c62}} 
+vector$<$ \mbox{\hyperlink{struct_model}{Model}} $\ast$ $>$ {\bfseries model\+List}
+\item 
+\mbox{\Hypertarget{class_starter_a127b2d1cc2de4be3ec79507eb08d31ea}\label{class_starter_a127b2d1cc2de4be3ec79507eb08d31ea}} 
+vector$<$ string $>$ {\bfseries config\+Files\+List}
+\item 
+\mbox{\Hypertarget{class_starter_a38d5d2bf0f06e5be2e184505b3294a16}\label{class_starter_a38d5d2bf0f06e5be2e184505b3294a16}} 
+\mbox{\hyperlink{struct_model}{Model}} $\ast$ {\bfseries current\+Model}
+\item 
+\mbox{\Hypertarget{class_starter_a98daa1cc511618656554b6f359791214}\label{class_starter_a98daa1cc511618656554b6f359791214}} 
+\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries current\+Experiment}
+\item 
+\mbox{\Hypertarget{class_starter_ad3addb9c836b98c580dd17324e31ab20}\label{class_starter_ad3addb9c836b98c580dd17324e31ab20}} 
+\mbox{\hyperlink{classmanage_sims}{manage\+Sims}} $\ast$ {\bfseries manS}
+\item 
+\mbox{\Hypertarget{class_starter_a1d9f2142ca8e66773a516cdfef453e52}\label{class_starter_a1d9f2142ca8e66773a516cdfef453e52}} 
+int {\bfseries nb\+Combs}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Interface/starter\+Old.\+h\item 
+Interface/starter\+Old.\+cpp\end{DoxyCompactItemize}

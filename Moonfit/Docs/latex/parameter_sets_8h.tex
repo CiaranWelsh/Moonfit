@@ -1,0 +1,59 @@
+\hypertarget{parameter_sets_8h}{}\doxysection{C\+:/\+Users/pprobert/\+Desktop/\+New\+Archaeropteryx/\+Sources/\+Moonfit/\+Framework/parameter\+Sets.h File Reference}
+\label{parameter_sets_8h}\index{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/parameterSets.h@{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/parameterSets.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structone_set}{one\+Set}}
+\begin{DoxyCompactList}\small\item\em 1 -\/ {\itshape A set of parameters} is a table of parameter values and possibly a cost. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_compare_sets}{Compare\+Sets}}
+\begin{DoxyCompactList}\small\item\em 2 -\/ When parameter sets need to be sorted based on their cost, a comparator should be defined (based on their cost) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp_sets}{p\+Sets}}
+\item 
+struct \mbox{\hyperlink{structpoint_variation}{point\+Variation}}
+\begin{DoxyCompactList}\small\item\em 4 -\/ In case of identifiability or sensitivity, point modifications of a parameter set have to be done (i.\+e. changing one parameter value only.) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structone_parameter_analysis}{one\+Parameter\+Analysis}}
+\begin{DoxyCompactList}\small\item\em 4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{parameter_sets_8h_a7c778e94c0eded6b61311342628e3314}{teste\+Sets}} ()
+\begin{DoxyCompactList}\small\item\em 3e \+: example function on how to use parameter sets. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{parameter_sets_8h_aec5d6e2b394315088f6f3959480f1ae8}{Compare\+Point\+Vars}} (\mbox{\hyperlink{structpoint_variation}{point\+Variation}} t1, \mbox{\hyperlink{structpoint_variation}{point\+Variation}} t2)
+\begin{DoxyCompactList}\small\item\em 4b -\/ a comparator between point\+Variations (based on the cost), in order to sort them \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{parameter_sets_8h_aa678dec8b3d5a6c9fd248bf87962462b}{test\+Point\+Variations}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{parameter_sets_8h_aec5d6e2b394315088f6f3959480f1ae8}\label{parameter_sets_8h_aec5d6e2b394315088f6f3959480f1ae8}} 
+\index{parameterSets.h@{parameterSets.h}!ComparePointVars@{ComparePointVars}}
+\index{ComparePointVars@{ComparePointVars}!parameterSets.h@{parameterSets.h}}
+\doxysubsubsection{\texorpdfstring{ComparePointVars()}{ComparePointVars()}}
+{\footnotesize\ttfamily bool Compare\+Point\+Vars (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpoint_variation}{point\+Variation}}}]{t1,  }\item[{\mbox{\hyperlink{structpoint_variation}{point\+Variation}}}]{t2 }\end{DoxyParamCaption})}
+
+
+
+4b -\/ a comparator between point\+Variations (based on the cost), in order to sort them 
+
+\mbox{\Hypertarget{parameter_sets_8h_a7c778e94c0eded6b61311342628e3314}\label{parameter_sets_8h_a7c778e94c0eded6b61311342628e3314}} 
+\index{parameterSets.h@{parameterSets.h}!testeSets@{testeSets}}
+\index{testeSets@{testeSets}!parameterSets.h@{parameterSets.h}}
+\doxysubsubsection{\texorpdfstring{testeSets()}{testeSets()}}
+{\footnotesize\ttfamily void teste\+Sets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+3e \+: example function on how to use parameter sets. 
+
+\mbox{\Hypertarget{parameter_sets_8h_aa678dec8b3d5a6c9fd248bf87962462b}\label{parameter_sets_8h_aa678dec8b3d5a6c9fd248bf87962462b}} 
+\index{parameterSets.h@{parameterSets.h}!testPointVariations@{testPointVariations}}
+\index{testPointVariations@{testPointVariations}!parameterSets.h@{parameterSets.h}}
+\doxysubsubsection{\texorpdfstring{testPointVariations()}{testPointVariations()}}
+{\footnotesize\ttfamily void test\+Point\+Variations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+

@@ -1,0 +1,83 @@
+\hypertarget{structp_sets}{}\doxysection{p\+Sets Struct Reference}
+\label{structp_sets}\index{pSets@{pSets}}
+
+
+3 -\/ {\itshape A list of parameter sets} \+: store them in a queue (fast sorting), but can convert them in vector$<$parameter set$>$ when wanted note \+: this data structure manages pointers to \mbox{\hyperlink{structone_set}{one\+Set}}, which are already in memory somewhere. It doesn\textquotesingle{}t change their localization nor content.  
+
+
+
+
+{\ttfamily \#include $<$parameter\+Sets.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp_sets_a38e13fd1500f0e4c225eb19edc13cd22}\label{structp_sets_a38e13fd1500f0e4c225eb19edc13cd22}} 
+\mbox{\hyperlink{structp_sets_a38e13fd1500f0e4c225eb19edc13cd22}{p\+Sets}} (int \+\_\+\+Max\+Nb, int \+\_\+nb\+Params)
+\begin{DoxyCompactList}\small\item\em 3a \+: when creating a param set list, needs to say how many will be recorded (maximum), and how many parameters per set. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp_sets_a23f7fad2262b6af172ad137a4eb888ab}\label{structp_sets_a23f7fad2262b6af172ad137a4eb888ab}} 
+int {\bfseries size} ()
+\item 
+\mbox{\Hypertarget{structp_sets_a3b888ff828f3f2838838b02f5b343010}\label{structp_sets_a3b888ff828f3f2838838b02f5b343010}} 
+bool {\bfseries add\+Set} (vector$<$ double $>$ $\ast$v, double \+\_\+cost)
+\item 
+vector$<$ \mbox{\hyperlink{structone_set}{one\+Set}} $\ast$ $>$ \mbox{\hyperlink{structp_sets_accd3bbda2aa840e336fa5e80d2dd8e3b}{to\+Vector}} ()
+\begin{DoxyCompactList}\small\item\em stores the cost of the worst set, so if the list is full, and a new set is not better than threshold, it will be rejected \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp_sets_ab060052b72ff54060e662f08ec688ab2}\label{structp_sets_ab060052b72ff54060e662f08ec688ab2}} 
+\mbox{\hyperlink{structone_set}{one\+Set}} $\ast$ \mbox{\hyperlink{structp_sets_ab060052b72ff54060e662f08ec688ab2}{get\+Set\+Number}} (int i)
+\begin{DoxyCompactList}\small\item\em to get the whole list as vector \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp_sets_adc5977a9be2a09af43cce1bd435c0b36}\label{structp_sets_adc5977a9be2a09af43cce1bd435c0b36}} 
+\mbox{\hyperlink{structone_set}{one\+Set}} \mbox{\hyperlink{structp_sets_adc5977a9be2a09af43cce1bd435c0b36}{best\+One\+Set}} ()
+\begin{DoxyCompactList}\small\item\em or to get a set directly. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp_sets_a9e20de740def06ab9ecea614047ace4c}\label{structp_sets_a9e20de740def06ab9ecea614047ace4c}} 
+vector$<$ double $>$ {\bfseries best\+Set} ()
+\item 
+\mbox{\Hypertarget{structp_sets_a60519798837460fa34ee0ff6569ce1d4}\label{structp_sets_a60519798837460fa34ee0ff6569ce1d4}} 
+void {\bfseries save\+Best\+Set} (string \+\_\+name)
+\item 
+\mbox{\Hypertarget{structp_sets_a08ce983e519e15b4bef259d31fc6d783}\label{structp_sets_a08ce983e519e15b4bef259d31fc6d783}} 
+void \mbox{\hyperlink{structp_sets_a08ce983e519e15b4bef259d31fc6d783}{clear}} ()
+\begin{DoxyCompactList}\small\item\em 3d \+: additional functions \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp_sets_ac3461db6db4b9884a59be8c0315c0100}\label{structp_sets_ac3461db6db4b9884a59be8c0315c0100}} 
+void {\bfseries resize} (int new\+Max\+Nb)
+\item 
+\mbox{\Hypertarget{structp_sets_a3a3432b60cd1734579b921c1b9cec52f}\label{structp_sets_a3a3432b60cd1734579b921c1b9cec52f}} 
+string \mbox{\hyperlink{structp_sets_a3a3432b60cd1734579b921c1b9cec52f}{print}} ()
+\begin{DoxyCompactList}\small\item\em to dynamically resize the number of stored parameter sets \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp_sets_aa955eff2da9c03eac554ad0ec5ee615c}\label{structp_sets_aa955eff2da9c03eac554ad0ec5ee615c}} 
+int {\bfseries Max\+Nb}
+\item 
+\mbox{\Hypertarget{structp_sets_a6d6a3fc2bf3bc4fc1975a6bcfcb8aa08}\label{structp_sets_a6d6a3fc2bf3bc4fc1975a6bcfcb8aa08}} 
+int {\bfseries nb\+Params}
+\item 
+\mbox{\Hypertarget{structp_sets_a7ab0706489eecdbe2f035aa11c310a00}\label{structp_sets_a7ab0706489eecdbe2f035aa11c310a00}} 
+priority\+\_\+queue$<$ \mbox{\hyperlink{structone_set}{one\+Set}} $\ast$, vector$<$ \mbox{\hyperlink{structone_set}{one\+Set}} $\ast$ $>$, \mbox{\hyperlink{class_compare_sets}{Compare\+Sets}} $>$ \mbox{\hyperlink{structp_sets_a7ab0706489eecdbe2f035aa11c310a00}{store}}
+\begin{DoxyCompactList}\small\item\em 3b \+: Data storage \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp_sets_a7fc5ca7822f19c44a2813f40951ad9c7}\label{structp_sets_a7fc5ca7822f19c44a2813f40951ad9c7}} 
+double \mbox{\hyperlink{structp_sets_a7fc5ca7822f19c44a2813f40951ad9c7}{threshold}}
+\begin{DoxyCompactList}\small\item\em Adds the param set if there is still space (Max\+Nb), or if it is better than an existing set in the list (that will be wasted) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+3 -\/ {\itshape A list of parameter sets} \+: store them in a queue (fast sorting), but can convert them in vector$<$parameter set$>$ when wanted note \+: this data structure manages pointers to \mbox{\hyperlink{structone_set}{one\+Set}}, which are already in memory somewhere. It doesn\textquotesingle{}t change their localization nor content. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structp_sets_accd3bbda2aa840e336fa5e80d2dd8e3b}\label{structp_sets_accd3bbda2aa840e336fa5e80d2dd8e3b}} 
+\index{pSets@{pSets}!toVector@{toVector}}
+\index{toVector@{toVector}!pSets@{pSets}}
+\doxysubsubsection{\texorpdfstring{toVector()}{toVector()}}
+{\footnotesize\ttfamily vector$<$ \mbox{\hyperlink{structone_set}{one\+Set}} $\ast$ $>$ p\+Sets\+::to\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+stores the cost of the worst set, so if the list is full, and a new set is not better than threshold, it will be rejected 
+
+3c \+: Getting parameter sets (because in a queue, only the top one can be read) D\+A\+N\+G\+ER \+: these functions give the pointers to the parameter set(s). Therefore, this is not a copy, this is the original location in memory of these parameter sets. Do not modify them !! 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Framework/parameter\+Sets.\+h\item 
+Framework/parameter\+Sets.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,29 @@
+\hypertarget{group___eval}{}\doxysection{Cost Evaluation}
+\label{group___eval}\index{Cost Evaluation@{Cost Evaluation}}
+
+
+The class \mbox{\hyperlink{struct_evaluator}{Evaluator}} stores datapoints for each variables during one simulation (one condition).  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_evaluator}{Evaluator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___eval_gab1ef2b030ae9022d3591e93a72d75605}\label{group___eval_gab1ef2b030ae9022d3591e93a72d75605}} 
+\#define \mbox{\hyperlink{group___eval_gab1ef2b030ae9022d3591e93a72d75605}{penalty\+Not\+Recorded}}~0.\+0
+\begin{DoxyCompactList}\small\item\em Here, you can define a penalty in the cost when the simulation stopped before this point, so no data was recorded for that point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The class \mbox{\hyperlink{struct_evaluator}{Evaluator}} stores datapoints for each variables during one simulation (one condition). 
+
+
+\begin{DoxyItemize}
+\item it stores a list of\+: Variable -\/ time-\/point -\/ experimental value -\/ experimental std\+\_\+dev -\/ simulated data
+\item it handles the calculation of a simulation cost for all the variables\textquotesingle{} datapoints in this conditions.
+\item It handles the different types of normalizations per variable. However, it has no information on the simulation results of other conditions. Each experimental condition will have its own evaluator class. 
+\end{DoxyItemize}

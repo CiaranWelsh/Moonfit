@@ -1,0 +1,53 @@
+\hypertarget{structexp_comp_parameter_sets}{}\doxysection{exp\+Comp\+Parameter\+Sets Struct Reference}
+\label{structexp_comp_parameter_sets}\index{expCompParameterSets@{expCompParameterSets}}
+
+
+\mbox{\hyperlink{structexp_comp_parameter_sets}{exp\+Comp\+Parameter\+Sets}} takes an experiment and compares one of its condition with different parameter sets. you give an experiment, and a list of parameter sets, it creates a new experiment whose conditions are each parameter set. if the original experiment has 1 condition, nothing to do if -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- had more than 1 condition, choose which condition to compare.  
+
+
+
+
+{\ttfamily \#include $<$experiment.\+h$>$}
+
+Inheritance diagram for exp\+Comp\+Parameter\+Sets\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structexp_comp_parameter_sets}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structexp_comp_parameter_sets_a7b4d9966954ec44880176fd1672ed541}\label{structexp_comp_parameter_sets_a7b4d9966954ec44880176fd1672ed541}} 
+{\bfseries exp\+Comp\+Parameter\+Sets} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$Exp, vector$<$ vector$<$ double $>$ $\ast$ $>$ \+\_\+parameter\+Sets, int \+\_\+\+I\+Dcondition\+To\+Use=0)
+\item 
+\mbox{\Hypertarget{structexp_comp_parameter_sets_a90e5967ac8a1bb4862a4b34fdfa794be}\label{structexp_comp_parameter_sets_a90e5967ac8a1bb4862a4b34fdfa794be}} 
+void {\bfseries simulate} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL, bool force=false)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structexp_comp_parameter_sets_ab2f547f946195c2123900ca0944356fc}\label{structexp_comp_parameter_sets_ab2f547f946195c2123900ca0944356fc}} 
+vector$<$ vector$<$ double $>$ $\ast$ $>$ {\bfseries parameter\+Sets}
+\item 
+\mbox{\Hypertarget{structexp_comp_parameter_sets_ae69285de2c2b4a4d5da7b3c5b93769ce}\label{structexp_comp_parameter_sets_ae69285de2c2b4a4d5da7b3c5b93769ce}} 
+\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries built\+On\+Experiment}
+\item 
+\mbox{\Hypertarget{structexp_comp_parameter_sets_a01f27d9abdfcf4ab2873d68c043beb0f}\label{structexp_comp_parameter_sets_a01f27d9abdfcf4ab2873d68c043beb0f}} 
+int {\bfseries I\+Dcondition\+To\+Use}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{structexp_comp_parameter_sets}{exp\+Comp\+Parameter\+Sets}} takes an experiment and compares one of its condition with different parameter sets. you give an experiment, and a list of parameter sets, it creates a new experiment whose conditions are each parameter set. if the original experiment has 1 condition, nothing to do if -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- had more than 1 condition, choose which condition to compare. 
+
+
+\begin{DoxyItemize}
+\item Be careful that each parameter set will be used to call \textquotesingle{}initialize\textquotesingle{} from the experiment successively, make sure it has no effect on the next parameter set.
+\item Note that only the experimental data from the chosen condition will be taken //\+T\+O\+D\+O!!//. 
+\end{DoxyItemize}
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Framework/experiment.\+h\item 
+Framework/experiment.\+cpp\end{DoxyCompactItemize}

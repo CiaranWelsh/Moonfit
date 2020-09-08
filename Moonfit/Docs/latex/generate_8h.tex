@@ -1,0 +1,176 @@
+\hypertarget{generate_8h}{}\doxysection{C\+:/\+Users/pprobert/\+Desktop/\+New\+Archaeropteryx/\+Sources/\+Moonfit/\+Framework/generate.h File Reference}
+\label{generate_8h}\index{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/generate.h@{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/generate.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_graphe}{Graphe}}
+\begin{DoxyCompactList}\small\item\em 1 -\/ Simple structure for a network \+: \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtype_var}{type\+Var}}
+\begin{DoxyCompactList}\small\item\em 3 -\/ To define boundary parameters for different kinds of variables \+: gene expression, proteins, receptors, cytokines, R\+N\+As etc ... \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_generate}{Generate}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{generate_8h_a05d32bcb2eedd80b8f87713f1e85c30c}{N\+O\+\_\+\+I\+N\+T\+ER}}~0
+\item 
+\#define \mbox{\hyperlink{generate_8h_a1c0781c6cbb35b63d99688859f1a7196}{H\+I\+L\+L\+\_\+\+A\+CT}}~+1
+\item 
+\#define \mbox{\hyperlink{generate_8h_ae1504daa6c599dae44382f615a5cf98a}{H\+I\+L\+L\+\_\+\+I\+NH}}~-\/1
+\item 
+\#define \mbox{\hyperlink{generate_8h_ae41875e7196fa9d01312ea178be32d8a}{B\+A\+S\+A\+L\+\_\+\+F\+O\+R\+\_\+\+A\+C\+T\+\_\+\+H\+I\+LL}}
+\item 
+\#define \mbox{\hyperlink{generate_8h_a19b9abbaea427fd9a88c68abc2bf121d}{M\+A\+X\+\_\+\+D\+E\+G\+R\+EE}}~10
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef double \mbox{\hyperlink{generate_8h_aa547ec944f973257bbe627bc8f944ddc}{valeur}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139}{D}} \{ \mbox{\hyperlink{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139adb59f4eb0efa3f5a9c3c98f693982f68}{N\+O\+\_\+D}}, 
+\mbox{\hyperlink{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139a49c47a05fea513d55c36b1ec765936a0}{P\+R\+O\+P\+\_\+\+D\+EG}}, 
+\mbox{\hyperlink{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139acc426852d4873ac4c9d99dcfcdce3d52}{N\+B\+\_\+\+D\+E\+G\+\_\+\+P\+OL}}
+ \}
+\begin{DoxyCompactList}\small\item\em 4 -\/ Generating the code for simulating a network (according to the Model/\+Experiments framework) \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7}{B}} \{ \mbox{\hyperlink{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7a801bd765bd3de2f151462574bc04df74}{N\+O\+\_\+B}}, 
+\mbox{\hyperlink{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7ad255a372ddc0de48e167dd98695694fc}{C\+ST}}, 
+\mbox{\hyperlink{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7aae751ddd657deab0252d0159ccaf962a}{C\+S\+T\+\_\+\+F\+R\+O\+M\+\_\+\+EQ}}, 
+\mbox{\hyperlink{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7aea7f9b521dcfb1e520c0ab6844112ab1}{N\+B\+\_\+\+B\+A\+S\+\_\+\+P\+OL}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{generate_8h_a0079ff6ffda1079971719f89f12bd980}{generate\+Activ\+Function}} (int nb\+Act, int nb\+Inh)
+\item 
+void \mbox{\hyperlink{generate_8h_abb3717a18d2d6870b5682143fbf1a9cc}{teste\+Graph\+Manip}} ()
+\item 
+vector$<$ \mbox{\hyperlink{struct_graphe}{Graphe}} $\ast$ $>$ \mbox{\hyperlink{generate_8h_a6f87b3a2f46c93c9e6c04def89b39595}{between}} (\mbox{\hyperlink{struct_graphe}{Graphe}} Gbig, \mbox{\hyperlink{struct_graphe}{Graphe}} Gsmall, int new\+\_\+size=0)
+\item 
+string \mbox{\hyperlink{generate_8h_af9c441d9a8c5fd6a1e52437b99222458}{generate\+Cost\+Code\+From\+Data}} (string, bool Costs\+Per\+Curves=true, string time\+Unit=string(\char`\"{} D\+AY\char`\"{}))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{generate_8h_ae41875e7196fa9d01312ea178be32d8a}\label{generate_8h_ae41875e7196fa9d01312ea178be32d8a}} 
+\index{generate.h@{generate.h}!BASAL\_FOR\_ACT\_HILL@{BASAL\_FOR\_ACT\_HILL}}
+\index{BASAL\_FOR\_ACT\_HILL@{BASAL\_FOR\_ACT\_HILL}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{BASAL\_FOR\_ACT\_HILL}{BASAL\_FOR\_ACT\_HILL}}
+{\footnotesize\ttfamily \#define B\+A\+S\+A\+L\+\_\+\+F\+O\+R\+\_\+\+A\+C\+T\+\_\+\+H\+I\+LL}
+
+\mbox{\Hypertarget{generate_8h_a1c0781c6cbb35b63d99688859f1a7196}\label{generate_8h_a1c0781c6cbb35b63d99688859f1a7196}} 
+\index{generate.h@{generate.h}!HILL\_ACT@{HILL\_ACT}}
+\index{HILL\_ACT@{HILL\_ACT}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{HILL\_ACT}{HILL\_ACT}}
+{\footnotesize\ttfamily \#define H\+I\+L\+L\+\_\+\+A\+CT~+1}
+
+\mbox{\Hypertarget{generate_8h_ae1504daa6c599dae44382f615a5cf98a}\label{generate_8h_ae1504daa6c599dae44382f615a5cf98a}} 
+\index{generate.h@{generate.h}!HILL\_INH@{HILL\_INH}}
+\index{HILL\_INH@{HILL\_INH}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{HILL\_INH}{HILL\_INH}}
+{\footnotesize\ttfamily \#define H\+I\+L\+L\+\_\+\+I\+NH~-\/1}
+
+\mbox{\Hypertarget{generate_8h_a19b9abbaea427fd9a88c68abc2bf121d}\label{generate_8h_a19b9abbaea427fd9a88c68abc2bf121d}} 
+\index{generate.h@{generate.h}!MAX\_DEGREE@{MAX\_DEGREE}}
+\index{MAX\_DEGREE@{MAX\_DEGREE}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_DEGREE}{MAX\_DEGREE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+D\+E\+G\+R\+EE~10}
+
+\mbox{\Hypertarget{generate_8h_a05d32bcb2eedd80b8f87713f1e85c30c}\label{generate_8h_a05d32bcb2eedd80b8f87713f1e85c30c}} 
+\index{generate.h@{generate.h}!NO\_INTER@{NO\_INTER}}
+\index{NO\_INTER@{NO\_INTER}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{NO\_INTER}{NO\_INTER}}
+{\footnotesize\ttfamily \#define N\+O\+\_\+\+I\+N\+T\+ER~0}
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{generate_8h_aa547ec944f973257bbe627bc8f944ddc}\label{generate_8h_aa547ec944f973257bbe627bc8f944ddc}} 
+\index{generate.h@{generate.h}!valeur@{valeur}}
+\index{valeur@{valeur}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{valeur}{valeur}}
+{\footnotesize\ttfamily typedef double \mbox{\hyperlink{generate_8h_aa547ec944f973257bbe627bc8f944ddc}{valeur}}}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7}\label{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7}} 
+\index{generate.h@{generate.h}!B@{B}}
+\index{B@{B}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{B}{B}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7}{B}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NO\_B@{NO\_B}!generate.h@{generate.h}}\index{generate.h@{generate.h}!NO\_B@{NO\_B}}}\mbox{\Hypertarget{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7a801bd765bd3de2f151462574bc04df74}\label{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7a801bd765bd3de2f151462574bc04df74}} 
+N\+O\+\_\+B&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CST@{CST}!generate.h@{generate.h}}\index{generate.h@{generate.h}!CST@{CST}}}\mbox{\Hypertarget{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7ad255a372ddc0de48e167dd98695694fc}\label{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7ad255a372ddc0de48e167dd98695694fc}} 
+C\+ST&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CST\_FROM\_EQ@{CST\_FROM\_EQ}!generate.h@{generate.h}}\index{generate.h@{generate.h}!CST\_FROM\_EQ@{CST\_FROM\_EQ}}}\mbox{\Hypertarget{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7aae751ddd657deab0252d0159ccaf962a}\label{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7aae751ddd657deab0252d0159ccaf962a}} 
+C\+S\+T\+\_\+\+F\+R\+O\+M\+\_\+\+EQ&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NB\_BAS\_POL@{NB\_BAS\_POL}!generate.h@{generate.h}}\index{generate.h@{generate.h}!NB\_BAS\_POL@{NB\_BAS\_POL}}}\mbox{\Hypertarget{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7aea7f9b521dcfb1e520c0ab6844112ab1}\label{generate_8h_a9d3d9048db16a7eee539e93e3618cbe7aea7f9b521dcfb1e520c0ab6844112ab1}} 
+N\+B\+\_\+\+B\+A\+S\+\_\+\+P\+OL&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139}\label{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139}} 
+\index{generate.h@{generate.h}!D@{D}}
+\index{D@{D}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{D}{D}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139}{D}}}
+
+
+
+4 -\/ Generating the code for simulating a network (according to the Model/\+Experiments framework) 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NO\_D@{NO\_D}!generate.h@{generate.h}}\index{generate.h@{generate.h}!NO\_D@{NO\_D}}}\mbox{\Hypertarget{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139adb59f4eb0efa3f5a9c3c98f693982f68}\label{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139adb59f4eb0efa3f5a9c3c98f693982f68}} 
+N\+O\+\_\+D&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PROP\_DEG@{PROP\_DEG}!generate.h@{generate.h}}\index{generate.h@{generate.h}!PROP\_DEG@{PROP\_DEG}}}\mbox{\Hypertarget{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139a49c47a05fea513d55c36b1ec765936a0}\label{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139a49c47a05fea513d55c36b1ec765936a0}} 
+P\+R\+O\+P\+\_\+\+D\+EG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NB\_DEG\_POL@{NB\_DEG\_POL}!generate.h@{generate.h}}\index{generate.h@{generate.h}!NB\_DEG\_POL@{NB\_DEG\_POL}}}\mbox{\Hypertarget{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139acc426852d4873ac4c9d99dcfcdce3d52}\label{generate_8h_a350bfcb1e3cfb28ddff48ce525d4f139acc426852d4873ac4c9d99dcfcdce3d52}} 
+N\+B\+\_\+\+D\+E\+G\+\_\+\+P\+OL&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{generate_8h_a6f87b3a2f46c93c9e6c04def89b39595}\label{generate_8h_a6f87b3a2f46c93c9e6c04def89b39595}} 
+\index{generate.h@{generate.h}!between@{between}}
+\index{between@{between}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{between()}{between()}}
+{\footnotesize\ttfamily vector$<$\mbox{\hyperlink{struct_graphe}{Graphe}}$\ast$$>$ between (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_graphe}{Graphe}}}]{Gbig,  }\item[{\mbox{\hyperlink{struct_graphe}{Graphe}}}]{Gsmall,  }\item[{int}]{new\+\_\+size = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+2 -\/ Very cool function \+: generate all subgraphs of Gbig containing the edges of Gsmall, (with new\+\_\+size interactions) Gsmall has to be already a sub-\/graph (same nodes and subset of edges), or an error is thrown. if new\+\_\+size = 0, generate all the corresponding graphs with all possible sizes. \mbox{\Hypertarget{generate_8h_a0079ff6ffda1079971719f89f12bd980}\label{generate_8h_a0079ff6ffda1079971719f89f12bd980}} 
+\index{generate.h@{generate.h}!generateActivFunction@{generateActivFunction}}
+\index{generateActivFunction@{generateActivFunction}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{generateActivFunction()}{generateActivFunction()}}
+{\footnotesize\ttfamily string generate\+Activ\+Function (\begin{DoxyParamCaption}\item[{int}]{nb\+Act,  }\item[{int}]{nb\+Inh }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{generate_8h_af9c441d9a8c5fd6a1e52437b99222458}\label{generate_8h_af9c441d9a8c5fd6a1e52437b99222458}} 
+\index{generate.h@{generate.h}!generateCostCodeFromData@{generateCostCodeFromData}}
+\index{generateCostCodeFromData@{generateCostCodeFromData}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{generateCostCodeFromData()}{generateCostCodeFromData()}}
+{\footnotesize\ttfamily string generate\+Cost\+Code\+From\+Data (\begin{DoxyParamCaption}\item[{string}]{,  }\item[{bool}]{Costs\+Per\+Curves = {\ttfamily true},  }\item[{string}]{time\+Unit = {\ttfamily string(\char`\"{}~DAY\char`\"{})} }\end{DoxyParamCaption})}
+
+5 -\/ Independent function to transform a kinetics in text file into a C++ cost function that can be used in a sub-\/class of Experiments \mbox{\Hypertarget{generate_8h_abb3717a18d2d6870b5682143fbf1a9cc}\label{generate_8h_abb3717a18d2d6870b5682143fbf1a9cc}} 
+\index{generate.h@{generate.h}!testeGraphManip@{testeGraphManip}}
+\index{testeGraphManip@{testeGraphManip}!generate.h@{generate.h}}
+\doxysubsubsection{\texorpdfstring{testeGraphManip()}{testeGraphManip()}}
+{\footnotesize\ttfamily void teste\+Graph\+Manip (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+

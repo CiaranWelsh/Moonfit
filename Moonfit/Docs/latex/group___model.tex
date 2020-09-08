@@ -1,0 +1,19 @@
+\hypertarget{group___model}{}\doxysection{Dynamical Model}
+\label{group___model}\index{Dynamical Model@{Dynamical Model}}
+
+
+An model is a class that can perform dynamical simulations. It contains its own parameter set.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_model}{Model}}
+\begin{DoxyCompactList}\small\item\em A general mother class to perform dynamical simulations. It contains its own parameter set and set of equations / rules to evolve over time. It is possible to give simulation options through a parameter called \textquotesingle{}background\textquotesingle{} (for instance WT or treated cells). You will need to program your own subclass of \mbox{\hyperlink{struct_model}{Model}}, so that you can use inherited function from this mother class. It pre-\/defines all basic functions for simulations and data management, including calling O\+DE solver. Agent-\/based models needs to use the derived \mbox{\hyperlink{structmodel_agent_based}{model\+Agent\+Based}} class as mother (see below). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structmodel_agent_based}{model\+Agent\+Based}}
+\begin{DoxyCompactList}\small\item\em A general mother class to perform agent-\/based dynamical simulations. It contains its own parameter set and variables, that will be observations of the agent-\/based model. The used needs to define a sub-\/class that will implement the functions /// time\+Step(...) and analyze\+State(...), on top of the functions required by the \mbox{\hyperlink{struct_model}{Model}} mother class. All functions of the \mbox{\hyperlink{struct_model}{Model}} class are available, except simulate(...), that calls time\+Step(...) instead of an O\+DE solver. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An model is a class that can perform dynamical simulations. It contains its own parameter set. 
+

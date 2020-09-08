@@ -1,0 +1,159 @@
+\hypertarget{struct_experiment}{}\doxysection{Experiment Struct Reference}
+\label{struct_experiment}\index{Experiment@{Experiment}}
+
+
+An experiment is the design of a simulation performed on a model. The same experiment can be performed on different models. An experiment can have several conditions. The \mbox{\hyperlink{struct_experiment}{Experiment}} class is used as mother class for each user-\/defined experiment, and implements all basic functions for simulations and data management.  
+
+
+
+
+{\ttfamily \#include $<$experiment.\+h$>$}
+
+Inheritance diagram for Experiment\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_experiment}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_experiment_a7cc167dd08b0bf60686c2de4ff4a9b6b}\label{struct_experiment_a7cc167dd08b0bf60686c2de4ff4a9b6b}} 
+{\bfseries Experiment} (\mbox{\hyperlink{struct_model}{Model}} $\ast$\+\_\+m, int \+\_\+nb\+Conditions, string \+\_\+\+Identification=\char`\"{}\char`\"{})
+\item 
+\mbox{\Hypertarget{struct_experiment_af548621377ea006b3c3bc915dd931d3e}\label{struct_experiment_af548621377ea006b3c3bc915dd931d3e}} 
+virtual void {\bfseries simulate} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL, bool force=false)
+\item 
+\mbox{\Hypertarget{struct_experiment_ac3427fd4530391d964017dfb3c03f730}\label{struct_experiment_ac3427fd4530391d964017dfb3c03f730}} 
+virtual void {\bfseries init} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_a5a9dd4f5df69e43c76d18bbc71c3ebda}\label{struct_experiment_a5a9dd4f5df69e43c76d18bbc71c3ebda}} 
+virtual double {\bfseries cost\+Variable\+In\+Model} (int species\+Global\+ID=-\/1)
+\item 
+\mbox{\Hypertarget{struct_experiment_a8b8c764545b701d85e20e10995e203ef}\label{struct_experiment_a8b8c764545b701d85e20e10995e203ef}} 
+virtual double {\bfseries cost\+External\+Variable} (string external\+Name)
+\item 
+\mbox{\Hypertarget{struct_experiment_a1f4adee8c6fdde3cb65050ac22072052}\label{struct_experiment_a1f4adee8c6fdde3cb65050ac22072052}} 
+virtual double {\bfseries cost\+Exp} (int Condition\+ID=-\/1)
+\item 
+\mbox{\Hypertarget{struct_experiment_af0e9c15454fd52a18df11b1506939e8a}\label{struct_experiment_af0e9c15454fd52a18df11b1506939e8a}} 
+virtual void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_a08d5d7e07224a3175efec2c02030b758}\label{struct_experiment_a08d5d7e07224a3175efec2c02030b758}} 
+virtual void {\bfseries simulate\+All} (bool force=false)
+\item 
+void \mbox{\hyperlink{struct_experiment_a53da2e60590331ec6ece5a812627846b}{mother\+Init}} ()
+\item 
+double \mbox{\hyperlink{struct_experiment_a4b767ac0a25e98334c280dee0901f8b2}{mother\+Cost\+Var\+In\+Model}} (int var\+ID=-\/1)
+\item 
+\mbox{\Hypertarget{struct_experiment_a9ca8af4cb1616303eb4d356e5c46b74f}\label{struct_experiment_a9ca8af4cb1616303eb4d356e5c46b74f}} 
+double {\bfseries mother\+Cost\+External\+Variable} (string ext\+Name=string())
+\item 
+\mbox{\Hypertarget{struct_experiment_abadd571e75164404825db873212e5744}\label{struct_experiment_abadd571e75164404825db873212e5744}} 
+double {\bfseries mother\+Cost\+Exp} (int I\+Dcondition=-\/1)
+\item 
+\mbox{\Hypertarget{struct_experiment_a9ada2b19863a98cb823e84a37d927823}\label{struct_experiment_a9ada2b19863a98cb823e84a37d927823}} 
+void {\bfseries mother\+Reset} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_acf12294ab8ea3364c6c5346542695ecf}\label{struct_experiment_acf12294ab8ea3364c6c5346542695ecf}} 
+bool {\bfseries mother\+Prepare\+Simulate} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$\&E, bool force)
+\item 
+\mbox{\Hypertarget{struct_experiment_aecb6f0a078b697d55350e1b5b3b98e21}\label{struct_experiment_aecb6f0a078b697d55350e1b5b3b98e21}} 
+void {\bfseries mother\+Simulate\+All} (bool force=false)
+\item 
+\mbox{\Hypertarget{struct_experiment_a980d0cf97fde8057c3ef2e07023268c7}\label{struct_experiment_a980d0cf97fde8057c3ef2e07023268c7}} 
+int {\bfseries get\+Nb\+Cond} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_a112a3f6a506bfed57e67c74b2cb429ba}\label{struct_experiment_a112a3f6a506bfed57e67c74b2cb429ba}} 
+string {\bfseries get\+Condition\+Name} (int i)
+\item 
+\mbox{\Hypertarget{struct_experiment_a74dcf332441e8dffb6fece638a0ee783}\label{struct_experiment_a74dcf332441e8dffb6fece638a0ee783}} 
+string {\bfseries print} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_a5a179d7673e39b6836f581474780eefc}\label{struct_experiment_a5a179d7673e39b6836f581474780eefc}} 
+double {\bfseries V} (int I\+Dexp, string Species, int time\+\_\+sec)
+\item 
+\mbox{\Hypertarget{struct_experiment_a79dee8e54cf805ecd8803c85a75a06b4}\label{struct_experiment_a79dee8e54cf805ecd8803c85a75a06b4}} 
+double {\bfseries expV} (int I\+Dexp, string Species, int time\+\_\+sec)
+\item 
+\mbox{\Hypertarget{struct_experiment_a81915c711c06c29c7538c42289378355}\label{struct_experiment_a81915c711c06c29c7538c42289378355}} 
+double {\bfseries get\+Penalities} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_a20b01296dd428ca3b4ccc9de30343e6f}\label{struct_experiment_a20b01296dd428ca3b4ccc9de30343e6f}} 
+void {\bfseries give\+Data} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$kinetic\+Data, int Id\+Exp, \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$kinetic\+Stds=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{struct_experiment_a5fef30315e2a075263c5b04213ca6303}\label{struct_experiment_a5fef30315e2a075263c5b04213ca6303}} 
+void {\bfseries load\+Evaluators} ()
+\item 
+\mbox{\Hypertarget{struct_experiment_a611ff1be6cb655ddb3b946ed1971a34a}\label{struct_experiment_a611ff1be6cb655ddb3b946ed1971a34a}} 
+void {\bfseries set\+Overrider} (int Id\+Exp, \mbox{\hyperlink{structoverrider}{overrider}} $\ast$\+\_\+ov=N\+U\+LL)
+\item 
+\mbox{\Hypertarget{struct_experiment_aa6d8186005c06757bd2f11d01f224a31}\label{struct_experiment_aa6d8186005c06757bd2f11d01f224a31}} 
+void \mbox{\hyperlink{struct_experiment_aa6d8186005c06757bd2f11d01f224a31}{override\+Variable}} (string ext\+Var\+Name, bool override=true, int Id\+Exp=-\/1)
+\begin{DoxyCompactList}\small\item\em C\+A\+R\+E\+F\+U\+LL, the overriders will erase those from the model ... \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_experiment_a8d080aefc9024b379676b8ab6bf6ab6d}\label{struct_experiment_a8d080aefc9024b379676b8ab6bf6ab6d}} 
+bool {\bfseries can\+Override} (string ext\+Var\+Name, int Id\+Exp=-\/1)
+\item 
+\mbox{\Hypertarget{struct_experiment_a6476bde702d9ef91f74b2f994a74b87b}\label{struct_experiment_a6476bde702d9ef91f74b2f994a74b87b}} 
+string {\bfseries extract\+Data} (vector$<$ int $>$ time\+Points, vector$<$ string $>$ ext\+Names\+To\+Select, vector$<$ int $>$ I\+Dexps=vector$<$ int $>$())
+\item 
+\mbox{\Hypertarget{struct_experiment_a07fb6fccf951f1efc518d7bb98923932}\label{struct_experiment_a07fb6fccf951f1efc518d7bb98923932}} 
+string {\bfseries cost\+Report} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_experiment_a9b07f0f21b8b5f65b9c396092f5f3288}\label{struct_experiment_a9b07f0f21b8b5f65b9c396092f5f3288}} 
+\mbox{\hyperlink{struct_model}{Model}} $\ast$ {\bfseries m}
+\item 
+\mbox{\Hypertarget{struct_experiment_a04069295a8ef6c1f273ea56a1ee03a46}\label{struct_experiment_a04069295a8ef6c1f273ea56a1ee03a46}} 
+int {\bfseries nb\+Conditions}
+\item 
+\mbox{\Hypertarget{struct_experiment_ae6113dab1e5372692bc29752399bc1b4}\label{struct_experiment_ae6113dab1e5372692bc29752399bc1b4}} 
+string {\bfseries Identification}
+\item 
+\mbox{\Hypertarget{struct_experiment_a072945295db938c3f4bbe86cf9c2d013}\label{struct_experiment_a072945295db938c3f4bbe86cf9c2d013}} 
+vector$<$ string $>$ {\bfseries names\+\_\+exp}
+\item 
+\mbox{\Hypertarget{struct_experiment_a8e14a922517024e5a842afadc1f48bbc}\label{struct_experiment_a8e14a922517024e5a842afadc1f48bbc}} 
+vector$<$ \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$ $>$ {\bfseries V\+TG}
+\item 
+\mbox{\Hypertarget{struct_experiment_a4f58ec8a408fd177c36beec724dcf6c1}\label{struct_experiment_a4f58ec8a408fd177c36beec724dcf6c1}} 
+double {\bfseries total\+Penalities}
+\item 
+\mbox{\Hypertarget{struct_experiment_a90f8a2821a2308848d6f0e931d00a7ac}\label{struct_experiment_a90f8a2821a2308848d6f0e931d00a7ac}} 
+vector$<$ vector$<$ \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$ $>$ $>$ {\bfseries Exp\+Data}
+\item 
+\mbox{\Hypertarget{struct_experiment_ad4fac06b114b173f1de9a4f82e5e7775}\label{struct_experiment_ad4fac06b114b173f1de9a4f82e5e7775}} 
+vector$<$ vector$<$ \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$ $>$ $>$ {\bfseries Exp\+Std\+Devs}
+\item 
+\mbox{\Hypertarget{struct_experiment_a02a18d442ec7a0da6257a269c9889b64}\label{struct_experiment_a02a18d442ec7a0da6257a269c9889b64}} 
+vector$<$ \mbox{\hyperlink{structoverrider}{overrider}} $\ast$ $>$ {\bfseries Overs}
+\item 
+\mbox{\Hypertarget{struct_experiment_ac0d030e542aea7108a59d248ced0d7ab}\label{struct_experiment_ac0d030e542aea7108a59d248ced0d7ab}} 
+bool {\bfseries evaluator\+Loaded}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An experiment is the design of a simulation performed on a model. The same experiment can be performed on different models. An experiment can have several conditions. The \mbox{\hyperlink{struct_experiment}{Experiment}} class is used as mother class for each user-\/defined experiment, and implements all basic functions for simulations and data management. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_experiment_a4b767ac0a25e98334c280dee0901f8b2}\label{struct_experiment_a4b767ac0a25e98334c280dee0901f8b2}} 
+\index{Experiment@{Experiment}!motherCostVarInModel@{motherCostVarInModel}}
+\index{motherCostVarInModel@{motherCostVarInModel}!Experiment@{Experiment}}
+\doxysubsubsection{\texorpdfstring{motherCostVarInModel()}{motherCostVarInModel()}}
+{\footnotesize\ttfamily double Experiment\+::mother\+Cost\+Var\+In\+Model (\begin{DoxyParamCaption}\item[{int}]{var\+ID = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+else cerr $<$$<$ \char`\"{}\+Note \+: Exp \char`\"{} $<$$<$ i $<$$<$ \char`\"{} Has no data\char`\"{} $<$$<$ endl;\mbox{\Hypertarget{struct_experiment_a53da2e60590331ec6ece5a812627846b}\label{struct_experiment_a53da2e60590331ec6ece5a812627846b}} 
+\index{Experiment@{Experiment}!motherInit@{motherInit}}
+\index{motherInit@{motherInit}!Experiment@{Experiment}}
+\doxysubsubsection{\texorpdfstring{motherInit()}{motherInit()}}
+{\footnotesize\ttfamily void Experiment\+::mother\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Requires ??
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Framework/experiment.\+h\item 
+Framework/experiment.\+cpp\end{DoxyCompactItemize}

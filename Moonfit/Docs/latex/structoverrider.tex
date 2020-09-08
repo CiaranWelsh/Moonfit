@@ -1,0 +1,72 @@
+\hypertarget{structoverrider}{}\doxysection{overrider Struct Reference}
+\label{structoverrider}\index{overrider@{overrider}}
+
+
+A class to store multiple curves interpolated from experimental data points.  
+
+
+
+
+{\ttfamily \#include $<$overrider.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___overrider_gaf04a7599569d2e5c28e525ddd512e151}\label{group___overrider_gaf04a7599569d2e5c28e525ddd512e151}} 
+enum {\bfseries type\+Data} \{ {\bfseries N\+O\+D\+A\+TA}, 
+{\bfseries S\+P\+L\+I\+NE}, 
+{\bfseries F\+U\+N\+C\+T\+I\+ON}, 
+{\bfseries N\+B\+D\+A\+T\+A\+T\+Y\+P\+ES}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries overrider} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$kinetics, bool use\+Splines=false)
+\item 
+void {\bfseries reset} ()
+\item 
+void {\bfseries extend} (int new\+Nb\+Indices)
+\item 
+int {\bfseries get\+ID} (key ext\+Name\+Variable)
+\item 
+bool \mbox{\hyperlink{group___overrider_gadfcbaf61101f59a98e2cc6c15495b2ed}{has\+Data}} (key index)
+\begin{DoxyCompactList}\small\item\em 2 -\/ Accessing the data \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{group___overrider_gabab7d7bfc9a1dd4b3813ba2d62c43d02}{operator()}} (key index, double value)
+\begin{DoxyCompactList}\small\item\em returns false if N\+O\+D\+A\+TA or if index $>$ nb\+Indices \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___overrider_ga207c2ddf0d2564e2b30242f9bdefd49f}{learn\+Spl}} (key index, vector$<$ double $>$ xs, vector$<$ double $>$ ys, bool yes\+Splno\+Linear\+Interpol)
+\begin{DoxyCompactList}\small\item\em gets interpolated value for curve nr index, at time value. if nodata, returns -\/1 \end{DoxyCompactList}\item 
+void {\bfseries learn\+Funct} (key index, double($\ast$f)(double))
+\item 
+bool \mbox{\hyperlink{group___overrider_ga20b3e89c0936022ad16375dc3db2e32d}{operator()}} (key index)
+\begin{DoxyCompactList}\small\item\em decision, for each curve, to use it or not to replace a variable during simulation \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___overrider_gab57ea8642e38400e6377a9c5937d8682}{set\+Over}} (key name\+Var=string(\char`\"{}\char`\"{}), bool value=true)
+\begin{DoxyCompactList}\small\item\em returns override\mbox{[}i\mbox{]}. Returns false if out of bounds. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{group___overrider_ga59cf53d772b9fdf08eedbad9736ebcb5}{print}} ()
+\begin{DoxyCompactList}\small\item\em to decide which curve to override for later simulations. Use index = -\/1 to override everything \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{group___overrider_ga7d4ddbd90f4872300844be5830ec3e33}{nb\+Indices}}
+\begin{DoxyCompactList}\small\item\em 1 -\/ Data storage \+: list of curves stored as spline or function \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group___overrider_ga73c7fb0fd8854330dc3b8e49d3c7a68a}{nb\+I\+Ds\+Given}}
+\begin{DoxyCompactList}\small\item\em Number of space allocated. \end{DoxyCompactList}\item 
+vector$<$ type\+Data $>$ {\bfseries type\+Storage}
+\item 
+vector$<$ \mbox{\hyperlink{classtk_1_1spline}{tk\+::spline}} $\ast$ $>$ \mbox{\hyperlink{group___overrider_ga05d16d4a5c1a72adb76bb9b917f96028}{data\+Spl}}
+\begin{DoxyCompactList}\small\item\em Each curve can be function / interpolated tata. \end{DoxyCompactList}\item 
+vector$<$ double($\ast$)(double)$>$ \mbox{\hyperlink{group___overrider_ga9c6525fe7344bafd8a0ba37f1e79f211}{data\+Funct}}
+\begin{DoxyCompactList}\small\item\em Storage as a spline for each curve. \end{DoxyCompactList}\item 
+std\+::map$<$ key, int $>$ \mbox{\hyperlink{group___overrider_gab83401d5c8ceeae01795204a45cd058a}{name2\+ID}}
+\begin{DoxyCompactList}\small\item\em OR \+: storage as a function (double -\/-\/$>$ double) \end{DoxyCompactList}\item 
+vector$<$ bool $>$ \mbox{\hyperlink{group___overrider_gadd8c1fba170e4e012ffb1f942142b9b5}{override}}
+\begin{DoxyCompactList}\small\item\em 4 -\/ Storage to decide for each curve, if it will be used to replace data or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to store multiple curves interpolated from experimental data points. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Framework/overrider.\+h\item 
+Framework/overrider.\+cpp\end{DoxyCompactItemize}

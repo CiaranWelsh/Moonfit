@@ -1,0 +1,220 @@
+\hypertarget{classmanage_sims}{}\doxysection{manage\+Sims Class Reference}
+\label{classmanage_sims}\index{manageSims@{manageSims}}
+
+
+main mother class, to perform simulations, optimizations, load configuration files, saving results as tables, etc. it has all the functions we might want to use without graphical interface. Note\+: To optimize, we give this class to the optimizer, optimizer does what he wants, changes the parameters and calls \mbox{\hyperlink{classmanage_sims_ae7da788cc26e8372b68de240ed5ca502}{get\+Cost()}} and this class records the sets it was asked to simulate (so a black optimizer can be used).  
+
+
+
+
+{\ttfamily \#include $<$simuwin.\+h$>$}
+
+Inheritance diagram for manage\+Sims\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classmanage_sims}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmanage_sims_ac735bcd12dfa726fa1aab02f55604c86}\label{classmanage_sims_ac735bcd12dfa726fa1aab02f55604c86}} 
+{\bfseries manage\+Sims} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$\+\_\+\+Exp)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a6be178cf2a7d4217261be8119f9013f8}\label{classmanage_sims_a6be178cf2a7d4217261be8119f9013f8}} 
+{\bfseries manage\+Sims} (\mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} $\ast$\+\_\+\+Exp)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a66d52a0641e161305ae9ae85c8aa715b}\label{classmanage_sims_a66d52a0641e161305ae9ae85c8aa715b}} 
+virtual void \mbox{\hyperlink{classmanage_sims_a66d52a0641e161305ae9ae85c8aa715b}{simulate}} ()
+\begin{DoxyCompactList}\small\item\em Module 1 (independent) \+: performing a simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_ae42c0c61595117deeefa1ddda5fbfdf2}\label{classmanage_sims_ae42c0c61595117deeefa1ddda5fbfdf2}} 
+bool \mbox{\hyperlink{classmanage_sims_ae42c0c61595117deeefa1ddda5fbfdf2}{is\+Multi\+Experiments}} ()
+\begin{DoxyCompactList}\small\item\em to save the kinetics of the last simulation \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{classmanage_sims_ae7da788cc26e8372b68de240ed5ca502}{get\+Cost}} ()
+\begin{DoxyCompactList}\small\item\em Module 2 (depends on module 1) \+: optimization \+: -\/$>$ vector$<$double$>$ parameters; is inherited from General\+Implementation, together with the functions set\+Parameter, etc -\/$>$ the function get\+Cost has to be implemented and will be called from the optimizer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a68faa37c6c5b5b1f6ee53dec4ab26286}\label{classmanage_sims_a68faa37c6c5b5b1f6ee53dec4ab26286}} 
+virtual void {\bfseries save\+History} (string \+\_\+name=string(\char`\"{}\char`\"{}))
+\item 
+\mbox{\Hypertarget{classmanage_sims_a0bb9cd791f9242a07b297dfdab4730f1}\label{classmanage_sims_a0bb9cd791f9242a07b297dfdab4730f1}} 
+virtual void {\bfseries load\+History} (string \+\_\+name=string(\char`\"{}\char`\"{}))
+\item 
+\mbox{\Hypertarget{classmanage_sims_af13d48ac1689290977f68dbcc0b8d38e}\label{classmanage_sims_af13d48ac1689290977f68dbcc0b8d38e}} 
+vector$<$ double $>$ {\bfseries best\+Set\+From\+History} ()
+\item 
+\mbox{\Hypertarget{classmanage_sims_ac5d3e3e300c6248db7e7acdc7dcbc7ed}\label{classmanage_sims_ac5d3e3e300c6248db7e7acdc7dcbc7ed}} 
+void {\bfseries save\+Best\+Set\+From\+History} (string \+\_\+name)
+\item 
+vector$<$ double $>$ \mbox{\hyperlink{classmanage_sims_a559c0b2a30bf432caff8f57e97f5f524}{use\+Param\+Set\+From\+History}} (int index\+Set, int index\+Comb\+To\+Override=-\/1)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a7099e79777bc031402a3e9297c8fe493}\label{classmanage_sims_a7099e79777bc031402a3e9297c8fe493}} 
+virtual string \mbox{\hyperlink{classmanage_sims_a7099e79777bc031402a3e9297c8fe493}{load\+Config}} (string \+\_\+name)
+\begin{DoxyCompactList}\small\item\em Module 3 \+: handling configurations (only depends/works on the current\+Model) note \+: \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} is not made to manually modify a configuration. Only reads/writes file. \mbox{\hyperlink{classsimu_win}{simu\+Win}} provides on top the graphical interface to modifu the configuration; if you don\textquotesingle{}t want to use the G\+UI, then change the text file of the configuration itself and update it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a00e136c7e423ba29feee1a367b406b82}\label{classmanage_sims_a00e136c7e423ba29feee1a367b406b82}} 
+virtual void {\bfseries save\+Config} (string \+\_\+name)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a4c4ef0bf4093dccf512b9a1ce3a64c72}\label{classmanage_sims_a4c4ef0bf4093dccf512b9a1ce3a64c72}} 
+string \mbox{\hyperlink{classmanage_sims_a4c4ef0bf4093dccf512b9a1ce3a64c72}{reset\+Param\+Set\+From\+Config}} (string \+\_\+name)
+\begin{DoxyCompactList}\small\item\em Phi \+: I have the impression this function could be merged with the previous one. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a1dd5e1f5611aec789902a7e752ebfffa}\label{classmanage_sims_a1dd5e1f5611aec789902a7e752ebfffa}} 
+void {\bfseries update\+Config\+Params\+From\+Model} ()
+\item 
+\mbox{\Hypertarget{classmanage_sims_acd50e8cf93bdae456d50fd4715a6d8a1}\label{classmanage_sims_acd50e8cf93bdae456d50fd4715a6d8a1}} 
+void {\bfseries reset\+Config\+From\+Model} ()
+\item 
+\mbox{\Hypertarget{classmanage_sims_abfea65af536a1b2452841b5c79de39de}\label{classmanage_sims_abfea65af536a1b2452841b5c79de39de}} 
+bool \mbox{\hyperlink{classmanage_sims_abfea65af536a1b2452841b5c79de39de}{is\+In\+Config}} (int id\+Parameter, int id\+Config)
+\begin{DoxyCompactList}\small\item\em ====================== Configuration $<$=$>$ \mbox{\hyperlink{struct_model}{Model}} (independent of the current experiment) ========================== \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_afc647da56f3af63118945b38ba51937d}\label{classmanage_sims_afc647da56f3af63118945b38ba51937d}} 
+vector$<$ int $>$ {\bfseries parameters\+In\+Config} (int id\+Config)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a93ebe710cdca7b8effa4b9aadabf387b}\label{classmanage_sims_a93ebe710cdca7b8effa4b9aadabf387b}} 
+string \mbox{\hyperlink{classmanage_sims_a93ebe710cdca7b8effa4b9aadabf387b}{get\+Macro}} ()
+\begin{DoxyCompactList}\small\item\em Module 4 \+: (independent) get track of the function called and gives the C++ code equivalent to it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_ad905adba662edc6c783593ac5196768f}\label{classmanage_sims_ad905adba662edc6c783593ac5196768f}} 
+void {\bfseries start\+Macro} (string experiment\+Name=string(\char`\"{}My\+Experiment\char`\"{}))
+\item 
+\mbox{\Hypertarget{classmanage_sims_a7b846c0413fcedd763de0b69a9106a9d}\label{classmanage_sims_a7b846c0413fcedd763de0b69a9106a9d}} 
+void {\bfseries add\+Macro} (string text)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a9524b7ae6d6ea02ccf4277b92444ce95}\label{classmanage_sims_a9524b7ae6d6ea02ccf4277b92444ce95}} 
+void {\bfseries add\+File\+Text\+To\+Macro} (string text, string file\+Name=string(\char`\"{}\char`\"{}))
+\item 
+\mbox{\Hypertarget{classmanage_sims_af1f91fe64c0a6a2e28553a73516fc9cd}\label{classmanage_sims_af1f91fe64c0a6a2e28553a73516fc9cd}} 
+void {\bfseries add\+File\+To\+Macro} (string file\+Name)
+\item 
+void \mbox{\hyperlink{classmanage_sims_a83a41df920762487d102705d9073953b}{mother\+Optimize}} (string opt\+Text, int nb\+Sets\+To\+Record)
+\begin{DoxyCompactList}\small\item\em Module 5 \+: Elaborate functions of the mother class to replace what the interface was doing. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a04639de286cde5a6805bc202f99fad39}\label{classmanage_sims_a04639de286cde5a6805bc202f99fad39}} 
+void {\bfseries mother\+Override\+Using\+Comb} (int new\+Index)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a9873ea76ef585f4b478316d4f3a56a71}\label{classmanage_sims_a9873ea76ef585f4b478316d4f3a56a71}} 
+string {\bfseries mother\+Create\+Optimizer\+File} (int index\+Comb, string opt\+Method\+Text, int parameter\+To\+Exclude=-\/1)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a3b2bbaaeea714a1a40817470d6fcf5ed}\label{classmanage_sims_a3b2bbaaeea714a1a40817470d6fcf5ed}} 
+string {\bfseries make\+Text\+Report\+Param\+Set} (string \+\_\+folder, int configuration, double sim\+Dt=-\/1, double display\+Dt=-\/1)
+\item 
+\mbox{\Hypertarget{classmanage_sims_aa7f02e813191d4e43c66d41b3913b145}\label{classmanage_sims_aa7f02e813191d4e43c66d41b3913b145}} 
+void {\bfseries mother\+Sensitivity} (vector$<$ double $>$ \&initial\+Set, int parameter\+Index, int nb\+Points=-\/1)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a7ea04a297cb051d336f093f7cd17b738}\label{classmanage_sims_a7ea04a297cb051d336f093f7cd17b738}} 
+void {\bfseries mother\+Recursive\+Sensitivity} (vector$<$ double $>$ \&initial\+Set, int parameter\+Index, int nb\+Points, bool logarithmic, double base, double vstart, double vending, int deep\+Level)
+\item 
+\mbox{\Hypertarget{classmanage_sims_ab93b2a46c2071a8bc14f992cc1678a3f}\label{classmanage_sims_ab93b2a46c2071a8bc14f992cc1678a3f}} 
+void {\bfseries mother\+Identifiability} (vector$<$ double $>$ \&initial\+Set, int parameter\+Index)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a2c98cd1ef8fb8baa806a84a3ea5d3ced}\label{classmanage_sims_a2c98cd1ef8fb8baa806a84a3ea5d3ced}} 
+void {\bfseries mother\+Recursive\+Identifibiality} (vector$<$ double $>$ \&initial\+Set, int parameter\+Index, int nb\+Points, bool logarithmic, double base, double vstart, double vending, int deep\+Level)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a3ff737d2a3631b42e184039de713c53d}\label{classmanage_sims_a3ff737d2a3631b42e184039de713c53d}} 
+void {\bfseries make\+Identifibiality\+Report} (int parameter\+ID, string existing\+Base\+Folder, int current\+Config\+ID=-\/1)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a529905b40c13f96fc4d04c5fcc40a859}\label{classmanage_sims_a529905b40c13f96fc4d04c5fcc40a859}} 
+void {\bfseries prepare\+Opt\+Files\+For\+Identifibiality} (string folder, int parameter\+Index, int index\+Comb, string opt\+Method\+Text)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a14100925ba765d07e3a68355fcfc3ffd}\label{classmanage_sims_a14100925ba765d07e3a68355fcfc3ffd}} 
+void {\bfseries switch\+To\+Perturbated\+Experiment} (int I\+Dcondition, int I\+Dparameter, int nb\+Curves)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a0647c3343abef39882ec547c8d8ae4f5}\label{classmanage_sims_a0647c3343abef39882ec547c8d8ae4f5}} 
+void {\bfseries switch\+To\+Comparing\+Experiment} (int I\+Dcondition, int nb\+Sets\+To\+Comp)
+\item 
+\mbox{\Hypertarget{classmanage_sims_a32b1b53b530a96201df0c91ea07a4605}\label{classmanage_sims_a32b1b53b530a96201df0c91ea07a4605}} 
+void {\bfseries switch\+Back\+Normal\+Mode} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmanage_sims_ab6b28f337fd78f99a3a659b522209004}\label{classmanage_sims_ab6b28f337fd78f99a3a659b522209004}} 
+\mbox{\hyperlink{group___g_u_i_ga811fe196a5d9d37857c2f8adeeaac3c6}{modes}} {\bfseries current\+Mode}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a7439b34bf28f0a43047936a6ffee71bc}\label{classmanage_sims_a7439b34bf28f0a43047936a6ffee71bc}} 
+\mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} $\ast$ \mbox{\hyperlink{classmanage_sims_a7439b34bf28f0a43047936a6ffee71bc}{list\+Experiments}}
+\begin{DoxyCompactList}\small\item\em call the simulate function for each sub-\/experiment \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a6a50c32deaa82c4ea0895ce7dad35c03}\label{classmanage_sims_a6a50c32deaa82c4ea0895ce7dad35c03}} 
+\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ \mbox{\hyperlink{classmanage_sims_a6a50c32deaa82c4ea0895ce7dad35c03}{current\+Experiment}}
+\begin{DoxyCompactList}\small\item\em the list of experiments that are all simulated (N\+U\+LL = mode one experiment only) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a204980e276fa482e05518b45798afc9a}\label{classmanage_sims_a204980e276fa482e05518b45798afc9a}} 
+\mbox{\hyperlink{struct_model}{Model}} $\ast$ \mbox{\hyperlink{classmanage_sims_a204980e276fa482e05518b45798afc9a}{current\+Model}}
+\begin{DoxyCompactList}\small\item\em the experiment that is currently D\+I\+S\+P\+L\+A\+Y\+ED \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmanage_sims_a0ea71ef3aa0d716dd68a3f1255b4f4b8}\label{classmanage_sims_a0ea71ef3aa0d716dd68a3f1255b4f4b8}} 
+vector$<$ \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$ $>$ {\bfseries current\+Data}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a15dd0856bc7c179f7a6f14f85739fa46}\label{classmanage_sims_a15dd0856bc7c179f7a6f14f85739fa46}} 
+\mbox{\hyperlink{structp_sets}{p\+Sets}} {\bfseries history}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a063cf4fdad836d12d8ef16ea255c932c}\label{classmanage_sims_a063cf4fdad836d12d8ef16ea255c932c}} 
+int {\bfseries nb\+Cost\+Calls}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a663f2613125941ccfd397b394e03a28e}\label{classmanage_sims_a663f2613125941ccfd397b394e03a28e}} 
+\mbox{\hyperlink{structevolution}{evolution}} {\bfseries cost\+Records}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a16963558da25588bde5b7783f0b5e984}\label{classmanage_sims_a16963558da25588bde5b7783f0b5e984}} 
+bool {\bfseries currently\+Optimizing}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a59ca2750b68a0183f3ed34e6b21b7841}\label{classmanage_sims_a59ca2750b68a0183f3ed34e6b21b7841}} 
+bool {\bfseries stop\+Opt}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a376b9ef23814aa1d95a0bf9f487f3a2b}\label{classmanage_sims_a376b9ef23814aa1d95a0bf9f487f3a2b}} 
+int {\bfseries nb\+Combs}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a40ec600b728f5298dcf37b6fada0b20f}\label{classmanage_sims_a40ec600b728f5298dcf37b6fada0b20f}} 
+vector$<$ vector$<$ string $>$ $>$ {\bfseries current\+Config}
+\item 
+\mbox{\Hypertarget{classmanage_sims_ab37cd714400799cdffeda86b552cba72}\label{classmanage_sims_ab37cd714400799cdffeda86b552cba72}} 
+bool {\bfseries recording}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a225cf81d9885d38082bcfcd721808fdb}\label{classmanage_sims_a225cf81d9885d38082bcfcd721808fdb}} 
+stringstream {\bfseries current\+Macro}
+\item 
+\mbox{\Hypertarget{classmanage_sims_ad7e52f11d04e4c5c1cb902f919738080}\label{classmanage_sims_ad7e52f11d04e4c5c1cb902f919738080}} 
+int {\bfseries macro\+ID}
+\item 
+\mbox{\Hypertarget{classmanage_sims_ae49e858bd3a27d70856969f10ae34fde}\label{classmanage_sims_ae49e858bd3a27d70856969f10ae34fde}} 
+vector$<$ \mbox{\hyperlink{structone_parameter_analysis}{one\+Parameter\+Analysis}} $\ast$ $>$ {\bfseries sensitivities}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a117d6d7963ba2eb3e538d697e4747fbf}\label{classmanage_sims_a117d6d7963ba2eb3e538d697e4747fbf}} 
+vector$<$ \mbox{\hyperlink{structone_parameter_analysis}{one\+Parameter\+Analysis}} $\ast$ $>$ {\bfseries identifiabilities}
+\item 
+\mbox{\Hypertarget{classmanage_sims_a5f705c7ca4cd93237f674caaf5063dbe}\label{classmanage_sims_a5f705c7ca4cd93237f674caaf5063dbe}} 
+vector$<$ string $>$ {\bfseries opt\+File\+Names\+Identifiability}
+\item 
+\mbox{\Hypertarget{classmanage_sims_aaedece923e812522e8dedf135758bc3d}\label{classmanage_sims_aaedece923e812522e8dedf135758bc3d}} 
+\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries saved\+Experiment}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+main mother class, to perform simulations, optimizations, load configuration files, saving results as tables, etc. it has all the functions we might want to use without graphical interface. Note\+: To optimize, we give this class to the optimizer, optimizer does what he wants, changes the parameters and calls \mbox{\hyperlink{classmanage_sims_ae7da788cc26e8372b68de240ed5ca502}{get\+Cost()}} and this class records the sets it was asked to simulate (so a black optimizer can be used). 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classmanage_sims_ae7da788cc26e8372b68de240ed5ca502}\label{classmanage_sims_ae7da788cc26e8372b68de240ed5ca502}} 
+\index{manageSims@{manageSims}!getCost@{getCost}}
+\index{getCost@{getCost}!manageSims@{manageSims}}
+\doxysubsubsection{\texorpdfstring{getCost()}{getCost()}}
+{\footnotesize\ttfamily double manage\+Sims\+::get\+Cost (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Module 2 (depends on module 1) \+: optimization \+: -\/$>$ vector$<$double$>$ parameters; is inherited from General\+Implementation, together with the functions set\+Parameter, etc -\/$>$ the function get\+Cost has to be implemented and will be called from the optimizer. 
+
+=============================== Part Class without graphical interface ======================== \mbox{\Hypertarget{classmanage_sims_a83a41df920762487d102705d9073953b}\label{classmanage_sims_a83a41df920762487d102705d9073953b}} 
+\index{manageSims@{manageSims}!motherOptimize@{motherOptimize}}
+\index{motherOptimize@{motherOptimize}!manageSims@{manageSims}}
+\doxysubsubsection{\texorpdfstring{motherOptimize()}{motherOptimize()}}
+{\footnotesize\ttfamily void manage\+Sims\+::mother\+Optimize (\begin{DoxyParamCaption}\item[{string}]{opt\+File\+Name,  }\item[{int}]{nb\+Sets\+To\+Record }\end{DoxyParamCaption})}
+
+
+
+Module 5 \+: Elaborate functions of the mother class to replace what the interface was doing. 
+
+Optimizes according to the current settings of the model\+: overriding variables and defining parameter boundaries should have been done before calling this function. \mbox{\Hypertarget{classmanage_sims_a559c0b2a30bf432caff8f57e97f5f524}\label{classmanage_sims_a559c0b2a30bf432caff8f57e97f5f524}} 
+\index{manageSims@{manageSims}!useParamSetFromHistory@{useParamSetFromHistory}}
+\index{useParamSetFromHistory@{useParamSetFromHistory}!manageSims@{manageSims}}
+\doxysubsubsection{\texorpdfstring{useParamSetFromHistory()}{useParamSetFromHistory()}}
+{\footnotesize\ttfamily vector$<$ double $>$ manage\+Sims\+::use\+Param\+Set\+From\+History (\begin{DoxyParamCaption}\item[{int}]{index\+Set,  }\item[{int}]{index\+Comb\+To\+Override = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+returns the new list of parameters by \char`\"{}replacing\char`\"{} the parameters from index\+Set, $\ast$$\ast$$\ast$$\ast$ according to the configuration $\ast$$\ast$$\ast$$\ast$, 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Interface/simuwin.\+h\item 
+Interface/simuwin.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,40 @@
+\hypertarget{modele_8cpp}{}\doxysection{C\+:/\+Users/pprobert/\+Desktop/\+New\+Archaeropteryx/\+Sources/\+Moonfit/\+Framework/modele.cpp File Reference}
+\label{modele_8cpp}\index{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/modele.cpp@{C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Moonfit/Framework/modele.cpp}}
+{\ttfamily \#include \char`\"{}modele.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classmy_sim}{my\+Sim}}
+\begin{DoxyCompactList}\small\item\em ======================= O\+DE Solver (defined with the same interface than B\+O\+O\+ST) =============================== \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{modele_8cpp_ac3da64b0d87562df2a6e0a39ee8c60ac}{eval\+Err}} (vector$<$ double $>$ \&v1ref, vector$<$ double $>$ \&v2, int size)
+\begin{DoxyCompactList}\small\item\em a function to evalute the percent of error between two vectors (for comparing dt time step versus two times dt/2) \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{modele_8cpp_a41bcdc8806fbbcee92e0426d2662f9f6}{myintegrate}} (\mbox{\hyperlink{classmy_sim}{my\+Sim}} BS, vector$<$ double $>$ \&start, double t, double nxt, double dtmin)
+\begin{DoxyCompactList}\small\item\em Integrates the O\+D\+Es (in the model in \mbox{\hyperlink{classmy_sim}{my\+Sim}}), updating the start vector, from t to nxt, with the minimum dt dtmin (and maximum dt dtmin $\ast$ 500, starting from dtmin $\ast$ 10) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{modele_8cpp_ac3da64b0d87562df2a6e0a39ee8c60ac}\label{modele_8cpp_ac3da64b0d87562df2a6e0a39ee8c60ac}} 
+\index{modele.cpp@{modele.cpp}!evalErr@{evalErr}}
+\index{evalErr@{evalErr}!modele.cpp@{modele.cpp}}
+\doxysubsubsection{\texorpdfstring{evalErr()}{evalErr()}}
+{\footnotesize\ttfamily double eval\+Err (\begin{DoxyParamCaption}\item[{vector$<$ double $>$ \&}]{v1ref,  }\item[{vector$<$ double $>$ \&}]{v2,  }\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+a function to evalute the percent of error between two vectors (for comparing dt time step versus two times dt/2) 
+
+\mbox{\Hypertarget{modele_8cpp_a41bcdc8806fbbcee92e0426d2662f9f6}\label{modele_8cpp_a41bcdc8806fbbcee92e0426d2662f9f6}} 
+\index{modele.cpp@{modele.cpp}!myintegrate@{myintegrate}}
+\index{myintegrate@{myintegrate}!modele.cpp@{modele.cpp}}
+\doxysubsubsection{\texorpdfstring{myintegrate()}{myintegrate()}}
+{\footnotesize\ttfamily size\+\_\+t myintegrate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmy_sim}{my\+Sim}}}]{BS,  }\item[{vector$<$ double $>$ \&}]{start,  }\item[{double}]{t,  }\item[{double}]{nxt,  }\item[{double}]{dtmin }\end{DoxyParamCaption})}
+
+
+
+Integrates the O\+D\+Es (in the model in \mbox{\hyperlink{classmy_sim}{my\+Sim}}), updating the start vector, from t to nxt, with the minimum dt dtmin (and maximum dt dtmin $\ast$ 500, starting from dtmin $\ast$ 10) 
+

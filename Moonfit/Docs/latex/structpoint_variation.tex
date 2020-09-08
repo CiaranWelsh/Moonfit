@@ -1,0 +1,76 @@
+\hypertarget{structpoint_variation}{}\doxysection{point\+Variation Struct Reference}
+\label{structpoint_variation}\index{pointVariation@{pointVariation}}
+
+
+4a -\/ one parameter set (with additional information)  
+
+
+
+
+{\ttfamily \#include $<$parameter\+Sets.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structpoint_variation_a8291615b1fa31f725daf70fecda7694d}{point\+Variation}} (int \+\_\+index\+Parameter, double \+\_\+val, double \+\_\+cost, vector$<$ double $>$ \+\_\+cost\+Per\+Variable, vector$<$ double $>$ \+\_\+cost\+Per\+Experiment, vector$<$ double $>$ \&\+\_\+param\+Set)
+\begin{DoxyCompactList}\small\item\em ========================= Part 2 -\/ Managing variations around a set of parameters (ex \+: identifiability) ================================ \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structpoint_variation_a8724562e3f07e5ddbfb374cd528a310e}\label{structpoint_variation_a8724562e3f07e5ddbfb374cd528a310e}} 
+string {\bfseries print} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structpoint_variation_ac6d9b021632bfad76b2b96ba6aca07f8}\label{structpoint_variation_ac6d9b021632bfad76b2b96ba6aca07f8}} 
+int {\bfseries index\+Parameter}
+\item 
+\mbox{\Hypertarget{structpoint_variation_a3e3286c5cec9f922660d87df5b89e948}\label{structpoint_variation_a3e3286c5cec9f922660d87df5b89e948}} 
+double \mbox{\hyperlink{structpoint_variation_a3e3286c5cec9f922660d87df5b89e948}{val}}
+\begin{DoxyCompactList}\small\item\em Index of the parameter that was changed compared to an initial parameter set. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structpoint_variation_a4e8d2fe0d906c5366c57ed604a4021d7}{cost}}
+\begin{DoxyCompactList}\small\item\em Value of this particular parameter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structpoint_variation_aa63fc19e97b1c28523a8b4c0363def4d}\label{structpoint_variation_aa63fc19e97b1c28523a8b4c0363def4d}} 
+\mbox{\hyperlink{structone_set}{one\+Set}} {\bfseries param\+Set}
+\item 
+\mbox{\Hypertarget{structpoint_variation_a1f9badbd088589883c5f3f5e45ccd0a7}\label{structpoint_variation_a1f9badbd088589883c5f3f5e45ccd0a7}} 
+vector$<$ double $>$ $\ast$ \mbox{\hyperlink{structpoint_variation_a1f9badbd088589883c5f3f5e45ccd0a7}{cost\+Per\+Variable}}
+\begin{DoxyCompactList}\small\item\em The parameter set itself (and its cost inside) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structpoint_variation_a07a270323855e3a32b8c7c7c91c0d2c8}\label{structpoint_variation_a07a270323855e3a32b8c7c7c91c0d2c8}} 
+vector$<$ double $>$ $\ast$ \mbox{\hyperlink{structpoint_variation_a07a270323855e3a32b8c7c7c91c0d2c8}{cost\+Per\+Experiment}}
+\begin{DoxyCompactList}\small\item\em To additionally store the cost of each simualted/evaluated variable with this param. set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+4a -\/ one parameter set (with additional information) 
+
+4 -\/ In case of identifiability or sensitivity, point modifications of a parameter set have to be done (i.\+e. changing one parameter value only.) Here is a data structure to store the cost of varying a parameter around an initial parameter set. It can be used during sensitivity analysis (the cost of just changing one parameter around the original one), or during identifiability analysis (storing the best set after optimization if this parameter is fixed to this value) It can also stores the statistics of the cost for each variable. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structpoint_variation_a8291615b1fa31f725daf70fecda7694d}\label{structpoint_variation_a8291615b1fa31f725daf70fecda7694d}} 
+\index{pointVariation@{pointVariation}!pointVariation@{pointVariation}}
+\index{pointVariation@{pointVariation}!pointVariation@{pointVariation}}
+\doxysubsubsection{\texorpdfstring{pointVariation()}{pointVariation()}}
+{\footnotesize\ttfamily point\+Variation\+::point\+Variation (\begin{DoxyParamCaption}\item[{int}]{\+\_\+index\+Parameter,  }\item[{double}]{\+\_\+val,  }\item[{double}]{\+\_\+cost,  }\item[{vector$<$ double $>$}]{\+\_\+cost\+Per\+Variable,  }\item[{vector$<$ double $>$}]{\+\_\+cost\+Per\+Experiment,  }\item[{vector$<$ double $>$ \&}]{\+\_\+param\+Set }\end{DoxyParamCaption})}
+
+
+
+========================= Part 2 -\/ Managing variations around a set of parameters (ex \+: identifiability) ================================ 
+
+class to store the cost of changing a parameter from a set 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structpoint_variation_a4e8d2fe0d906c5366c57ed604a4021d7}\label{structpoint_variation_a4e8d2fe0d906c5366c57ed604a4021d7}} 
+\index{pointVariation@{pointVariation}!cost@{cost}}
+\index{cost@{cost}!pointVariation@{pointVariation}}
+\doxysubsubsection{\texorpdfstring{cost}{cost}}
+{\footnotesize\ttfamily double point\+Variation\+::cost}
+
+
+
+Value of this particular parameter. 
+
+Note \+: this class could also extend the class \mbox{\hyperlink{structone_set}{one\+Set}} and then these two fields would be inherited 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Framework/parameter\+Sets.\+h\item 
+Framework/parameter\+Sets.\+cpp\end{DoxyCompactItemize}

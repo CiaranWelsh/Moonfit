@@ -1,0 +1,82 @@
+\hypertarget{group___g_u_i}{}\doxysection{User Interface (Simuwin)}
+\label{group___g_u_i}\index{User Interface (Simuwin)@{User Interface (Simuwin)}}
+
+
+Class to handle set-\/up of simulations and complex tasks like optimizations, sensitivity, identifiability, generating curves and exporting reports. The job is separated into two main classes \+:  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structevolution}{evolution}}
+\begin{DoxyCompactList}\small\item\em Tool data structure to track the evolution of a variable with time, such as the cost during the optimization. In order to avoid reallocating a bigger table every time, it records by blocs (of size \textquotesingle{}Size\+Groups\textquotesingle{}), and everytime a block is finished, computes min, max, mean and stddev of this block and starts a new block. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classmanage_sims}{manage\+Sims}}
+\begin{DoxyCompactList}\small\item\em main mother class, to perform simulations, optimizations, load configuration files, saving results as tables, etc. it has all the functions we might want to use without graphical interface. Note\+: To optimize, we give this class to the optimizer, optimizer does what he wants, changes the parameters and calls \mbox{\hyperlink{classmanage_sims_ae7da788cc26e8372b68de240ed5ca502}{get\+Cost()}} and this class records the sets it was asked to simulate (so a black optimizer can be used). \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classsimu_win}{simu\+Win}}
+\begin{DoxyCompactList}\small\item\em Graphical interface class. It uses all functions from the mother class \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} to perform the complex tasks, but also handles the Qt graphical interface to display the settings, produce the curves, make the reports, and show the state of an optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___g_u_i_ga5feae28e349f2e69c0b2d9b0eed86e18}\label{group___g_u_i_ga5feae28e349f2e69c0b2d9b0eed86e18}} 
+\#define \mbox{\hyperlink{group___g_u_i_ga5feae28e349f2e69c0b2d9b0eed86e18}{A\+L\+L\+O\+W\+\_\+\+O\+P\+T\+I\+M\+I\+ZE}}
+\begin{DoxyCompactList}\small\item\em In case you want to compile without using the optimizer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___g_u_i_ga811fe196a5d9d37857c2f8adeeaac3c6}\label{group___g_u_i_ga811fe196a5d9d37857c2f8adeeaac3c6}} 
+enum \mbox{\hyperlink{group___g_u_i_ga811fe196a5d9d37857c2f8adeeaac3c6}{modes}} \{ {\bfseries M\+O\+N\+O\+\_\+\+E\+X\+P\+E\+R\+I\+M\+E\+NT}, 
+{\bfseries M\+U\+L\+T\+I\+\_\+\+E\+X\+P\+E\+R\+I\+M\+E\+NT}, 
+{\bfseries mode\+Perturbate}, 
+{\bfseries mode\+Comparison}
+ \}
+\begin{DoxyCompactList}\small\item\em Modes of starting a manage\+Sim. By default, only one experiment is simulated, but one can give a multi-\/experiment class instead. The other modes mean that the original experiment has been switched by a new ecperiment that simulates perturbations of the original one, either by comparing parameter sets or by perturbating one parameter value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___g_u_i_ga814c4de8557afeec3ba4be7e8aaff268}\label{group___g_u_i_ga814c4de8557afeec3ba4be7e8aaff268}} 
+vector$<$ double $>$ \mbox{\hyperlink{group___g_u_i_ga814c4de8557afeec3ba4be7e8aaff268}{cut\+Space}} (int nb\+Points, bool logarithmic, double base, double vstart, double vending)
+\begin{DoxyCompactList}\small\item\em function defined independently of any class, to cut an interval in nb\+Points (for identifiability/sensitivity) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___g_u_i_gab12891dae49a8693c4323522b01cdaa7}\label{group___g_u_i_gab12891dae49a8693c4323522b01cdaa7}} 
+\mbox{\hyperlink{structp_sets}{p\+Sets}} {\bfseries read\+History} (string \+\_\+name)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to handle set-\/up of simulations and complex tasks like optimizations, sensitivity, identifiability, generating curves and exporting reports. The job is separated into two main classes \+: 
+
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{classmanage_sims}{manage\+Sims}}, which is independent of any graphical library. it can perform simulations, optimizations, load configuration files, saving results as tables, etc.
+\item \mbox{\hyperlink{classsimu_win}{simu\+Win}}, which is extending \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} with a graphical QT interface. some actions are only possible with \mbox{\hyperlink{classsimu_win}{simu\+Win}}, such as directly saving simulations as plots.
+
+As Qt doesn\textquotesingle{}t support plotting graphs, two additional libraries are proposed(one is enough)
+\begin{DoxyItemize}
+\item Qwt (older one, incompatible between different versions -\/-\/$>$ often raises compiling errors)
+\item Q\+Custom\+Plot (more recent, makes beautiful plots, a bit slower, might cause trouble if plots a whole optimization)
+\end{DoxyItemize}
+
+The simplest way to use \mbox{\hyperlink{classsimu_win}{simu\+Win}} is given here \+: Here is A minimum piece of code to run the graphical interface from a model/experiment. Note \+:QT should be allowed (do not define W\+I\+T\+H\+O\+U\+T\+\_\+\+QT) 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <QMainWindow>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <QApplication>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "simuwin.h"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "../Framework/modele.h"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "../Framework/Experiment.h"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "../myExperiment.h"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "../myModel.h"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} anOldMain(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} *argv[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    QApplication b(argc, argv);}
+\DoxyCodeLine{    \mbox{\hyperlink{struct_model}{Model}}* currentModel = \textcolor{keyword}{new} myModel();}
+\DoxyCodeLine{    \mbox{\hyperlink{struct_experiment}{Experiment}}* currentExperiment = \textcolor{keyword}{new} myExperiment(currentModel);}
+\DoxyCodeLine{    \mbox{\hyperlink{classsimu_win}{simuWin}}* p = \textcolor{keyword}{new} \mbox{\hyperlink{classsimu_win}{simuWin}}(currentExperiment);}
+\DoxyCodeLine{    p-\/>show();}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} b.exec();}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\end{DoxyCode}
+ 
+\end{DoxyItemize}

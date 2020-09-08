@@ -1,0 +1,106 @@
+\hypertarget{group___overrider}{}\doxysection{Overrider}
+\label{group___overrider}\index{Overrider@{Overrider}}
+
+
+Overriding (replacing) a variable by interpolated experimental data (linear or spline)  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structoverrider}{overrider}}
+\begin{DoxyCompactList}\small\item\em A class to store multiple curves interpolated from experimental data points. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___overrider_gae24380a233d219af3aa4709b371f9765}\label{group___overrider_gae24380a233d219af3aa4709b371f9765}} 
+typedef string {\bfseries key}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___overrider_gaf04a7599569d2e5c28e525ddd512e151}\label{group___overrider_gaf04a7599569d2e5c28e525ddd512e151}} 
+enum {\bfseries type\+Data} \{ {\bfseries N\+O\+D\+A\+TA}, 
+{\bfseries S\+P\+L\+I\+NE}, 
+{\bfseries F\+U\+N\+C\+T\+I\+ON}, 
+{\bfseries N\+B\+D\+A\+T\+A\+T\+Y\+P\+ES}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___overrider_ga1e6f164cd0ff6068c9dd3802b8a6ee12}\label{group___overrider_ga1e6f164cd0ff6068c9dd3802b8a6ee12}} 
+{\bfseries overrider\+::overrider} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$kinetics, bool use\+Splines=false)
+\item 
+\mbox{\Hypertarget{group___overrider_gaded22a5d6bc235e58c2b989443d6f8fc}\label{group___overrider_gaded22a5d6bc235e58c2b989443d6f8fc}} 
+void {\bfseries overrider\+::reset} ()
+\item 
+\mbox{\Hypertarget{group___overrider_ga896836e28a33560020d6105a499f2fc0}\label{group___overrider_ga896836e28a33560020d6105a499f2fc0}} 
+void {\bfseries overrider\+::extend} (int new\+Nb\+Indices)
+\item 
+\mbox{\Hypertarget{group___overrider_ga81569ed42290a9fe2b20403e473d0131}\label{group___overrider_ga81569ed42290a9fe2b20403e473d0131}} 
+int {\bfseries overrider\+::get\+ID} (key ext\+Name\+Variable)
+\item 
+\mbox{\Hypertarget{group___overrider_gadfcbaf61101f59a98e2cc6c15495b2ed}\label{group___overrider_gadfcbaf61101f59a98e2cc6c15495b2ed}} 
+bool \mbox{\hyperlink{group___overrider_gadfcbaf61101f59a98e2cc6c15495b2ed}{overrider\+::has\+Data}} (key index)
+\begin{DoxyCompactList}\small\item\em 2 -\/ Accessing the data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_gabab7d7bfc9a1dd4b3813ba2d62c43d02}\label{group___overrider_gabab7d7bfc9a1dd4b3813ba2d62c43d02}} 
+double \mbox{\hyperlink{group___overrider_gabab7d7bfc9a1dd4b3813ba2d62c43d02}{overrider\+::operator()}} (key index, double value)
+\begin{DoxyCompactList}\small\item\em returns false if N\+O\+D\+A\+TA or if index $>$ nb\+Indices \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___overrider_ga207c2ddf0d2564e2b30242f9bdefd49f}{overrider\+::learn\+Spl}} (key index, vector$<$ double $>$ xs, vector$<$ double $>$ ys, bool yes\+Splno\+Linear\+Interpol)
+\begin{DoxyCompactList}\small\item\em gets interpolated value for curve nr index, at time value. if nodata, returns -\/1 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_ga119a4f28ef1b087ddf89db452b57d5d2}\label{group___overrider_ga119a4f28ef1b087ddf89db452b57d5d2}} 
+void {\bfseries overrider\+::learn\+Funct} (key index, double($\ast$f)(double))
+\item 
+\mbox{\Hypertarget{group___overrider_ga20b3e89c0936022ad16375dc3db2e32d}\label{group___overrider_ga20b3e89c0936022ad16375dc3db2e32d}} 
+bool \mbox{\hyperlink{group___overrider_ga20b3e89c0936022ad16375dc3db2e32d}{overrider\+::operator()}} (key index)
+\begin{DoxyCompactList}\small\item\em decision, for each curve, to use it or not to replace a variable during simulation \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_gab57ea8642e38400e6377a9c5937d8682}\label{group___overrider_gab57ea8642e38400e6377a9c5937d8682}} 
+void \mbox{\hyperlink{group___overrider_gab57ea8642e38400e6377a9c5937d8682}{overrider\+::set\+Over}} (key name\+Var=string(\char`\"{}\char`\"{}), bool value=true)
+\begin{DoxyCompactList}\small\item\em returns override\mbox{[}i\mbox{]}. Returns false if out of bounds. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_ga59cf53d772b9fdf08eedbad9736ebcb5}\label{group___overrider_ga59cf53d772b9fdf08eedbad9736ebcb5}} 
+string \mbox{\hyperlink{group___overrider_ga59cf53d772b9fdf08eedbad9736ebcb5}{overrider\+::print}} ()
+\begin{DoxyCompactList}\small\item\em to decide which curve to override for later simulations. Use index = -\/1 to override everything \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___overrider_ga7d4ddbd90f4872300844be5830ec3e33}\label{group___overrider_ga7d4ddbd90f4872300844be5830ec3e33}} 
+int \mbox{\hyperlink{group___overrider_ga7d4ddbd90f4872300844be5830ec3e33}{overrider\+::nb\+Indices}}
+\begin{DoxyCompactList}\small\item\em 1 -\/ Data storage \+: list of curves stored as spline or function \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_ga73c7fb0fd8854330dc3b8e49d3c7a68a}\label{group___overrider_ga73c7fb0fd8854330dc3b8e49d3c7a68a}} 
+int \mbox{\hyperlink{group___overrider_ga73c7fb0fd8854330dc3b8e49d3c7a68a}{overrider\+::nb\+I\+Ds\+Given}}
+\begin{DoxyCompactList}\small\item\em Number of space allocated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_ga0fe94593d39dd44d859c238d31fe3a60}\label{group___overrider_ga0fe94593d39dd44d859c238d31fe3a60}} 
+vector$<$ type\+Data $>$ {\bfseries overrider\+::type\+Storage}
+\item 
+\mbox{\Hypertarget{group___overrider_ga05d16d4a5c1a72adb76bb9b917f96028}\label{group___overrider_ga05d16d4a5c1a72adb76bb9b917f96028}} 
+vector$<$ \mbox{\hyperlink{classtk_1_1spline}{tk\+::spline}} $\ast$ $>$ \mbox{\hyperlink{group___overrider_ga05d16d4a5c1a72adb76bb9b917f96028}{overrider\+::data\+Spl}}
+\begin{DoxyCompactList}\small\item\em Each curve can be function / interpolated tata. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_ga9c6525fe7344bafd8a0ba37f1e79f211}\label{group___overrider_ga9c6525fe7344bafd8a0ba37f1e79f211}} 
+vector$<$ double($\ast$)(double)$>$ \mbox{\hyperlink{group___overrider_ga9c6525fe7344bafd8a0ba37f1e79f211}{overrider\+::data\+Funct}}
+\begin{DoxyCompactList}\small\item\em Storage as a spline for each curve. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_gab83401d5c8ceeae01795204a45cd058a}\label{group___overrider_gab83401d5c8ceeae01795204a45cd058a}} 
+std\+::map$<$ key, int $>$ \mbox{\hyperlink{group___overrider_gab83401d5c8ceeae01795204a45cd058a}{overrider\+::name2\+ID}}
+\begin{DoxyCompactList}\small\item\em OR \+: storage as a function (double -\/-\/$>$ double) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___overrider_gadd8c1fba170e4e012ffb1f942142b9b5}\label{group___overrider_gadd8c1fba170e4e012ffb1f942142b9b5}} 
+vector$<$ bool $>$ \mbox{\hyperlink{group___overrider_gadd8c1fba170e4e012ffb1f942142b9b5}{overrider\+::override}}
+\begin{DoxyCompactList}\small\item\em 4 -\/ Storage to decide for each curve, if it will be used to replace data or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Overriding (replacing) a variable by interpolated experimental data (linear or spline) 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group___overrider_ga207c2ddf0d2564e2b30242f9bdefd49f}\label{group___overrider_ga207c2ddf0d2564e2b30242f9bdefd49f}} 
+\index{Overrider@{Overrider}!learnSpl@{learnSpl}}
+\index{learnSpl@{learnSpl}!Overrider@{Overrider}}
+\doxysubsubsection{\texorpdfstring{learnSpl()}{learnSpl()}}
+{\footnotesize\ttfamily void overrider\+::learn\+Spl (\begin{DoxyParamCaption}\item[{key}]{index,  }\item[{vector$<$ double $>$}]{xs,  }\item[{vector$<$ double $>$}]{ys,  }\item[{bool}]{yes\+Splno\+Linear\+Interpol }\end{DoxyParamCaption})}
+
+
+
+gets interpolated value for curve nr index, at time value. if nodata, returns -\/1 
+
+3 -\/ Adding curves to the data (by saying the index of the curve to add). note \+: the data structure is automatically extended up to the index if it didn\textquotesingle{}t exist yet. No risk of seg fault there. extend the data structure if required
