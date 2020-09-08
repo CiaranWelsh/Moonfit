@@ -591,12 +591,11 @@ void expCompParameterSets::simulate(int IdExp, Evaluator* E, bool force){
 expChangeOneParameter::expChangeOneParameter(Experiment* Exp, vector<double> &_parameterSet, int _parameterToChange, int _IDconditionToUse , int _nbCurves) :
     Experiment((Exp)? Exp->m : nullptr, _nbCurves), parameter(_parameterToChange), nbCurves(_nbCurves) {
 
-
     // test input
     if(!Exp)    {cerr << "ERR: expChangeOneParameter empty experiment given" << endl; return;}
-    if(!Exp->m) {cerr << "ERR: expChangeOneParameter empty model in given experiment" << endl; return;
-    parameterSet = _parameterSet; //new vector<double>(_parameterSet); // this copy is not done, why?
-    if((int) parameterSet.size() != Exp->m->getNbParams()) cerr << "ERR: expChangeOneParameter, parameter set size " << parameterSet.size() << " not compatible with model that has " << Exp->m->getNbParams() << " parameters " << endl; return;}
+    if(!Exp->m) {cerr << "ERR: expChangeOneParameter empty model in given experiment" << endl; return;}
+    parameterSet = _parameterSet; //new vector<double>(_parameterSet);
+    if((int) parameterSet.size() != Exp->m->getNbParams()) {cerr << "ERR: expChangeOneParameter, parameter set size " << parameterSet.size() << " not compatible with model that has " << Exp->m->getNbParams() << " parameters " << endl; return;}
     if((parameter < 0) || (parameter >= Exp->m->getNbParams())) {cerr << "ERR: expChangeOneParameter, ID of parameter is out of bound (" << parameter << "), while model has " << Exp->m->getNbParams() << endl; return;}
     if((nbCurves < 0) || (nbCurves > NbVariantes)) {cerr << "ERR: expChangeOneParameter, nb of curves should be [1.." << NbVariantes << "], and not " << nbCurves << " -> take 10" << endl; nbCurves = 10;}
     //valueAround = parameterSet->at(parameter);
