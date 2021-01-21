@@ -1,3 +1,6 @@
+# Moonfit
+Fork of [this](https://gitlab.com/Moonfit/Balthyse/-/tree/master/Moonfit) repository but with a cmake build system (no Qt support). 
+
 
 ---
 description: "ODE Model for influenza-induced thymic atrophy" 
