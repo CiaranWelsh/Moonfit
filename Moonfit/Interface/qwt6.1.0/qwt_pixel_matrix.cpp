@@ -14,15 +14,13 @@
 
   \param rect Bounding rectangle for the matrix
 */
-QwtPixelMatrix::QwtPixelMatrix( const QRect& rect ):
-    QBitArray( qMax( rect.width() * rect.height(), 0 ) ),
-    d_rect( rect )
-{
+QwtPixelMatrix::QwtPixelMatrix(const QRect &rect) :
+        QBitArray(qMax(rect.width() * rect.height(), 0)),
+        d_rect(rect) {
 }
 
 //! Destructor
-QwtPixelMatrix::~QwtPixelMatrix()
-{
+QwtPixelMatrix::~QwtPixelMatrix() {
 }
 
 /*!
@@ -32,20 +30,17 @@ QwtPixelMatrix::~QwtPixelMatrix()
 
     \note All bits are cleared
  */
-void QwtPixelMatrix::setRect( const QRect& rect )
-{
-    if ( rect != d_rect )
-    {
+void QwtPixelMatrix::setRect(const QRect &rect) {
+    if (rect != d_rect) {
         d_rect = rect;
-        const int sz = qMax( rect.width() * rect.height(), 0 );
-        resize( sz );
+        const int sz = qMax(rect.width() * rect.height(), 0);
+        resize(sz);
     }
 
-    fill( false );
+    fill(false);
 }
 
 //! \return Bounding rectangle
-QRect QwtPixelMatrix::rect() const
-{
+QRect QwtPixelMatrix::rect() const {
     return d_rect;
 }

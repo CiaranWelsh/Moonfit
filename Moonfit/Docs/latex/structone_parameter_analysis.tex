@@ -2,55 +2,59 @@
 \label{structone_parameter_analysis}\index{oneParameterAnalysis@{oneParameterAnalysis}}
 
 
-4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter.  
+4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter.
 
 
 
 
-{\ttfamily \#include $<$parameter\+Sets.\+h$>$}
+    {\ttfamily \#include $<$parameter\+Sets.\+h$>$}
 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_a87925def33dc1a1ea74ffb75910cf995}\label{structone_parameter_analysis_a87925def33dc1a1ea74ffb75910cf995}} 
-\mbox{\hyperlink{structone_parameter_analysis_a87925def33dc1a1ea74ffb75910cf995}{one\+Parameter\+Analysis}} (vector$<$ double $>$ \+\_\+initial\+Parameter\+Set)
-\begin{DoxyCompactList}\small\item\em 4ci \+: Initial data \+: the initial parameter set. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structone_parameter_analysis_a59696ec47f7d49ec516f9fa63f344e8a}\label{structone_parameter_analysis_a59696ec47f7d49ec516f9fa63f344e8a}} 
-int {\bfseries size} ()
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_a5a35605ad1b3ac01249784bb1c3f06e6}\label{structone_parameter_analysis_a5a35605ad1b3ac01249784bb1c3f06e6}} 
-void {\bfseries add} (int \+\_\+index\+Parameter, double \+\_\+val, double \+\_\+cost, vector$<$ double $>$ \+\_\+cost\+Per\+Variable, vector$<$ double $>$ \+\_\+cost\+Per\+Experiment, vector$<$ double $>$ \+\_\+param\+Set)
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_adb09a662ad7139658264c99af3c61692}\label{structone_parameter_analysis_adb09a662ad7139658264c99af3c61692}} 
-void {\bfseries add} (\mbox{\hyperlink{structpoint_variation}{point\+Variation}} pv)
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_aa1369e1c694478e8ded4b0bec7cc54b4}\label{structone_parameter_analysis_aa1369e1c694478e8ded4b0bec7cc54b4}} 
-void {\bfseries sort} ()
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_a7de4c99bd5b7b7fc413f20a48a056172}\label{structone_parameter_analysis_a7de4c99bd5b7b7fc413f20a48a056172}} 
-string {\bfseries print} ()
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_a87925def33dc1a1ea74ffb75910cf995}\label{structone_parameter_analysis_a87925def33dc1a1ea74ffb75910cf995}}
+    \mbox{\hyperlink{structone_parameter_analysis_a87925def33dc1a1ea74ffb75910cf995}{one\+Parameter\+Analysis}} (vector$<$ double $>$ \+\_\+initial\+Parameter\+Set)
+    \begin{DoxyCompactList}
+        \small\item\em 4ci \+: Initial data \+: the initial parameter set.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{structone_parameter_analysis_a59696ec47f7d49ec516f9fa63f344e8a}\label{structone_parameter_analysis_a59696ec47f7d49ec516f9fa63f344e8a}}
+    int {\bfseries size} ()
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_a5a35605ad1b3ac01249784bb1c3f06e6}\label{structone_parameter_analysis_a5a35605ad1b3ac01249784bb1c3f06e6}}
+    void {\bfseries add} (int \+\_\+index\+Parameter, double \+\_\+val, double \+\_\+cost, vector$<$ double $>$ \+\_\+cost\+Per\+Variable, vector$<$ double $>$ \+\_\+cost\+Per\+Experiment, vector$<$ double $>$ \+\_\+param\+Set)
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_adb09a662ad7139658264c99af3c61692}\label{structone_parameter_analysis_adb09a662ad7139658264c99af3c61692}}
+    void {\bfseries add} (\mbox{\hyperlink{structpoint_variation}{point\+Variation}} pv)
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_aa1369e1c694478e8ded4b0bec7cc54b4}\label{structone_parameter_analysis_aa1369e1c694478e8ded4b0bec7cc54b4}}
+    void {\bfseries sort} ()
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_a7de4c99bd5b7b7fc413f20a48a056172}\label{structone_parameter_analysis_a7de4c99bd5b7b7fc413f20a48a056172}}
+    string {\bfseries print} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_a6c269c9cdc55ca9c91a2beaf3738a4c9}\label{structone_parameter_analysis_a6c269c9cdc55ca9c91a2beaf3738a4c9}} 
-int {\bfseries nb\+Params}
-\item 
-\mbox{\Hypertarget{structone_parameter_analysis_a7655736298a55eca8633d9cc4cca5571}\label{structone_parameter_analysis_a7655736298a55eca8633d9cc4cca5571}} 
-vector$<$ double $>$ {\bfseries initial\+Parameter\+Set}
-\item 
-vector$<$ \mbox{\hyperlink{structpoint_variation}{point\+Variation}} $>$ \mbox{\hyperlink{structone_parameter_analysis_a09acad769486f6c975922421c2db2470}{points}}
-\begin{DoxyCompactList}\small\item\em could be a \mbox{\hyperlink{structone_set}{one\+Set}} here \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structone_parameter_analysis_ab40ec0764a0f2608538179a00621b7b6}\label{structone_parameter_analysis_ab40ec0764a0f2608538179a00621b7b6}} 
-int {\bfseries nb\+Points}
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_a6c269c9cdc55ca9c91a2beaf3738a4c9}\label{structone_parameter_analysis_a6c269c9cdc55ca9c91a2beaf3738a4c9}}
+    int {\bfseries nb\+Params}
+    \item
+    \mbox{\Hypertarget{structone_parameter_analysis_a7655736298a55eca8633d9cc4cca5571}\label{structone_parameter_analysis_a7655736298a55eca8633d9cc4cca5571}}
+    vector$<$ double $>$ {\bfseries initial\+Parameter\+Set}
+    \item
+    vector$<$ \mbox{\hyperlink{structpoint_variation}{point\+Variation}} $>$ \mbox{\hyperlink{structone_parameter_analysis_a09acad769486f6c975922421c2db2470}{points}}
+    \begin{DoxyCompactList}
+        \small\item\em could be a \mbox{\hyperlink{structone_set}{one\+Set}} here
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{structone_parameter_analysis_ab40ec0764a0f2608538179a00621b7b6}\label{structone_parameter_analysis_ab40ec0764a0f2608538179a00621b7b6}}
+    int {\bfseries nb\+Points}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter. 
+4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter.
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{structone_parameter_analysis_a09acad769486f6c975922421c2db2470}\label{structone_parameter_analysis_a09acad769486f6c975922421c2db2470}} 
+\mbox{\Hypertarget{structone_parameter_analysis_a09acad769486f6c975922421c2db2470}\label{structone_parameter_analysis_a09acad769486f6c975922421c2db2470}}
 \index{oneParameterAnalysis@{oneParameterAnalysis}!points@{points}}
 \index{points@{points}!oneParameterAnalysis@{oneParameterAnalysis}}
 \doxysubsubsection{\texorpdfstring{points}{points}}
@@ -58,11 +62,12 @@ int {\bfseries nb\+Points}
 
 
 
-could be a \mbox{\hyperlink{structone_set}{one\+Set}} here 
+could be a \mbox{\hyperlink{structone_set}{one\+Set}} here
 
-4cii \+: dynamic storage of new point variations 
+4cii \+: dynamic storage of new point variations
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/parameter\+Sets.\+h\item 
-Framework/parameter\+Sets.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/parameter\+Sets.\+h\item
+                                                                               Framework/parameter\+Sets.\+cpp
+\end{DoxyCompactItemize}

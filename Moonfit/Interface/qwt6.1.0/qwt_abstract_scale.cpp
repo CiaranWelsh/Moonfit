@@ -14,20 +14,17 @@
 #include "qwt_scale_map.h"
 #include "qwt_interval.h"
 
-class QwtAbstractScale::PrivateData
-{
+class QwtAbstractScale::PrivateData {
 public:
-    PrivateData():
-        maxMajor( 5 ),
-        maxMinor( 3 ),
-        stepSize( 0.0 )
-    {
+    PrivateData() :
+            maxMajor(5),
+            maxMinor(3),
+            stepSize(0.0) {
         scaleEngine = new QwtLinearScaleEngine();
         scaleDraw = new QwtScaleDraw();
     }
 
-    ~PrivateData()
-    {
+    ~PrivateData() {
         delete scaleEngine;
         delete scaleDraw;
     }
@@ -52,16 +49,14 @@ public:
   and scaleMaxMajor to 3.
 */
 
-QwtAbstractScale::QwtAbstractScale( QWidget *parent ):
-    QWidget( parent )
-{
+QwtAbstractScale::QwtAbstractScale(QWidget *parent) :
+        QWidget(parent) {
     d_data = new PrivateData;
-    rescale( 0.0, 100.0, d_data->stepSize );
+    rescale(0.0, 100.0, d_data->stepSize);
 }
 
 //! Destructor
-QwtAbstractScale::~QwtAbstractScale()
-{
+QwtAbstractScale::~QwtAbstractScale() {
     delete d_data;
 }
 
@@ -74,17 +69,15 @@ QwtAbstractScale::~QwtAbstractScale()
   \note For inverted scales the lower bound 
         is greater than the upper bound
 */
-void QwtAbstractScale::setLowerBound( double value )
-{
-    setScale( value, upperBound() );
+void QwtAbstractScale::setLowerBound(double value) {
+    setScale(value, upperBound());
 }
 
 /*!
   \return Lower bound of the scale
   \sa setLowerBound(), setScale(), upperBound()
 */
-double QwtAbstractScale::lowerBound() const
-{
+double QwtAbstractScale::lowerBound() const {
     return d_data->scaleDraw->scaleDiv().lowerBound();
 }
 
@@ -97,17 +90,15 @@ double QwtAbstractScale::lowerBound() const
   \note For inverted scales the lower bound 
         is greater than the upper bound
 */
-void QwtAbstractScale::setUpperBound( double value )
-{
-    setScale( lowerBound(), value );
+void QwtAbstractScale::setUpperBound(double value) {
+    setScale(lowerBound(), value);
 }
 
 /*!
   \return Upper bound of the scale
   \sa setUpperBound(), setScale(), lowerBound()
 */
-double QwtAbstractScale::upperBound() const
-{
+double QwtAbstractScale::upperBound() const {
     return d_data->scaleDraw->scaleDiv().upperBound();
 }
 
@@ -125,9 +116,8 @@ double QwtAbstractScale::upperBound() const
   \note For inverted scales the lower bound 
         is greater than the upper bound
 */
-void QwtAbstractScale::setScale( double lowerBound, double upperBound )
-{
-    rescale( lowerBound, upperBound, d_data->stepSize );
+void QwtAbstractScale::setScale(double lowerBound, double upperBound) {
+    rescale(lowerBound, upperBound, d_data->stepSize);
 }
 
 /*!
@@ -140,9 +130,8 @@ void QwtAbstractScale::setScale( double lowerBound, double upperBound )
 
   \param interval Interval
 */
-void QwtAbstractScale::setScale( const QwtInterval &interval )
-{
-    setScale( interval.minValue(), interval.maxValue() );
+void QwtAbstractScale::setScale(const QwtInterval &interval) {
+    setScale(interval.minValue(), interval.maxValue());
 }
 
 /*!
@@ -153,19 +142,16 @@ void QwtAbstractScale::setScale( const QwtInterval &interval )
   \param scaleDiv Scale division
   \sa setAutoScale()
 */
-void QwtAbstractScale::setScale( const QwtScaleDiv &scaleDiv )
-{
-    if ( scaleDiv != d_data->scaleDraw->scaleDiv() )
-    {
+void QwtAbstractScale::setScale(const QwtScaleDiv &scaleDiv) {
+    if (scaleDiv != d_data->scaleDraw->scaleDiv()) {
 #if 1
-        if ( d_data->scaleEngine )
-        {
+        if (d_data->scaleEngine) {
             d_data->scaleDraw->setTransformation(
-                d_data->scaleEngine->transformation() );
+                    d_data->scaleEngine->transformation());
         }
 #endif
 
-        d_data->scaleDraw->setScaleDiv( scaleDiv );
+        d_data->scaleDraw->setScaleDiv(scaleDiv);
 
         scaleChange();
     }
@@ -184,10 +170,8 @@ void QwtAbstractScale::setScale( const QwtScaleDiv &scaleDiv )
   \sa scaleMaxMajor(), setScaleMaxMinor(),
       setScaleStepSize(), QwtScaleEngine::divideInterval()
 */
-void QwtAbstractScale::setScaleMaxMajor( int ticks )
-{
-    if ( ticks != d_data->maxMajor )
-    {
+void QwtAbstractScale::setScaleMaxMajor(int ticks) {
+    if (ticks != d_data->maxMajor) {
         d_data->maxMajor = ticks;
         updateScaleDraw();
     }
@@ -197,8 +181,7 @@ void QwtAbstractScale::setScaleMaxMajor( int ticks )
   \return Maximal number of major tick intervals
   \sa setScaleMaxMajor(), scaleMaxMinor()
 */
-int QwtAbstractScale::scaleMaxMajor() const
-{
+int QwtAbstractScale::scaleMaxMajor() const {
     return d_data->maxMajor;
 }
 
@@ -214,10 +197,8 @@ int QwtAbstractScale::scaleMaxMajor() const
   \sa scaleMaxMajor(), setScaleMaxMinor(),
       setScaleStepSize(), QwtScaleEngine::divideInterval()
 */
-void QwtAbstractScale::setScaleMaxMinor( int ticks )
-{
-    if ( ticks != d_data->maxMinor )
-    {
+void QwtAbstractScale::setScaleMaxMinor(int ticks) {
+    if (ticks != d_data->maxMinor) {
         d_data->maxMinor = ticks;
         updateScaleDraw();
     }
@@ -227,8 +208,7 @@ void QwtAbstractScale::setScaleMaxMinor( int ticks )
   \return Maximal number of minor tick intervals
   \sa setScaleMaxMinor(), scaleMaxMajor()
 */
-int QwtAbstractScale::scaleMaxMinor() const
-{
+int QwtAbstractScale::scaleMaxMinor() const {
     return d_data->maxMinor;
 }
 
@@ -246,10 +226,8 @@ int QwtAbstractScale::scaleMaxMinor() const
    \note Position and distance between the major ticks also
          depends on scaleMaxMajor().
 */
-void QwtAbstractScale::setScaleStepSize( double stepSize )
-{
-    if ( stepSize != d_data->stepSize )
-    {
+void QwtAbstractScale::setScaleStepSize(double stepSize) {
+    if (stepSize != d_data->stepSize) {
         d_data->stepSize = stepSize;
         updateScaleDraw();
     }
@@ -259,8 +237,7 @@ void QwtAbstractScale::setScaleStepSize( double stepSize )
   \return Hint for the step size of the scale
   \sa setScaleStepSize(), QwtScaleEngine::divideScale()
 */
-double QwtAbstractScale::scaleStepSize() const
-{
+double QwtAbstractScale::scaleStepSize() const {
     return d_data->stepSize;
 }
 
@@ -272,13 +249,12 @@ double QwtAbstractScale::scaleStepSize() const
 
   \sa abstractScaleDraw()
 */
-void QwtAbstractScale::setAbstractScaleDraw( QwtAbstractScaleDraw *scaleDraw )
-{
-    if ( scaleDraw == NULL || scaleDraw == d_data->scaleDraw )
+void QwtAbstractScale::setAbstractScaleDraw(QwtAbstractScaleDraw *scaleDraw) {
+    if (scaleDraw == NULL || scaleDraw == d_data->scaleDraw)
         return;
 
-    if ( d_data->scaleDraw != NULL )
-        scaleDraw->setScaleDiv( d_data->scaleDraw->scaleDiv() );
+    if (d_data->scaleDraw != NULL)
+        scaleDraw->setScaleDiv(d_data->scaleDraw->scaleDiv());
 
     delete d_data->scaleDraw;
     d_data->scaleDraw = scaleDraw;
@@ -288,8 +264,7 @@ void QwtAbstractScale::setAbstractScaleDraw( QwtAbstractScaleDraw *scaleDraw )
     \return Scale draw
     \sa setAbstractScaleDraw()
 */
-QwtAbstractScaleDraw *QwtAbstractScale::abstractScaleDraw()
-{
+QwtAbstractScaleDraw *QwtAbstractScale::abstractScaleDraw() {
     return d_data->scaleDraw;
 }
 
@@ -297,8 +272,7 @@ QwtAbstractScaleDraw *QwtAbstractScale::abstractScaleDraw()
     \return Scale draw
     \sa setAbstractScaleDraw()
 */
-const QwtAbstractScaleDraw *QwtAbstractScale::abstractScaleDraw() const
-{
+const QwtAbstractScaleDraw *QwtAbstractScale::abstractScaleDraw() const {
     return d_data->scaleDraw;
 }
 
@@ -311,10 +285,8 @@ const QwtAbstractScaleDraw *QwtAbstractScale::abstractScaleDraw() const
   scaleEngine has to be created with new and will be deleted in
   the destructor or the next call of setScaleEngine.
 */
-void QwtAbstractScale::setScaleEngine( QwtScaleEngine *scaleEngine )
-{
-    if ( scaleEngine != NULL && scaleEngine != d_data->scaleEngine )
-    {
+void QwtAbstractScale::setScaleEngine(QwtScaleEngine *scaleEngine) {
+    if (scaleEngine != NULL && scaleEngine != d_data->scaleEngine) {
         delete d_data->scaleEngine;
         d_data->scaleEngine = scaleEngine;
     }
@@ -324,8 +296,7 @@ void QwtAbstractScale::setScaleEngine( QwtScaleEngine *scaleEngine )
   \return Scale engine
   \sa setScaleEngine()
 */
-const QwtScaleEngine *QwtAbstractScale::scaleEngine() const
-{
+const QwtScaleEngine *QwtAbstractScale::scaleEngine() const {
     return d_data->scaleEngine;
 }
 
@@ -333,8 +304,7 @@ const QwtScaleEngine *QwtAbstractScale::scaleEngine() const
   \return Scale engine
   \sa setScaleEngine()
 */
-QwtScaleEngine *QwtAbstractScale::scaleEngine()
-{
+QwtScaleEngine *QwtAbstractScale::scaleEngine() {
     return d_data->scaleEngine;
 }
 
@@ -344,16 +314,14 @@ QwtScaleEngine *QwtAbstractScale::scaleEngine()
   The scale division might have been assigned explicitly
   or calculated implicitly by rescale(). 
  */
-const QwtScaleDiv &QwtAbstractScale::scaleDiv() const
-{
+const QwtScaleDiv &QwtAbstractScale::scaleDiv() const {
     return d_data->scaleDraw->scaleDiv();
 }
 
 /*!
   \return Map to translate between scale and widget coordinates
  */
-const QwtScaleMap &QwtAbstractScale::scaleMap() const
-{
+const QwtScaleMap &QwtAbstractScale::scaleMap() const {
     return d_data->scaleDraw->scaleMap();
 }
 
@@ -364,9 +332,8 @@ const QwtScaleMap &QwtAbstractScale::scaleMap() const
   \return Corresponding widget coordinate for value
   \sa scaleMap(), invTransform()
  */
-int QwtAbstractScale::transform( double value ) const
-{
-    return qRound( d_data->scaleDraw->scaleMap().transform( value ) );
+int QwtAbstractScale::transform(double value) const {
+    return qRound(d_data->scaleDraw->scaleMap().transform(value));
 }
 
 /*!
@@ -376,17 +343,15 @@ int QwtAbstractScale::transform( double value ) const
   \return Corresponding scale coordinate for value
   \sa scaleMap(), transform()
  */
-double QwtAbstractScale::invTransform( int value ) const
-{
-    return d_data->scaleDraw->scaleMap().invTransform( value );
+double QwtAbstractScale::invTransform(int value) const {
+    return d_data->scaleDraw->scaleMap().invTransform(value);
 }
 
 /*!
   \return True, when the scale is increasing in opposite direction
           to the widget coordinates
  */
-bool QwtAbstractScale::isInverted() const
-{
+bool QwtAbstractScale::isInverted() const {
     return d_data->scaleDraw->scaleMap().isInverting();
 }
 
@@ -394,25 +359,22 @@ bool QwtAbstractScale::isInverted() const
   \return The boundary with the smaller value
   \sa maximum(), lowerBound(), upperBound()
  */
-double QwtAbstractScale::minimum() const
-{
-    return qMin( d_data->scaleDraw->scaleDiv().lowerBound(),
-        d_data->scaleDraw->scaleDiv().upperBound() );
+double QwtAbstractScale::minimum() const {
+    return qMin(d_data->scaleDraw->scaleDiv().lowerBound(),
+                d_data->scaleDraw->scaleDiv().upperBound());
 }
 
 /*!
   \return The boundary with the larger value
   \sa minimum(), lowerBound(), upperBound()
  */
-double QwtAbstractScale::maximum() const
-{
-    return qMax( d_data->scaleDraw->scaleDiv().lowerBound(),
-        d_data->scaleDraw->scaleDiv().upperBound() );
+double QwtAbstractScale::maximum() const {
+    return qMax(d_data->scaleDraw->scaleDiv().lowerBound(),
+                d_data->scaleDraw->scaleDiv().upperBound());
 }
 
 //! Notify changed scale
-void QwtAbstractScale::scaleChange()
-{
+void QwtAbstractScale::scaleChange() {
 }
 
 /*!
@@ -424,26 +386,23 @@ void QwtAbstractScale::scaleChange()
 
   \sa scaleChange()
 */
-void QwtAbstractScale::rescale( 
-    double lowerBound, double upperBound, double stepSize )
-{
+void QwtAbstractScale::rescale(
+        double lowerBound, double upperBound, double stepSize) {
     const QwtScaleDiv scaleDiv = d_data->scaleEngine->divideScale(
-        lowerBound, upperBound, d_data->maxMajor, d_data->maxMinor, stepSize );
+            lowerBound, upperBound, d_data->maxMajor, d_data->maxMinor, stepSize);
 
-    if ( scaleDiv != d_data->scaleDraw->scaleDiv() )
-    {
+    if (scaleDiv != d_data->scaleDraw->scaleDiv()) {
 #if 1
         d_data->scaleDraw->setTransformation(
-            d_data->scaleEngine->transformation() );
+                d_data->scaleEngine->transformation());
 #endif
 
-        d_data->scaleDraw->setScaleDiv( scaleDiv );
+        d_data->scaleDraw->setScaleDiv(scaleDiv);
         scaleChange();
     }
 }
 
-void QwtAbstractScale::updateScaleDraw()
-{
-    rescale( d_data->scaleDraw->scaleDiv().lowerBound(),
-        d_data->scaleDraw->scaleDiv().upperBound(), d_data->stepSize );
+void QwtAbstractScale::updateScaleDraw() {
+    rescale(d_data->scaleDraw->scaleDiv().lowerBound(),
+            d_data->scaleDraw->scaleDiv().upperBound(), d_data->stepSize);
 }

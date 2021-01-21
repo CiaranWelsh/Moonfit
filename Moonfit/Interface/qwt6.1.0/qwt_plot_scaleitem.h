@@ -44,50 +44,57 @@ plot->enableAxis(QwtPlot::yLeft, false);
 \endverbatim
 */
 
-class QWT_EXPORT QwtPlotScaleItem: public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotScaleItem : public QwtPlotItem {
 public:
     explicit QwtPlotScaleItem(
-        QwtScaleDraw::Alignment = QwtScaleDraw::BottomScale,
-        const double pos = 0.0 );
+            QwtScaleDraw::Alignment = QwtScaleDraw::BottomScale,
+            const double pos = 0.0);
 
     virtual ~QwtPlotScaleItem();
 
     virtual int rtti() const;
 
-    void setScaleDiv( const QwtScaleDiv& );
-    const QwtScaleDiv& scaleDiv() const;
+    void setScaleDiv(const QwtScaleDiv &);
 
-    void setScaleDivFromAxis( bool on );
+    const QwtScaleDiv &scaleDiv() const;
+
+    void setScaleDivFromAxis(bool on);
+
     bool isScaleDivFromAxis() const;
 
-    void setPalette( const QPalette & );
+    void setPalette(const QPalette &);
+
     QPalette palette() const;
 
-    void setFont( const QFont& );
+    void setFont(const QFont &);
+
     QFont font() const;
 
-    void setScaleDraw( QwtScaleDraw * );
+    void setScaleDraw(QwtScaleDraw *);
 
     const QwtScaleDraw *scaleDraw() const;
+
     QwtScaleDraw *scaleDraw();
 
-    void setPosition( double pos );
+    void setPosition(double pos);
+
     double position() const;
 
-    void setBorderDistance( int numPixels );
+    void setBorderDistance(int numPixels);
+
     int borderDistance() const;
 
-    void setAlignment( QwtScaleDraw::Alignment );
+    void setAlignment(QwtScaleDraw::Alignment);
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+    virtual void draw(QPainter *p,
+                      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QRectF &rect) const;
 
-    virtual void updateScaleDiv( const QwtScaleDiv &, const QwtScaleDiv & );
+    virtual void updateScaleDiv(const QwtScaleDiv &, const QwtScaleDiv &);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -19,17 +19,14 @@
 #include <QtGui/qpainter.h>
 #endif
 
-class QwtPlotBarChart::PrivateData
-{
+class QwtPlotBarChart::PrivateData {
 public:
-    PrivateData():
-        symbol( NULL ),
-        legendMode( QwtPlotBarChart::LegendChartTitle )
-    {
+    PrivateData() :
+            symbol(NULL),
+            legendMode(QwtPlotBarChart::LegendChartTitle) {
     }
- 
-    ~PrivateData()
-    {
+
+    ~PrivateData() {
         delete symbol;
     }
 
@@ -41,9 +38,8 @@ public:
   Constructor
   \param title Title of the curve
 */
-QwtPlotBarChart::QwtPlotBarChart( const QwtText &title ):
-    QwtPlotAbstractBarChart( title )
-{
+QwtPlotBarChart::QwtPlotBarChart(const QwtText &title) :
+        QwtPlotAbstractBarChart(title) {
     init();
 }
 
@@ -51,27 +47,23 @@ QwtPlotBarChart::QwtPlotBarChart( const QwtText &title ):
   Constructor
   \param title Title of the curve
 */
-QwtPlotBarChart::QwtPlotBarChart( const QString &title ):
-    QwtPlotAbstractBarChart( QwtText( title ) )
-{
+QwtPlotBarChart::QwtPlotBarChart(const QString &title) :
+        QwtPlotAbstractBarChart(QwtText(title)) {
     init();
 }
 
 //! Destructor
-QwtPlotBarChart::~QwtPlotBarChart()
-{
+QwtPlotBarChart::~QwtPlotBarChart() {
     delete d_data;
 }
 
-void QwtPlotBarChart::init()
-{
+void QwtPlotBarChart::init() {
     d_data = new PrivateData;
-    setData( new QwtPointSeriesData() );
+    setData(new QwtPointSeriesData());
 }
 
 //! \return QwtPlotItem::Rtti_PlotBarChart
-int QwtPlotBarChart::rtti() const
-{
+int QwtPlotBarChart::rtti() const {
     return QwtPlotItem::Rtti_PlotBarChart;
 }
 
@@ -83,9 +75,8 @@ int QwtPlotBarChart::rtti() const
   \note QPolygonF is derived from QVector<QPointF>
 */
 void QwtPlotBarChart::setSamples(
-    const QVector<QPointF> &samples )
-{
-    setData( new QwtPointSeriesData( samples ) );
+        const QVector <QPointF> &samples) {
+    setData(new QwtPointSeriesData(samples));
 }
 
 /*!
@@ -98,13 +89,12 @@ void QwtPlotBarChart::setSamples(
   \note QVector is implicitly shared
 */
 void QwtPlotBarChart::setSamples(
-    const QVector<double> &samples )
-{
-    QVector<QPointF> points;
-    for ( int i = 0; i < samples.size(); i++ )
-        points += QPointF( i, samples[ i ] );
+        const QVector<double> &samples) {
+    QVector <QPointF> points;
+    for (int i = 0; i < samples.size(); i++)
+        points += QPointF(i, samples[i]);
 
-    setData( new QwtPointSeriesData( points ) );
+    setData(new QwtPointSeriesData(points));
 }
 
 /*!
@@ -117,9 +107,8 @@ void QwtPlotBarChart::setSamples(
   \warning The item takes ownership of the data object, deleting
            it when its not used anymore.
 */
-void QwtPlotBarChart::setSamples( QwtSeriesData<QPointF> *data )
-{
-    setData( data );
+void QwtPlotBarChart::setSamples(QwtSeriesData<QPointF> *data) {
+    setData(data);
 }
 
 /*!
@@ -132,10 +121,8 @@ void QwtPlotBarChart::setSamples( QwtSeriesData<QPointF> *data )
   \param symbol Symbol
   \sa symbol()
 */
-void QwtPlotBarChart::setSymbol( QwtColumnSymbol *symbol )
-{
-    if ( symbol != d_data->symbol )
-    {
+void QwtPlotBarChart::setSymbol(QwtColumnSymbol *symbol) {
+    if (symbol != d_data->symbol) {
         delete d_data->symbol;
         d_data->symbol = symbol;
 
@@ -148,8 +135,7 @@ void QwtPlotBarChart::setSymbol( QwtColumnSymbol *symbol )
   \return Current symbol or NULL, when no symbol has been assigned
   \sa setSymbol()
 */
-const QwtColumnSymbol *QwtPlotBarChart::symbol() const
-{
+const QwtColumnSymbol *QwtPlotBarChart::symbol() const {
     return d_data->symbol;
 }
 
@@ -162,10 +148,8 @@ const QwtColumnSymbol *QwtPlotBarChart::symbol() const
   \param mode New mode
   \sa legendMode(), legendData(), barTitle(), QwtPlotItem::ItemAttribute
  */
-void QwtPlotBarChart::setLegendMode( LegendMode mode )
-{
-    if ( mode != d_data->legendMode )
-    {
+void QwtPlotBarChart::setLegendMode(LegendMode mode) {
+    if (mode != d_data->legendMode) {
         d_data->legendMode = mode;
         legendChanged();
     }
@@ -175,8 +159,7 @@ void QwtPlotBarChart::setLegendMode( LegendMode mode )
   \return Legend mode
   \sa setLegendMode()
  */
-QwtPlotBarChart::LegendMode QwtPlotBarChart::legendMode() const
-{
+QwtPlotBarChart::LegendMode QwtPlotBarChart::legendMode() const {
     return d_data->legendMode;
 }
 
@@ -184,22 +167,21 @@ QwtPlotBarChart::LegendMode QwtPlotBarChart::legendMode() const
   \return Bounding rectangle of all samples.
   For an empty series the rectangle is invalid.
 */
-QRectF QwtPlotBarChart::boundingRect() const
-{
+QRectF QwtPlotBarChart::boundingRect() const {
     const size_t numSamples = dataSize();
-    if ( numSamples == 0 )
+    if (numSamples == 0)
         return QwtPlotSeriesItem::boundingRect();
 
     const double baseLine = baseline();
 
     QRectF rect = QwtPlotSeriesItem::boundingRect();
-    if ( rect.bottom() < baseLine )
-        rect.setBottom( baseLine );
-    if ( rect.top() > baseLine )
-        rect.setTop( baseLine );
+    if (rect.bottom() < baseLine)
+        rect.setBottom(baseLine);
+    if (rect.top() > baseLine)
+        rect.setTop(baseLine);
 
-    if ( rect.isValid() && ( orientation() == Qt::Horizontal ) )
-        rect.setRect( rect.y(), rect.x(), rect.height(), rect.width() );
+    if (rect.isValid() && (orientation() == Qt::Horizontal))
+        rect.setRect(rect.y(), rect.x(), rect.height(), rect.width());
 
     return rect;
 }
@@ -217,29 +199,27 @@ QRectF QwtPlotBarChart::boundingRect() const
 
   \sa drawSymbols()
 */
-void QwtPlotBarChart::drawSeries( QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRectF &canvasRect, int from, int to ) const
-{
-    if ( to < 0 )
+void QwtPlotBarChart::drawSeries(QPainter *painter,
+                                 const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                                 const QRectF &canvasRect, int from, int to) const {
+    if (to < 0)
         to = dataSize() - 1;
 
-    if ( from < 0 )
+    if (from < 0)
         from = 0;
 
-    if ( from > to )
+    if (from > to)
         return;
 
 
     const QRectF br = data()->boundingRect();
-    const QwtInterval interval( br.left(), br.right() );
+    const QwtInterval interval(br.left(), br.right());
 
     painter->save();
 
-    for ( int i = from; i <= to; i++ )
-    {
-        drawSample( painter, xMap, yMap,
-                    canvasRect, interval, i, sample( i ) );
+    for (int i = from; i <= to; i++) {
+        drawSample(painter, xMap, yMap,
+                   canvasRect, interval, i, sample(i));
     }
 
     painter->restore();
@@ -258,51 +238,47 @@ void QwtPlotBarChart::drawSeries( QPainter *painter,
 
   \sa drawSeries()
 */
-void QwtPlotBarChart::drawSample( QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRectF &canvasRect, const QwtInterval &boundingInterval,
-    int index, const QPointF &sample ) const
-{
+void QwtPlotBarChart::drawSample(QPainter *painter,
+                                 const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                                 const QRectF &canvasRect, const QwtInterval &boundingInterval,
+                                 int index, const QPointF &sample) const {
     QwtColumnRect barRect;
 
-    if ( orientation() == Qt::Horizontal )
-    {
-        const double barHeight = sampleWidth( yMap, canvasRect.height(),
-            boundingInterval.width(), sample.y() );
+    if (orientation() == Qt::Horizontal) {
+        const double barHeight = sampleWidth(yMap, canvasRect.height(),
+                                             boundingInterval.width(), sample.y());
 
-        const double x1 = xMap.transform( baseline() );
-        const double x2 = xMap.transform( sample.y() );
+        const double x1 = xMap.transform(baseline());
+        const double x2 = xMap.transform(sample.y());
 
-        const double y = yMap.transform( sample.x() );
+        const double y = yMap.transform(sample.x());
         const double y1 = y - 0.5 * barHeight;
         const double y2 = y + 0.5 * barHeight;
 
-        barRect.direction = ( x1 < x2 ) ?
-            QwtColumnRect::LeftToRight : QwtColumnRect::RightToLeft;
+        barRect.direction = (x1 < x2) ?
+                            QwtColumnRect::LeftToRight : QwtColumnRect::RightToLeft;
 
-        barRect.hInterval = QwtInterval( x1, x2 ).normalized();
-        barRect.vInterval = QwtInterval( y1, y2 );
-    }
-    else
-    {
-        const double barWidth = sampleWidth( xMap, canvasRect.width(),
-            boundingInterval.width(), sample.y() );
+        barRect.hInterval = QwtInterval(x1, x2).normalized();
+        barRect.vInterval = QwtInterval(y1, y2);
+    } else {
+        const double barWidth = sampleWidth(xMap, canvasRect.width(),
+                                            boundingInterval.width(), sample.y());
 
-        const double x = xMap.transform( sample.x() );
+        const double x = xMap.transform(sample.x());
         const double x1 = x - 0.5 * barWidth;
         const double x2 = x + 0.5 * barWidth;
 
-        const double y1 = yMap.transform( baseline() );
-        const double y2 = yMap.transform( sample.y() );
+        const double y1 = yMap.transform(baseline());
+        const double y2 = yMap.transform(sample.y());
 
-        barRect.direction = ( y1 < y2 ) ?
-            QwtColumnRect::TopToBottom : QwtColumnRect::BottomToTop;
+        barRect.direction = (y1 < y2) ?
+                            QwtColumnRect::TopToBottom : QwtColumnRect::BottomToTop;
 
-        barRect.hInterval = QwtInterval( x1, x2 );
-        barRect.vInterval = QwtInterval( y1, y2 ).normalized();
+        barRect.hInterval = QwtInterval(x1, x2);
+        barRect.vInterval = QwtInterval(y1, y2).normalized();
     }
 
-    drawBar( painter, index, sample, barRect );
+    drawBar(painter, index, sample, barRect);
 }
 
 /*!
@@ -313,28 +289,24 @@ void QwtPlotBarChart::drawSample( QPainter *painter,
   \param sample Value of the sample
   \param rect Bounding rectangle of the bar
  */
-void QwtPlotBarChart::drawBar( QPainter *painter,
-    int sampleIndex, const QPointF &sample, 
-    const QwtColumnRect &rect ) const
-{
-    const QwtColumnSymbol *specialSym = 
-        specialSymbol( sampleIndex, sample );
+void QwtPlotBarChart::drawBar(QPainter *painter,
+                              int sampleIndex, const QPointF &sample,
+                              const QwtColumnRect &rect) const {
+    const QwtColumnSymbol *specialSym =
+            specialSymbol(sampleIndex, sample);
 
     const QwtColumnSymbol *sym = specialSym;
-    if ( sym == NULL )
+    if (sym == NULL)
         sym = d_data->symbol;
 
-    if ( sym )
-    {
-        sym->draw( painter, rect );
-    }
-    else
-    {
+    if (sym) {
+        sym->draw(painter, rect);
+    } else {
         // we build a temporary default symbol
-        QwtColumnSymbol sym( QwtColumnSymbol::Box );
-        sym.setLineWidth( 1 );
-        sym.setFrameStyle( QwtColumnSymbol::Plain );
-        sym.draw( painter, rect );
+        QwtColumnSymbol sym(QwtColumnSymbol::Box);
+        sym.setLineWidth(1);
+        sym.setFrameStyle(QwtColumnSymbol::Plain);
+        sym.draw(painter, rect);
     }
 
     delete specialSym;
@@ -349,11 +321,10 @@ void QwtPlotBarChart::drawBar( QPainter *painter,
 
   \return NULL, indicating to use the default symbol
  */
-QwtColumnSymbol *QwtPlotBarChart::specialSymbol( 
-    int sampleIndex, const QPointF &sample ) const
-{
-    Q_UNUSED( sampleIndex );
-    Q_UNUSED( sample );
+QwtColumnSymbol *QwtPlotBarChart::specialSymbol(
+        int sampleIndex, const QPointF &sample) const {
+    Q_UNUSED(sampleIndex);
+    Q_UNUSED(sample);
 
     return NULL;
 }
@@ -371,9 +342,8 @@ QwtColumnSymbol *QwtPlotBarChart::specialSymbol(
   \return An empty text
   \sa LegendBarTitles
  */
-QwtText QwtPlotBarChart::barTitle( int sampleIndex ) const
-{
-    Q_UNUSED( sampleIndex );
+QwtText QwtPlotBarChart::barTitle(int sampleIndex) const {
+    Q_UNUSED(sampleIndex);
     return QwtText();
 }
 
@@ -388,35 +358,29 @@ QwtText QwtPlotBarChart::barTitle( int sampleIndex ) const
    \return Information, that is needed to represent the item on the legend
    \sa title(), setLegendMode(), barTitle(), QwtLegend, QwtPlotLegendItem
  */
-QList<QwtLegendData> QwtPlotBarChart::legendData() const
-{
-    QList<QwtLegendData> list;
+QList <QwtLegendData> QwtPlotBarChart::legendData() const {
+    QList <QwtLegendData> list;
 
-    if ( d_data->legendMode == LegendBarTitles )
-    {
+    if (d_data->legendMode == LegendBarTitles) {
         const size_t numSamples = dataSize();
-        for ( size_t i = 0; i < numSamples; i++ )
-        {
+        for (size_t i = 0; i < numSamples; i++) {
             QwtLegendData data;
 
             QVariant titleValue;
-            qVariantSetValue( titleValue, barTitle( i ) );
-            data.setValue( QwtLegendData::TitleRole, titleValue );
+            qVariantSetValue(titleValue, barTitle(i));
+            data.setValue(QwtLegendData::TitleRole, titleValue);
 
-            if ( !legendIconSize().isEmpty() )
-            {
+            if (!legendIconSize().isEmpty()) {
                 QVariant iconValue;
-                qVariantSetValue( iconValue,
-                    legendIcon( i, legendIconSize() ) );
+                qVariantSetValue(iconValue,
+                                 legendIcon(i, legendIconSize()));
 
-                data.setValue( QwtLegendData::IconRole, iconValue );
+                data.setValue(QwtLegendData::IconRole, iconValue);
             }
 
             list += data;
         }
-    }
-    else
-    {
+    } else {
         return QwtPlotAbstractBarChart::legendData();
     }
 
@@ -436,26 +400,25 @@ QList<QwtLegendData> QwtPlotBarChart::legendData() const
    \sa setLegendMode(), drawBar(), 
        QwtPlotItem::setLegendIconSize(), QwtPlotItem::legendData()
  */
-QwtGraphic QwtPlotBarChart::legendIcon( 
-    int index, const QSizeF &size ) const
-{
+QwtGraphic QwtPlotBarChart::legendIcon(
+        int index, const QSizeF &size) const {
     QwtColumnRect column;
-    column.hInterval = QwtInterval( 0.0, size.width() - 1.0 );
-    column.vInterval = QwtInterval( 0.0, size.height() - 1.0 );
+    column.hInterval = QwtInterval(0.0, size.width() - 1.0);
+    column.vInterval = QwtInterval(0.0, size.height() - 1.0);
 
     QwtGraphic icon;
-    icon.setDefaultSize( size );
-    icon.setRenderHint( QwtGraphic::RenderPensUnscaled, true );
+    icon.setDefaultSize(size);
+    icon.setRenderHint(QwtGraphic::RenderPensUnscaled, true);
 
-    QPainter painter( &icon );
-    painter.setRenderHint( QPainter::Antialiasing,
-        testRenderHint( QwtPlotItem::RenderAntialiased ) );
+    QPainter painter(&icon);
+    painter.setRenderHint(QPainter::Antialiasing,
+                          testRenderHint(QwtPlotItem::RenderAntialiased));
 
     int barIndex = -1;
-    if ( d_data->legendMode == QwtPlotBarChart::LegendBarTitles )
+    if (d_data->legendMode == QwtPlotBarChart::LegendBarTitles)
         barIndex = index;
-        
-    drawBar( &painter, barIndex, QPointF(), column );
+
+    drawBar(&painter, barIndex, QPointF(), column);
 
     return icon;
 }

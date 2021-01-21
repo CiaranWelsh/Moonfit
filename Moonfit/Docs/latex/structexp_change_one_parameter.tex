@@ -2,79 +2,85 @@
 \label{structexp_change_one_parameter}\index{expChangeOneParameter@{expChangeOneParameter}}
 
 
-\mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}} takes an experiment and compares one of its condition from a parameter set but changing one parameter along perturbated values around the original value.  
+\mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}} takes an experiment and compares one of its condition from a parameter set but changing one parameter along perturbated values around the original value.
 
 
 
 
-{\ttfamily \#include $<$experiment.\+h$>$}
+    {\ttfamily \#include $<$experiment.\+h$>$}
 
 Inheritance diagram for exp\+Change\+One\+Parameter\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=2.000000cm]{structexp_change_one_parameter}
-\end{center}
+                                                          \begin{center}
+                                                              \leavevmode
+                                                              \includegraphics[height=2.000000cm]{structexp_change_one_parameter}
+                                                          \end{center}
 \end{figure}
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_a96a7c4a7c4a510b18da9e91578e1fb83}\label{structexp_change_one_parameter_a96a7c4a7c4a510b18da9e91578e1fb83}} 
-enum \{ \newline
-{\bfseries Param05}, 
-{\bfseries Param20}, 
-{\bfseries Param01}, 
-{\bfseries Param100}, 
-\newline
-{\bfseries Param08}, 
-{\bfseries Param12}, 
-{\bfseries Param02}, 
-{\bfseries Param15}, 
-\newline
-{\bfseries Param005}, 
-{\bfseries Param50}, 
-{\bfseries Param\+Default}, 
-{\bfseries Nb\+Variantes}
- \}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_a96a7c4a7c4a510b18da9e91578e1fb83}\label{structexp_change_one_parameter_a96a7c4a7c4a510b18da9e91578e1fb83}}
+    enum \{ \newline
+    {\bfseries Param05},
+        {\bfseries Param20},
+        {\bfseries Param01},
+        {\bfseries Param100},
+    \newline
+    {\bfseries Param08},
+        {\bfseries Param12},
+        {\bfseries Param02},
+        {\bfseries Param15},
+    \newline
+    {\bfseries Param005},
+        {\bfseries Param50},
+        {\bfseries Param\+Default},
+        {\bfseries Nb\+Variantes}
+    \}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_ae396d0b014f99aab5d54784a47e5a30a}\label{structexp_change_one_parameter_ae396d0b014f99aab5d54784a47e5a30a}} 
-{\bfseries exp\+Change\+One\+Parameter} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$Exp, vector$<$ double $>$ \&\+\_\+parameter\+Set, int \+\_\+parameter\+To\+Change, int \+\_\+\+I\+Dcondition\+To\+Use=0, int \+\_\+nb\+Curves=exp\+Change\+One\+Parameter\+::\+Nb\+Variantes)
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_ae05aa844eeb9081c86a9b7089886e87d}\label{structexp_change_one_parameter_ae05aa844eeb9081c86a9b7089886e87d}} 
-void \mbox{\hyperlink{structexp_change_one_parameter_ae05aa844eeb9081c86a9b7089886e87d}{init}} ()
-\begin{DoxyCompactList}\small\item\em 2018-\/11-\/21 Should not use the parameter value from creation, but the current from the model \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_a0e72babe04ad63bf6b864f8bc138fff6}\label{structexp_change_one_parameter_a0e72babe04ad63bf6b864f8bc138fff6}} 
-void \mbox{\hyperlink{structexp_change_one_parameter_a0e72babe04ad63bf6b864f8bc138fff6}{simulate}} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL, bool force=false)
-\begin{DoxyCompactList}\small\item\em Careful, this function should restore the exact same paameter values as before being called. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_ae396d0b014f99aab5d54784a47e5a30a}\label{structexp_change_one_parameter_ae396d0b014f99aab5d54784a47e5a30a}}
+    {\bfseries exp\+Change\+One\+Parameter} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$Exp, vector$<$ double $>$ \&\+\_\+parameter\+Set, int \+\_\+parameter\+To\+Change, int \+\_\+\+I\+Dcondition\+To\+Use=0, int \+\_\+nb\+Curves=exp\+Change\+One\+Parameter\+::\+Nb\+Variantes)
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_ae05aa844eeb9081c86a9b7089886e87d}\label{structexp_change_one_parameter_ae05aa844eeb9081c86a9b7089886e87d}}
+    void \mbox{\hyperlink{structexp_change_one_parameter_ae05aa844eeb9081c86a9b7089886e87d}{init}} ()
+    \begin{DoxyCompactList}
+        \small\item\em 2018-\/11-\/21 Should not use the parameter value from creation, but the current from the model
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{structexp_change_one_parameter_a0e72babe04ad63bf6b864f8bc138fff6}\label{structexp_change_one_parameter_a0e72babe04ad63bf6b864f8bc138fff6}}
+    void \mbox{\hyperlink{structexp_change_one_parameter_a0e72babe04ad63bf6b864f8bc138fff6}{simulate}} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL, bool force=false)
+    \begin{DoxyCompactList}
+        \small\item\em Careful, this function should restore the exact same paameter values as before being called.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_a51576240835a1f78503243f841252f0d}\label{structexp_change_one_parameter_a51576240835a1f78503243f841252f0d}} 
-vector$<$ double $>$ {\bfseries parameter\+Set}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_ad035804d28d39b51faf79923dbe68958}\label{structexp_change_one_parameter_ad035804d28d39b51faf79923dbe68958}} 
-int {\bfseries parameter}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_a7e29dcf66db0afda93487a8d8b53fe61}\label{structexp_change_one_parameter_a7e29dcf66db0afda93487a8d8b53fe61}} 
-int {\bfseries nb\+Curves}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_aad6593fe8fa042a87d968ff8d3d7023a}\label{structexp_change_one_parameter_aad6593fe8fa042a87d968ff8d3d7023a}} 
-double {\bfseries value\+Around}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_aa46ba3ccb68bfa2a59e5e2ac733959cd}\label{structexp_change_one_parameter_aa46ba3ccb68bfa2a59e5e2ac733959cd}} 
-\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries built\+On\+Experiment}
-\item 
-\mbox{\Hypertarget{structexp_change_one_parameter_a3be8f3a75e162ccdbe2a537b517e2927}\label{structexp_change_one_parameter_a3be8f3a75e162ccdbe2a537b517e2927}} 
-int {\bfseries I\+Dcondition\+To\+Use}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_a51576240835a1f78503243f841252f0d}\label{structexp_change_one_parameter_a51576240835a1f78503243f841252f0d}}
+    vector$<$ double $>$ {\bfseries parameter\+Set}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_ad035804d28d39b51faf79923dbe68958}\label{structexp_change_one_parameter_ad035804d28d39b51faf79923dbe68958}}
+    int {\bfseries parameter}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_a7e29dcf66db0afda93487a8d8b53fe61}\label{structexp_change_one_parameter_a7e29dcf66db0afda93487a8d8b53fe61}}
+    int {\bfseries nb\+Curves}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_aad6593fe8fa042a87d968ff8d3d7023a}\label{structexp_change_one_parameter_aad6593fe8fa042a87d968ff8d3d7023a}}
+    double {\bfseries value\+Around}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_aa46ba3ccb68bfa2a59e5e2ac733959cd}\label{structexp_change_one_parameter_aa46ba3ccb68bfa2a59e5e2ac733959cd}}
+    \mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries built\+On\+Experiment}
+    \item
+    \mbox{\Hypertarget{structexp_change_one_parameter_a3be8f3a75e162ccdbe2a537b517e2927}\label{structexp_change_one_parameter_a3be8f3a75e162ccdbe2a537b517e2927}}
+    int {\bfseries I\+Dcondition\+To\+Use}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}} takes an experiment and compares one of its condition from a parameter set but changing one parameter along perturbated values around the original value. 
+\mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}} takes an experiment and compares one of its condition from a parameter set but changing one parameter along perturbated values around the original value.
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/experiment.\+h\item 
-Framework/experiment.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/experiment.\+h\item
+                                                                               Framework/experiment.\+cpp
+\end{DoxyCompactItemize}

@@ -21,8 +21,7 @@
   from the regular methods ( QwtPlotSeriesItem ) to make it possible
   to derive from QwtPlotSeriesItem without any hassle with templates.
 */
-class QwtAbstractSeriesStore
-{
+class QwtAbstractSeriesStore {
 protected:
     //! Destructor
     virtual ~QwtAbstractSeriesStore() {}
@@ -34,7 +33,7 @@ protected:
       Set a the "rectangle of interest" for the stored series
       \sa QwtSeriesData<T>::setRectOfInterest()
      */
-    virtual void setRectOfInterest( const QRectF & ) = 0;
+    virtual void setRectOfInterest(const QRectF &) = 0;
 
     //! \return Bounding rectangle of the stored series
     virtual QRectF dataRect() const = 0;
@@ -53,9 +52,8 @@ protected:
   QwtSeriesStore offers the template based part for the plot item API, so
   that QwtPlotSeriesItem can be derived without any hassle with templates.
  */
-template <typename T>
-class QwtSeriesStore: public virtual QwtAbstractSeriesStore
-{
+template<typename T>
+class QwtSeriesStore : public virtual QwtAbstractSeriesStore {
 public:
     /*!
       \brief Constructor
@@ -73,7 +71,7 @@ public:
       \warning The item takes ownership of the data object, deleting
                it when its not used anymore.
     */
-    void setData( QwtSeriesData<T> *series );
+    void setData(QwtSeriesData<T> *series);
 
     //! \return the the series data
     QwtSeriesData<T> *data();
@@ -85,7 +83,7 @@ public:
         \param index Index
         \return Sample at position index
     */
-    T sample( int index ) const;
+    T sample(int index) const;
 
     /*!
       \return Number of samples of the series
@@ -107,7 +105,7 @@ public:
       \param rect Rectangle of interest
       \sa QwtSeriesData<T>::setRectOfInterest()
     */
-    virtual void setRectOfInterest( const QRectF &rect );
+    virtual void setRectOfInterest(const QRectF &rect);
 
     /*!
       Replace a series without deleting the previous one
@@ -115,82 +113,71 @@ public:
       \param series New series
       \return Previously assigned series
      */
-    QwtSeriesData<T> *swapData( QwtSeriesData<T> *series );
+    QwtSeriesData<T> *swapData(QwtSeriesData<T> *series);
 
 private:
     QwtSeriesData<T> *d_series;
 };
 
-template <typename T>
+template<typename T>
 QwtSeriesStore<T>::QwtSeriesStore():
-    d_series( NULL )
-{
+        d_series(NULL) {
 }
 
-template <typename T>
-QwtSeriesStore<T>::~QwtSeriesStore()
-{
+template<typename T>
+QwtSeriesStore<T>::~QwtSeriesStore() {
     delete d_series;
 }
 
-template <typename T>
-inline QwtSeriesData<T> *QwtSeriesStore<T>::data()
-{
+template<typename T>
+inline QwtSeriesData<T> *QwtSeriesStore<T>::data() {
     return d_series;
 }
 
-template <typename T>
-inline const QwtSeriesData<T> *QwtSeriesStore<T>::data() const
-{
+template<typename T>
+inline const QwtSeriesData<T> *QwtSeriesStore<T>::data() const {
     return d_series;
 }
 
-template <typename T>
-inline T QwtSeriesStore<T>::sample( int index ) const
-{
-    return d_series ? d_series->sample( index ) : T();
+template<typename T>
+inline T QwtSeriesStore<T>::sample(int index) const {
+    return d_series ? d_series->sample(index) : T();
 }
 
-template <typename T>
-void QwtSeriesStore<T>::setData( QwtSeriesData<T> *series )
-{
-    if ( d_series != series )
-    {
+template<typename T>
+void QwtSeriesStore<T>::setData(QwtSeriesData<T> *series) {
+    if (d_series != series) {
         delete d_series;
         d_series = series;
         dataChanged();
     }
 }
 
-template <typename T>
-size_t QwtSeriesStore<T>::dataSize() const
-{
-    if ( d_series == NULL )
+template<typename T>
+size_t QwtSeriesStore<T>::dataSize() const {
+    if (d_series == NULL)
         return 0;
 
     return d_series->size();
 }
 
-template <typename T>
-QRectF QwtSeriesStore<T>::dataRect() const
-{
-    if ( d_series == NULL )
-        return QRectF( 1.0, 1.0, -2.0, -2.0 ); // invalid
+template<typename T>
+QRectF QwtSeriesStore<T>::dataRect() const {
+    if (d_series == NULL)
+        return QRectF(1.0, 1.0, -2.0, -2.0); // invalid
 
     return d_series->boundingRect();
 }
 
-template <typename T>
-void QwtSeriesStore<T>::setRectOfInterest( const QRectF &rect )
-{
-    if ( d_series )
-        d_series->setRectOfInterest( rect );
+template<typename T>
+void QwtSeriesStore<T>::setRectOfInterest(const QRectF &rect) {
+    if (d_series)
+        d_series->setRectOfInterest(rect);
 }
 
-template <typename T>
-QwtSeriesData<T>* QwtSeriesStore<T>::swapData( QwtSeriesData<T> *series )
-{
-    QwtSeriesData<T> * swappedSeries = d_series;
+template<typename T>
+QwtSeriesData<T> *QwtSeriesStore<T>::swapData(QwtSeriesData<T> *series) {
+    QwtSeriesData<T> *swappedSeries = d_series;
     d_series = series;
 
     return swappedSeries;

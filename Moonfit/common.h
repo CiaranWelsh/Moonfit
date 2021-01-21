@@ -44,31 +44,33 @@ You don't need these modules for QCP, and they are not suitable for static compi
 #endif
 
 #ifdef _WIN32
-   //define something for Windows (32-bit and 64-bit, this part is common)
-    #define WINDOWS
+//define something for Windows (32-bit and 64-bit, this part is common)
+#define WINDOWS
 #ifdef _WIN64
-      //define something for Windows (64-bit only)
-   #endif
+   //define something for Windows (64-bit only)
+#endif
 #elif __APPLE__
-    #define MAC
-    #include "TargetConditionals.h"
-    #if TARGET_IPHONE_SIMULATOR
-         // iOS Simulator
-    #elif TARGET_OS_IPHONE
-        // iOS device
-    #elif TARGET_OS_MAC
-        // Other kinds of Mac OS
-    #else
-    #   error "Unknown Apple platform"
-    #endif
+#define MAC
+
+#include "TargetConditionals.h"
+
+#if TARGET_IPHONE_SIMULATOR
+// iOS Simulator
+#elif TARGET_OS_IPHONE
+// iOS device
+#elif TARGET_OS_MAC
+// Other kinds of Mac OS
+#else
+#   error "Unknown Apple platform"
+#endif
 #elif __linux__
-    #define UNIX
-    // linux
+#define UNIX
+// linux
 #elif __unix__ // all unices not caught above
-    #define UNIX
-    // Unix
+#define UNIX
+// Unix
 #elif defined(_POSIX_VERSION)
-    // POSIX
+// POSIX
 #else
 #   error "Unknown compiler"
 #endif
@@ -84,30 +86,64 @@ You don't need these modules for QCP, and they are not suitable for static compi
 
 #include <string>
 #include <vector>
+
 using namespace std;
 
 void createFolder(string folderName);       // because this sh** is OS dependent, better in a function
 
 vector<string> listSubDirectories(string dir);
+
 string removeFolderFromFile(string file);
-string codeTime();                                              /// @brief a function to give a different name each time called (based on the time)
-void compileLatex(string folderRes, string texFile);            /// @brief ask the system to compile a tex file and put the result in folderRes
-void mergePDFs(vector<string> & listFiles, string outputFile, string compilingFolder = "");  /// @brief merges PDF files into one with a new name
+
+string
+codeTime();                                              /// @brief a function to give a different name each time called (based on the time)
+void compileLatex(string folderRes,
+                  string texFile);            /// @brief ask the system to compile a tex file and put the result in folderRes
+void mergePDFs(vector<string> &listFiles, string outputFile,
+               string compilingFolder = "");  /// @brief merges PDF files into one with a new name
 
 bool dirExists(string dirName);
+
 string currentDir();
+
 string getParentFolder(string dir);
+
 vector<string> getAllResultSubFolders(string dir); // folders containing a 'History' file
 vector<string> listFilesInDir(string dir, string containing = string(""));
+
 string locateProjectDirectory(string projectFileToFind = string("")); // if not stated, will look for "AllProjects.pro"
 vector<string> findAllResultFolders(string dir);
+
 void printVector(vector<string> v);
+
 void testDirectoryFunctions();
+
 string printVector(vector<double> &v);
 
 /// @brief standardization of common options for optimizing.
-enum typeOptimizer {GeneticFast, SRESFast, Genetic25k, Genetic50k, Genetic100k, Genetic250k, Genetic500k, Genetic1M, SRES25k, SRES50k, SRES100k, SRES250k, SRES500k, SRES1M, GeneticAllCombs25k, GeneticAllCombs50k, GeneticAllCombs100k, GeneticAllCombs250k};
+enum typeOptimizer {
+    GeneticFast,
+    SRESFast,
+    Genetic25k,
+    Genetic50k,
+    Genetic100k,
+    Genetic250k,
+    Genetic500k,
+    Genetic1M,
+    SRES25k,
+    SRES50k,
+    SRES100k,
+    SRES250k,
+    SRES500k,
+    SRES1M,
+    GeneticAllCombs25k,
+    GeneticAllCombs50k,
+    GeneticAllCombs100k,
+    GeneticAllCombs250k
+};
+
 string optName(typeOptimizer toUse);
+
 string optFileHeader(typeOptimizer toUse);
 
 

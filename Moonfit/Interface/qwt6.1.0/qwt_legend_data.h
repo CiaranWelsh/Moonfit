@@ -14,12 +14,14 @@
 #include "qwt_text.h"
 #include "qwt_graphic.h"
 #include <qvariant.h>
+
 #ifdef QT5
 #include <qpixmap.h>
 #endif
 #ifdef QT4
 #include <QtGui/QPixmap>
 #endif
+
 #include <qmap.h>
 
 /*!
@@ -37,12 +39,10 @@
   \note The stockchart example implements a legend as a tree
         with checkable items
  */
-class QWT_EXPORT QwtLegendData
-{
+class QWT_EXPORT QwtLegendData {
 public:
     //! Mode defining how a legend entry interacts
-    enum Mode
-    {
+    enum Mode {
         //! The legend item is not interactive, like a label
         ReadOnly,
 
@@ -54,35 +54,40 @@ public:
     };
 
     //! Identifier how to interprete a QVariant
-    enum Role
-    {
+    enum Role {
         // The value is a Mode
-        ModeRole, 
+        ModeRole,
 
         // The value is a title
-        TitleRole, 
+        TitleRole,
 
         // The value is an icon
-        IconRole, 
+        IconRole,
 
         // Values < UserRole are reserved for internal use
-        UserRole  = 32
+        UserRole = 32
     };
 
     QwtLegendData();
+
     ~QwtLegendData();
 
-    void setValues( const QMap<int, QVariant> & );
+    void setValues(const QMap<int, QVariant> &);
+
     const QMap<int, QVariant> &values() const;
 
-    void setValue( int role, const QVariant & );
-    QVariant value( int role ) const;
+    void setValue(int role, const QVariant &);
 
-    bool hasRole( int role ) const;
+    QVariant value(int role) const;
+
+    bool hasRole(int role) const;
+
     bool isValid() const;
 
     QwtGraphic icon() const;
+
     QwtText title() const;
+
     Mode mode() const;
 
 private:

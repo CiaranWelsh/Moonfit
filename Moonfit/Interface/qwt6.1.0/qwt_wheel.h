@@ -30,108 +30,140 @@
 
   \sa The radio example.
 */
-class QWT_EXPORT QwtWheel: public QWidget
-{
+class QWT_EXPORT QwtWheel : public QWidget {
     Q_OBJECT
 
-    Q_PROPERTY( Qt::Orientation orientation
-                READ orientation WRITE setOrientation )
+    Q_PROPERTY(Qt::Orientation orientation
+               READ orientation WRITE setOrientation)
 
-    Q_PROPERTY( double value READ value WRITE setValue )
-    Q_PROPERTY( double minimum READ minimum WRITE setMinimum )
-    Q_PROPERTY( double maximum READ maximum WRITE setMaximum )
+    Q_PROPERTY(double value READ value WRITE setValue)
 
-    Q_PROPERTY( double singleStep READ singleStep WRITE setSingleStep )
-    Q_PROPERTY( int pageStepCount READ pageStepCount WRITE setPageStepCount )
-    Q_PROPERTY( bool stepAlignment READ stepAlignment WRITE setStepAlignment )
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
 
-    Q_PROPERTY( bool tracking READ isTracking WRITE setTracking )
-    Q_PROPERTY( bool wrapping READ wrapping WRITE setWrapping )
-    Q_PROPERTY( bool inverted READ isInverted WRITE setInverted )
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
 
-    Q_PROPERTY( double mass READ mass WRITE setMass )
-    Q_PROPERTY( int updateInterval READ updateInterval WRITE setUpdateInterval )
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
 
-    Q_PROPERTY( double totalAngle READ totalAngle WRITE setTotalAngle )
-    Q_PROPERTY( double viewAngle READ viewAngle WRITE setViewAngle )
-    Q_PROPERTY( int tickCount READ tickCount WRITE setTickCount )
-    Q_PROPERTY( int wheelWidth READ wheelWidth WRITE setWheelWidth )
-    Q_PROPERTY( int borderWidth READ borderWidth WRITE setBorderWidth )
-    Q_PROPERTY( int wheelBorderWidth READ wheelBorderWidth WRITE setWheelBorderWidth )
+    Q_PROPERTY(int pageStepCount READ pageStepCount WRITE setPageStepCount)
+
+    Q_PROPERTY(bool stepAlignment READ stepAlignment WRITE setStepAlignment)
+
+    Q_PROPERTY(bool tracking READ isTracking WRITE setTracking)
+
+    Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
+
+    Q_PROPERTY(bool inverted READ isInverted WRITE setInverted)
+
+    Q_PROPERTY(double mass READ mass WRITE setMass)
+
+    Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
+
+    Q_PROPERTY(double totalAngle READ totalAngle WRITE setTotalAngle)
+
+    Q_PROPERTY(double viewAngle READ viewAngle WRITE setViewAngle)
+
+    Q_PROPERTY(int tickCount READ tickCount WRITE setTickCount)
+
+    Q_PROPERTY(int wheelWidth READ wheelWidth WRITE setWheelWidth)
+
+    Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth)
+
+    Q_PROPERTY(int wheelBorderWidth READ wheelBorderWidth WRITE setWheelBorderWidth)
 
 public:
-    explicit QwtWheel( QWidget *parent = NULL );
+    explicit QwtWheel(QWidget *parent = NULL);
+
     virtual ~QwtWheel();
 
     double value() const;
 
-    void setOrientation( Qt::Orientation );
+    void setOrientation(Qt::Orientation);
+
     Qt::Orientation orientation() const;
 
     double totalAngle() const;
+
     double viewAngle() const;
 
-    void setTickCount( int );
+    void setTickCount(int);
+
     int tickCount() const;
 
-    void setWheelWidth( int );
+    void setWheelWidth(int);
+
     int wheelWidth() const;
 
-    void setWheelBorderWidth( int );
+    void setWheelBorderWidth(int);
+
     int wheelBorderWidth() const;
 
-    void setBorderWidth( int );
+    void setBorderWidth(int);
+
     int borderWidth() const;
 
-    void setInverted( bool tf );
+    void setInverted(bool tf);
+
     bool isInverted() const;
 
-    void setWrapping( bool tf );
+    void setWrapping(bool tf);
+
     bool wrapping() const;
 
-    void setSingleStep( double );
+    void setSingleStep(double);
+
     double singleStep() const;
 
-    void setPageStepCount( int );
+    void setPageStepCount(int);
+
     int pageStepCount() const;
 
-    void setStepAlignment( bool on );
+    void setStepAlignment(bool on);
+
     bool stepAlignment() const;
 
-    void setRange( double vmin, double vmax );
+    void setRange(double vmin, double vmax);
 
-    void setMinimum( double min );
+    void setMinimum(double min);
+
     double minimum() const;
 
-    void setMaximum( double max );
+    void setMaximum(double max);
+
     double maximum() const;
 
-    void setUpdateInterval( int );
+    void setUpdateInterval(int);
+
     int updateInterval() const;
 
-    void setTracking( bool enable );
+    void setTracking(bool enable);
+
     bool isTracking() const;
 
     double mass() const;
 
-public Q_SLOTS:
-    void setValue( double );
-    void setTotalAngle ( double );
-    void setViewAngle( double );
-    void setMass( double );
+public
+    Q_SLOTS:
+            void setValue(double);
 
-Q_SIGNALS:
+    void setTotalAngle(double);
 
-    /*!
-      \brief Notify a change of value.
+    void setViewAngle(double);
 
-      When tracking is enabled this signal will be emitted every
-      time the value changes. 
+    void setMass(double);
 
-      \param value new value
-      \sa setTracking()
-    */
-    void valueChanged( double value );
+    Q_SIGNALS:
+
+            /*!
+              \brief Notify a change of value.
+
+              When tracking is enabled this signal will be emitted every
+              time the value changes.
+
+              \param value new value
+              \sa setTracking()
+            */
+            void valueChanged(double
+    value );
 
     /*!
       This signal is emitted when the user presses the
@@ -150,34 +182,44 @@ Q_SIGNALS:
 
       \param value new value
     */
-    void wheelMoved( double value );
+    void wheelMoved(double value);
 
 protected:
-    virtual void paintEvent( QPaintEvent * );
-    virtual void mousePressEvent( QMouseEvent * );
-    virtual void mouseReleaseEvent( QMouseEvent * );
-    virtual void mouseMoveEvent( QMouseEvent * );
-    virtual void keyPressEvent( QKeyEvent * );
-    virtual void wheelEvent( QWheelEvent * );
-    virtual void timerEvent( QTimerEvent * );
+    virtual void paintEvent(QPaintEvent *);
+
+    virtual void mousePressEvent(QMouseEvent *);
+
+    virtual void mouseReleaseEvent(QMouseEvent *);
+
+    virtual void mouseMoveEvent(QMouseEvent *);
+
+    virtual void keyPressEvent(QKeyEvent *);
+
+    virtual void wheelEvent(QWheelEvent *);
+
+    virtual void timerEvent(QTimerEvent *);
 
     void stopFlying();
 
     QRect wheelRect() const;
 
     virtual QSize sizeHint() const;
+
     virtual QSize minimumSizeHint() const;
 
-    virtual void drawTicks( QPainter *, const QRectF & );
-    virtual void drawWheelBackground( QPainter *, const QRectF & );
+    virtual void drawTicks(QPainter *, const QRectF &);
 
-    virtual double valueAt( const QPoint & ) const;
+    virtual void drawWheelBackground(QPainter *, const QRectF &);
+
+    virtual double valueAt(const QPoint &) const;
 
 private:
-    double alignedValue( double ) const;
-    double boundedValue( double ) const;
+    double alignedValue(double) const;
+
+    double boundedValue(double) const;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

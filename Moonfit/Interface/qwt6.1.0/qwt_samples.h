@@ -16,15 +16,17 @@
 #include <qrect.h>
 
 //! \brief A sample of the types (x1-x2, y) or (x, y1-y2)
-class QWT_EXPORT QwtIntervalSample
-{
+class QWT_EXPORT QwtIntervalSample {
 public:
     QwtIntervalSample();
-    QwtIntervalSample( double, const QwtInterval & );
-    QwtIntervalSample( double value, double min, double max );
 
-    bool operator==( const QwtIntervalSample & ) const;
-    bool operator!=( const QwtIntervalSample & ) const;
+    QwtIntervalSample(double, const QwtInterval &);
+
+    QwtIntervalSample(double value, double min, double max);
+
+    bool operator==(const QwtIntervalSample &) const;
+
+    bool operator!=(const QwtIntervalSample &) const;
 
     //! Value
     double value;
@@ -37,50 +39,46 @@ public:
   Constructor
   The value is set to 0.0, the interval is invalid
 */
-inline QwtIntervalSample::QwtIntervalSample():
-    value( 0.0 )
-{
+inline QwtIntervalSample::QwtIntervalSample() :
+        value(0.0) {
 }
 
 //! Constructor
 inline QwtIntervalSample::QwtIntervalSample(
-        double v, const QwtInterval &intv ):
-    value( v ),
-    interval( intv )
-{
+        double v, const QwtInterval &intv) :
+        value(v),
+        interval(intv) {
 }
 
 //! Constructor
 inline QwtIntervalSample::QwtIntervalSample(
-        double v, double min, double max ):
-    value( v ),
-    interval( min, max )
-{
+        double v, double min, double max) :
+        value(v),
+        interval(min, max) {
 }
 
 //! Compare operator
 inline bool QwtIntervalSample::operator==(
-    const QwtIntervalSample &other ) const
-{
+        const QwtIntervalSample &other) const {
     return value == other.value && interval == other.interval;
 }
 
 //! Compare operator
 inline bool QwtIntervalSample::operator!=(
-    const QwtIntervalSample &other ) const
-{
-    return !( *this == other );
+        const QwtIntervalSample &other) const {
+    return !(*this == other);
 }
 
 //! \brief A sample of the types (x1...xn, y) or (x, y1..yn)
-class QWT_EXPORT QwtSetSample
-{
+class QWT_EXPORT QwtSetSample {
 public:
     QwtSetSample();
-    QwtSetSample( double, const QVector<double> & = QVector<double>() );
 
-    bool operator==( const QwtSetSample &other ) const;
-    bool operator!=( const QwtSetSample &other ) const;
+    QwtSetSample(double, const QVector<double> & = QVector<double>());
+
+    bool operator==(const QwtSetSample &other) const;
+
+    bool operator!=(const QwtSetSample &other) const;
 
     double added() const;
 
@@ -95,9 +93,8 @@ public:
   Constructor
   The value is set to 0.0
 */
-inline QwtSetSample::QwtSetSample():
-    value( 0.0 )
-{
+inline QwtSetSample::QwtSetSample() :
+        value(0.0) {
 }
 
 /*!
@@ -106,29 +103,25 @@ inline QwtSetSample::QwtSetSample():
   \param v Value
   \param s Set of values
 */
-inline QwtSetSample::QwtSetSample( double v, const QVector< double > &s ):
-    value( v ),
-    set( s )
-{
+inline QwtSetSample::QwtSetSample(double v, const QVector<double> &s) :
+        value(v),
+        set(s) {
 }
 
 //! Compare operator
-inline bool QwtSetSample::operator==( const QwtSetSample &other ) const
-{
+inline bool QwtSetSample::operator==(const QwtSetSample &other) const {
     return value == other.value && set == other.set;
 }
 
 //! Compare operator
-inline bool QwtSetSample::operator!=( const QwtSetSample &other ) const
-{
-    return !( *this == other );
+inline bool QwtSetSample::operator!=(const QwtSetSample &other) const {
+    return !(*this == other);
 }
 
 //! \return All values of the set added
-inline double QwtSetSample::added() const
-{
+inline double QwtSetSample::added() const {
     double y = 0.0;
-    for ( int i = 0; i < set.size(); i++ )
+    for (int i = 0; i < set.size(); i++)
         y += set[i];
 
     return y;
@@ -143,12 +136,11 @@ inline double QwtSetSample::added() const
 
    \sa QwtTradingChartData
 */
-class QWT_EXPORT QwtOHLCSample
-{
+class QWT_EXPORT QwtOHLCSample {
 public:
-    QwtOHLCSample( double time = 0.0,
-        double open = 0.0, double high = 0.0,
-        double low = 0.0, double close = 0.0 );
+    QwtOHLCSample(double time = 0.0,
+                  double open = 0.0, double high = 0.0,
+                  double low = 0.0, double close = 0.0);
 
     QwtInterval boundingInterval() const;
 
@@ -183,14 +175,13 @@ public:
   \param l Low value
   \param c Close value
 */
-inline QwtOHLCSample::QwtOHLCSample( double t,
-        double o, double h, double l, double c ):
-    time( t ),
-    open( o ),
-    high( h ),
-    low( l ),
-    close( c )
-{
+inline QwtOHLCSample::QwtOHLCSample(double t,
+                                    double o, double h, double l, double c) :
+        time(t),
+        open(o),
+        high(h),
+        low(l),
+        close(c) {
 }
 
 /*!
@@ -204,13 +195,12 @@ inline QwtOHLCSample::QwtOHLCSample( double t,
 
   \return True, when the sample is valid
  */
-inline bool QwtOHLCSample::isValid() const
-{
-    return ( low <= high )
-        && ( open >= low )
-        && ( open <= high )
-        && ( close >= low )
-        && ( close <= high );
+inline bool QwtOHLCSample::isValid() const {
+    return (low <= high)
+           && (open >= low)
+           && (open <= high)
+           && (close >= low)
+           && (close <= high);
 }
 
 /*!
@@ -221,19 +211,18 @@ inline bool QwtOHLCSample::isValid() const
    \return Bounding interval
    \sa isValid()
  */
-inline QwtInterval QwtOHLCSample::boundingInterval() const
-{
+inline QwtInterval QwtOHLCSample::boundingInterval() const {
     double minY = open;
-    minY = qMin( minY, high );
-    minY = qMin( minY, low );
-    minY = qMin( minY, close );
+    minY = qMin(minY, high);
+    minY = qMin(minY, low);
+    minY = qMin(minY, close);
 
     double maxY = open;
-    maxY = qMax( maxY, high );
-    maxY = qMax( maxY, low );
-    maxY = qMax( maxY, close );
+    maxY = qMax(maxY, high);
+    maxY = qMax(maxY, low);
+    maxY = qMax(maxY, close);
 
-    return QwtInterval( minY, maxY );
+    return QwtInterval(minY, maxY);
 }
 
 #endif

@@ -39,8 +39,7 @@ class QFont;
         with a similar effect.
 */
 
-class QWT_EXPORT QwtPlotLegendItem: public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotLegendItem : public QwtPlotItem {
 public:
     /*!
       \brief Background mode
@@ -52,8 +51,7 @@ public:
 
        \sa setBackgroundMode(), setBackgroundBrush(), drawBackground()
      */
-    enum BackgroundMode
-    {
+    enum BackgroundMode {
         //! The legend has a background
         LegendBackground,
 
@@ -62,74 +60,91 @@ public:
     };
 
     explicit QwtPlotLegendItem();
+
     virtual ~QwtPlotLegendItem();
 
     virtual int rtti() const;
 
-    void setAlignment( Qt::Alignment );
+    void setAlignment(Qt::Alignment);
+
     Qt::Alignment alignment() const;
 
-    void setMaxColumns( uint );
+    void setMaxColumns(uint);
+
     uint maxColumns() const;
 
-    void setMargin( int );
+    void setMargin(int);
+
     int margin() const;
 
-    void setSpacing( int );
+    void setSpacing(int);
+
     int spacing() const;
 
-    void setItemMargin( int );
+    void setItemMargin(int);
+
     int itemMargin() const;
 
-    void setItemSpacing( int );
+    void setItemSpacing(int);
+
     int itemSpacing() const;
-    
-    void setFont( const QFont& );
+
+    void setFont(const QFont &);
+
     QFont font() const;
 
-    void setBorderDistance( int numPixels );
+    void setBorderDistance(int numPixels);
+
     int borderDistance() const;
 
-    void setBorderRadius( double );
+    void setBorderRadius(double);
+
     double borderRadius() const;
 
-    void setBorderPen( const QPen & );
+    void setBorderPen(const QPen &);
+
     QPen borderPen() const;
 
-    void setBackgroundBrush( const QBrush & );
+    void setBackgroundBrush(const QBrush &);
+
     QBrush backgroundBrush() const;
 
-    void setBackgroundMode( BackgroundMode );
+    void setBackgroundMode(BackgroundMode);
+
     BackgroundMode backgroundMode() const;
 
-    void setTextPen( const QPen & );
+    void setTextPen(const QPen &);
+
     QPen textPen() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+    virtual void draw(QPainter *p,
+                      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QRectF &rect) const;
 
     void clearLegend();
 
-    virtual void updateLegend( const QwtPlotItem *,
-        const QList<QwtLegendData> & );
+    virtual void updateLegend(const QwtPlotItem *,
+                              const QList <QwtLegendData> &);
 
-    virtual QRect geometry( const QRectF &canvasRect ) const;
+    virtual QRect geometry(const QRectF &canvasRect) const;
 
-    virtual QSize minimumSize( const QwtLegendData & ) const;
-    virtual int heightForWidth( const QwtLegendData &, int w ) const;
+    virtual QSize minimumSize(const QwtLegendData &) const;
 
-    QList< const QwtPlotItem * > plotItems() const;
-    QList< QRect > legendGeometries( const QwtPlotItem * ) const;
+    virtual int heightForWidth(const QwtLegendData &, int w) const;
+
+    QList<const QwtPlotItem *> plotItems() const;
+
+    QList <QRect> legendGeometries(const QwtPlotItem *) const;
 
 protected:
-    virtual void drawLegendData( QPainter *painter, 
-        const QwtPlotItem *, const QwtLegendData &, const QRectF & ) const;
+    virtual void drawLegendData(QPainter *painter,
+                                const QwtPlotItem *, const QwtLegendData &, const QRectF &) const;
 
-    virtual void drawBackground( QPainter *, const QRectF &rect ) const;
+    virtual void drawBackground(QPainter *, const QRectF &rect) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

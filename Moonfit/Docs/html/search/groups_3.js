@@ -1,4 +1,4 @@
-var searchData=
-[
-  ['overrider_354',['Overrider',['../group___overrider.html',1,'']]]
-];
+var searchData =
+    [
+        ['overrider_354', ['Overrider', ['../group___overrider.html', 1, '']]]
+    ];

@@ -6,75 +6,109 @@
 
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_evaluator_a8b0dde96f4a16ee7986ade060987406f}\label{struct_evaluator_a8b0dde96f4a16ee7986ade060987406f}} 
-typedef int {\bfseries iterator\+For\+Evaluator}
+    \item
+    \mbox{\Hypertarget{struct_evaluator_a8b0dde96f4a16ee7986ade060987406f}\label{struct_evaluator_a8b0dde96f4a16ee7986ade060987406f}}
+    typedef int {\bfseries iterator\+For\+Evaluator}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}\label{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}} 
-double \mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{get\+Val}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec, double \+\_\+expected\+Value=0, double \+\_\+std\+Dev=0)
-\begin{DoxyCompactList}\small\item\em \+: means \+: \textquotesingle{}I want the value of this species(=variable) at this time point\textquotesingle{} during recording phase, returns 0 but stores the (species, time-\/point) in the wish list when recording is completed, returns the recorded value. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_af61a21460ce50a12bba7e38e0b46135a}\label{struct_evaluator_af61a21460ce50a12bba7e38e0b46135a}} 
-bool \mbox{\hyperlink{struct_evaluator_af61a21460ce50a12bba7e38e0b46135a}{get\+Vals\+From\+Kinetics}} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$\+\_\+expected\+Values, vector$<$ string $>$ list\+Ext\+Names\+Vars\+In\+Model, \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$\+\_\+\+Std\+Devs=N\+U\+LL)
-\begin{DoxyCompactList}\small\item\em \+: means \+: \textquotesingle{}I want the value of these species(=variables) at these time point\textquotesingle{}, stored in a Table (\mbox{\hyperlink{struct_table_course}{Table\+Course}} class) Note\+: the data points with N\+AN or inf are not taken into the list of \char`\"{}wish list to record\char`\"{} points. Possible to add multiple \mbox{\hyperlink{struct_table_course}{Table\+Course}} one by one, and when experimental values are missing, write \textquotesingle{}nan\textquotesingle{} \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}\label{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}} 
-void \mbox{\hyperlink{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}{recording\+Completed}} ()
-\begin{DoxyCompactList}\small\item\em means \+: the wish list is complete, now I can use \textquotesingle{}take\+Data\+At\+This\+Time?\textquotesingle{} and \textquotesingle{}set\+Val\+Now\textquotesingle{} \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a9e1bf3a141183baca6c90aa04cf33116}\label{struct_evaluator_a9e1bf3a141183baca6c90aa04cf33116}} 
-int {\bfseries size} ()
-\item 
-\mbox{\Hypertarget{struct_evaluator_a6a4648289d0c88f7bfad6bea5ceec691}\label{struct_evaluator_a6a4648289d0c88f7bfad6bea5ceec691}} 
-int \mbox{\hyperlink{struct_evaluator_a6a4648289d0c88f7bfad6bea5ceec691}{find\+Index}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec)
-\begin{DoxyCompactList}\small\item\em requests if a species -\/ time point is in the wish list. returns -\/1 if not found \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a8e1ec48ef4732a40f29cd0f0bb5e1fb3}\label{struct_evaluator_a8e1ec48ef4732a40f29cd0f0bb5e1fb3}} 
-type\+Time \mbox{\hyperlink{struct_evaluator_a8e1ec48ef4732a40f29cd0f0bb5e1fb3}{next\+Point}} ()
-\begin{DoxyCompactList}\small\item\em Returns the next wanted time-\/point. when finished, returns 1e8. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_addd2da667270ed296dd27975695fc1ff}\label{struct_evaluator_addd2da667270ed296dd27975695fc1ff}} 
-bool \mbox{\hyperlink{struct_evaluator_addd2da667270ed296dd27975695fc1ff}{take\+Data\+At\+This\+Time}} (type\+Time t\+\_\+sec)
-\begin{DoxyCompactList}\small\item\em says if data is required at this time point. Says no until the time is equal or later than the next time-\/point to record (in case the time-\/step of simulation doesn\textquotesingle{}t fall exactly at that time). \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}\label{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}} 
-int \mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{species\+To\+Update}} ()
-\begin{DoxyCompactList}\small\item\em gives the next wanted species for the current \textquotesingle{}next\+Time\+Point\textquotesingle{} ; gives -\/1 when time point is completed, you need to have updated all the values and then the last call of this function will update the next point automatically \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a24e41924dea4d01442f0194fd1789524}\label{struct_evaluator_a24e41924dea4d01442f0194fd1789524}} 
-void \mbox{\hyperlink{struct_evaluator_a24e41924dea4d01442f0194fd1789524}{set\+Val\+Now}} (int \+\_\+\+Species, double value)
-\begin{DoxyCompactList}\small\item\em to fill the experimental value for a couple (Species-\/\+Value) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_ab11cb253fd2dfe7683da8fa5ed64b4f8}\label{struct_evaluator_ab11cb253fd2dfe7683da8fa5ed64b4f8}} 
-double \mbox{\hyperlink{struct_evaluator_ab11cb253fd2dfe7683da8fa5ed64b4f8}{contains}} (int \+\_\+\+Species)
-\begin{DoxyCompactList}\small\item\em is this variable/species inside the wish list? \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a4cfc880b53d4d0bde0558dbf87d657e1}\label{struct_evaluator_a4cfc880b53d4d0bde0558dbf87d657e1}} 
-double \mbox{\hyperlink{struct_evaluator_a4cfc880b53d4d0bde0558dbf87d657e1}{get\+Exp\+Val}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec)
-\begin{DoxyCompactList}\small\item\em retrieve experimental value \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a76789ba40f73c39609145eee8e8e877d}\label{struct_evaluator_a76789ba40f73c39609145eee8e8e877d}} 
-double \mbox{\hyperlink{struct_evaluator_a76789ba40f73c39609145eee8e8e877d}{get\+Std\+Dev}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec)
-\begin{DoxyCompactList}\small\item\em retrieve experimental standard deviation \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_af2eb3071028da5a6ba3a71fd5f9a5235}\label{struct_evaluator_af2eb3071028da5a6ba3a71fd5f9a5235}} 
-double \mbox{\hyperlink{struct_evaluator_af2eb3071028da5a6ba3a71fd5f9a5235}{get\+Fitness\+Point}} (int \+\_\+species, type\+Time \+\_\+time\+\_\+sec)
-\begin{DoxyCompactList}\small\item\em get the cost of one time-\/point (after it is recorded). this does not include normalizations \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_aef79add0a3c7a18df4e7282d2fd8a77d}\label{struct_evaluator_aef79add0a3c7a18df4e7282d2fd8a77d}} 
-double \mbox{\hyperlink{struct_evaluator_aef79add0a3c7a18df4e7282d2fd8a77d}{get\+Fitness\+Species}} (int \+\_\+species)
-\begin{DoxyCompactList}\small\item\em get the summed cost of a full variable/species among all time-\/points. this includes normalization \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a5a6a25b7beb60eb2acd0135033f829ed}\label{struct_evaluator_a5a6a25b7beb60eb2acd0135033f829ed}} 
-double \mbox{\hyperlink{struct_evaluator_a5a6a25b7beb60eb2acd0135033f829ed}{get\+Total\+Fitness}} ()
-\begin{DoxyCompactList}\small\item\em Sums the cost of each variable (with normalization) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a275c7351a27b489bbabf16bd484c00cc}\label{struct_evaluator_a275c7351a27b489bbabf16bd484c00cc}} 
-string \mbox{\hyperlink{struct_evaluator_a275c7351a27b489bbabf16bd484c00cc}{report\+Total\+Fitness}} ()
-\begin{DoxyCompactList}\small\item\em Gives a written report of the individual cost of each variable and data-\/point. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}\label{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}} 
-string \mbox{\hyperlink{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}{print\+State}} ()
-\begin{DoxyCompactList}\small\item\em Outputs all the information stored in the evaluator so far. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_a43c00514384e3bd75468c8b30fd2a193}\label{struct_evaluator_a43c00514384e3bd75468c8b30fd2a193}} 
-void \mbox{\hyperlink{struct_evaluator_a43c00514384e3bd75468c8b30fd2a193}{reset\+Data\+Keeping\+Expected}} ()
-\begin{DoxyCompactList}\small\item\em Clears the simulated data but keeps the experimental values. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_evaluator_ac310d436282c1217bb5d8b04e80f5ce6}\label{struct_evaluator_ac310d436282c1217bb5d8b04e80f5ce6}} 
-iterator\+For\+Evaluator {\bfseries begin} ()
-\item 
-\mbox{\Hypertarget{struct_evaluator_a1c77ab0d92f41834f5cc4429719e2509}\label{struct_evaluator_a1c77ab0d92f41834f5cc4429719e2509}} 
-iterator\+For\+Evaluator {\bfseries end} ()
-\item 
-\mbox{\Hypertarget{struct_evaluator_a12fe64e6673553269cf82169dec7e0c3}\label{struct_evaluator_a12fe64e6673553269cf82169dec7e0c3}} 
-pair$<$ int, type\+Time $>$ {\bfseries operator()} (iterator\+For\+Evaluator i)
+    \item
+    \mbox{\Hypertarget{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}\label{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}}
+    double \mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{get\+Val}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec, double \+\_\+expected\+Value=0, double \+\_\+std\+Dev=0)
+    \begin{DoxyCompactList}
+        \small\item\em \+: means \+: \textquotesingle{}I want the value of this species(=variable) at this time point\textquotesingle{} during recording phase, returns 0 but stores the (species, time-\/point) in the wish list when recording is completed, returns the recorded value.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_af61a21460ce50a12bba7e38e0b46135a}\label{struct_evaluator_af61a21460ce50a12bba7e38e0b46135a}}
+    bool \mbox{\hyperlink{struct_evaluator_af61a21460ce50a12bba7e38e0b46135a}{get\+Vals\+From\+Kinetics}} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$\+\_\+expected\+Values, vector$<$ string $>$ list\+Ext\+Names\+Vars\+In\+Model, \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$\+\_\+\+Std\+Devs=N\+U\+LL)
+    \begin{DoxyCompactList}
+        \small\item\em \+: means \+: \textquotesingle{}I want the value of these species(=variables) at these time point\textquotesingle{}, stored in a Table (\mbox{\hyperlink{struct_table_course}{Table\+Course}} class) Note\+: the data points with N\+AN or inf are not taken into the list of \char`\"{}wish list to record\char`\"{} points. Possible to add multiple \mbox{\hyperlink{struct_table_course}{Table\+Course}} one by one, and when experimental values are missing, write \textquotesingle{}nan\textquotesingle{}
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}\label{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}}
+    void \mbox{\hyperlink{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}{recording\+Completed}} ()
+    \begin{DoxyCompactList}
+        \small\item\em means \+: the wish list is complete, now I can use \textquotesingle{}take\+Data\+At\+This\+Time?\textquotesingle{} and \textquotesingle{}set\+Val\+Now\textquotesingle{}
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a9e1bf3a141183baca6c90aa04cf33116}\label{struct_evaluator_a9e1bf3a141183baca6c90aa04cf33116}}
+    int {\bfseries size} ()
+    \item
+    \mbox{\Hypertarget{struct_evaluator_a6a4648289d0c88f7bfad6bea5ceec691}\label{struct_evaluator_a6a4648289d0c88f7bfad6bea5ceec691}}
+    int \mbox{\hyperlink{struct_evaluator_a6a4648289d0c88f7bfad6bea5ceec691}{find\+Index}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec)
+    \begin{DoxyCompactList}
+        \small\item\em requests if a species -\/ time point is in the wish list. returns -\/1 if not found
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a8e1ec48ef4732a40f29cd0f0bb5e1fb3}\label{struct_evaluator_a8e1ec48ef4732a40f29cd0f0bb5e1fb3}}
+    type\+Time \mbox{\hyperlink{struct_evaluator_a8e1ec48ef4732a40f29cd0f0bb5e1fb3}{next\+Point}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Returns the next wanted time-\/point. when finished, returns 1e8.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_addd2da667270ed296dd27975695fc1ff}\label{struct_evaluator_addd2da667270ed296dd27975695fc1ff}}
+    bool \mbox{\hyperlink{struct_evaluator_addd2da667270ed296dd27975695fc1ff}{take\+Data\+At\+This\+Time}} (type\+Time t\+\_\+sec)
+    \begin{DoxyCompactList}
+        \small\item\em says if data is required at this time point. Says no until the time is equal or later than the next time-\/point to record (in case the time-\/step of simulation doesn\textquotesingle{}t fall exactly at that time).
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}\label{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}}
+    int \mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{species\+To\+Update}} ()
+    \begin{DoxyCompactList}
+        \small\item\em gives the next wanted species for the current \textquotesingle{}next\+Time\+Point\textquotesingle{} ; gives -\/1 when time point is completed, you need to have updated all the values and then the last call of this function will update the next point automatically
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a24e41924dea4d01442f0194fd1789524}\label{struct_evaluator_a24e41924dea4d01442f0194fd1789524}}
+    void \mbox{\hyperlink{struct_evaluator_a24e41924dea4d01442f0194fd1789524}{set\+Val\+Now}} (int \+\_\+\+Species, double value)
+    \begin{DoxyCompactList}
+        \small\item\em to fill the experimental value for a couple (Species-\/\+Value)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_ab11cb253fd2dfe7683da8fa5ed64b4f8}\label{struct_evaluator_ab11cb253fd2dfe7683da8fa5ed64b4f8}}
+    double \mbox{\hyperlink{struct_evaluator_ab11cb253fd2dfe7683da8fa5ed64b4f8}{contains}} (int \+\_\+\+Species)
+    \begin{DoxyCompactList}
+        \small\item\em is this variable/species inside the wish list?
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a4cfc880b53d4d0bde0558dbf87d657e1}\label{struct_evaluator_a4cfc880b53d4d0bde0558dbf87d657e1}}
+    double \mbox{\hyperlink{struct_evaluator_a4cfc880b53d4d0bde0558dbf87d657e1}{get\+Exp\+Val}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec)
+    \begin{DoxyCompactList}
+        \small\item\em retrieve experimental value
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a76789ba40f73c39609145eee8e8e877d}\label{struct_evaluator_a76789ba40f73c39609145eee8e8e877d}}
+    double \mbox{\hyperlink{struct_evaluator_a76789ba40f73c39609145eee8e8e877d}{get\+Std\+Dev}} (int \+\_\+\+Species, type\+Time \+\_\+time\+\_\+sec)
+    \begin{DoxyCompactList}
+        \small\item\em retrieve experimental standard deviation
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_af2eb3071028da5a6ba3a71fd5f9a5235}\label{struct_evaluator_af2eb3071028da5a6ba3a71fd5f9a5235}}
+    double \mbox{\hyperlink{struct_evaluator_af2eb3071028da5a6ba3a71fd5f9a5235}{get\+Fitness\+Point}} (int \+\_\+species, type\+Time \+\_\+time\+\_\+sec)
+    \begin{DoxyCompactList}
+        \small\item\em get the cost of one time-\/point (after it is recorded). this does not include normalizations
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_aef79add0a3c7a18df4e7282d2fd8a77d}\label{struct_evaluator_aef79add0a3c7a18df4e7282d2fd8a77d}}
+    double \mbox{\hyperlink{struct_evaluator_aef79add0a3c7a18df4e7282d2fd8a77d}{get\+Fitness\+Species}} (int \+\_\+species)
+    \begin{DoxyCompactList}
+        \small\item\em get the summed cost of a full variable/species among all time-\/points. this includes normalization
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a5a6a25b7beb60eb2acd0135033f829ed}\label{struct_evaluator_a5a6a25b7beb60eb2acd0135033f829ed}}
+    double \mbox{\hyperlink{struct_evaluator_a5a6a25b7beb60eb2acd0135033f829ed}{get\+Total\+Fitness}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Sums the cost of each variable (with normalization)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a275c7351a27b489bbabf16bd484c00cc}\label{struct_evaluator_a275c7351a27b489bbabf16bd484c00cc}}
+    string \mbox{\hyperlink{struct_evaluator_a275c7351a27b489bbabf16bd484c00cc}{report\+Total\+Fitness}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Gives a written report of the individual cost of each variable and data-\/point.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}\label{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}}
+    string \mbox{\hyperlink{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}{print\+State}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Outputs all the information stored in the evaluator so far.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_a43c00514384e3bd75468c8b30fd2a193}\label{struct_evaluator_a43c00514384e3bd75468c8b30fd2a193}}
+    void \mbox{\hyperlink{struct_evaluator_a43c00514384e3bd75468c8b30fd2a193}{reset\+Data\+Keeping\+Expected}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Clears the simulated data but keeps the experimental values.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_evaluator_ac310d436282c1217bb5d8b04e80f5ce6}\label{struct_evaluator_ac310d436282c1217bb5d8b04e80f5ce6}}
+    iterator\+For\+Evaluator {\bfseries begin} ()
+    \item
+    \mbox{\Hypertarget{struct_evaluator_a1c77ab0d92f41834f5cc4429719e2509}\label{struct_evaluator_a1c77ab0d92f41834f5cc4429719e2509}}
+    iterator\+For\+Evaluator {\bfseries end} ()
+    \item
+    \mbox{\Hypertarget{struct_evaluator_a12fe64e6673553269cf82169dec7e0c3}\label{struct_evaluator_a12fe64e6673553269cf82169dec7e0c3}}
+    pair$<$ int, type\+Time $>$ {\bfseries operator()} (iterator\+For\+Evaluator i)
 \end{DoxyCompactItemize}
 
 
@@ -83,65 +117,67 @@ pair$<$ int, type\+Time $>$ {\bfseries operator()} (iterator\+For\+Evaluator i)
 
 Automatic use\+: The class \mbox{\hyperlink{struct_experiment}{Experiment}} and \mbox{\hyperlink{struct_model}{Model}} automatically take care of loading the evaluators before a simulation and retrieving the cost of a simulation afterwards =$>$ you usually don\textquotesingle{}t need to use this class manually.
 
-Manual use example \+: 
+Manual use example \+:
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\textcolor{keywordtype}{void} testeEvaluator() \{}
-\DoxyCodeLine{    \mbox{\hyperlink{struct_evaluator}{Evaluator}} E = \mbox{\hyperlink{struct_evaluator}{Evaluator}}();}
-\DoxyCodeLine{}
-\DoxyCodeLine{    \textcolor{comment}{// says variables 1, 3 and 5 need to be recorded at these time-\/points}}
-\DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,15);}
-\DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(3,20);}
-\DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,20);}
-\DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(5,50);}
-\DoxyCodeLine{}
-\DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}{recordingCompleted}}();}
-\DoxyCodeLine{}
-\DoxyCodeLine{    \textcolor{comment}{//during simulation}}
-\DoxyCodeLine{    \textcolor{comment}{//E.printState();}}
-\DoxyCodeLine{    \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < 100; ++i)\{}
-\DoxyCodeLine{        \textcolor{keywordflow}{if}(E.\mbox{\hyperlink{struct_evaluator_addd2da667270ed296dd27975695fc1ff}{takeDataAtThisTime}}(i))\{}
-\DoxyCodeLine{            \textcolor{keywordtype}{int} z = E.\mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{speciesToUpdate}}();}
-\DoxyCodeLine{            \textcolor{keywordflow}{while}(z >= 0)\{}
-\DoxyCodeLine{                \textcolor{comment}{// fills the simulated data (z*100 here) at this time point only}}
-\DoxyCodeLine{                E.\mbox{\hyperlink{struct_evaluator_a24e41924dea4d01442f0194fd1789524}{setValNow}}(z, (\textcolor{keywordtype}{double}) (i + z*100));}
-\DoxyCodeLine{                \textcolor{comment}{// gets the next species/variable that needs to be recorded.}}
-\DoxyCodeLine{                z = E.\mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{speciesToUpdate}}();}
-\DoxyCodeLine{            \}}
-\DoxyCodeLine{            \textcolor{comment}{//E.printState();}}
-\DoxyCodeLine{        \}}
-\DoxyCodeLine{    \}}
-\DoxyCodeLine{    cerr << \textcolor{stringliteral}{"\(\backslash\)n"};}
-\DoxyCodeLine{    \textcolor{comment}{// retrieves the simulated values}}
-\DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,15) << \textcolor{stringliteral}{"\(\backslash\)t"};}
-\DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(3,20) << \textcolor{stringliteral}{"\(\backslash\)t"};}
-\DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,20) << \textcolor{stringliteral}{"\(\backslash\)t"};}
-\DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(5,50) << \textcolor{stringliteral}{"\(\backslash\)n"};}
-\DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}{printState}}();}
-\DoxyCodeLine{\}}
+    \DoxyCodeLine{\textcolor{keywordtype}{void} testeEvaluator() \{}
+    \DoxyCodeLine{    \mbox{\hyperlink{struct_evaluator}{Evaluator}} E = \mbox{\hyperlink{struct_evaluator}{Evaluator}}();}
+    \DoxyCodeLine{}
+    \DoxyCodeLine{    \textcolor{comment}{// says variables 1, 3 and 5 need to be recorded at these time-\/points}}
+    \DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,15);}
+    \DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(3,20);}
+    \DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,20);}
+    \DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(5,50);}
+    \DoxyCodeLine{}
+    \DoxyCodeLine{    E.\mbox{\hyperlink{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}{recordingCompleted}}();}
+    \DoxyCodeLine{}
+    \DoxyCodeLine{    \textcolor{comment}{//during simulation}}
+    \DoxyCodeLine{    \textcolor{comment}{//E.printState();}}
+    \DoxyCodeLine{    \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < 100; ++i)\{}
+    \DoxyCodeLine{        \textcolor{keywordflow}{if}(E.\mbox{\hyperlink{struct_evaluator_addd2da667270ed296dd27975695fc1ff}{takeDataAtThisTime}}(i))\{}
+    \DoxyCodeLine{            \textcolor{keywordtype}{int} z = E.\mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{speciesToUpdate}}();}
+    \DoxyCodeLine{            \textcolor{keywordflow}{while}(z >= 0)\{}
+    \DoxyCodeLine{                \textcolor{comment}{// fills the simulated data (z*100 here) at this time point only}}
+    \DoxyCodeLine{                E.\mbox{\hyperlink{struct_evaluator_a24e41924dea4d01442f0194fd1789524}{setValNow}}(z, (\textcolor{keywordtype}{double}) (i + z*100));}
+    \DoxyCodeLine{                \textcolor{comment}{// gets the next species/variable that needs to be recorded.}}
+    \DoxyCodeLine{                z = E.\mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{speciesToUpdate}}();}
+    \DoxyCodeLine{            \}}
+    \DoxyCodeLine{            \textcolor{comment}{//E.printState();}}
+    \DoxyCodeLine{        \}}
+    \DoxyCodeLine{    \}}
+    \DoxyCodeLine{    cerr << \textcolor{stringliteral}{"\(\backslash\)n"};}
+    \DoxyCodeLine{    \textcolor{comment}{// retrieves the simulated values}}
+    \DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,15) << \textcolor{stringliteral}{"\(\backslash\)t"};}
+    \DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(3,20) << \textcolor{stringliteral}{"\(\backslash\)t"};}
+    \DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(1,20) << \textcolor{stringliteral}{"\(\backslash\)t"};}
+    \DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a0dd3f0697bb4eca4f4b87c9ec8845c68}{getVal}}(5,50) << \textcolor{stringliteral}{"\(\backslash\)n"};}
+    \DoxyCodeLine{    cerr << E.\mbox{\hyperlink{struct_evaluator_a5ea45ec2480da51d657a8598b5ce2248}{printState}}();}
+    \DoxyCodeLine{\}}
 \end{DoxyCode}
 
 \begin{DoxyItemize}
-\item before the simulation, =$>$ call \textquotesingle{}double get\+Val(species, time, expected\+Value = 0, std\+Dev = 0)\textquotesingle{} to add this point in the wish list (you don\textquotesingle{}t need to provide an expected value nor a standard deviation) \begin{DoxyVerb}OR
-\end{DoxyVerb}
+    \item before the simulation, =$>$ call \textquotesingle{}double get\+Val(species, time, expected\+Value = 0, std\+Dev = 0)\textquotesingle{} to add this point in the wish list (you don\textquotesingle{}t need to provide an expected value nor a standard deviation) \begin{DoxyVerb}
+                                                                                                                                                                                                                                                                                OR
+    \end{DoxyVerb}
 
 
-=$>$ call bool get\+Vals\+From\+Kinetics(Table\+Course$\ast$ \+\_\+expected\+Values, vector$<$string$>$ list\+Ext\+Names\+Vars\+In\+Model, Table\+Course$\ast$ \+\_\+\+Std\+Devs = N\+U\+LL) where vector$<$string$>$ list\+Ext\+Names\+Vars\+In\+Model gives the name to be read in the \mbox{\hyperlink{struct_table_course}{Table\+Course}} for each variable in the model in the same order.
-\begin{DoxyItemize}
-\item to complete the wish list, call \textquotesingle{}void \mbox{\hyperlink{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}{recording\+Completed()}};\textquotesingle{}
-\item during the simulation, call \textquotesingle{}bool take\+Data\+At\+This\+Tame(int t\+\_\+sec)\textquotesingle{} to see if there are wished data at this time point (or earlier time-\/points that were missed)
-\item then, call \textquotesingle{}int \mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{species\+To\+Update()}};\textquotesingle{} to know which vaiables are desired for this time-\/point (continue until the function gives -\/1, meaning \textquotesingle{}no more species desired\textquotesingle{}
-\item for each variable, call \textquotesingle{}void \mbox{\hyperlink{struct_evaluator_a24e41924dea4d01442f0194fd1789524}{set\+Val\+Now(int \+\_\+\+Species, double value)}}; to give the value to the evaluator
-\item then, each recorded simulated data can be accessed by \textquotesingle{}double get\+Val(species, time)\textquotesingle{} note that this is the same function for adding a data-\/point and getting the simulated value. \mbox{[}It can be handy if you use self-\/made cost functions, to call it once before and once after\mbox{]}
-\item to re-\/access the experimental value, for each, call \textquotesingle{}double get\+Exp\+Val(species, time)\textquotesingle{}
-\end{DoxyItemize}
+    =$>$ call bool get\+Vals\+From\+Kinetics(Table\+Course$\ast$ \+\_\+expected\+Values, vector$<$string$>$ list\+Ext\+Names\+Vars\+In\+Model, Table\+Course$\ast$ \+\_\+\+Std\+Devs = N\+U\+LL) where vector$<$string$>$ list\+Ext\+Names\+Vars\+In\+Model gives the name to be read in the \mbox{\hyperlink{struct_table_course}{Table\+Course}} for each variable in the model in the same order.
+    \begin{DoxyItemize}
+        \item to complete the wish list, call \textquotesingle{}void \mbox{\hyperlink{struct_evaluator_aef0b29fa8d73aacee40bbaebb045f00f}{recording\+Completed()}};\textquotesingle{}
+        \item during the simulation, call \textquotesingle{}bool take\+Data\+At\+This\+Tame(int t\+\_\+sec)\textquotesingle{} to see if there are wished data at this time point (or earlier time-\/points that were missed)
+        \item then, call \textquotesingle{}int \mbox{\hyperlink{struct_evaluator_ae38515756825f85a9ecb62a9fd02499c}{species\+To\+Update()}};\textquotesingle{} to know which vaiables are desired for this time-\/point (continue until the function gives -\/1, meaning \textquotesingle{}no more species desired\textquotesingle{}
+        \item for each variable, call \textquotesingle{}void \mbox{\hyperlink{struct_evaluator_a24e41924dea4d01442f0194fd1789524}{set\+Val\+Now(int \+\_\+\+Species, double value)}}; to give the value to the evaluator
+        \item then, each recorded simulated data can be accessed by \textquotesingle{}double get\+Val(species, time)\textquotesingle{} note that this is the same function for adding a data-\/point and getting the simulated value. \mbox{[}It can be handy if you use self-\/made cost functions, to call it once before and once after\mbox{]}
+        \item to re-\/access the experimental value, for each, call \textquotesingle{}double get\+Exp\+Val(species, time)\textquotesingle{}
+    \end{DoxyItemize}
 \end{DoxyItemize}
 
 -\/-\/$>$ note\+:
 \begin{DoxyItemize}
-\item to save memory \+: inside evaluator, no time kinetics are stored excepted wished values 
+    \item to save memory \+: inside evaluator, no time kinetics are stored excepted wished values
 \end{DoxyItemize}
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/evaluator.\+h\item 
-Framework/evaluator.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/evaluator.\+h\item
+                                                                               Framework/evaluator.\+cpp
+\end{DoxyCompactItemize}

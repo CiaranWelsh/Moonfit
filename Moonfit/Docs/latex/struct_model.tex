@@ -2,287 +2,379 @@
 \label{struct_model}\index{Model@{Model}}
 
 
-A general mother class to perform dynamical simulations. It contains its own parameter set and set of equations / rules to evolve over time. It is possible to give simulation options through a parameter called \textquotesingle{}background\textquotesingle{} (for instance WT or treated cells). You will need to program your own subclass of \mbox{\hyperlink{struct_model}{Model}}, so that you can use inherited function from this mother class. It pre-\/defines all basic functions for simulations and data management, including calling O\+DE solver. Agent-\/based models needs to use the derived \mbox{\hyperlink{structmodel_agent_based}{model\+Agent\+Based}} class as mother (see below).  
+A general mother class to perform dynamical simulations. It contains its own parameter set and set of equations / rules to evolve over time. It is possible to give simulation options through a parameter called \textquotesingle{}background\textquotesingle{} (for instance WT or treated cells). You will need to program your own subclass of \mbox{\hyperlink{struct_model}{Model}}, so that you can use inherited function from this mother class. It pre-\/defines all basic functions for simulations and data management, including calling O\+DE solver. Agent-\/based models needs to use the derived \mbox{\hyperlink{structmodel_agent_based}{model\+Agent\+Based}} class as mother (see below).
 
 
 
 
-{\ttfamily \#include $<$modele.\+h$>$}
+    {\ttfamily \#include $<$modele.\+h$>$}
 
 Inheritance diagram for Model\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=2.000000cm]{struct_model}
-\end{center}
+                                    \begin{center}
+                                        \leavevmode
+                                        \includegraphics[height=2.000000cm]{struct_model}
+                                    \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{struct_model_aad963c4fe6512084871a4a9fb4da1619}{Model}} (int \+\_\+nb\+Vars, int \+\_\+nb\+Params)
-\begin{DoxyCompactList}\small\item\em Name of this model. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{struct_model_ad5bdef56e3093a578e844b692fa72acf}{derivatives}} (const vector$<$ double $>$ \&x, vector$<$ double $>$ \&dxdt, const double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}})
-\begin{DoxyCompactList}\small\item\em the \textquotesingle{}official/global/external\textquotesingle{} name of each variable, when reading data / kinetics \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a799337539145689f374f1a8233bc3ec0}\label{struct_model_a799337539145689f374f1a8233bc3ec0}} 
-virtual void \mbox{\hyperlink{struct_model_a799337539145689f374f1a8233bc3ec0}{set\+Base\+Parameters}} ()
-\begin{DoxyCompactList}\small\item\em computes the derivatives (at t) from position x \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a6b027167291fbe1ea029baeb0f6a4043}\label{struct_model_a6b027167291fbe1ea029baeb0f6a4043}} 
-virtual void \mbox{\hyperlink{struct_model_a6b027167291fbe1ea029baeb0f6a4043}{initialise}} (long long \+\_\+background=D\+E\+F\+A\+U\+L\+T\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+V\+A\+L\+UE)
-\begin{DoxyCompactList}\small\item\em gives a correct set of parameters, if you don\textquotesingle{}t load other set. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{struct_model_affc6f838a87a8005f52240f4f7c21015}{finalize}} ()
-\begin{DoxyCompactList}\small\item\em initialise, (parameters should be set before initializing) -\/ sets t = 0 if necessary. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{struct_model_ab427438468288f3a1eb2b3c3bb8bfb6e}{load\+Parameters}} (string file\+\_\+name)
-\begin{DoxyCompactList}\small\item\em It can be helpful that the experiments notifies the model when a simulation is finished. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a503ac2c20f33b903e34d7428e44cf7c1}\label{struct_model_a503ac2c20f33b903e34d7428e44cf7c1}} 
-virtual void \mbox{\hyperlink{struct_model_a503ac2c20f33b903e34d7428e44cf7c1}{save\+Parameters}} (string file\+\_\+name)
-\begin{DoxyCompactList}\small\item\em reads parameters from a text file with format \+: \char`\"{}\+N\+B\+\_\+\+P\+A\+R\+A\+M\+S\textbackslash{}tparam1\textbackslash{}tparam2\textbackslash{}tparam3 ...\char`\"{} \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{struct_model_aa41fdea625302654c9ae9ec4a538dfbd}{action}} (string name, double parameter)
-\begin{DoxyCompactList}\small\item\em writes parameters from a text file with format \+: \char`\"{}\+N\+B\+\_\+\+P\+A\+R\+A\+M\+S\textbackslash{}tparam1\textbackslash{}tparam2\textbackslash{}tparam3 ...\char`\"{} \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ab9977f47213102559eedc2d37c237c1a}\label{struct_model_ab9977f47213102559eedc2d37c237c1a}} 
-virtual void \mbox{\hyperlink{struct_model_ab9977f47213102559eedc2d37c237c1a}{action}} (string name, vector$<$ double $>$ parameters)
-\begin{DoxyCompactList}\small\item\em function to perform personnalized actions by the model by a name of action, \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a22c549a3df2d980cce0dc7c12c15bf5a}\label{struct_model_a22c549a3df2d980cce0dc7c12c15bf5a}} 
-virtual void \mbox{\hyperlink{struct_model_a22c549a3df2d980cce0dc7c12c15bf5a}{update\+Derived\+Variables}} (double \+\_\+t=0)
-\begin{DoxyCompactList}\small\item\em 2d -\/ An additional function that can be designed by the user to simulate variable depending on other ones. Exemple\+: percents, ratios, etc ... \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done}} ()
-\begin{DoxyCompactList}\small\item\em Will be called when the solver stops at each point -\/$>$ use it to calculate variables that depend on other ones (i.\+e. not defined by their derivatives). This is called only after solving, N\+OT D\+U\+R\+I\+N\+G! for variables that need to be calculated during solving od O\+D\+Es, they need to be calculated I\+N\+S\+I\+DE derivatives, but they should not access val\mbox{[}\mbox{]}. They only can modify x\mbox{[}\mbox{]} and dxdt\mbox{[}\mbox{]} the arguments of derivatives, because the solver can be at any point or trying things or diverging, independently of the one that will be saved in val\mbox{[}\mbox{]} at the end. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ae1253579bf1314ad0bb46fcebaa80bdc}\label{struct_model_ae1253579bf1314ad0bb46fcebaa80bdc}} 
-void {\bfseries set\+Base\+Parameters\+Done} ()
-\item 
-\mbox{\Hypertarget{struct_model_aed5e09058b1e70825e21370d375acf00}\label{struct_model_aed5e09058b1e70825e21370d375acf00}} 
-void {\bfseries load\+Parameters\+Done} ()
-\item 
-void \mbox{\hyperlink{struct_model_a8e35a99a9463333ef95a7f2c0412e77c}{need\+New\+Parameter\+Set}} ()
-\begin{DoxyCompactList}\small\item\em derivatives at time , updated each time the solver stops for output \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}{simulate}} (double \+\_\+sec\+\_\+max, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL)
-\begin{DoxyCompactList}\small\item\em 3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_affda46326320c5bc031ea54c8e80977b}\label{struct_model_affda46326320c5bc031ea54c8e80977b}} 
-void \mbox{\hyperlink{struct_model_affda46326320c5bc031ea54c8e80977b}{set\+Print\+Mode}} (bool z, double \+\_\+print\+\_\+every\+\_\+dt)
-\begin{DoxyCompactList}\small\item\em frequency of saving/displaying data for kinetics \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a3463a38ca7a26da814c07718d1855e36}\label{struct_model_a3463a38ca7a26da814c07718d1855e36}} 
-\mbox{\hyperlink{struct_table_course}{Table\+Course}} \mbox{\hyperlink{struct_model_a3463a38ca7a26da814c07718d1855e36}{get\+Cinetique}} ()
-\begin{DoxyCompactList}\small\item\em to set the \textquotesingle{}recording mode\textquotesingle{} to O\+N/\+O\+FF, and the frequency of recording \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a78efa1cc97d3bfd62b30190a1258f4a2}\label{struct_model_a78efa1cc97d3bfd62b30190a1258f4a2}} 
-vector$<$ double $>$ \mbox{\hyperlink{struct_model_a78efa1cc97d3bfd62b30190a1258f4a2}{get\+Init}} ()
-\begin{DoxyCompactList}\small\item\em then, each time \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done()}} is called, the kinetics is cleared, and \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a7221ee91b0fe71a166129f70e064bc03}\label{struct_model_a7221ee91b0fe71a166129f70e064bc03}} 
-double {\bfseries getT} ()
-\item 
-string \mbox{\hyperlink{struct_model_aadfda9511aa37b5f133bb84d3abab387}{print}} ()
-\begin{DoxyCompactList}\small\item\em 4c -\/ to get the value of a particular variable at a particular time point during a simulation, \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ac885dbe3477fcc643e4ad7b755c76d05}\label{struct_model_ac885dbe3477fcc643e4ad7b755c76d05}} 
-string {\bfseries print\+Var\+Names} (double \+\_\+t)
-\item 
-\mbox{\Hypertarget{struct_model_a25b4412505a09b0db84856fbf825c006}\label{struct_model_a25b4412505a09b0db84856fbf825c006}} 
-string {\bfseries print\+Var\+Values} (double \+\_\+t)
-\item 
-\mbox{\Hypertarget{struct_model_a065134be471e1d4fe6acc8aa747e7417}\label{struct_model_a065134be471e1d4fe6acc8aa747e7417}} 
-string {\bfseries print\+Par\+Names} ()
-\item 
-\mbox{\Hypertarget{struct_model_a6975f4729cb50de7591569bfe1cb7610}\label{struct_model_a6975f4729cb50de7591569bfe1cb7610}} 
-string {\bfseries print\+Par\+Values} ()
-\item 
-vector$<$ string $>$ \mbox{\hyperlink{struct_model_a374d8d2c5c5858ec7b0e29a3f8411b56}{get\+List\+External\+Names}} ()
-\begin{DoxyCompactList}\small\item\em vectors that can be filled by the subclass \+: \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{struct_model_a649efc6b5055ec0944839c59be90523e}{set\+Value}} (string name\+External\+Variable, double \mbox{\hyperlink{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}{val}})
-\item 
-\mbox{\Hypertarget{struct_model_a5d9e3350bac0da8143452055ae04f54a}\label{struct_model_a5d9e3350bac0da8143452055ae04f54a}} 
-virtual void \mbox{\hyperlink{struct_model_a5d9e3350bac0da8143452055ae04f54a}{add\+Value}} (string name\+External\+Variable, double \mbox{\hyperlink{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}{val}})
-\begin{DoxyCompactList}\small\item\em to modify the value of a variable from the global ID of it \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ac22d9512296321ec325bf422e15c39df}\label{struct_model_ac22d9512296321ec325bf422e15c39df}} 
-virtual double \mbox{\hyperlink{struct_model_ac22d9512296321ec325bf422e15c39df}{get\+Value}} (string name\+External\+Variable)
-\begin{DoxyCompactList}\small\item\em to modify the value of a variable from the global ID of it \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a1f28052560a98bb9e29a552155d3fefc}\label{struct_model_a1f28052560a98bb9e29a552155d3fefc}} 
-virtual bool \mbox{\hyperlink{struct_model_a1f28052560a98bb9e29a552155d3fefc}{is\+Var\+Known}} (string external\+Name\+Variable)
-\begin{DoxyCompactList}\small\item\em to get the value of a variable from its global ID \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ae8c80ea18d67a97b7feb6881c2f90c02}\label{struct_model_ae8c80ea18d67a97b7feb6881c2f90c02}} 
-virtual vector$<$ int $>$ \mbox{\hyperlink{struct_model_ae8c80ea18d67a97b7feb6881c2f90c02}{intern\+Val\+Name}} (string external\+Name\+Variable)
-\begin{DoxyCompactList}\small\item\em to know if a variable can be simulated by the model (from its global ID) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_aac3c6c508cf0bc55c4dc1943ad9be000}\label{struct_model_aac3c6c508cf0bc55c4dc1943ad9be000}} 
-virtual int \mbox{\hyperlink{struct_model_aac3c6c508cf0bc55c4dc1943ad9be000}{unique\+Intern\+Val\+Name}} (string external\+Name\+Variable)
-\begin{DoxyCompactList}\small\item\em index of variables for this external name \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct_model_ae745db61bb0aea02bf130814a70b8529}{get\+Nb\+Params}} ()
-\begin{DoxyCompactList}\small\item\em index of variables for this external name; raises an error if there are multiple... \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_af9e53d9881113b56714db2374035baa8}\label{struct_model_af9e53d9881113b56714db2374035baa8}} 
-void {\bfseries set\+Param} (int i, double v)
-\item 
-\mbox{\Hypertarget{struct_model_a96f8967aac9448abe1c3ee70389aba09}\label{struct_model_a96f8967aac9448abe1c3ee70389aba09}} 
-double {\bfseries get\+Param} (int i)
-\item 
-\mbox{\Hypertarget{struct_model_a1597760cd361a53a784ec007cab8ba42}\label{struct_model_a1597760cd361a53a784ec007cab8ba42}} 
-vector$<$ double $>$ {\bfseries get\+Parameters} ()
-\item 
-\mbox{\Hypertarget{struct_model_a2ceddb702cce18e18c98f5113fb178ac}\label{struct_model_a2ceddb702cce18e18c98f5113fb178ac}} 
-void {\bfseries set\+Parameters} (vector$<$ double $>$ \&new\+Param\+Set)
-\item 
-\mbox{\Hypertarget{struct_model_ae8f1c0e79ff4b574f0219d1cacf40d58}\label{struct_model_ae8f1c0e79ff4b574f0219d1cacf40d58}} 
-int \mbox{\hyperlink{struct_model_ae8f1c0e79ff4b574f0219d1cacf40d58}{get\+Nb\+Vars}} ()
-\begin{DoxyCompactList}\small\item\em 8 -\/ to get information on the (internal) variables. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_aaecd6cc1134dc49ce3943ba5c82a7705}\label{struct_model_aaecd6cc1134dc49ce3943ba5c82a7705}} 
-string {\bfseries get\+Name} (int internal\+ID)
-\item 
-\mbox{\Hypertarget{struct_model_a54d43e04c13134852b67336d487c1dce}\label{struct_model_a54d43e04c13134852b67336d487c1dce}} 
-string {\bfseries get\+External\+Name} (int internal\+ID)
-\item 
-void \mbox{\hyperlink{struct_model_aa28cafed578c3f2aff1cb529e79f9039}{set\+Overrider}} (\mbox{\hyperlink{structoverrider}{overrider}} $\ast$new\+Overrider=nullptr)
-\begin{DoxyCompactList}\small\item\em 9 -\/ Overriding certain variables with data, \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ac88b48e8ba626dff60cb37b105e3c9b2}\label{struct_model_ac88b48e8ba626dff60cb37b105e3c9b2}} 
-void {\bfseries apply\+Override} (vector$<$ double $>$ \&x, double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}})
-\item 
-\mbox{\Hypertarget{struct_model_aa819426be89a591f1195d5d56b03c0fd}\label{struct_model_aa819426be89a591f1195d5d56b03c0fd}} 
-void {\bfseries clear\+Override} (vector$<$ double $>$ \&x, vector$<$ double $>$ \&dxdt)
-\item 
-bool \mbox{\hyperlink{struct_model_aac8a04f478ba6259d9275410cf0c9a1a}{over}} (int index\+Local)
-\item 
-\mbox{\Hypertarget{struct_model_af82109a97e29e58f20542fd004653a95}\label{struct_model_af82109a97e29e58f20542fd004653a95}} 
-string {\bfseries get\+Param\+Name} (int i)
-\item 
-\mbox{\Hypertarget{struct_model_addf5577cb992de5bb1c7c521ce2f9b5e}\label{struct_model_addf5577cb992de5bb1c7c521ce2f9b5e}} 
-double {\bfseries get\+Lower\+Bound} (int i)
-\item 
-\mbox{\Hypertarget{struct_model_a25062f42292bfb626be497eed1fdc146}\label{struct_model_a25062f42292bfb626be497eed1fdc146}} 
-double {\bfseries get\+Upper\+Bound} (int i)
-\item 
-\mbox{\Hypertarget{struct_model_af3a9ac5ba1f3d612747ae58ba284024d}\label{struct_model_af3a9ac5ba1f3d612747ae58ba284024d}} 
-void {\bfseries set\+Bounds} (int i, double v\+Low, double v\+Hi)
-\item 
-\mbox{\Hypertarget{struct_model_a611aa5ea5c35188d608d3661140eafa1}\label{struct_model_a611aa5ea5c35188d608d3661140eafa1}} 
-void {\bfseries set\+Bounds} (vector$<$ double $>$ up\+Vals, vector$<$ double $>$ low\+Vals)
-\item 
-\mbox{\hyperlink{struct_model_a0386968ae522e868e3b6028c8b154837}{Model}} (const \mbox{\hyperlink{struct_model}{Model}} \&)
-\begin{DoxyCompactList}\small\item\em 11 -\/ Internal functions \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{struct_model_aad963c4fe6512084871a4a9fb4da1619}{Model}} (int \+\_\+nb\+Vars, int \+\_\+nb\+Params)
+    \begin{DoxyCompactList}
+        \small\item\em Name of this model.
+    \end{DoxyCompactList}\item
+    virtual void \mbox{\hyperlink{struct_model_ad5bdef56e3093a578e844b692fa72acf}{derivatives}} (const vector$<$ double $>$ \&x, vector$<$ double $>$ \&dxdt, const double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}})
+    \begin{DoxyCompactList}
+        \small\item\em the \textquotesingle{}official/global/external\textquotesingle{} name of each variable, when reading data / kinetics
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a799337539145689f374f1a8233bc3ec0}\label{struct_model_a799337539145689f374f1a8233bc3ec0}}
+    virtual void \mbox{\hyperlink{struct_model_a799337539145689f374f1a8233bc3ec0}{set\+Base\+Parameters}} ()
+    \begin{DoxyCompactList}
+        \small\item\em computes the derivatives (at t) from position x
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a6b027167291fbe1ea029baeb0f6a4043}\label{struct_model_a6b027167291fbe1ea029baeb0f6a4043}}
+    virtual void \mbox{\hyperlink{struct_model_a6b027167291fbe1ea029baeb0f6a4043}{initialise}} (long long \+\_\+background=D\+E\+F\+A\+U\+L\+T\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+V\+A\+L\+UE)
+    \begin{DoxyCompactList}
+        \small\item\em gives a correct set of parameters, if you don\textquotesingle{}t load other set.
+    \end{DoxyCompactList}\item
+    virtual void \mbox{\hyperlink{struct_model_affc6f838a87a8005f52240f4f7c21015}{finalize}} ()
+    \begin{DoxyCompactList}
+        \small\item\em initialise, (parameters should be set before initializing) -\/ sets t = 0 if necessary.
+    \end{DoxyCompactList}\item
+    virtual void \mbox{\hyperlink{struct_model_ab427438468288f3a1eb2b3c3bb8bfb6e}{load\+Parameters}} (string file\+\_\+name)
+    \begin{DoxyCompactList}
+        \small\item\em It can be helpful that the experiments notifies the model when a simulation is finished.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a503ac2c20f33b903e34d7428e44cf7c1}\label{struct_model_a503ac2c20f33b903e34d7428e44cf7c1}}
+    virtual void \mbox{\hyperlink{struct_model_a503ac2c20f33b903e34d7428e44cf7c1}{save\+Parameters}} (string file\+\_\+name)
+    \begin{DoxyCompactList}
+        \small\item\em reads parameters from a text file with format \+: \char`\"{}\+N\+B\+\_\+\+P\+A\+R\+A\+M\+S\textbackslash{}tparam1\textbackslash{}tparam2\textbackslash{}tparam3 ...\char`\"{}
+    \end{DoxyCompactList}\item
+    virtual void \mbox{\hyperlink{struct_model_aa41fdea625302654c9ae9ec4a538dfbd}{action}} (string name, double parameter)
+    \begin{DoxyCompactList}
+        \small\item\em writes parameters from a text file with format \+: \char`\"{}\+N\+B\+\_\+\+P\+A\+R\+A\+M\+S\textbackslash{}tparam1\textbackslash{}tparam2\textbackslash{}tparam3 ...\char`\"{}
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ab9977f47213102559eedc2d37c237c1a}\label{struct_model_ab9977f47213102559eedc2d37c237c1a}}
+    virtual void \mbox{\hyperlink{struct_model_ab9977f47213102559eedc2d37c237c1a}{action}} (string name, vector$<$ double $>$ parameters)
+    \begin{DoxyCompactList}
+        \small\item\em function to perform personnalized actions by the model by a name of action,
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a22c549a3df2d980cce0dc7c12c15bf5a}\label{struct_model_a22c549a3df2d980cce0dc7c12c15bf5a}}
+    virtual void \mbox{\hyperlink{struct_model_a22c549a3df2d980cce0dc7c12c15bf5a}{update\+Derived\+Variables}} (double \+\_\+t=0)
+    \begin{DoxyCompactList}
+        \small\item\em 2d -\/ An additional function that can be designed by the user to simulate variable depending on other ones. Exemple\+: percents, ratios, etc ...
+    \end{DoxyCompactList}\item
+    void \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Will be called when the solver stops at each point -\/$>$ use it to calculate variables that depend on other ones (i.\+e. not defined by their derivatives). This is called only after solving, N\+OT D\+U\+R\+I\+N\+G! for variables that need to be calculated during solving od O\+D\+Es, they need to be calculated I\+N\+S\+I\+DE derivatives, but they should not access val\mbox{[}\mbox{]}. They only can modify x\mbox{[}\mbox{]} and dxdt\mbox{[}\mbox{]} the arguments of derivatives, because the solver can be at any point or trying things or diverging, independently of the one that will be saved in val\mbox{[}\mbox{]} at the end.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ae1253579bf1314ad0bb46fcebaa80bdc}\label{struct_model_ae1253579bf1314ad0bb46fcebaa80bdc}}
+    void {\bfseries set\+Base\+Parameters\+Done} ()
+    \item
+    \mbox{\Hypertarget{struct_model_aed5e09058b1e70825e21370d375acf00}\label{struct_model_aed5e09058b1e70825e21370d375acf00}}
+    void {\bfseries load\+Parameters\+Done} ()
+    \item
+    void \mbox{\hyperlink{struct_model_a8e35a99a9463333ef95a7f2c0412e77c}{need\+New\+Parameter\+Set}} ()
+    \begin{DoxyCompactList}
+        \small\item\em derivatives at time , updated each time the solver stops for output
+    \end{DoxyCompactList}\item
+    virtual void \mbox{\hyperlink{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}{simulate}} (double \+\_\+sec\+\_\+max, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL)
+    \begin{DoxyCompactList}
+        \small\item\em 3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_affda46326320c5bc031ea54c8e80977b}\label{struct_model_affda46326320c5bc031ea54c8e80977b}}
+    void \mbox{\hyperlink{struct_model_affda46326320c5bc031ea54c8e80977b}{set\+Print\+Mode}} (bool z, double \+\_\+print\+\_\+every\+\_\+dt)
+    \begin{DoxyCompactList}
+        \small\item\em frequency of saving/displaying data for kinetics
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a3463a38ca7a26da814c07718d1855e36}\label{struct_model_a3463a38ca7a26da814c07718d1855e36}}
+    \mbox{\hyperlink{struct_table_course}{Table\+Course}} \mbox{\hyperlink{struct_model_a3463a38ca7a26da814c07718d1855e36}{get\+Cinetique}} ()
+    \begin{DoxyCompactList}
+        \small\item\em to set the \textquotesingle{}recording mode\textquotesingle{} to O\+N/\+O\+FF, and the frequency of recording
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a78efa1cc97d3bfd62b30190a1258f4a2}\label{struct_model_a78efa1cc97d3bfd62b30190a1258f4a2}}
+    vector$<$ double $>$ \mbox{\hyperlink{struct_model_a78efa1cc97d3bfd62b30190a1258f4a2}{get\+Init}} ()
+    \begin{DoxyCompactList}
+        \small\item\em then, each time \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done()}} is called, the kinetics is cleared, and
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a7221ee91b0fe71a166129f70e064bc03}\label{struct_model_a7221ee91b0fe71a166129f70e064bc03}}
+    double {\bfseries getT} ()
+    \item
+    string \mbox{\hyperlink{struct_model_aadfda9511aa37b5f133bb84d3abab387}{print}} ()
+    \begin{DoxyCompactList}
+        \small\item\em 4c -\/ to get the value of a particular variable at a particular time point during a simulation,
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ac885dbe3477fcc643e4ad7b755c76d05}\label{struct_model_ac885dbe3477fcc643e4ad7b755c76d05}}
+    string {\bfseries print\+Var\+Names} (double \+\_\+t)
+    \item
+    \mbox{\Hypertarget{struct_model_a25b4412505a09b0db84856fbf825c006}\label{struct_model_a25b4412505a09b0db84856fbf825c006}}
+    string {\bfseries print\+Var\+Values} (double \+\_\+t)
+    \item
+    \mbox{\Hypertarget{struct_model_a065134be471e1d4fe6acc8aa747e7417}\label{struct_model_a065134be471e1d4fe6acc8aa747e7417}}
+    string {\bfseries print\+Par\+Names} ()
+    \item
+    \mbox{\Hypertarget{struct_model_a6975f4729cb50de7591569bfe1cb7610}\label{struct_model_a6975f4729cb50de7591569bfe1cb7610}}
+    string {\bfseries print\+Par\+Values} ()
+    \item
+    vector$<$ string $>$ \mbox{\hyperlink{struct_model_a374d8d2c5c5858ec7b0e29a3f8411b56}{get\+List\+External\+Names}} ()
+    \begin{DoxyCompactList}
+        \small\item\em vectors that can be filled by the subclass \+:
+    \end{DoxyCompactList}\item
+    virtual void \mbox{\hyperlink{struct_model_a649efc6b5055ec0944839c59be90523e}{set\+Value}} (string name\+External\+Variable, double \mbox{\hyperlink{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}{val}})
+    \item
+    \mbox{\Hypertarget{struct_model_a5d9e3350bac0da8143452055ae04f54a}\label{struct_model_a5d9e3350bac0da8143452055ae04f54a}}
+    virtual void \mbox{\hyperlink{struct_model_a5d9e3350bac0da8143452055ae04f54a}{add\+Value}} (string name\+External\+Variable, double \mbox{\hyperlink{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}{val}})
+    \begin{DoxyCompactList}
+        \small\item\em to modify the value of a variable from the global ID of it
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ac22d9512296321ec325bf422e15c39df}\label{struct_model_ac22d9512296321ec325bf422e15c39df}}
+    virtual double \mbox{\hyperlink{struct_model_ac22d9512296321ec325bf422e15c39df}{get\+Value}} (string name\+External\+Variable)
+    \begin{DoxyCompactList}
+        \small\item\em to modify the value of a variable from the global ID of it
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a1f28052560a98bb9e29a552155d3fefc}\label{struct_model_a1f28052560a98bb9e29a552155d3fefc}}
+    virtual bool \mbox{\hyperlink{struct_model_a1f28052560a98bb9e29a552155d3fefc}{is\+Var\+Known}} (string external\+Name\+Variable)
+    \begin{DoxyCompactList}
+        \small\item\em to get the value of a variable from its global ID
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ae8c80ea18d67a97b7feb6881c2f90c02}\label{struct_model_ae8c80ea18d67a97b7feb6881c2f90c02}}
+    virtual vector$<$ int $>$ \mbox{\hyperlink{struct_model_ae8c80ea18d67a97b7feb6881c2f90c02}{intern\+Val\+Name}} (string external\+Name\+Variable)
+    \begin{DoxyCompactList}
+        \small\item\em to know if a variable can be simulated by the model (from its global ID)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_aac3c6c508cf0bc55c4dc1943ad9be000}\label{struct_model_aac3c6c508cf0bc55c4dc1943ad9be000}}
+    virtual int \mbox{\hyperlink{struct_model_aac3c6c508cf0bc55c4dc1943ad9be000}{unique\+Intern\+Val\+Name}} (string external\+Name\+Variable)
+    \begin{DoxyCompactList}
+        \small\item\em index of variables for this external name
+    \end{DoxyCompactList}\item
+    int \mbox{\hyperlink{struct_model_ae745db61bb0aea02bf130814a70b8529}{get\+Nb\+Params}} ()
+    \begin{DoxyCompactList}
+        \small\item\em index of variables for this external name; raises an error if there are multiple...
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_af9e53d9881113b56714db2374035baa8}\label{struct_model_af9e53d9881113b56714db2374035baa8}}
+    void {\bfseries set\+Param} (int i, double v)
+    \item
+    \mbox{\Hypertarget{struct_model_a96f8967aac9448abe1c3ee70389aba09}\label{struct_model_a96f8967aac9448abe1c3ee70389aba09}}
+    double {\bfseries get\+Param} (int i)
+    \item
+    \mbox{\Hypertarget{struct_model_a1597760cd361a53a784ec007cab8ba42}\label{struct_model_a1597760cd361a53a784ec007cab8ba42}}
+    vector$<$ double $>$ {\bfseries get\+Parameters} ()
+    \item
+    \mbox{\Hypertarget{struct_model_a2ceddb702cce18e18c98f5113fb178ac}\label{struct_model_a2ceddb702cce18e18c98f5113fb178ac}}
+    void {\bfseries set\+Parameters} (vector$<$ double $>$ \&new\+Param\+Set)
+    \item
+    \mbox{\Hypertarget{struct_model_ae8f1c0e79ff4b574f0219d1cacf40d58}\label{struct_model_ae8f1c0e79ff4b574f0219d1cacf40d58}}
+    int \mbox{\hyperlink{struct_model_ae8f1c0e79ff4b574f0219d1cacf40d58}{get\+Nb\+Vars}} ()
+    \begin{DoxyCompactList}
+        \small\item\em 8 -\/ to get information on the (internal) variables.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_aaecd6cc1134dc49ce3943ba5c82a7705}\label{struct_model_aaecd6cc1134dc49ce3943ba5c82a7705}}
+    string {\bfseries get\+Name} (int internal\+ID)
+    \item
+    \mbox{\Hypertarget{struct_model_a54d43e04c13134852b67336d487c1dce}\label{struct_model_a54d43e04c13134852b67336d487c1dce}}
+    string {\bfseries get\+External\+Name} (int internal\+ID)
+    \item
+    void \mbox{\hyperlink{struct_model_aa28cafed578c3f2aff1cb529e79f9039}{set\+Overrider}} (\mbox{\hyperlink{structoverrider}{overrider}} $\ast$new\+Overrider=nullptr)
+    \begin{DoxyCompactList}
+        \small\item\em 9 -\/ Overriding certain variables with data,
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ac88b48e8ba626dff60cb37b105e3c9b2}\label{struct_model_ac88b48e8ba626dff60cb37b105e3c9b2}}
+    void {\bfseries apply\+Override} (vector$<$ double $>$ \&x, double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}})
+    \item
+    \mbox{\Hypertarget{struct_model_aa819426be89a591f1195d5d56b03c0fd}\label{struct_model_aa819426be89a591f1195d5d56b03c0fd}}
+    void {\bfseries clear\+Override} (vector$<$ double $>$ \&x, vector$<$ double $>$ \&dxdt)
+    \item
+    bool \mbox{\hyperlink{struct_model_aac8a04f478ba6259d9275410cf0c9a1a}{over}} (int index\+Local)
+    \item
+    \mbox{\Hypertarget{struct_model_af82109a97e29e58f20542fd004653a95}\label{struct_model_af82109a97e29e58f20542fd004653a95}}
+    string {\bfseries get\+Param\+Name} (int i)
+    \item
+    \mbox{\Hypertarget{struct_model_addf5577cb992de5bb1c7c521ce2f9b5e}\label{struct_model_addf5577cb992de5bb1c7c521ce2f9b5e}}
+    double {\bfseries get\+Lower\+Bound} (int i)
+    \item
+    \mbox{\Hypertarget{struct_model_a25062f42292bfb626be497eed1fdc146}\label{struct_model_a25062f42292bfb626be497eed1fdc146}}
+    double {\bfseries get\+Upper\+Bound} (int i)
+    \item
+    \mbox{\Hypertarget{struct_model_af3a9ac5ba1f3d612747ae58ba284024d}\label{struct_model_af3a9ac5ba1f3d612747ae58ba284024d}}
+    void {\bfseries set\+Bounds} (int i, double v\+Low, double v\+Hi)
+    \item
+    \mbox{\Hypertarget{struct_model_a611aa5ea5c35188d608d3661140eafa1}\label{struct_model_a611aa5ea5c35188d608d3661140eafa1}}
+    void {\bfseries set\+Bounds} (vector$<$ double $>$ up\+Vals, vector$<$ double $>$ low\+Vals)
+    \item
+    \mbox{\hyperlink{struct_model_a0386968ae522e868e3b6028c8b154837}{Model}} (const \mbox{\hyperlink{struct_model}{Model}} \&)
+    \begin{DoxyCompactList}
+        \small\item\em 11 -\/ Internal functions
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_model_a2d9aef6a80a205a03e4e99b5483af9a0}\label{struct_model_a2d9aef6a80a205a03e4e99b5483af9a0}} 
-string {\bfseries name}
-\item 
-int \mbox{\hyperlink{struct_model_a4516d7008a9a1029bbc1d728a340418f}{nb\+Vars}}
-\item 
-\mbox{\Hypertarget{struct_model_a9c42221a8f745aaeef1f96b2a6a1d89f}\label{struct_model_a9c42221a8f745aaeef1f96b2a6a1d89f}} 
-int {\bfseries nb\+Params}
-\item 
-\mbox{\Hypertarget{struct_model_a329afe6967f822627da3fb3ae355ca14}\label{struct_model_a329afe6967f822627da3fb3ae355ca14}} 
-vector$<$ double $>$ {\bfseries init}
-\item 
-\mbox{\Hypertarget{struct_model_af3e082d18a91713df2ce04e57bc6f835}\label{struct_model_af3e082d18a91713df2ce04e57bc6f835}} 
-vector$<$ double $>$ \mbox{\hyperlink{struct_model_af3e082d18a91713df2ce04e57bc6f835}{params}}
-\begin{DoxyCompactList}\small\item\em initial values of variables (size b\+Vars) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a170ca418ddba5b0049401b7a0742859e}\label{struct_model_a170ca418ddba5b0049401b7a0742859e}} 
-vector$<$ string $>$ \mbox{\hyperlink{struct_model_a170ca418ddba5b0049401b7a0742859e}{names}}
-\begin{DoxyCompactList}\small\item\em parameter values (size nb\+Params) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a05dc559de26748101a033b6b8acc8bf5}\label{struct_model_a05dc559de26748101a033b6b8acc8bf5}} 
-vector$<$ string $>$ \mbox{\hyperlink{struct_model_a05dc559de26748101a033b6b8acc8bf5}{param\+Names}}
-\begin{DoxyCompactList}\small\item\em names of the variables \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ab26df699f4ba7769ff7e230adea98acf}\label{struct_model_ab26df699f4ba7769ff7e230adea98acf}} 
-vector$<$ string $>$ \mbox{\hyperlink{struct_model_ab26df699f4ba7769ff7e230adea98acf}{ext\+Names}}
-\begin{DoxyCompactList}\small\item\em names of the parameters \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}\label{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}} 
-double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}}
-\begin{DoxyCompactList}\small\item\em During a simulation, these variables will be used by the solver. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}\label{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}} 
-vector$<$ double $>$ \mbox{\hyperlink{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}{val}}
-\begin{DoxyCompactList}\small\item\em advised to do \textquotesingle{}t=0;\textquotesingle{} in the initialize function \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a017dbed913f8afb02f9ddf45e082046e}\label{struct_model_a017dbed913f8afb02f9ddf45e082046e}} 
-vector$<$ double $>$ \mbox{\hyperlink{struct_model_a017dbed913f8afb02f9ddf45e082046e}{deriv}}
-\begin{DoxyCompactList}\small\item\em variables at time t \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{struct_model_a9ebaf991e4335faedebf981f8694e2ad}{dt}}
-\begin{DoxyCompactList}\small\item\em Simulates from t (not changed), to t + \+\_\+sec\+\_\+max, by calling one\+\_\+step. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a6c18f70b4d47e4d01fe96de771b47bd1}\label{struct_model_a6c18f70b4d47e4d01fe96de771b47bd1}} 
-double \mbox{\hyperlink{struct_model_a6c18f70b4d47e4d01fe96de771b47bd1}{penalities}}
-\begin{DoxyCompactList}\small\item\em minimum dt used for simulations. The tunable dt will start at dt$\ast$10 and be limited between dt and dt$\ast$100 \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{struct_model_acc994d32aa30ba50f13e4f0c49c9bcf3}{save\+Kinetics}}
-\begin{DoxyCompactList}\small\item\em automatically updated by the mother class \+: put to zero when \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done()}} called and increased when the simulation diverges. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a2438784dfeb865bc1bbc97f6b182ec46}\label{struct_model_a2438784dfeb865bc1bbc97f6b182ec46}} 
-double \mbox{\hyperlink{struct_model_a2438784dfeb865bc1bbc97f6b182ec46}{print\+\_\+every\+\_\+dt}}
-\begin{DoxyCompactList}\small\item\em sets the mode \+: simulates a kinetics to record or just simulate what you ask without stopping \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\Hypertarget{struct_model_a2d9aef6a80a205a03e4e99b5483af9a0}\label{struct_model_a2d9aef6a80a205a03e4e99b5483af9a0}}
+    string {\bfseries name}
+    \item
+    int \mbox{\hyperlink{struct_model_a4516d7008a9a1029bbc1d728a340418f}{nb\+Vars}}
+    \item
+    \mbox{\Hypertarget{struct_model_a9c42221a8f745aaeef1f96b2a6a1d89f}\label{struct_model_a9c42221a8f745aaeef1f96b2a6a1d89f}}
+    int {\bfseries nb\+Params}
+    \item
+    \mbox{\Hypertarget{struct_model_a329afe6967f822627da3fb3ae355ca14}\label{struct_model_a329afe6967f822627da3fb3ae355ca14}}
+    vector$<$ double $>$ {\bfseries init}
+    \item
+    \mbox{\Hypertarget{struct_model_af3e082d18a91713df2ce04e57bc6f835}\label{struct_model_af3e082d18a91713df2ce04e57bc6f835}}
+    vector$<$ double $>$ \mbox{\hyperlink{struct_model_af3e082d18a91713df2ce04e57bc6f835}{params}}
+    \begin{DoxyCompactList}
+        \small\item\em initial values of variables (size b\+Vars)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a170ca418ddba5b0049401b7a0742859e}\label{struct_model_a170ca418ddba5b0049401b7a0742859e}}
+    vector$<$ string $>$ \mbox{\hyperlink{struct_model_a170ca418ddba5b0049401b7a0742859e}{names}}
+    \begin{DoxyCompactList}
+        \small\item\em parameter values (size nb\+Params)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a05dc559de26748101a033b6b8acc8bf5}\label{struct_model_a05dc559de26748101a033b6b8acc8bf5}}
+    vector$<$ string $>$ \mbox{\hyperlink{struct_model_a05dc559de26748101a033b6b8acc8bf5}{param\+Names}}
+    \begin{DoxyCompactList}
+        \small\item\em names of the variables
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ab26df699f4ba7769ff7e230adea98acf}\label{struct_model_ab26df699f4ba7769ff7e230adea98acf}}
+    vector$<$ string $>$ \mbox{\hyperlink{struct_model_ab26df699f4ba7769ff7e230adea98acf}{ext\+Names}}
+    \begin{DoxyCompactList}
+        \small\item\em names of the parameters
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}\label{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}}
+    double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}}
+    \begin{DoxyCompactList}
+        \small\item\em During a simulation, these variables will be used by the solver.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}\label{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}}
+    vector$<$ double $>$ \mbox{\hyperlink{struct_model_ad0fce8d637a2596cb89a1f5ef5b8faa4}{val}}
+    \begin{DoxyCompactList}
+        \small\item\em advised to do \textquotesingle{}t=0;\textquotesingle{} in the initialize function
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a017dbed913f8afb02f9ddf45e082046e}\label{struct_model_a017dbed913f8afb02f9ddf45e082046e}}
+    vector$<$ double $>$ \mbox{\hyperlink{struct_model_a017dbed913f8afb02f9ddf45e082046e}{deriv}}
+    \begin{DoxyCompactList}
+        \small\item\em variables at time t
+    \end{DoxyCompactList}\item
+    double \mbox{\hyperlink{struct_model_a9ebaf991e4335faedebf981f8694e2ad}{dt}}
+    \begin{DoxyCompactList}
+        \small\item\em Simulates from t (not changed), to t + \+\_\+sec\+\_\+max, by calling one\+\_\+step.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a6c18f70b4d47e4d01fe96de771b47bd1}\label{struct_model_a6c18f70b4d47e4d01fe96de771b47bd1}}
+    double \mbox{\hyperlink{struct_model_a6c18f70b4d47e4d01fe96de771b47bd1}{penalities}}
+    \begin{DoxyCompactList}
+        \small\item\em minimum dt used for simulations. The tunable dt will start at dt$\ast$10 and be limited between dt and dt$\ast$100
+    \end{DoxyCompactList}\item
+    bool \mbox{\hyperlink{struct_model_acc994d32aa30ba50f13e4f0c49c9bcf3}{save\+Kinetics}}
+    \begin{DoxyCompactList}
+        \small\item\em automatically updated by the mother class \+: put to zero when \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done()}} called and increased when the simulation diverges.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a2438784dfeb865bc1bbc97f6b182ec46}\label{struct_model_a2438784dfeb865bc1bbc97f6b182ec46}}
+    double \mbox{\hyperlink{struct_model_a2438784dfeb865bc1bbc97f6b182ec46}{print\+\_\+every\+\_\+dt}}
+    \begin{DoxyCompactList}
+        \small\item\em sets the mode \+: simulates a kinetics to record or just simulate what you ask without stopping
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_model_afb3744ef8bc8fb8286c8f4c6fbb37116}\label{struct_model_afb3744ef8bc8fb8286c8f4c6fbb37116}} 
-void {\bfseries delete\+Cinetique} ()
-\item 
-\mbox{\Hypertarget{struct_model_ae68d85a603002d8091d0d8862defd9d5}\label{struct_model_ae68d85a603002d8091d0d8862defd9d5}} 
-void {\bfseries new\+Cinetique\+If\+Required} ()
-\item 
-\mbox{\Hypertarget{struct_model_af531cfddd429ca516c1a4337fae452a9}\label{struct_model_af531cfddd429ca516c1a4337fae452a9}} 
-void {\bfseries save\+\_\+state} (double \+\_\+t)
-\item 
-\mbox{\Hypertarget{struct_model_a99961a23daac13f856ba15edcd0f1024}\label{struct_model_a99961a23daac13f856ba15edcd0f1024}} 
-double \mbox{\hyperlink{struct_model_a99961a23daac13f856ba15edcd0f1024}{max}} (double, double)
-\begin{DoxyCompactList}\small\item\em the simule function call this to record data of a time point into the Cinetique. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a3e4383ae6febd2637b20b937dac704f0}\label{struct_model_a3e4383ae6febd2637b20b937dac704f0}} 
-bool {\bfseries check\+Divergence} ()
+    \item
+    \mbox{\Hypertarget{struct_model_afb3744ef8bc8fb8286c8f4c6fbb37116}\label{struct_model_afb3744ef8bc8fb8286c8f4c6fbb37116}}
+    void {\bfseries delete\+Cinetique} ()
+    \item
+    \mbox{\Hypertarget{struct_model_ae68d85a603002d8091d0d8862defd9d5}\label{struct_model_ae68d85a603002d8091d0d8862defd9d5}}
+    void {\bfseries new\+Cinetique\+If\+Required} ()
+    \item
+    \mbox{\Hypertarget{struct_model_af531cfddd429ca516c1a4337fae452a9}\label{struct_model_af531cfddd429ca516c1a4337fae452a9}}
+    void {\bfseries save\+\_\+state} (double \+\_\+t)
+    \item
+    \mbox{\Hypertarget{struct_model_a99961a23daac13f856ba15edcd0f1024}\label{struct_model_a99961a23daac13f856ba15edcd0f1024}}
+    double \mbox{\hyperlink{struct_model_a99961a23daac13f856ba15edcd0f1024}{max}} (double, double)
+    \begin{DoxyCompactList}
+        \small\item\em the simule function call this to record data of a time point into the Cinetique.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a3e4383ae6febd2637b20b937dac704f0}\label{struct_model_a3e4383ae6febd2637b20b937dac704f0}}
+    bool {\bfseries check\+Divergence} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_model_a17c115e2fe2f4f9f55f22cde1e437bbf}\label{struct_model_a17c115e2fe2f4f9f55f22cde1e437bbf}} 
-\mbox{\hyperlink{structoverrider}{overrider}} $\ast$ {\bfseries current\+Overrider}
-\item 
-vector$<$ double $>$ \mbox{\hyperlink{struct_model_a0f1d42e9bdb31d7cc585c409da8a8be7}{param\+Up\+Bounds}}
-\begin{DoxyCompactList}\small\item\em says if a variable is overrided (then, no need to calculate derivatives) if no U\+S\+E\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E\+RS defined, then returns false ! So a program can use this function independently of the define options \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a08bba0f8849b820e232a096b5a44e9da}\label{struct_model_a08bba0f8849b820e232a096b5a44e9da}} 
-vector$<$ double $>$ {\bfseries param\+Low\+Bounds}
-\item 
-\mbox{\Hypertarget{struct_model_a773fecf78259c68b92a47b0ac7b89a20}\label{struct_model_a773fecf78259c68b92a47b0ac7b89a20}} 
-\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$ \mbox{\hyperlink{struct_model_a773fecf78259c68b92a47b0ac7b89a20}{cinetique}}
-\begin{DoxyCompactList}\small\item\em internal way of managing kinetics (automatically used) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_model_a8447ca129d62cf0a7a47b0072b7b966f}\label{struct_model_a8447ca129d62cf0a7a47b0072b7b966f}} 
-bool {\bfseries parameters\+Loaded}
-\item 
-\mbox{\Hypertarget{struct_model_abb681c63f862d8d2e03d1274deb5c699}\label{struct_model_abb681c63f862d8d2e03d1274deb5c699}} 
-bool {\bfseries stop\+Criterion\+Reached}
+    \item
+    \mbox{\Hypertarget{struct_model_a17c115e2fe2f4f9f55f22cde1e437bbf}\label{struct_model_a17c115e2fe2f4f9f55f22cde1e437bbf}}
+    \mbox{\hyperlink{structoverrider}{overrider}} $\ast$ {\bfseries current\+Overrider}
+    \item
+    vector$<$ double $>$ \mbox{\hyperlink{struct_model_a0f1d42e9bdb31d7cc585c409da8a8be7}{param\+Up\+Bounds}}
+    \begin{DoxyCompactList}
+        \small\item\em says if a variable is overrided (then, no need to calculate derivatives) if no U\+S\+E\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E\+RS defined, then returns false ! So a program can use this function independently of the define options
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a08bba0f8849b820e232a096b5a44e9da}\label{struct_model_a08bba0f8849b820e232a096b5a44e9da}}
+    vector$<$ double $>$ {\bfseries param\+Low\+Bounds}
+    \item
+    \mbox{\Hypertarget{struct_model_a773fecf78259c68b92a47b0ac7b89a20}\label{struct_model_a773fecf78259c68b92a47b0ac7b89a20}}
+    \mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$ \mbox{\hyperlink{struct_model_a773fecf78259c68b92a47b0ac7b89a20}{cinetique}}
+    \begin{DoxyCompactList}
+        \small\item\em internal way of managing kinetics (automatically used)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_model_a8447ca129d62cf0a7a47b0072b7b966f}\label{struct_model_a8447ca129d62cf0a7a47b0072b7b966f}}
+    bool {\bfseries parameters\+Loaded}
+    \item
+    \mbox{\Hypertarget{struct_model_abb681c63f862d8d2e03d1274deb5c699}\label{struct_model_abb681c63f862d8d2e03d1274deb5c699}}
+    bool {\bfseries stop\+Criterion\+Reached}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-A general mother class to perform dynamical simulations. It contains its own parameter set and set of equations / rules to evolve over time. It is possible to give simulation options through a parameter called \textquotesingle{}background\textquotesingle{} (for instance WT or treated cells). You will need to program your own subclass of \mbox{\hyperlink{struct_model}{Model}}, so that you can use inherited function from this mother class. It pre-\/defines all basic functions for simulations and data management, including calling O\+DE solver. Agent-\/based models needs to use the derived \mbox{\hyperlink{structmodel_agent_based}{model\+Agent\+Based}} class as mother (see below). 
+A general mother class to perform dynamical simulations. It contains its own parameter set and set of equations / rules to evolve over time. It is possible to give simulation options through a parameter called \textquotesingle{}background\textquotesingle{} (for instance WT or treated cells). You will need to program your own subclass of \mbox{\hyperlink{struct_model}{Model}}, so that you can use inherited function from this mother class. It pre-\/defines all basic functions for simulations and data management, including calling O\+DE solver. Agent-\/based models needs to use the derived \mbox{\hyperlink{structmodel_agent_based}{model\+Agent\+Based}} class as mother (see below).
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{struct_model_aad963c4fe6512084871a4a9fb4da1619}\label{struct_model_aad963c4fe6512084871a4a9fb4da1619}} 
+\mbox{\Hypertarget{struct_model_aad963c4fe6512084871a4a9fb4da1619}\label{struct_model_aad963c4fe6512084871a4a9fb4da1619}}
 \index{Model@{Model}!Model@{Model}}
 \index{Model@{Model}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{Model()}{Model()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily Model\+::\+Model (\begin{DoxyParamCaption}\item[{int}]{\+\_\+nb\+Vars,  }\item[{int}]{\+\_\+nb\+Params }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Model\+::\+Model (\begin{DoxyParamCaption}
+                                              \item[{int}]{\+\_\+nb\+Vars,  }\item[{int}]{\+\_\+nb\+Params }
+\end{DoxyParamCaption})}
 
 
 
-Name of this model. 
+Name of this model.
 
-The general constraints your \mbox{\hyperlink{struct_model}{Model}} subclass should follow are here \+: 0 -\/ Calling the constructor \+: the sub-\/model need to call the mother constructor and say the nb of variables and parameters to allocate \mbox{\Hypertarget{struct_model_a0386968ae522e868e3b6028c8b154837}\label{struct_model_a0386968ae522e868e3b6028c8b154837}} 
+The general constraints your \mbox{\hyperlink{struct_model}{Model}} subclass should follow are here \+: 0 -\/ Calling the constructor \+: the sub-\/model need to call the mother constructor and say the nb of variables and parameters to allocate \mbox{\Hypertarget{struct_model_a0386968ae522e868e3b6028c8b154837}\label{struct_model_a0386968ae522e868e3b6028c8b154837}}
 \index{Model@{Model}!Model@{Model}}
 \index{Model@{Model}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{Model()}{Model()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily Model\+::\+Model (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_model}{Model}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily Model\+::\+Model (\begin{DoxyParamCaption}
+                                              \item[{const \mbox{\hyperlink{struct_model}{Model}} \&}]{ }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-11 -\/ Internal functions 
+11 -\/ Internal functions
 
-Checking for errors\+: a model should never be copied, in which cases destroying one copy creates a segfault on the other one 
+Checking for errors\+: a model should never be copied, in which cases destroying one copy creates a segfault on the other one
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{struct_model_aa41fdea625302654c9ae9ec4a538dfbd}\label{struct_model_aa41fdea625302654c9ae9ec4a538dfbd}} 
+\mbox{\Hypertarget{struct_model_aa41fdea625302654c9ae9ec4a538dfbd}\label{struct_model_aa41fdea625302654c9ae9ec4a538dfbd}}
 \index{Model@{Model}!action@{action}}
 \index{action@{action}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{action()}{action()}}
-{\footnotesize\ttfamily void Model\+::action (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{double}]{parameter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void Model\+::action (\begin{DoxyParamCaption}
+                                                  \item[{string}]{name,  }\item[{double}]{parameter }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-writes parameters from a text file with format \+: \char`\"{}\+N\+B\+\_\+\+P\+A\+R\+A\+M\+S\textbackslash{}tparam1\textbackslash{}tparam2\textbackslash{}tparam3 ...\char`\"{} 
+writes parameters from a text file with format \+: \char`\"{}\+N\+B\+\_\+\+P\+A\+R\+A\+M\+S\textbackslash{}tparam1\textbackslash{}tparam2\textbackslash{}tparam3 ...\char`\"{}
 
-2c -\/ A function to perform personnalized actions by the model, without a specific function, but by a name of action, (ex \+: adding a cytokine at day 2) \mbox{\Hypertarget{struct_model_ad5bdef56e3093a578e844b692fa72acf}\label{struct_model_ad5bdef56e3093a578e844b692fa72acf}} 
+2c -\/ A function to perform personnalized actions by the model, without a specific function, but by a name of action, (ex \+: adding a cytokine at day 2) \mbox{\Hypertarget{struct_model_ad5bdef56e3093a578e844b692fa72acf}\label{struct_model_ad5bdef56e3093a578e844b692fa72acf}}
 \index{Model@{Model}!derivatives@{derivatives}}
 \index{derivatives@{derivatives}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{derivatives()}{derivatives()}}
-{\footnotesize\ttfamily void Model\+::derivatives (\begin{DoxyParamCaption}\item[{const vector$<$ double $>$ \&}]{x,  }\item[{vector$<$ double $>$ \&}]{dxdt,  }\item[{const double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void Model\+::derivatives (\begin{DoxyParamCaption}
+                                                       \item[{const vector$<$ double $>$ \&}]{x,  }\item[{vector$<$ double $>$ \&}]{dxdt,  }\item[{const double}]{t }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-the \textquotesingle{}official/global/external\textquotesingle{} name of each variable, when reading data / kinetics 
+the \textquotesingle{}official/global/external\textquotesingle{} name of each variable, when reading data / kinetics
 
-2 -\/ The functions the sub-\/model H\+AS TO implement \+: time evolution for dt at time t, initialise and base parameter values \mbox{\Hypertarget{struct_model_affc6f838a87a8005f52240f4f7c21015}\label{struct_model_affc6f838a87a8005f52240f4f7c21015}} 
+2 -\/ The functions the sub-\/model H\+AS TO implement \+: time evolution for dt at time t, initialise and base parameter values \mbox{\Hypertarget{struct_model_affc6f838a87a8005f52240f4f7c21015}\label{struct_model_affc6f838a87a8005f52240f4f7c21015}}
 \index{Model@{Model}!finalize@{finalize}}
 \index{finalize@{finalize}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{finalize()}{finalize()}}
@@ -290,11 +382,11 @@ the \textquotesingle{}official/global/external\textquotesingle{} name of each va
 
 
 
-initialise, (parameters should be set before initializing) -\/ sets t = 0 if necessary. 
+initialise, (parameters should be set before initializing) -\/ sets t = 0 if necessary.
 
 to avoid confusion, this function should not change the parameter values !!
 
-the background parameter allows to give options of simulation (such as deficient mice) \mbox{\Hypertarget{struct_model_a374d8d2c5c5858ec7b0e29a3f8411b56}\label{struct_model_a374d8d2c5c5858ec7b0e29a3f8411b56}} 
+the background parameter allows to give options of simulation (such as deficient mice) \mbox{\Hypertarget{struct_model_a374d8d2c5c5858ec7b0e29a3f8411b56}\label{struct_model_a374d8d2c5c5858ec7b0e29a3f8411b56}}
 \index{Model@{Model}!getListExternalNames@{getListExternalNames}}
 \index{getListExternalNames@{getListExternalNames}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{getListExternalNames()}{getListExternalNames()}}
@@ -302,9 +394,9 @@ the background parameter allows to give options of simulation (such as deficient
 
 
 
-vectors that can be filled by the subclass \+: 
+vectors that can be filled by the subclass \+:
 
-5 -\/ Accessing variables from an external name, and defining backgrounds even if the model has its internal variable names, you might want to say that this vairable represents this cytokine, in this case, a model can attribute an \textquotesingle{}external\textquotesingle{} name to each variable additionally, a model can declare the list of backgrounds it is able to simulate. in that way, it is possible to interrogate what a model is able to simulate (variables, background). \mbox{\Hypertarget{struct_model_ae745db61bb0aea02bf130814a70b8529}\label{struct_model_ae745db61bb0aea02bf130814a70b8529}} 
+5 -\/ Accessing variables from an external name, and defining backgrounds even if the model has its internal variable names, you might want to say that this vairable represents this cytokine, in this case, a model can attribute an \textquotesingle{}external\textquotesingle{} name to each variable additionally, a model can declare the list of backgrounds it is able to simulate. in that way, it is possible to interrogate what a model is able to simulate (variables, background). \mbox{\Hypertarget{struct_model_ae745db61bb0aea02bf130814a70b8529}\label{struct_model_ae745db61bb0aea02bf130814a70b8529}}
 \index{Model@{Model}!getNbParams@{getNbParams}}
 \index{getNbParams@{getNbParams}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{getNbParams()}{getNbParams()}}
@@ -312,9 +404,9 @@ vectors that can be filled by the subclass \+:
 
 
 
-index of variables for this external name; raises an error if there are multiple... 
+index of variables for this external name; raises an error if there are multiple...
 
-7 -\/ Working directly with the parameters of a model (important for managing the interface with the optimizer (fitting class)) \mbox{\Hypertarget{struct_model_ac41ad8a875de831705a12052513e991b}\label{struct_model_ac41ad8a875de831705a12052513e991b}} 
+7 -\/ Working directly with the parameters of a model (important for managing the interface with the optimizer (fitting class)) \mbox{\Hypertarget{struct_model_ac41ad8a875de831705a12052513e991b}\label{struct_model_ac41ad8a875de831705a12052513e991b}}
 \index{Model@{Model}!initialiseDone@{initialiseDone}}
 \index{initialiseDone@{initialiseDone}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{initialiseDone()}{initialiseDone()}}
@@ -322,19 +414,21 @@ index of variables for this external name; raises an error if there are multiple
 
 
 
-Will be called when the solver stops at each point -\/$>$ use it to calculate variables that depend on other ones (i.\+e. not defined by their derivatives). This is called only after solving, N\+OT D\+U\+R\+I\+N\+G! for variables that need to be calculated during solving od O\+D\+Es, they need to be calculated I\+N\+S\+I\+DE derivatives, but they should not access val\mbox{[}\mbox{]}. They only can modify x\mbox{[}\mbox{]} and dxdt\mbox{[}\mbox{]} the arguments of derivatives, because the solver can be at any point or trying things or diverging, independently of the one that will be saved in val\mbox{[}\mbox{]} at the end. 
+Will be called when the solver stops at each point -\/$>$ use it to calculate variables that depend on other ones (i.\+e. not defined by their derivatives). This is called only after solving, N\+OT D\+U\+R\+I\+N\+G! for variables that need to be calculated during solving od O\+D\+Es, they need to be calculated I\+N\+S\+I\+DE derivatives, but they should not access val\mbox{[}\mbox{]}. They only can modify x\mbox{[}\mbox{]} and dxdt\mbox{[}\mbox{]} the arguments of derivatives, because the solver can be at any point or trying things or diverging, independently of the one that will be saved in val\mbox{[}\mbox{]} at the end.
 
-2d -\/ the \textquotesingle{}event\textquotesingle{} functions that the virtual functions of the sub-\/classes should call, so the mother class knows what\textquotesingle{}s happening, \mbox{\Hypertarget{struct_model_ab427438468288f3a1eb2b3c3bb8bfb6e}\label{struct_model_ab427438468288f3a1eb2b3c3bb8bfb6e}} 
+2d -\/ the \textquotesingle{}event\textquotesingle{} functions that the virtual functions of the sub-\/classes should call, so the mother class knows what\textquotesingle{}s happening, \mbox{\Hypertarget{struct_model_ab427438468288f3a1eb2b3c3bb8bfb6e}\label{struct_model_ab427438468288f3a1eb2b3c3bb8bfb6e}}
 \index{Model@{Model}!loadParameters@{loadParameters}}
 \index{loadParameters@{loadParameters}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{loadParameters()}{loadParameters()}}
-{\footnotesize\ttfamily void Model\+::load\+Parameters (\begin{DoxyParamCaption}\item[{string}]{file\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void Model\+::load\+Parameters (\begin{DoxyParamCaption}
+                                                            \item[{string}]{file\+\_\+name }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-It can be helpful that the experiments notifies the model when a simulation is finished. 
+It can be helpful that the experiments notifies the model when a simulation is finished.
 
-For O\+DE models it might be not important, but for agent-\/based memory might need to be cleared 2b -\/ This function is already implemented in the mother class, but as an option you can override it in the subclass \mbox{\Hypertarget{struct_model_a8e35a99a9463333ef95a7f2c0412e77c}\label{struct_model_a8e35a99a9463333ef95a7f2c0412e77c}} 
+For O\+DE models it might be not important, but for agent-\/based memory might need to be cleared 2b -\/ This function is already implemented in the mother class, but as an option you can override it in the subclass \mbox{\Hypertarget{struct_model_a8e35a99a9463333ef95a7f2c0412e77c}\label{struct_model_a8e35a99a9463333ef95a7f2c0412e77c}}
 \index{Model@{Model}!needNewParameterSet@{needNewParameterSet}}
 \index{needNewParameterSet@{needNewParameterSet}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{needNewParameterSet()}{needNewParameterSet()}}
@@ -342,15 +436,17 @@ For O\+DE models it might be not important, but for agent-\/based memory might n
 
 
 
-derivatives at time , updated each time the solver stops for output 
+derivatives at time , updated each time the solver stops for output
 
-In case the parameters are modified (like by optimization), it\textquotesingle{}s a way to forbid to run simulations with this parameter set. (need to reload/restore a good one) \mbox{\Hypertarget{struct_model_aac8a04f478ba6259d9275410cf0c9a1a}\label{struct_model_aac8a04f478ba6259d9275410cf0c9a1a}} 
+In case the parameters are modified (like by optimization), it\textquotesingle{}s a way to forbid to run simulations with this parameter set. (need to reload/restore a good one) \mbox{\Hypertarget{struct_model_aac8a04f478ba6259d9275410cf0c9a1a}\label{struct_model_aac8a04f478ba6259d9275410cf0c9a1a}}
 \index{Model@{Model}!over@{over}}
 \index{over@{over}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{over()}{over()}}
-{\footnotesize\ttfamily bool Model\+::over (\begin{DoxyParamCaption}\item[{int}]{index\+Local }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool Model\+::over (\begin{DoxyParamCaption}
+                                                \item[{int}]{index\+Local }
+\end{DoxyParamCaption})}
 
-Whyyyy ???\mbox{\Hypertarget{struct_model_aadfda9511aa37b5f133bb84d3abab387}\label{struct_model_aadfda9511aa37b5f133bb84d3abab387}} 
+Whyyyy ???\mbox{\Hypertarget{struct_model_aadfda9511aa37b5f133bb84d3abab387}\label{struct_model_aadfda9511aa37b5f133bb84d3abab387}}
 \index{Model@{Model}!print@{print}}
 \index{print@{print}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{print()}{print()}}
@@ -358,46 +454,52 @@ Whyyyy ???\mbox{\Hypertarget{struct_model_aadfda9511aa37b5f133bb84d3abab387}\lab
 
 
 
-4c -\/ to get the value of a particular variable at a particular time point during a simulation, 
+4c -\/ to get the value of a particular variable at a particular time point during a simulation,
 
-then, the best way is to create an optimizer$\ast$ E, give him the data points you want, and do the simulation with simulate(int \+\_\+sec\+\_\+max, E) so the simulation is filling automatically the evaluator with those data points. See the class Optimizer for that. 4d to print most informations about the model \mbox{\Hypertarget{struct_model_aa28cafed578c3f2aff1cb529e79f9039}\label{struct_model_aa28cafed578c3f2aff1cb529e79f9039}} 
+then, the best way is to create an optimizer$\ast$ E, give him the data points you want, and do the simulation with simulate(int \+\_\+sec\+\_\+max, E) so the simulation is filling automatically the evaluator with those data points. See the class Optimizer for that. 4d to print most informations about the model \mbox{\Hypertarget{struct_model_aa28cafed578c3f2aff1cb529e79f9039}\label{struct_model_aa28cafed578c3f2aff1cb529e79f9039}}
 \index{Model@{Model}!setOverrider@{setOverrider}}
 \index{setOverrider@{setOverrider}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{setOverrider()}{setOverrider()}}
-{\footnotesize\ttfamily void Model\+::set\+Overrider (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structoverrider}{overrider}} $\ast$}]{new\+Overrider = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Model\+::set\+Overrider (\begin{DoxyParamCaption}
+                                                          \item[{\mbox{\hyperlink{structoverrider}{overrider}} $\ast$}]{new\+Overrider = {\ttfamily nullptr} }
+\end{DoxyParamCaption})}
 
 
 
-9 -\/ Overriding certain variables with data, 
+9 -\/ Overriding certain variables with data,
 
 Idea \+: provide data as an overrider\+: \mbox{\hyperlink{structoverrider}{overrider(i)}} says if you override or not this variable (global name/\+ID) \mbox{\hyperlink{structoverrider}{overrider(i,t)}} gives forced value for variable i (global name) at time t (linear or spline interpolation)
 
-for simulating, the solver might be confused if the x value is changed from external data (the error might be big depending on delta t) solution \+: the solver will force the data each time-\/step before calling the solver \mbox{\Hypertarget{struct_model_a649efc6b5055ec0944839c59be90523e}\label{struct_model_a649efc6b5055ec0944839c59be90523e}} 
+for simulating, the solver might be confused if the x value is changed from external data (the error might be big depending on delta t) solution \+: the solver will force the data each time-\/step before calling the solver \mbox{\Hypertarget{struct_model_a649efc6b5055ec0944839c59be90523e}\label{struct_model_a649efc6b5055ec0944839c59be90523e}}
 \index{Model@{Model}!setValue@{setValue}}
 \index{setValue@{setValue}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{setValue()}{setValue()}}
-{\footnotesize\ttfamily void Model\+::set\+Value (\begin{DoxyParamCaption}\item[{string}]{name\+External\+Variable,  }\item[{double}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void Model\+::set\+Value (\begin{DoxyParamCaption}
+                                                      \item[{string}]{name\+External\+Variable,  }\item[{double}]{val }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
-Then, the values of variables can be accessed with the \textquotesingle{}external ID\textquotesingle{} with the following functions these already implemented functions can be overrided if wanted (for instance if changing the value of a variable needs to be done in a particular way) \mbox{\Hypertarget{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}\label{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}} 
+Then, the values of variables can be accessed with the \textquotesingle{}external ID\textquotesingle{} with the following functions these already implemented functions can be overrided if wanted (for instance if changing the value of a variable needs to be done in a particular way) \mbox{\Hypertarget{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}\label{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}}
 \index{Model@{Model}!simulate@{simulate}}
 \index{simulate@{simulate}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{simulate()}{simulate()}}
-{\footnotesize\ttfamily void Model\+::simulate (\begin{DoxyParamCaption}\item[{double}]{\+\_\+sec\+\_\+max,  }\item[{\mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$}]{E = {\ttfamily NULL} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void Model\+::simulate (\begin{DoxyParamCaption}
+                                                    \item[{double}]{\+\_\+sec\+\_\+max,  }\item[{\mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$}]{E = {\ttfamily NULL} }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver) 
+3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver)
 
 function to simulate from t to t+sec\+\_\+max. The value of \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{Model\+::t}} is updated
 
-Now, the interests of using the \mbox{\hyperlink{struct_model}{Model}} mother class are coming \+: whatever the sub-\/class model, the following functions are implemented and can be used to simulate, or do interesting manipulations of the model. 
+Now, the interests of using the \mbox{\hyperlink{struct_model}{Model}} mother class are coming \+: whatever the sub-\/class model, the following functions are implemented and can be used to simulate, or do interesting manipulations of the model.
 
 Reimplemented in \mbox{\hyperlink{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}{model\+Agent\+Based}}.
 
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{struct_model_a9ebaf991e4335faedebf981f8694e2ad}\label{struct_model_a9ebaf991e4335faedebf981f8694e2ad}} 
+\mbox{\Hypertarget{struct_model_a9ebaf991e4335faedebf981f8694e2ad}\label{struct_model_a9ebaf991e4335faedebf981f8694e2ad}}
 \index{Model@{Model}!dt@{dt}}
 \index{dt@{dt}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{dt}{dt}}
@@ -405,15 +507,15 @@ Reimplemented in \mbox{\hyperlink{structmodel_agent_based_a2b2acdbaf271174acbabc
 
 
 
-Simulates from t (not changed), to t + \+\_\+sec\+\_\+max, by calling one\+\_\+step. 
+Simulates from t (not changed), to t + \+\_\+sec\+\_\+max, by calling one\+\_\+step.
 
-the evaluator, if given, is a structure that says when to store data from the simulation, and avoids to store everything. if the simulation diverges, it is stopped and a penalty is computed in the field penalities (of the mother class) \mbox{\Hypertarget{struct_model_a4516d7008a9a1029bbc1d728a340418f}\label{struct_model_a4516d7008a9a1029bbc1d728a340418f}} 
+the evaluator, if given, is a structure that says when to store data from the simulation, and avoids to store everything. if the simulation diverges, it is stopped and a penalty is computed in the field penalities (of the mother class) \mbox{\Hypertarget{struct_model_a4516d7008a9a1029bbc1d728a340418f}\label{struct_model_a4516d7008a9a1029bbc1d728a340418f}}
 \index{Model@{Model}!nbVars@{nbVars}}
 \index{nbVars@{nbVars}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{nbVars}{nbVars}}
 {\footnotesize\ttfamily int Model\+::nb\+Vars}
 
-1 -\/ Using the storage provided by the mother class, to define the basic information of the model. the model() constructor will allocate/size them but never change their content. so the subclass need to fill those 7 fields (see tutorial / examples)\+: \mbox{\Hypertarget{struct_model_a0f1d42e9bdb31d7cc585c409da8a8be7}\label{struct_model_a0f1d42e9bdb31d7cc585c409da8a8be7}} 
+1 -\/ Using the storage provided by the mother class, to define the basic information of the model. the model() constructor will allocate/size them but never change their content. so the subclass need to fill those 7 fields (see tutorial / examples)\+: \mbox{\Hypertarget{struct_model_a0f1d42e9bdb31d7cc585c409da8a8be7}\label{struct_model_a0f1d42e9bdb31d7cc585c409da8a8be7}}
 \index{Model@{Model}!paramUpBounds@{paramUpBounds}}
 \index{paramUpBounds@{paramUpBounds}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{paramUpBounds}{paramUpBounds}}
@@ -421,9 +523,9 @@ the evaluator, if given, is a structure that says when to store data from the si
 
 
 
-says if a variable is overrided (then, no need to calculate derivatives) if no U\+S\+E\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E\+RS defined, then returns false ! So a program can use this function independently of the define options 
+says if a variable is overrided (then, no need to calculate derivatives) if no U\+S\+E\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E\+RS defined, then returns false ! So a program can use this function independently of the define options
 
-10 -\/ names and boundaries for parameters \mbox{\Hypertarget{struct_model_acc994d32aa30ba50f13e4f0c49c9bcf3}\label{struct_model_acc994d32aa30ba50f13e4f0c49c9bcf3}} 
+10 -\/ names and boundaries for parameters \mbox{\Hypertarget{struct_model_acc994d32aa30ba50f13e4f0c49c9bcf3}\label{struct_model_acc994d32aa30ba50f13e4f0c49c9bcf3}}
 \index{Model@{Model}!saveKinetics@{saveKinetics}}
 \index{saveKinetics@{saveKinetics}!Model@{Model}}
 \doxysubsubsection{\texorpdfstring{saveKinetics}{saveKinetics}}
@@ -431,11 +533,12 @@ says if a variable is overrided (then, no need to calculate derivatives) if no U
 
 
 
-automatically updated by the mother class \+: put to zero when \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done()}} called and increased when the simulation diverges. 
+automatically updated by the mother class \+: put to zero when \mbox{\hyperlink{struct_model_ac41ad8a875de831705a12052513e991b}{initialise\+Done()}} called and increased when the simulation diverges.
 
-4 -\/ I/O functions 4a -\/ to print the state of a simulation 4b -\/ to get simulations as tables of values (kinetics) of simulation before a simulation, one has to activate the kinetic mode. Then, for every simulation, the simulation data will be put in a new table, that can be retrieved by get\+Cinetique. Note that \textquotesingle{}initialise\+Done\textquotesingle{} clears the current table 
+4 -\/ I/O functions 4a -\/ to print the state of a simulation 4b -\/ to get simulations as tables of values (kinetics) of simulation before a simulation, one has to activate the kinetic mode. Then, for every simulation, the simulation data will be put in a new table, that can be retrieved by get\+Cinetique. Note that \textquotesingle{}initialise\+Done\textquotesingle{} clears the current table
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/modele.\+h\item 
-Framework/modele.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/modele.\+h\item
+                                                                               Framework/modele.\+cpp
+\end{DoxyCompactItemize}

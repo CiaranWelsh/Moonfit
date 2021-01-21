@@ -37,36 +37,34 @@
 #define qExp(x) ::exp(x)
 #endif
 
-class QwtWheel::PrivateData
-{
+class QwtWheel::PrivateData {
 public:
-    PrivateData():
-        orientation( Qt::Horizontal ),
-        viewAngle( 175.0 ),
-        totalAngle( 360.0 ),
-        tickCount( 10 ),
-        wheelBorderWidth( 2 ),
-        borderWidth( 2 ),
-        wheelWidth( 20 ),
-        isScrolling( false ),
-        mouseOffset( 0.0 ),
-        tracking( true ),
-        pendingValueChanged( false ),
-        updateInterval( 50 ),
-        mass( 0.0 ),
-        timerId( 0 ),
-        speed( 0.0 ),
-        mouseValue( 0.0 ),
-        flyingValue( 0.0 ),
-        minimum( 0.0 ),
-        maximum( 100.0 ),
-        singleStep( 1.0 ),
-        pageStepCount( 1 ),
-        stepAlignment( true ),
-        value( 0.0 ),
-        inverted( false ),
-        wrapping( false )
-    {
+    PrivateData() :
+            orientation(Qt::Horizontal),
+            viewAngle(175.0),
+            totalAngle(360.0),
+            tickCount(10),
+            wheelBorderWidth(2),
+            borderWidth(2),
+            wheelWidth(20),
+            isScrolling(false),
+            mouseOffset(0.0),
+            tracking(true),
+            pendingValueChanged(false),
+            updateInterval(50),
+            mass(0.0),
+            timerId(0),
+            speed(0.0),
+            mouseValue(0.0),
+            flyingValue(0.0),
+            minimum(0.0),
+            maximum(100.0),
+            singleStep(1.0),
+            pageStepCount(1),
+            stepAlignment(true),
+            value(0.0),
+            inverted(false),
+            wrapping(false) {
     };
 
     Qt::Orientation orientation;
@@ -107,19 +105,17 @@ public:
 };
 
 //! Constructor
-QwtWheel::QwtWheel( QWidget *parent ):
-    QWidget( parent )
-{
+QwtWheel::QwtWheel(QWidget *parent) :
+        QWidget(parent) {
     d_data = new PrivateData;
 
-    setFocusPolicy( Qt::StrongFocus );
-    setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
-    setAttribute( Qt::WA_WState_OwnSizePolicy, false );
+    setFocusPolicy(Qt::StrongFocus);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    setAttribute(Qt::WA_WState_OwnSizePolicy, false);
 }
 
 //! Destructor
-QwtWheel::~QwtWheel()
-{
+QwtWheel::~QwtWheel() {
     delete d_data;
 }
 
@@ -135,8 +131,7 @@ QwtWheel::~QwtWheel()
   \param enable On/Off
   \sa isTracking()
  */
-void QwtWheel::setTracking( bool enable )
-{
+void QwtWheel::setTracking(bool enable) {
     d_data->tracking = enable;
 }
 
@@ -144,8 +139,7 @@ void QwtWheel::setTracking( bool enable )
   \return True, when tracking is enabled
   \sa setTracking(), valueChanged(), wheelMoved()
 */
-bool QwtWheel::isTracking() const
-{
+bool QwtWheel::isTracking() const {
     return d_data->tracking;
 }
 
@@ -157,17 +151,15 @@ bool QwtWheel::isTracking() const
   \param interval Interval in milliseconds
   \sa updateInterval(), setMass(), setTracking()
 */
-void QwtWheel::setUpdateInterval( int interval )
-{
-    d_data->updateInterval = qMax( interval, 50 );
+void QwtWheel::setUpdateInterval(int interval) {
+    d_data->updateInterval = qMax(interval, 50);
 }
 
 /*!
   \return Update interval when the wheel is flying
   \sa setUpdateInterval(), mass(), isTracking()
  */
-int QwtWheel::updateInterval() const
-{
+int QwtWheel::updateInterval() const {
     return d_data->updateInterval;
 }
 
@@ -178,17 +170,15 @@ int QwtWheel::updateInterval() const
 
    \param event Mouse event
 */
-void QwtWheel::mousePressEvent( QMouseEvent *event )
-{
+void QwtWheel::mousePressEvent(QMouseEvent *event) {
     stopFlying();
 
-    d_data->isScrolling = wheelRect().contains( event->pos() );
+    d_data->isScrolling = wheelRect().contains(event->pos());
 
-    if ( d_data->isScrolling )
-    {
+    if (d_data->isScrolling) {
         d_data->time.start();
         d_data->speed = 0.0;
-        d_data->mouseValue = valueAt( event->pos() );
+        d_data->mouseValue = valueAt(event->pos());
         d_data->mouseOffset = d_data->mouseValue - d_data->value;
         d_data->pendingValueChanged = false;
 
@@ -203,41 +193,38 @@ void QwtWheel::mousePressEvent( QMouseEvent *event )
 
    \param event Mouse event
 */
-void QwtWheel::mouseMoveEvent( QMouseEvent *event )
-{
-    if ( !d_data->isScrolling )
+void QwtWheel::mouseMoveEvent(QMouseEvent *event) {
+    if (!d_data->isScrolling)
         return;
 
-    double mouseValue = valueAt( event->pos() );
+    double mouseValue = valueAt(event->pos());
 
-    if ( d_data->mass > 0.0 )
-    {
+    if (d_data->mass > 0.0) {
         double ms = d_data->time.restart();
 
         // the interval when mouse move events are posted are somehow
         // random. To avoid unrealistic speed values we limit ms
 
-        ms = qMax( ms, 5.0 );
+        ms = qMax(ms, 5.0);
 
-        d_data->speed = ( mouseValue - d_data->mouseValue ) / ms;
+        d_data->speed = (mouseValue - d_data->mouseValue) / ms;
     }
-    
-    d_data->mouseValue = mouseValue; 
 
-    double value = boundedValue( mouseValue - d_data->mouseOffset );
-    if ( d_data->stepAlignment )
-        value = alignedValue( value );
-        
-    if ( value != d_data->value )
-    {
+    d_data->mouseValue = mouseValue;
+
+    double value = boundedValue(mouseValue - d_data->mouseOffset);
+    if (d_data->stepAlignment)
+        value = alignedValue(value);
+
+    if (value != d_data->value) {
         d_data->value = value;
 
         update();
 
-        Q_EMIT wheelMoved( d_data->value );
+        Q_EMIT wheelMoved(d_data->value);
 
-        if ( d_data->tracking )
-            Q_EMIT valueChanged( d_data->value );
+        if (d_data->tracking)
+            Q_EMIT valueChanged(d_data->value);
         else
             d_data->pendingValueChanged = true;
     }
@@ -250,37 +237,32 @@ void QwtWheel::mouseMoveEvent( QMouseEvent *event )
    it starts flying.
 
    \param event Mouse event
-*/  
+*/
 
-void QwtWheel::mouseReleaseEvent( QMouseEvent *event )
-{
-    Q_UNUSED( event );
+void QwtWheel::mouseReleaseEvent(QMouseEvent *event) {
+    Q_UNUSED(event);
 
-    if ( !d_data->isScrolling )
+    if (!d_data->isScrolling)
         return;
 
     d_data->isScrolling = false;
 
     bool startFlying = false;
 
-    if ( d_data->mass > 0.0 )
-    {
+    if (d_data->mass > 0.0) {
         const int ms = d_data->time.elapsed();
-        if ( ( qFabs( d_data->speed ) > 0.0 ) && ( ms < 50 ) )
+        if ((qFabs(d_data->speed) > 0.0) && (ms < 50))
             startFlying = true;
     }
 
-    if ( startFlying )
-    {
-        d_data->flyingValue = 
-            boundedValue( d_data->mouseValue - d_data->mouseOffset );
+    if (startFlying) {
+        d_data->flyingValue =
+                boundedValue(d_data->mouseValue - d_data->mouseOffset);
 
-        d_data->timerId = startTimer( d_data->updateInterval );
-    }
-    else
-    {
-        if ( d_data->pendingValueChanged )
-            Q_EMIT valueChanged( d_data->value );
+        d_data->timerId = startTimer(d_data->updateInterval);
+    } else {
+        if (d_data->pendingValueChanged)
+            Q_EMIT valueChanged(d_data->value);
     }
 
     d_data->pendingValueChanged = false;
@@ -298,36 +280,32 @@ void QwtWheel::mouseReleaseEvent( QMouseEvent *event )
 
   \sa updateInterval()
  */
-void QwtWheel::timerEvent( QTimerEvent *event )
-{
-    if ( event->timerId() != d_data->timerId )
-    {
-        QWidget::timerEvent( event );
+void QwtWheel::timerEvent(QTimerEvent *event) {
+    if (event->timerId() != d_data->timerId) {
+        QWidget::timerEvent(event);
         return;
     }
 
-    d_data->speed *= qExp( -d_data->updateInterval * 0.001 / d_data->mass );
+    d_data->speed *= qExp(-d_data->updateInterval * 0.001 / d_data->mass);
 
     d_data->flyingValue += d_data->speed * d_data->updateInterval;
-    d_data->flyingValue = boundedValue( d_data->flyingValue );
+    d_data->flyingValue = boundedValue(d_data->flyingValue);
 
     double value = d_data->flyingValue;
-    if ( d_data->stepAlignment )
-        value = alignedValue( value );
+    if (d_data->stepAlignment)
+        value = alignedValue(value);
 
-    if ( qFabs( d_data->speed ) < 0.001 * d_data->singleStep )
-    {
+    if (qFabs(d_data->speed) < 0.001 * d_data->singleStep) {
         // stop if d_data->speed < one step per second
         stopFlying();
     }
 
-    if ( value != d_data->value )
-    {
+    if (value != d_data->value) {
         d_data->value = value;
         update();
 
-        if ( d_data->tracking || d_data->timerId == 0 )
-            Q_EMIT valueChanged( d_data->value );
+        if (d_data->tracking || d_data->timerId == 0)
+            Q_EMIT valueChanged(d_data->value);
     }
 }
 
@@ -339,50 +317,44 @@ void QwtWheel::timerEvent( QTimerEvent *event )
 
   \param event Wheel event
 */
-void QwtWheel::wheelEvent( QWheelEvent *event )
-{
-    if ( !wheelRect().contains( event->pos() ) )
-    {
+void QwtWheel::wheelEvent(QWheelEvent *event) {
+    if (!wheelRect().contains(event->pos())) {
         event->ignore();
         return;
     }
 
-    if ( d_data->isScrolling )
+    if (d_data->isScrolling)
         return;
 
     stopFlying();
 
     double increment = 0.0;
 
-    if ( ( event->modifiers() & Qt::ControlModifier) || 
-        ( event->modifiers() & Qt::ShiftModifier ) )
-    {
+    if ((event->modifiers() & Qt::ControlModifier) ||
+        (event->modifiers() & Qt::ShiftModifier)) {
         // one page regardless of delta
         increment = d_data->singleStep * d_data->pageStepCount;
-        if ( event->delta() < 0 )
+        if (event->delta() < 0)
             increment = -increment;
-    }
-    else
-    {
+    } else {
         const int numSteps = event->delta() / 120;
         increment = d_data->singleStep * numSteps;
     }
 
-    if ( d_data->orientation == Qt::Vertical && d_data->inverted )
+    if (d_data->orientation == Qt::Vertical && d_data->inverted)
         increment = -increment;
 
-    double value = boundedValue( d_data->value + increment );
+    double value = boundedValue(d_data->value + increment);
 
-    if ( d_data->stepAlignment )
-        value = alignedValue( value );
+    if (d_data->stepAlignment)
+        value = alignedValue(value);
 
-    if ( value != d_data->value )
-    {
+    if (value != d_data->value) {
         d_data->value = value;
         update();
 
-        Q_EMIT valueChanged( d_data->value );
-        Q_EMIT wheelMoved( d_data->value );
+        Q_EMIT valueChanged(d_data->value);
+        Q_EMIT wheelMoved(d_data->value);
     }
 }
 
@@ -413,10 +385,8 @@ void QwtWheel::wheelEvent( QWheelEvent *event )
 
   \param event Key event
 */
-void QwtWheel::keyPressEvent( QKeyEvent *event )
-{
-    if ( d_data->isScrolling )
-    {
+void QwtWheel::keyPressEvent(QKeyEvent *event) {
+    if (d_data->isScrolling) {
         // don't interfere mouse scrolling
         return;
     }
@@ -424,92 +394,79 @@ void QwtWheel::keyPressEvent( QKeyEvent *event )
     double value = d_data->value;
     double increment = 0.0;
 
-    switch ( event->key() )
-    {
-        case Qt::Key_Down:
-        {
-            if ( d_data->orientation == Qt::Vertical && d_data->inverted )
+    switch (event->key()) {
+        case Qt::Key_Down: {
+            if (d_data->orientation == Qt::Vertical && d_data->inverted)
                 increment = d_data->singleStep;
             else
                 increment = -d_data->singleStep;
 
             break;
         }
-        case Qt::Key_Up:
-        {
-            if ( d_data->orientation == Qt::Vertical && d_data->inverted )
+        case Qt::Key_Up: {
+            if (d_data->orientation == Qt::Vertical && d_data->inverted)
                 increment = -d_data->singleStep;
             else
                 increment = d_data->singleStep;
 
             break;
         }
-        case Qt::Key_Left:
-        {
-            if ( d_data->orientation == Qt::Horizontal )
-            {
-                if ( d_data->inverted )
+        case Qt::Key_Left: {
+            if (d_data->orientation == Qt::Horizontal) {
+                if (d_data->inverted)
                     increment = d_data->singleStep;
                 else
                     increment = -d_data->singleStep;
             }
             break;
         }
-        case Qt::Key_Right:
-        {
-            if ( d_data->orientation == Qt::Horizontal )
-            {
-                if ( d_data->inverted )
+        case Qt::Key_Right: {
+            if (d_data->orientation == Qt::Horizontal) {
+                if (d_data->inverted)
                     increment = -d_data->singleStep;
                 else
                     increment = d_data->singleStep;
             }
             break;
         }
-        case Qt::Key_PageUp:
-        {
+        case Qt::Key_PageUp: {
             increment = d_data->pageStepCount * d_data->singleStep;
             break;
         }
-        case Qt::Key_PageDown:
-        {
+        case Qt::Key_PageDown: {
             increment = -d_data->pageStepCount * d_data->singleStep;
             break;
         }
-        case Qt::Key_Home:
-        {
+        case Qt::Key_Home: {
             value = d_data->minimum;
             break;
         }
-        case Qt::Key_End:
-        {
+        case Qt::Key_End: {
             value = d_data->maximum;
             break;
         }
         default:;
-        {
-            event->ignore();
-        }
+            {
+                event->ignore();
+            }
     }
 
-    if ( event->isAccepted() )
+    if (event->isAccepted())
         stopFlying();
-    
-    if ( increment != 0.0 )
-    {
-        value = boundedValue( d_data->value + increment );
 
-        if ( d_data->stepAlignment )
-            value = alignedValue( value );
+    if (increment != 0.0) {
+        value = boundedValue(d_data->value + increment);
+
+        if (d_data->stepAlignment)
+            value = alignedValue(value);
     }
 
-    if ( value != d_data->value )
-    {
+    if (value != d_data->value) {
         d_data->value = value;
         update();
 
-        Q_EMIT valueChanged( d_data->value );
-        Q_EMIT wheelMoved( d_data->value );
+        Q_EMIT valueChanged(d_data->value);
+        Q_EMIT wheelMoved(d_data->value);
     }
 }
 
@@ -523,13 +480,11 @@ void QwtWheel::keyPressEvent( QKeyEvent *event )
   \param count Number of grooves per 360 degrees
   \sa tickCount()
 */
-void QwtWheel::setTickCount( int count )
-{
-    count = qBound( 6, count, 50 );
+void QwtWheel::setTickCount(int count) {
+    count = qBound(6, count, 50);
 
-    if ( count != d_data->tickCount )
-    {
-        d_data->tickCount = qBound( 6, count, 50 );
+    if (count != d_data->tickCount) {
+        d_data->tickCount = qBound(6, count, 50);
         update();
     }
 }
@@ -538,8 +493,7 @@ void QwtWheel::setTickCount( int count )
   \return Number of grooves in the wheel's surface.
   \sa setTickCnt()
 */
-int QwtWheel::tickCount() const
-{
+int QwtWheel::tickCount() const {
     return d_data->tickCount;
 }
 
@@ -555,11 +509,10 @@ int QwtWheel::tickCount() const
   \param borderWidth Border width
   \sa internalBorder()
 */
-void QwtWheel::setWheelBorderWidth( int borderWidth )
-{
-    const int d = qMin( width(), height() ) / 3;
-    borderWidth = qMin( borderWidth, d );
-    d_data->wheelBorderWidth = qMax( borderWidth, 1 );
+void QwtWheel::setWheelBorderWidth(int borderWidth) {
+    const int d = qMin(width(), height()) / 3;
+    borderWidth = qMin(borderWidth, d);
+    d_data->wheelBorderWidth = qMax(borderWidth, 1);
     update();
 }
 
@@ -567,8 +520,7 @@ void QwtWheel::setWheelBorderWidth( int borderWidth )
    \return Wheel border width 
    \sa setWheelBorderWidth()
 */
-int QwtWheel::wheelBorderWidth() const
-{
+int QwtWheel::wheelBorderWidth() const {
     return d_data->wheelBorderWidth;
 }
 
@@ -580,9 +532,8 @@ int QwtWheel::wheelBorderWidth() const
   \param width Border width
   \sa borderWidth()
 */
-void QwtWheel::setBorderWidth( int width )
-{
-    d_data->borderWidth = qMax( width, 0 );
+void QwtWheel::setBorderWidth(int width) {
+    d_data->borderWidth = qMax(width, 0);
     update();
 }
 
@@ -590,18 +541,16 @@ void QwtWheel::setBorderWidth( int width )
    \return Border width 
    \sa setBorderWidth()
 */
-int QwtWheel::borderWidth() const
-{
+int QwtWheel::borderWidth() const {
     return d_data->borderWidth;
 }
 
 /*!
    \return Rectangle of the wheel without the outer border
 */
-QRect QwtWheel::wheelRect() const
-{
+QRect QwtWheel::wheelRect() const {
     const int bw = d_data->borderWidth;
-    return contentsRect().adjusted( bw, bw, -bw, -bw );
+    return contentsRect().adjusted(bw, bw, -bw, -bw);
 }
 
 /*!
@@ -617,9 +566,8 @@ QRect QwtWheel::wheelRect() const
   \param angle total angle in degrees
   \sa totalAngle()
 */
-void QwtWheel::setTotalAngle( double angle )
-{
-    if ( angle < 0.0 )
+void QwtWheel::setTotalAngle(double angle) {
+    if (angle < 0.0)
         angle = 0.0;
 
     d_data->totalAngle = angle;
@@ -630,8 +578,7 @@ void QwtWheel::setTotalAngle( double angle )
   \return Total angle which the wheel can be turned.
   \sa setTotalAngle()
 */
-double QwtWheel::totalAngle() const
-{
+double QwtWheel::totalAngle() const {
     return d_data->totalAngle;
 }
 
@@ -643,18 +590,16 @@ double QwtWheel::totalAngle() const
   \param orientation Qt::Horizontal or Qt::Vertical.
   \sa orientation()
 */
-void QwtWheel::setOrientation( Qt::Orientation orientation )
-{
-    if ( d_data->orientation == orientation )
+void QwtWheel::setOrientation(Qt::Orientation orientation) {
+    if (d_data->orientation == orientation)
         return;
 
-    if ( !testAttribute( Qt::WA_WState_OwnSizePolicy ) )
-    {
+    if (!testAttribute(Qt::WA_WState_OwnSizePolicy)) {
         QSizePolicy sp = sizePolicy();
         sp.transpose();
-        setSizePolicy( sp );
+        setSizePolicy(sp);
 
-        setAttribute( Qt::WA_WState_OwnSizePolicy, false );
+        setAttribute(Qt::WA_WState_OwnSizePolicy, false);
     }
 
     d_data->orientation = orientation;
@@ -665,8 +610,7 @@ void QwtWheel::setOrientation( Qt::Orientation orientation )
   \return Orientation
   \sa setOrientation()
 */
-Qt::Orientation QwtWheel::orientation() const
-{
+Qt::Orientation QwtWheel::orientation() const {
     return d_data->orientation;
 }
 
@@ -680,9 +624,8 @@ Qt::Orientation QwtWheel::orientation() const
   \param angle Visible angle in degrees
   \sa viewAngle(), setTotalAngle()
 */
-void QwtWheel::setViewAngle( double angle )
-{
-    d_data->viewAngle = qBound( 10.0, angle, 175.0 );
+void QwtWheel::setViewAngle(double angle) {
+    d_data->viewAngle = qBound(10.0, angle, 175.0);
     update();
 }
 
@@ -690,8 +633,7 @@ void QwtWheel::setViewAngle( double angle )
   \return Visible portion of the wheel
   \sa setViewAngle(), totalAngle()
 */
-double QwtWheel::viewAngle() const
-{
+double QwtWheel::viewAngle() const {
     return d_data->viewAngle;
 }
 
@@ -701,27 +643,22 @@ double QwtWheel::viewAngle() const
   \param pos Position
   \return Value corresponding to pos
 */
-double QwtWheel::valueAt( const QPoint &pos ) const
-{
+double QwtWheel::valueAt(const QPoint &pos) const {
     const QRectF rect = wheelRect();
 
     double w, dx;
-    if ( d_data->orientation == Qt::Vertical )
-    {
+    if (d_data->orientation == Qt::Vertical) {
         w = rect.height();
         dx = rect.top() - pos.y();
-    }
-    else
-    {
+    } else {
         w = rect.width();
         dx = pos.x() - rect.left();
     }
 
-    if ( w == 0.0 )
+    if (w == 0.0)
         return 0.0;
 
-    if ( d_data->inverted )
-    {
+    if (d_data->inverted) {
         dx = w - dx;
     }
 
@@ -731,7 +668,7 @@ double QwtWheel::valueAt( const QPoint &pos ) const
 
     // value range maps to totalAngle degrees,
     // so convert the change in angle to a change in value
-    const double val = ang * ( maximum() - minimum() ) / d_data->totalAngle;
+    const double val = ang * (maximum() - minimum()) / d_data->totalAngle;
 
     return val;
 }
@@ -740,23 +677,22 @@ double QwtWheel::valueAt( const QPoint &pos ) const
    \brief Qt Paint Event
    \param event Paint event
 */
-void QwtWheel::paintEvent( QPaintEvent *event )
-{
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
+void QwtWheel::paintEvent(QPaintEvent *event) {
+    QPainter painter(this);
+    painter.setClipRegion(event->region());
 
     QStyleOption opt;
     opt.init(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
-    qDrawShadePanel( &painter, 
-        contentsRect(), palette(), true, d_data->borderWidth );
+    qDrawShadePanel(&painter,
+                    contentsRect(), palette(), true, d_data->borderWidth);
 
-    drawWheelBackground( &painter, wheelRect() );
-    drawTicks( &painter, wheelRect() );
+    drawWheelBackground(&painter, wheelRect());
+    drawTicks(&painter, wheelRect());
 
-    if ( hasFocus() )
-        QwtPainter::drawFocusRect( &painter, this );
+    if (hasFocus())
+        QwtPainter::drawFocusRect(&painter, this);
 }
 
 /*!
@@ -765,51 +701,48 @@ void QwtWheel::paintEvent( QPaintEvent *event )
    \param painter Painter
    \param rect Geometry for the wheel
 */
-void QwtWheel::drawWheelBackground( 
-    QPainter *painter, const QRectF &rect )
-{
+void QwtWheel::drawWheelBackground(
+        QPainter *painter, const QRectF &rect) {
     painter->save();
 
     QPalette pal = palette();
 
     //  draw shaded background
-    QLinearGradient gradient( rect.topLeft(), 
-        ( d_data->orientation == Qt::Horizontal ) ? rect.topRight() : rect.bottomLeft() );
-    gradient.setColorAt( 0.0, pal.color( QPalette::Button ) );
-    gradient.setColorAt( 0.2, pal.color( QPalette::Midlight ) );
-    gradient.setColorAt( 0.7, pal.color( QPalette::Mid ) );
-    gradient.setColorAt( 1.0, pal.color( QPalette::Dark ) );
+    QLinearGradient gradient(rect.topLeft(),
+                             (d_data->orientation == Qt::Horizontal) ? rect.topRight() : rect.bottomLeft());
+    gradient.setColorAt(0.0, pal.color(QPalette::Button));
+    gradient.setColorAt(0.2, pal.color(QPalette::Midlight));
+    gradient.setColorAt(0.7, pal.color(QPalette::Mid));
+    gradient.setColorAt(1.0, pal.color(QPalette::Dark));
 
-    painter->fillRect( rect, gradient );
+    painter->fillRect(rect, gradient);
 
     // draw internal border
 
-    const QPen lightPen( palette().color( QPalette::Light ), 
-        d_data->wheelBorderWidth, Qt::SolidLine, Qt::FlatCap );
-    const QPen darkPen( pal.color( QPalette::Dark ), 
-        d_data->wheelBorderWidth, Qt::SolidLine, Qt::FlatCap );
+    const QPen lightPen(palette().color(QPalette::Light),
+                        d_data->wheelBorderWidth, Qt::SolidLine, Qt::FlatCap);
+    const QPen darkPen(pal.color(QPalette::Dark),
+                       d_data->wheelBorderWidth, Qt::SolidLine, Qt::FlatCap);
 
     const double bw2 = 0.5 * d_data->wheelBorderWidth;
 
-    if ( d_data->orientation == Qt::Horizontal )
-    {
-        painter->setPen( lightPen );
-        painter->drawLine( QPointF( rect.left(), rect.top() + bw2 ), 
-            QPointF( rect.right(), rect.top() + bw2 ) );
+    if (d_data->orientation == Qt::Horizontal) {
+        painter->setPen(lightPen);
+        painter->drawLine(QPointF(rect.left(), rect.top() + bw2),
+                          QPointF(rect.right(), rect.top() + bw2));
 
-        painter->setPen( darkPen );
-        painter->drawLine( QPointF( rect.left(), rect.bottom() - bw2 ), 
-            QPointF( rect.right(), rect.bottom() - bw2 ) );
-    }
-    else // Qt::Vertical
+        painter->setPen(darkPen);
+        painter->drawLine(QPointF(rect.left(), rect.bottom() - bw2),
+                          QPointF(rect.right(), rect.bottom() - bw2));
+    } else // Qt::Vertical
     {
-        painter->setPen( lightPen );
-        painter->drawLine( QPointF( rect.left() + bw2, rect.top() ), 
-            QPointF( rect.left() + bw2, rect.bottom() ) );
+        painter->setPen(lightPen);
+        painter->drawLine(QPointF(rect.left() + bw2, rect.top()),
+                          QPointF(rect.left() + bw2, rect.bottom()));
 
-        painter->setPen( darkPen );
-        painter->drawLine( QPointF( rect.right() - bw2, rect.top() ), 
-            QPointF( rect.right() - bw2, rect.bottom() ) );
+        painter->setPen(darkPen);
+        painter->drawLine(QPointF(rect.right() - bw2, rect.top()),
+                          QPointF(rect.right() - bw2, rect.bottom()));
     }
 
     painter->restore();
@@ -821,37 +754,33 @@ void QwtWheel::drawWheelBackground(
    \param painter Painter
    \param rect Geometry for the wheel
 */
-void QwtWheel::drawTicks( QPainter *painter, const QRectF &rect )
-{
+void QwtWheel::drawTicks(QPainter *painter, const QRectF &rect) {
     const double range = d_data->maximum - d_data->minimum;
 
-    if ( range == 0.0 || d_data->totalAngle == 0.0 )
-    {
+    if (range == 0.0 || d_data->totalAngle == 0.0) {
         return;
     }
 
-    const QPen lightPen( palette().color( QPalette::Light ), 
-        0, Qt::SolidLine, Qt::FlatCap );
-    const QPen darkPen( palette().color( QPalette::Dark ), 
-        0, Qt::SolidLine, Qt::FlatCap );
+    const QPen lightPen(palette().color(QPalette::Light),
+                        0, Qt::SolidLine, Qt::FlatCap);
+    const QPen darkPen(palette().color(QPalette::Dark),
+                       0, Qt::SolidLine, Qt::FlatCap);
 
-    const double cnvFactor = qAbs( d_data->totalAngle / range );
+    const double cnvFactor = qAbs(d_data->totalAngle / range);
     const double halfIntv = 0.5 * d_data->viewAngle / cnvFactor;
     const double loValue = value() - halfIntv;
     const double hiValue = value() + halfIntv;
-    const double tickWidth = 360.0 / double( d_data->tickCount ) / cnvFactor;
-    const double sinArc = qFastSin( d_data->viewAngle * M_PI / 360.0 );
+    const double tickWidth = 360.0 / double(d_data->tickCount) / cnvFactor;
+    const double sinArc = qFastSin(d_data->viewAngle * M_PI / 360.0);
 
-    if ( d_data->orientation == Qt::Horizontal )
-    {
+    if (d_data->orientation == Qt::Horizontal) {
         const double radius = rect.width() * 0.5;
 
         double l1 = rect.top() + d_data->wheelBorderWidth;
         double l2 = rect.bottom() - d_data->wheelBorderWidth - 1;
 
         // draw one point over the border if border > 1
-        if ( d_data->wheelBorderWidth > 1 )
-        {
+        if (d_data->wheelBorderWidth > 1) {
             l1--;
             l2++;
         }
@@ -860,40 +789,36 @@ void QwtWheel::drawTicks( QPainter *painter, const QRectF &rect )
         const double minpos = rect.left() + 2;
 
         // draw tick marks
-        for ( double tickValue = ::ceil( loValue / tickWidth ) * tickWidth;
-            tickValue < hiValue; tickValue += tickWidth )
-        {
-            const double angle = qwtRadians( tickValue - value() );
-            const double s = qFastSin( angle * cnvFactor );
+        for (double tickValue = ::ceil(loValue / tickWidth) * tickWidth;
+             tickValue < hiValue; tickValue += tickWidth) {
+            const double angle = qwtRadians(tickValue - value());
+            const double s = qFastSin(angle * cnvFactor);
 
-            const double off = radius * ( sinArc + s ) / sinArc;
+            const double off = radius * (sinArc + s) / sinArc;
 
             double tickPos;
-            if ( d_data->inverted ) 
+            if (d_data->inverted)
                 tickPos = rect.left() + off;
             else
                 tickPos = rect.right() - off;
 
-            if ( ( tickPos <= maxpos ) && ( tickPos > minpos ) )
-            {
-                painter->setPen( darkPen );
-                painter->drawLine( QPointF( tickPos - 1 , l1 ), 
-                    QPointF( tickPos - 1,  l2 ) );
-                painter->setPen( lightPen );
-                painter->drawLine( QPointF( tickPos, l1 ), 
-                    QPointF( tickPos, l2 ) );
+            if ((tickPos <= maxpos) && (tickPos > minpos)) {
+                painter->setPen(darkPen);
+                painter->drawLine(QPointF(tickPos - 1, l1),
+                                  QPointF(tickPos - 1, l2));
+                painter->setPen(lightPen);
+                painter->drawLine(QPointF(tickPos, l1),
+                                  QPointF(tickPos, l2));
             }
         }
-    }
-    else // Qt::Vertical
+    } else // Qt::Vertical
     {
         const double radius = rect.height() * 0.5;
 
         double l1 = rect.left() + d_data->wheelBorderWidth;
         double l2 = rect.right() - d_data->wheelBorderWidth - 1;
 
-        if ( d_data->wheelBorderWidth > 1 )
-        {
+        if (d_data->wheelBorderWidth > 1) {
             l1--;
             l2++;
         }
@@ -901,29 +826,27 @@ void QwtWheel::drawTicks( QPainter *painter, const QRectF &rect )
         const double maxpos = rect.bottom() - 2;
         const double minpos = rect.top() + 2;
 
-        for ( double tickValue = ::ceil( loValue / tickWidth ) * tickWidth;
-            tickValue < hiValue; tickValue += tickWidth )
-        {
-            const double angle = qwtRadians( tickValue - value() );
-            const double s = qFastSin( angle * cnvFactor );
+        for (double tickValue = ::ceil(loValue / tickWidth) * tickWidth;
+             tickValue < hiValue; tickValue += tickWidth) {
+            const double angle = qwtRadians(tickValue - value());
+            const double s = qFastSin(angle * cnvFactor);
 
-            const double off = radius * ( sinArc + s ) / sinArc;
+            const double off = radius * (sinArc + s) / sinArc;
 
             double tickPos;
 
-            if ( d_data->inverted )
+            if (d_data->inverted)
                 tickPos = rect.bottom() - off;
             else
                 tickPos = rect.top() + off;
 
-            if ( ( tickPos <= maxpos ) && ( tickPos > minpos ) )
-            {
-                painter->setPen( darkPen );
-                painter->drawLine( QPointF( l1, tickPos - 1 ), 
-                    QPointF( l2, tickPos - 1 ) );
-                painter->setPen( lightPen );
-                painter->drawLine( QPointF( l1, tickPos ), 
-                    QPointF( l2, tickPos ) );
+            if ((tickPos <= maxpos) && (tickPos > minpos)) {
+                painter->setPen(darkPen);
+                painter->drawLine(QPointF(l1, tickPos - 1),
+                                  QPointF(l2, tickPos - 1));
+                painter->setPen(lightPen);
+                painter->drawLine(QPointF(l1, tickPos),
+                                  QPointF(l2, tickPos));
             }
         }
     }
@@ -938,8 +861,7 @@ void QwtWheel::drawTicks( QPainter *painter, const QRectF &rect )
   \param width the wheel's width
   \sa wheelWidth()
 */
-void QwtWheel::setWheelWidth( int width )
-{
+void QwtWheel::setWheelWidth(int width) {
     d_data->wheelWidth = width;
     update();
 }
@@ -948,29 +870,26 @@ void QwtWheel::setWheelWidth( int width )
   \return Width of the wheel
   \sa setWheelWidth()
 */
-int QwtWheel::wheelWidth() const
-{
+int QwtWheel::wheelWidth() const {
     return d_data->wheelWidth;
 }
 
 /*!
   \return a size hint
 */
-QSize QwtWheel::sizeHint() const
-{
+QSize QwtWheel::sizeHint() const {
     const QSize hint = minimumSizeHint();
-    return hint.expandedTo( QApplication::globalStrut() );
+    return hint.expandedTo(QApplication::globalStrut());
 }
 
 /*!
   \return Minimum size hint
   \warning The return value is based on the wheel width.
 */
-QSize QwtWheel::minimumSizeHint() const
-{
-    QSize sz( 3 * d_data->wheelWidth + 2 * d_data->borderWidth,
-        d_data->wheelWidth + 2 * d_data->borderWidth );
-    if ( d_data->orientation != Qt::Horizontal )
+QSize QwtWheel::minimumSizeHint() const {
+    QSize sz(3 * d_data->wheelWidth + 2 * d_data->borderWidth,
+             d_data->wheelWidth + 2 * d_data->borderWidth);
+    if (d_data->orientation != Qt::Horizontal)
         sz.transpose();
 
     return sz;
@@ -984,17 +903,15 @@ QSize QwtWheel::minimumSizeHint() const
   \param stepSize Single step size
   \sa singleStep(), setPageStepCount()
 */
-void QwtWheel::setSingleStep( double stepSize )
-{
-    d_data->singleStep = qMax( stepSize, 0.0 );
+void QwtWheel::setSingleStep(double stepSize) {
+    d_data->singleStep = qMax(stepSize, 0.0);
 }
 
 /*!
   \return Single step size
   \sa setSingleStep()
  */
-double QwtWheel::singleStep() const
-{
+double QwtWheel::singleStep() const {
     return d_data->singleStep;
 }
 
@@ -1008,10 +925,8 @@ double QwtWheel::singleStep() const
   \param on On/Off
   \sa stepAlignment(), setSingleStep()
  */
-void QwtWheel::setStepAlignment( bool on )
-{
-    if ( on != d_data->stepAlignment )
-    {
+void QwtWheel::setStepAlignment(bool on) {
+    if (on != d_data->stepAlignment) {
         d_data->stepAlignment = on;
     }
 }
@@ -1020,8 +935,7 @@ void QwtWheel::setStepAlignment( bool on )
   \return True, when the step alignment is enabled
   \sa setStepAlignment(), singleStep()
  */
-bool QwtWheel::stepAlignment() const
-{
+bool QwtWheel::stepAlignment() const {
     return d_data->stepAlignment;
 }
 
@@ -1038,17 +952,15 @@ bool QwtWheel::stepAlignment() const
   \param count Multiplicator for the single step size
   \sa pageStepCount(), setSingleStep()
  */
-void QwtWheel::setPageStepCount( int count )
-{
-    d_data->pageStepCount = qMax( 0, count );
+void QwtWheel::setPageStepCount(int count) {
+    d_data->pageStepCount = qMax(0, count);
 }
 
 /*! 
   \return Page step count
   \sa setPageStepCount(), singleStep()
  */
-int QwtWheel::pageStepCount() const
-{
+int QwtWheel::pageStepCount() const {
     return d_data->pageStepCount;
 }
 
@@ -1063,24 +975,23 @@ int QwtWheel::pageStepCount() const
 
   \sa minimum(), maximum()
  */
-void QwtWheel::setRange( double min, double max )
-{
-    max = qMax( min, max );
+void QwtWheel::setRange(double min, double max) {
+    max = qMax(min, max);
 
-    if ( d_data->minimum == min && d_data->maximum == max )
+    if (d_data->minimum == min && d_data->maximum == max)
         return;
 
     d_data->minimum = min;
     d_data->maximum = max;
 
-    if ( d_data->value < min || d_data->value > max )
-    {
-        d_data->value = qBound( min, d_data->value, max );
+    if (d_data->value < min || d_data->value > max) {
+        d_data->value = qBound(min, d_data->value, max);
 
         update();
-        Q_EMIT valueChanged( d_data->value );
+        Q_EMIT valueChanged(d_data->value);
     }
 }
+
 /*!
   Set the minimum value of the range
 
@@ -1089,17 +1000,15 @@ void QwtWheel::setRange( double min, double max )
 
   \note The maximum is adjusted if necessary to ensure that the range remains valid.
 */
-void QwtWheel::setMinimum( double value )
-{
-    setRange( value, maximum() );
+void QwtWheel::setMinimum(double value) {
+    setRange(value, maximum());
 }
 
 /*!
   \return The minimum of the range
   \sa setRange(), setMinimum(), maximum()
 */
-double QwtWheel::minimum() const
-{
+double QwtWheel::minimum() const {
     return d_data->minimum;
 }
 
@@ -1109,17 +1018,15 @@ double QwtWheel::minimum() const
   \param value Maximum value
   \sa setRange(), setMinimum(), maximum()
 */
-void QwtWheel::setMaximum( double value )
-{
-    setRange( minimum(), value );
+void QwtWheel::setMaximum(double value) {
+    setRange(minimum(), value);
 }
 
 /*!
   \return The maximum of the range
   \sa setRange(), setMaximum(), minimum()
 */
-double QwtWheel::maximum() const
-{
+double QwtWheel::maximum() const {
     return d_data->maximum;
 }
 
@@ -1131,19 +1038,17 @@ double QwtWheel::maximum() const
   \sa value(), valueChanged()
   \warning The value is clipped when it lies outside the range.
 */
-void QwtWheel::setValue( double value )
-{
+void QwtWheel::setValue(double value) {
     stopFlying();
     d_data->isScrolling = false;
 
-    value = qBound( d_data->minimum, value, d_data->maximum );
+    value = qBound(d_data->minimum, value, d_data->maximum);
 
-    if ( d_data->value != value )
-    {
+    if (d_data->value != value) {
         d_data->value = value;
 
         update();
-        Q_EMIT valueChanged( d_data->value );
+        Q_EMIT valueChanged(d_data->value);
     }
 }
 
@@ -1151,8 +1056,7 @@ void QwtWheel::setValue( double value )
   \return Current value of the wheel
   \sa setValue(), valueChanged()
  */
-double QwtWheel::value() const
-{
+double QwtWheel::value() const {
     return d_data->value;
 }
 
@@ -1167,10 +1071,8 @@ double QwtWheel::value() const
   \sa isInverted()
  
  */
-void QwtWheel::setInverted( bool on )
-{
-    if ( d_data->inverted != on )
-    {
+void QwtWheel::setInverted(bool on) {
+    if (d_data->inverted != on) {
         d_data->inverted = on;
         update();
     }
@@ -1180,8 +1082,7 @@ void QwtWheel::setInverted( bool on )
   \return True, when the wheel is inverted
   \sa setInverted()
  */
-bool QwtWheel::isInverted() const
-{
+bool QwtWheel::isInverted() const {
     return d_data->inverted;
 }
 
@@ -1194,8 +1095,7 @@ bool QwtWheel::isInverted() const
   \param on En/Disable wrapping
   \sa wrapping()
  */
-void QwtWheel::setWrapping( bool on )
-{
+void QwtWheel::setWrapping(bool on) {
     d_data->wrapping = on;
 }
 
@@ -1203,8 +1103,7 @@ void QwtWheel::setWrapping( bool on )
   \return True, when wrapping is set
   \sa setWrapping()
  */
-bool QwtWheel::wrapping() const
-{
+bool QwtWheel::wrapping() const {
     return d_data->wrapping;
 }
 
@@ -1225,18 +1124,14 @@ bool QwtWheel::wrapping() const
        The maximal mass is limited to 100kg.
   \sa mass()
 */
-void QwtWheel::setMass( double mass )
-{
-    if ( mass < 0.001 )
-    {
+void QwtWheel::setMass(double mass) {
+    if (mass < 0.001) {
         d_data->mass = 0.0;
-    }
-    else
-    {
-        d_data->mass = qMin( 100.0, mass );
+    } else {
+        d_data->mass = qMin(100.0, mass);
     }
 
-    if ( d_data->mass <= 0.0 )
+    if (d_data->mass <= 0.0)
         stopFlying();
 }
 
@@ -1244,62 +1139,50 @@ void QwtWheel::setMass( double mass )
   \return mass
   \sa setMass()
 */
-double QwtWheel::mass() const
-{
+double QwtWheel::mass() const {
     return d_data->mass;
 }
 
 //!  Stop the flying movement of the wheel
-void QwtWheel::stopFlying()
-{
-    if ( d_data->timerId != 0 )
-    {
-        killTimer( d_data->timerId );
+void QwtWheel::stopFlying() {
+    if (d_data->timerId != 0) {
+        killTimer(d_data->timerId);
         d_data->timerId = 0;
         d_data->speed = 0.0;
     }
 }
 
-double QwtWheel::boundedValue( double value ) const
-{
+double QwtWheel::boundedValue(double value) const {
     const double range = d_data->maximum - d_data->minimum;
-    
-    if ( d_data->wrapping && range >= 0.0 )
-    {
-        if ( value < d_data->minimum )
-        {
-            value += ::ceil( ( d_data->minimum - value ) / range ) * range;
-        }       
-        else if ( value > d_data->maximum )
-        {
-            value -= ::ceil( ( value - d_data->maximum ) / range ) * range;
+
+    if (d_data->wrapping && range >= 0.0) {
+        if (value < d_data->minimum) {
+            value += ::ceil((d_data->minimum - value) / range) * range;
+        } else if (value > d_data->maximum) {
+            value -= ::ceil((value - d_data->maximum) / range) * range;
         }
-    }
-    else
-    {
-        value = qBound( d_data->minimum, value, d_data->maximum );
+    } else {
+        value = qBound(d_data->minimum, value, d_data->maximum);
     }
 
     return value;
 }
 
-double QwtWheel::alignedValue( double value ) const
-{
+double QwtWheel::alignedValue(double value) const {
     const double stepSize = d_data->singleStep;
 
-    if ( stepSize > 0.0 )
-    {
+    if (stepSize > 0.0) {
         value = d_data->minimum +
-            qRound( ( value - d_data->minimum ) / stepSize ) * stepSize;
+                qRound((value - d_data->minimum) / stepSize) * stepSize;
 
         // correct rounding error at the border
-        if ( qFuzzyCompare( value, d_data->maximum ) )
+        if (qFuzzyCompare(value, d_data->maximum))
             value = d_data->maximum;
-            
+
         // correct rounding error if value = 0
-        if ( qFuzzyCompare( value + 1.0, 1.0 ) )
+        if (qFuzzyCompare(value + 1.0, 1.0))
             value = 0.0;
-    }       
+    }
 
     return value;
 }

@@ -15,8 +15,7 @@
 /*!
   Some constants for use within Qwt.
 */
-namespace Qwt
-{
+namespace Qwt {
 };
 
 #endif

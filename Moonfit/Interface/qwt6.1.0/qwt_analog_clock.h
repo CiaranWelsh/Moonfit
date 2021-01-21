@@ -40,8 +40,7 @@
   \note The examples/dials example shows how to use QwtAnalogClock.
 */
 
-class QWT_EXPORT QwtAnalogClock: public QwtDial
-{
+class QWT_EXPORT QwtAnalogClock : public QwtDial {
     Q_OBJECT
 
 public:
@@ -49,8 +48,7 @@ public:
         Hand type
         \sa setHand(), hand()
     */
-    enum Hand
-    {
+    enum Hand {
         //! Needle displaying the seconds
         SecondHand,
 
@@ -64,28 +62,32 @@ public:
         NHands
     };
 
-    explicit QwtAnalogClock( QWidget* parent = NULL );
+    explicit QwtAnalogClock(QWidget *parent = NULL);
+
     virtual ~QwtAnalogClock();
 
-    void setHand( Hand, QwtDialNeedle * );
+    void setHand(Hand, QwtDialNeedle *);
 
-    const QwtDialNeedle *hand( Hand ) const;
-    QwtDialNeedle *hand( Hand );
+    const QwtDialNeedle *hand(Hand) const;
 
-public Q_SLOTS:
-    void setCurrentTime();
-    void setTime( const QTime & );
+    QwtDialNeedle *hand(Hand);
+
+public
+    Q_SLOTS:
+            void setCurrentTime();
+
+    void setTime(const QTime &);
 
 protected:
-    virtual void drawNeedle( QPainter *, const QPointF &,
-        double radius, double direction, QPalette::ColorGroup ) const;
+    virtual void drawNeedle(QPainter *, const QPointF &,
+                            double radius, double direction, QPalette::ColorGroup) const;
 
-    virtual void drawHand( QPainter *, Hand, const QPointF &,
-        double radius, double direction, QPalette::ColorGroup ) const;
+    virtual void drawHand(QPainter *, Hand, const QPointF &,
+                          double radius, double direction, QPalette::ColorGroup) const;
 
 private:
     // use setHand instead
-    void setNeedle( QwtDialNeedle * );
+    void setNeedle(QwtDialNeedle *);
 
     QwtDialNeedle *d_hand[NHands];
 };

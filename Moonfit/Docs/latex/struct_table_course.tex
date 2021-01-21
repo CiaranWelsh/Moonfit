@@ -2,124 +2,153 @@
 \label{struct_table_course}\index{TableCourse@{TableCourse}}
 
 
-Data structure to store the discrete kinetics of several variables (ideal for plotting simulations) as a table (meaning, for a list of time-\/points, store the values of all these selected variables)  
+Data structure to store the discrete kinetics of several variables (ideal for plotting simulations) as a table (meaning, for a list of time-\/points, store the values of all these selected variables)
 
 
 
 
-{\ttfamily \#include $<$table\+Course.\+h$>$}
+    {\ttfamily \#include $<$table\+Course.\+h$>$}
 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{struct_table_course_a089a573ccc6723d036f90312f8050618}{Table\+Course}} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$to\+Copy)
-\begin{DoxyCompactList}\small\item\em nb of time points \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_ae22e02765ba42ad66c5aa43f49eb2181}\label{struct_table_course_ae22e02765ba42ad66c5aa43f49eb2181}} 
-\mbox{\hyperlink{struct_table_course_ae22e02765ba42ad66c5aa43f49eb2181}{Table\+Course}} (const \mbox{\hyperlink{struct_table_course}{Table\+Course}} \&tc)
-\begin{DoxyCompactList}\small\item\em copy from another one \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a29ccbbd106765a8ae127478ae080e978}\label{struct_table_course_a29ccbbd106765a8ae127478ae080e978}} 
-{\bfseries Table\+Course} (string file\+To\+Read)
-\item 
-\mbox{\hyperlink{struct_table_course_a2601eb94175f70cc40ddaabe652571f3}{Table\+Course}} (int \+\_\+nb\+Var)
-\begin{DoxyCompactList}\small\item\em reads from a file. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a0bffff47a2e2bc2c56f6ebd366932622}\label{struct_table_course_a0bffff47a2e2bc2c56f6ebd366932622}} 
-\mbox{\hyperlink{struct_table_course_a0bffff47a2e2bc2c56f6ebd366932622}{$\sim$\+Table\+Course}} ()
-\begin{DoxyCompactList}\small\item\em creates empty, number of columns \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a831fce874fb59531d694cdce4e248cce}\label{struct_table_course_a831fce874fb59531d694cdce4e248cce}} 
-void {\bfseries set\+Header} (int i, string title)
-\item 
-\mbox{\Hypertarget{struct_table_course_a3d0d1d5b317bf4a6d1b8874bca1b4240}\label{struct_table_course_a3d0d1d5b317bf4a6d1b8874bca1b4240}} 
-void \mbox{\hyperlink{struct_table_course_a3d0d1d5b317bf4a6d1b8874bca1b4240}{add\+Set}} (double attr, vector$<$ double $>$ \&to\+Copy)
-\begin{DoxyCompactList}\small\item\em Danger \+: starts at index 1 for variables. Header\mbox{[}0\mbox{]} = titre of the table. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a408350c0935f600492f4d665c39f6c87}\label{struct_table_course_a408350c0935f600492f4d665c39f6c87}} 
-void \mbox{\hyperlink{struct_table_course_a408350c0935f600492f4d665c39f6c87}{reset}} ()
-\begin{DoxyCompactList}\small\item\em Add a line (i.\+e. the value of each variable at the new time (attr) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}\label{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}} 
-void \mbox{\hyperlink{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}{read}} (string file\+Name)
-\begin{DoxyCompactList}\small\item\em Additional I/O \+: \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a8ac2c798ca5083436e0e7759d46ac5d0}\label{struct_table_course_a8ac2c798ca5083436e0e7759d46ac5d0}} 
-void {\bfseries save} (string file\+Name, string title=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{struct_table_course_a824625970376b6657475ac3feb6123df}\label{struct_table_course_a824625970376b6657475ac3feb6123df}} 
-vector$<$ double $>$ {\bfseries get\+Time\+Course} (int var)
-\item 
-\mbox{\Hypertarget{struct_table_course_a9293bb1967baaf5b1bf6c7589ae4d22d}\label{struct_table_course_a9293bb1967baaf5b1bf6c7589ae4d22d}} 
-vector$<$ double $>$ {\bfseries get\+Time\+Points} (int var=-\/1)
-\item 
-\mbox{\Hypertarget{struct_table_course_a35b1b88a6ee74b62b0a4b82dc90896d6}\label{struct_table_course_a35b1b88a6ee74b62b0a4b82dc90896d6}} 
-double {\bfseries operator()} (int vari, type\+Time timej)
-\item 
-\mbox{\Hypertarget{struct_table_course_acd6f476282d6d7720c122a8051cea379}\label{struct_table_course_acd6f476282d6d7720c122a8051cea379}} 
-\mbox{\hyperlink{struct_table_course}{Table\+Course}} {\bfseries sub\+Kinetics} (vector$<$ int $>$ time\+Points, vector$<$ string $>$ names\+Variables=vector$<$ string $>$())
-\item 
-\mbox{\Hypertarget{struct_table_course_a8ad9b323cc282e1843a86099d25f7d09}\label{struct_table_course_a8ad9b323cc282e1843a86099d25f7d09}} 
-int {\bfseries find\+Position} (string name\+Variable)
-\item 
-\mbox{\Hypertarget{struct_table_course_a1065c09e6102ac46696d7dd6457f7bec}\label{struct_table_course_a1065c09e6102ac46696d7dd6457f7bec}} 
-string {\bfseries print} (bool file\+Export\+Version=true)
+    \item
+    \mbox{\hyperlink{struct_table_course_a089a573ccc6723d036f90312f8050618}{Table\+Course}} (\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$to\+Copy)
+    \begin{DoxyCompactList}
+        \small\item\em nb of time points
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_ae22e02765ba42ad66c5aa43f49eb2181}\label{struct_table_course_ae22e02765ba42ad66c5aa43f49eb2181}}
+    \mbox{\hyperlink{struct_table_course_ae22e02765ba42ad66c5aa43f49eb2181}{Table\+Course}} (const \mbox{\hyperlink{struct_table_course}{Table\+Course}} \&tc)
+    \begin{DoxyCompactList}
+        \small\item\em copy from another one
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a29ccbbd106765a8ae127478ae080e978}\label{struct_table_course_a29ccbbd106765a8ae127478ae080e978}}
+    {\bfseries Table\+Course} (string file\+To\+Read)
+    \item
+    \mbox{\hyperlink{struct_table_course_a2601eb94175f70cc40ddaabe652571f3}{Table\+Course}} (int \+\_\+nb\+Var)
+    \begin{DoxyCompactList}
+        \small\item\em reads from a file.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a0bffff47a2e2bc2c56f6ebd366932622}\label{struct_table_course_a0bffff47a2e2bc2c56f6ebd366932622}}
+    \mbox{\hyperlink{struct_table_course_a0bffff47a2e2bc2c56f6ebd366932622}{$\sim$\+Table\+Course}} ()
+    \begin{DoxyCompactList}
+        \small\item\em creates empty, number of columns
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a831fce874fb59531d694cdce4e248cce}\label{struct_table_course_a831fce874fb59531d694cdce4e248cce}}
+    void {\bfseries set\+Header} (int i, string title)
+    \item
+    \mbox{\Hypertarget{struct_table_course_a3d0d1d5b317bf4a6d1b8874bca1b4240}\label{struct_table_course_a3d0d1d5b317bf4a6d1b8874bca1b4240}}
+    void \mbox{\hyperlink{struct_table_course_a3d0d1d5b317bf4a6d1b8874bca1b4240}{add\+Set}} (double attr, vector$<$ double $>$ \&to\+Copy)
+    \begin{DoxyCompactList}
+        \small\item\em Danger \+: starts at index 1 for variables. Header\mbox{[}0\mbox{]} = titre of the table.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a408350c0935f600492f4d665c39f6c87}\label{struct_table_course_a408350c0935f600492f4d665c39f6c87}}
+    void \mbox{\hyperlink{struct_table_course_a408350c0935f600492f4d665c39f6c87}{reset}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Add a line (i.\+e. the value of each variable at the new time (attr)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}\label{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}}
+    void \mbox{\hyperlink{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}{read}} (string file\+Name)
+    \begin{DoxyCompactList}
+        \small\item\em Additional I/O \+:
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a8ac2c798ca5083436e0e7759d46ac5d0}\label{struct_table_course_a8ac2c798ca5083436e0e7759d46ac5d0}}
+    void {\bfseries save} (string file\+Name, string title=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{struct_table_course_a824625970376b6657475ac3feb6123df}\label{struct_table_course_a824625970376b6657475ac3feb6123df}}
+    vector$<$ double $>$ {\bfseries get\+Time\+Course} (int var)
+    \item
+    \mbox{\Hypertarget{struct_table_course_a9293bb1967baaf5b1bf6c7589ae4d22d}\label{struct_table_course_a9293bb1967baaf5b1bf6c7589ae4d22d}}
+    vector$<$ double $>$ {\bfseries get\+Time\+Points} (int var=-\/1)
+    \item
+    \mbox{\Hypertarget{struct_table_course_a35b1b88a6ee74b62b0a4b82dc90896d6}\label{struct_table_course_a35b1b88a6ee74b62b0a4b82dc90896d6}}
+    double {\bfseries operator()} (int vari, type\+Time timej)
+    \item
+    \mbox{\Hypertarget{struct_table_course_acd6f476282d6d7720c122a8051cea379}\label{struct_table_course_acd6f476282d6d7720c122a8051cea379}}
+    \mbox{\hyperlink{struct_table_course}{Table\+Course}} {\bfseries sub\+Kinetics} (vector$<$ int $>$ time\+Points, vector$<$ string $>$ names\+Variables=vector$<$ string $>$())
+    \item
+    \mbox{\Hypertarget{struct_table_course_a8ad9b323cc282e1843a86099d25f7d09}\label{struct_table_course_a8ad9b323cc282e1843a86099d25f7d09}}
+    int {\bfseries find\+Position} (string name\+Variable)
+    \item
+    \mbox{\Hypertarget{struct_table_course_a1065c09e6102ac46696d7dd6457f7bec}\label{struct_table_course_a1065c09e6102ac46696d7dd6457f7bec}}
+    string {\bfseries print} (bool file\+Export\+Version=true)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_table_course_a946625843f83c19ae71c052ae26f7617}\label{struct_table_course_a946625843f83c19ae71c052ae26f7617}} 
-vector$<$ double $>$ {\bfseries attribut}
-\item 
-\mbox{\Hypertarget{struct_table_course_a7ab52a8eca9602a56dba0fcaad8de080}\label{struct_table_course_a7ab52a8eca9602a56dba0fcaad8de080}} 
-vector$<$ vector$<$ double $>$ $\ast$ $>$ \mbox{\hyperlink{struct_table_course_a7ab52a8eca9602a56dba0fcaad8de080}{storage}}
-\begin{DoxyCompactList}\small\item\em List of time points (left column) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a4789a16daac1291f8a70e05322ecd4ad}\label{struct_table_course_a4789a16daac1291f8a70e05322ecd4ad}} 
-vector$<$ string $>$ \mbox{\hyperlink{struct_table_course_a4789a16daac1291f8a70e05322ecd4ad}{headers}}
-\begin{DoxyCompactList}\small\item\em data (2D) storage\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} = value at time point i (t = attribut\mbox{[}i\mbox{]}) of variable j (whose name is headers\mbox{[}j\mbox{]}) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a191b617375aa9cf0320c89a912999cce}\label{struct_table_course_a191b617375aa9cf0320c89a912999cce}} 
-int \mbox{\hyperlink{struct_table_course_a191b617375aa9cf0320c89a912999cce}{nb\+Var}}
-\begin{DoxyCompactList}\small\item\em Names of the variables (columns), size = nb\+Vars + 1. The first header is the name of the table (or title of the left column (ex\+: time)) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_table_course_a59b65077f6cb20b37e107ac94af5bb07}\label{struct_table_course_a59b65077f6cb20b37e107ac94af5bb07}} 
-int \mbox{\hyperlink{struct_table_course_a59b65077f6cb20b37e107ac94af5bb07}{nb\+Lignes}}
-\begin{DoxyCompactList}\small\item\em nb of variables \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\Hypertarget{struct_table_course_a946625843f83c19ae71c052ae26f7617}\label{struct_table_course_a946625843f83c19ae71c052ae26f7617}}
+    vector$<$ double $>$ {\bfseries attribut}
+    \item
+    \mbox{\Hypertarget{struct_table_course_a7ab52a8eca9602a56dba0fcaad8de080}\label{struct_table_course_a7ab52a8eca9602a56dba0fcaad8de080}}
+    vector$<$ vector$<$ double $>$ $\ast$ $>$ \mbox{\hyperlink{struct_table_course_a7ab52a8eca9602a56dba0fcaad8de080}{storage}}
+    \begin{DoxyCompactList}
+        \small\item\em List of time points (left column)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a4789a16daac1291f8a70e05322ecd4ad}\label{struct_table_course_a4789a16daac1291f8a70e05322ecd4ad}}
+    vector$<$ string $>$ \mbox{\hyperlink{struct_table_course_a4789a16daac1291f8a70e05322ecd4ad}{headers}}
+    \begin{DoxyCompactList}
+        \small\item\em data (2D) storage\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} = value at time point i (t = attribut\mbox{[}i\mbox{]}) of variable j (whose name is headers\mbox{[}j\mbox{]})
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a191b617375aa9cf0320c89a912999cce}\label{struct_table_course_a191b617375aa9cf0320c89a912999cce}}
+    int \mbox{\hyperlink{struct_table_course_a191b617375aa9cf0320c89a912999cce}{nb\+Var}}
+    \begin{DoxyCompactList}
+        \small\item\em Names of the variables (columns), size = nb\+Vars + 1. The first header is the name of the table (or title of the left column (ex\+: time))
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_table_course_a59b65077f6cb20b37e107ac94af5bb07}\label{struct_table_course_a59b65077f6cb20b37e107ac94af5bb07}}
+    int \mbox{\hyperlink{struct_table_course_a59b65077f6cb20b37e107ac94af5bb07}{nb\+Lignes}}
+    \begin{DoxyCompactList}
+        \small\item\em nb of variables
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Data structure to store the discrete kinetics of several variables (ideal for plotting simulations) as a table (meaning, for a list of time-\/points, store the values of all these selected variables) 
+Data structure to store the discrete kinetics of several variables (ideal for plotting simulations) as a table (meaning, for a list of time-\/points, store the values of all these selected variables)
 
-\begin{DoxyVerb}note : - for storing continuous kinetics, use the *overrider* class instead.
-       - for storing only some variables from some time-points, use the *evaluator* class instead
+\begin{DoxyVerb}
+    note : - for storing continuous kinetics, use the *overrider* class instead.
+    - for storing only some variables from some time-points, use the *evaluator* class instead
 \end{DoxyVerb}
- 
+
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{struct_table_course_a089a573ccc6723d036f90312f8050618}\label{struct_table_course_a089a573ccc6723d036f90312f8050618}} 
+\mbox{\Hypertarget{struct_table_course_a089a573ccc6723d036f90312f8050618}\label{struct_table_course_a089a573ccc6723d036f90312f8050618}}
 \index{TableCourse@{TableCourse}!TableCourse@{TableCourse}}
 \index{TableCourse@{TableCourse}!TableCourse@{TableCourse}}
 \doxysubsubsection{\texorpdfstring{TableCourse()}{TableCourse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily Table\+Course\+::\+Table\+Course (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$}]{to\+Copy }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Table\+Course\+::\+Table\+Course (\begin{DoxyParamCaption}
+                                                              \item[{\mbox{\hyperlink{struct_table_course}{Table\+Course}} $\ast$}]{to\+Copy }
+\end{DoxyParamCaption})}
 
 
 
-nb of time points 
+nb of time points
 
-Reading a table from another table or from a file \mbox{\Hypertarget{struct_table_course_a2601eb94175f70cc40ddaabe652571f3}\label{struct_table_course_a2601eb94175f70cc40ddaabe652571f3}} 
+Reading a table from another table or from a file \mbox{\Hypertarget{struct_table_course_a2601eb94175f70cc40ddaabe652571f3}\label{struct_table_course_a2601eb94175f70cc40ddaabe652571f3}}
 \index{TableCourse@{TableCourse}!TableCourse@{TableCourse}}
 \index{TableCourse@{TableCourse}!TableCourse@{TableCourse}}
 \doxysubsubsection{\texorpdfstring{TableCourse()}{TableCourse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily Table\+Course\+::\+Table\+Course (\begin{DoxyParamCaption}\item[{int}]{\+\_\+nb\+Var }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Table\+Course\+::\+Table\+Course (\begin{DoxyParamCaption}
+                                                              \item[{int}]{\+\_\+nb\+Var }
+\end{DoxyParamCaption})}
 
 
 
-reads from a file. 
+reads from a file.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{SYNTAX of a \mbox{\hyperlink{struct_table_course}{TableCourse}} file (\mbox{\hyperlink{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}{read}} or exported):}
-\DoxyCodeLine{}
-\DoxyCodeLine{nbRows(time-\/pts)     nbColumns(nbVars)}
-\DoxyCodeLine{headerLeft      headerVar1      headerVar2      ...}
-\DoxyCodeLine{time1           valVar1         valVar2         ...}
-\DoxyCodeLine{time2           valVar1         valVar2         ...}
-\DoxyCodeLine{...}
+    \DoxyCodeLine{SYNTAX of a \mbox{\hyperlink{struct_table_course}{TableCourse}} file (\mbox{\hyperlink{struct_table_course_a8eb0f62cc293c993353d9dd4e402a022}{read}} or exported):}
+    \DoxyCodeLine{}
+    \DoxyCodeLine{nbRows(time-\/pts)     nbColumns(nbVars)}
+    \DoxyCodeLine{headerLeft headerVar1 headerVar2 ...}
+    \DoxyCodeLine{time1 valVar1 valVar2 ...}
+    \DoxyCodeLine{time2 valVar1 valVar2 ...}
+    \DoxyCodeLine{...}
 \end{DoxyCode}
- Manually making and writing into a table 
+Manually making and writing into a table
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/table\+Course.\+h\item 
-Framework/table\+Course.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/table\+Course.\+h\item
+                                                                               Framework/table\+Course.\+cpp
+\end{DoxyCompactItemize}

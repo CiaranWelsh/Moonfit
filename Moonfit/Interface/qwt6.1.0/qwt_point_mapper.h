@@ -23,7 +23,9 @@
 
 
 class QwtScaleMap;
+
 class QPolygonF;
+
 class QPolygon;
 
 /*!
@@ -34,15 +36,13 @@ class QPolygon;
   It is used by QwtPlotCurve but might also be useful for 
   similar plot items displaying a QwtSeriesData<QPointF>.
  */
-class QWT_EXPORT QwtPointMapper
-{
+class QWT_EXPORT QwtPointMapper {
 public:
     /*!  
       \brief Flags affecting the transformation process
       \sa setFlag(), setFlags()
      */
-    enum TransformationFlag
-    {
+    enum TransformationFlag {
         //! Round points to integer values
         RoundPoints = 0x01,
 
@@ -57,38 +57,43 @@ public:
       \brief Flags affecting the transformation process
       \sa setFlag(), setFlags()
      */
-    typedef QFlags<TransformationFlag> TransformationFlags;
+    typedef QFlags <TransformationFlag> TransformationFlags;
 
     QwtPointMapper();
+
     ~QwtPointMapper();
 
-    void setFlags( TransformationFlags );
+    void setFlags(TransformationFlags);
+
     TransformationFlags flags() const;
 
-    void setFlag( TransformationFlag, bool on = true );
-    bool testFlag( TransformationFlag ) const;
+    void setFlag(TransformationFlag, bool on = true);
 
-    void setBoundingRect( const QRectF & );
+    bool testFlag(TransformationFlag) const;
+
+    void setBoundingRect(const QRectF &);
+
     QRectF boundingRect() const;
 
-    QPolygonF toPolygonF( const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QwtSeriesData<QPointF> *series, int from, int to ) const;
+    QPolygonF toPolygonF(const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                         const QwtSeriesData<QPointF> *series, int from, int to) const;
 
-    QPolygon toPolygon( const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QwtSeriesData<QPointF> *series, int from, int to ) const;
+    QPolygon toPolygon(const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                       const QwtSeriesData<QPointF> *series, int from, int to) const;
 
-    QPolygon toPoints( const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QwtSeriesData<QPointF> *series, int from, int to ) const;
+    QPolygon toPoints(const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QwtSeriesData<QPointF> *series, int from, int to) const;
 
-    QPolygonF toPointsF( const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QwtSeriesData<QPointF> *series, int from, int to ) const;
+    QPolygonF toPointsF(const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                        const QwtSeriesData<QPointF> *series, int from, int to) const;
 
-    QImage toImage( const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QwtSeriesData<QPointF> *series, int from, int to, 
-        const QPen &, bool antialiased, uint numThreads ) const;
+    QImage toImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                   const QwtSeriesData<QPointF> *series, int from, int to,
+                   const QPen &, bool antialiased, uint numThreads) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

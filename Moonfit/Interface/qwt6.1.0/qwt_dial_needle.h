@@ -11,6 +11,7 @@
 #define QWT_DIAL_NEEDLE_H 1
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpalette.h>
 #endif
@@ -20,6 +21,7 @@
 
 
 class QPainter;
+
 class QPoint;
 
 /*!
@@ -31,18 +33,19 @@ class QPoint;
   \sa QwtDial, QwtCompass
 */
 
-class QWT_EXPORT QwtDialNeedle
-{
+class QWT_EXPORT QwtDialNeedle {
 public:
     QwtDialNeedle();
+
     virtual ~QwtDialNeedle();
 
-    virtual void setPalette( const QPalette & );
+    virtual void setPalette(const QPalette &);
+
     const QPalette &palette() const;
 
-    virtual void draw( QPainter *painter, const QPointF &center,
-        double length, double direction, 
-        QPalette::ColorGroup = QPalette::Active ) const;
+    virtual void draw(QPainter *painter, const QPointF &center,
+                      double length, double direction,
+                      QPalette::ColorGroup = QPalette::Active) const;
 
 protected:
     /*!
@@ -60,11 +63,11 @@ protected:
 
       \sa setPalette(), palette()
     */
-    virtual void drawNeedle( QPainter *painter, 
-        double length, QPalette::ColorGroup colorGroup ) const = 0;
+    virtual void drawNeedle(QPainter *painter,
+                            double length, QPalette::ColorGroup colorGroup) const = 0;
 
-    virtual void drawKnob( QPainter *, double width, 
-        const QBrush &, bool sunken ) const;
+    virtual void drawKnob(QPainter *, double width,
+                          const QBrush &, bool sunken) const;
 
 private:
     QPalette d_palette;
@@ -83,12 +86,10 @@ private:
   \sa QwtDial, QwtCompass
 */
 
-class QWT_EXPORT QwtDialSimpleNeedle: public QwtDialNeedle
-{
+class QWT_EXPORT QwtDialSimpleNeedle : public QwtDialNeedle {
 public:
     //! Style of the needle
-    enum Style
-    {
+    enum Style {
         //! Arrow
         Arrow,
 
@@ -96,15 +97,16 @@ public:
         Ray
     };
 
-    QwtDialSimpleNeedle( Style, bool hasKnob = true,
-        const QColor &mid = Qt::gray, const QColor &base = Qt::darkGray );
+    QwtDialSimpleNeedle(Style, bool hasKnob = true,
+                        const QColor &mid = Qt::gray, const QColor &base = Qt::darkGray);
 
-    void setWidth( double width );
+    void setWidth(double width);
+
     double width() const;
 
 protected:
-    virtual void drawNeedle( QPainter *, double length,
-        QPalette::ColorGroup ) const;
+    virtual void drawNeedle(QPainter *, double length,
+                            QPalette::ColorGroup) const;
 
 private:
     Style d_style;
@@ -129,12 +131,10 @@ private:
   \sa QwtDial, QwtCompass
 */
 
-class QWT_EXPORT QwtCompassMagnetNeedle: public QwtDialNeedle
-{
+class QWT_EXPORT QwtCompassMagnetNeedle : public QwtDialNeedle {
 public:
     //! Style of the needle
-    enum Style
-    {
+    enum Style {
         //! A needle with a triangular shape
         TriangleStyle,
 
@@ -142,12 +142,12 @@ public:
         ThinStyle
     };
 
-    QwtCompassMagnetNeedle( Style = TriangleStyle,
-        const QColor &light = Qt::white, const QColor &dark = Qt::red );
+    QwtCompassMagnetNeedle(Style = TriangleStyle,
+                           const QColor &light = Qt::white, const QColor &dark = Qt::red);
 
 protected:
-    virtual void drawNeedle( QPainter *, 
-        double length, QPalette::ColorGroup ) const;
+    virtual void drawNeedle(QPainter *,
+                            double length, QPalette::ColorGroup) const;
 
 private:
     Style d_style;
@@ -166,12 +166,10 @@ private:
   \sa QwtDial, QwtCompass
 */
 
-class QWT_EXPORT QwtCompassWindArrow: public QwtDialNeedle
-{
+class QWT_EXPORT QwtCompassWindArrow : public QwtDialNeedle {
 public:
     //! Style of the arrow
-    enum Style
-    {
+    enum Style {
         //! A needle pointing to the center
         Style1,
 
@@ -179,12 +177,12 @@ public:
         Style2
     };
 
-    QwtCompassWindArrow( Style, const QColor &light = Qt::white,
-        const QColor &dark = Qt::gray );
+    QwtCompassWindArrow(Style, const QColor &light = Qt::white,
+                        const QColor &dark = Qt::gray);
 
 protected:
-    virtual void drawNeedle( QPainter *, 
-        double length, QPalette::ColorGroup ) const;
+    virtual void drawNeedle(QPainter *,
+                            double length, QPalette::ColorGroup) const;
 
 private:
     Style d_style;

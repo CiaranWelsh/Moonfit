@@ -14,8 +14,11 @@
 #include <qobject.h>
 
 class QWidget;
+
 class QMouseEvent;
+
 class QWheelEvent;
+
 class QKeyEvent;
 
 /*!
@@ -24,62 +27,77 @@ class QKeyEvent;
   Using QwtMagnifier a plot can be zoomed in/out in steps using
   keys, the mouse wheel or moving a mouse button in vertical direction.
 */
-class QWT_EXPORT QwtMagnifier: public QObject
-{
+class QWT_EXPORT QwtMagnifier : public QObject {
     Q_OBJECT
 
 public:
-    explicit QwtMagnifier( QWidget * );
+    explicit QwtMagnifier(QWidget *);
+
     virtual ~QwtMagnifier();
 
     QWidget *parentWidget();
+
     const QWidget *parentWidget() const;
 
-    void setEnabled( bool );
+    void setEnabled(bool);
+
     bool isEnabled() const;
 
     // mouse
-    void setMouseFactor( double );
+    void setMouseFactor(double);
+
     double mouseFactor() const;
 
-    void setMouseButton( Qt::MouseButton, Qt::KeyboardModifiers = Qt::NoModifier );
-    void getMouseButton( Qt::MouseButton &, Qt::KeyboardModifiers & ) const;
+    void setMouseButton(Qt::MouseButton, Qt::KeyboardModifiers = Qt::NoModifier);
+
+    void getMouseButton(Qt::MouseButton &, Qt::KeyboardModifiers &) const;
 
     // mouse wheel
-    void setWheelFactor( double );
+    void setWheelFactor(double);
+
     double wheelFactor() const;
 
-    void setWheelModifiers( Qt::KeyboardModifiers );
+    void setWheelModifiers(Qt::KeyboardModifiers);
+
     Qt::KeyboardModifiers wheelModifiers() const;
 
     // keyboard
-    void setKeyFactor( double );
+    void setKeyFactor(double);
+
     double keyFactor() const;
 
-    void setZoomInKey( int key, Qt::KeyboardModifiers = Qt::NoModifier );
-    void getZoomInKey( int &key, Qt::KeyboardModifiers & ) const;
+    void setZoomInKey(int key, Qt::KeyboardModifiers = Qt::NoModifier);
 
-    void setZoomOutKey( int key, Qt::KeyboardModifiers = Qt::NoModifier );
-    void getZoomOutKey( int &key, Qt::KeyboardModifiers & ) const;
+    void getZoomInKey(int &key, Qt::KeyboardModifiers &) const;
 
-    virtual bool eventFilter( QObject *, QEvent * );
+    void setZoomOutKey(int key, Qt::KeyboardModifiers = Qt::NoModifier);
+
+    void getZoomOutKey(int &key, Qt::KeyboardModifiers &) const;
+
+    virtual bool eventFilter(QObject *, QEvent *);
 
 protected:
     /*!
        Rescale the parent widget
        \param factor Scale factor
      */
-    virtual void rescale( double factor ) = 0;
+    virtual void rescale(double factor) = 0;
 
-    virtual void widgetMousePressEvent( QMouseEvent * );
-    virtual void widgetMouseReleaseEvent( QMouseEvent * );
-    virtual void widgetMouseMoveEvent( QMouseEvent * );
-    virtual void widgetWheelEvent( QWheelEvent * );
-    virtual void widgetKeyPressEvent( QKeyEvent * );
-    virtual void widgetKeyReleaseEvent( QKeyEvent * );
+    virtual void widgetMousePressEvent(QMouseEvent *);
+
+    virtual void widgetMouseReleaseEvent(QMouseEvent *);
+
+    virtual void widgetMouseMoveEvent(QMouseEvent *);
+
+    virtual void widgetWheelEvent(QWheelEvent *);
+
+    virtual void widgetKeyPressEvent(QKeyEvent *);
+
+    virtual void widgetKeyReleaseEvent(QKeyEvent *);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -39,20 +39,35 @@ class QwtRoundScaleDraw;
   \image html knob.png
 */
 
-class QWT_EXPORT QwtKnob: public QwtAbstractSlider
-{
+class QWT_EXPORT QwtKnob : public QwtAbstractSlider {
     Q_OBJECT
 
-    Q_ENUMS ( KnobStyle MarkerStyle )
+    Q_ENUMS(KnobStyle MarkerStyle)
 
-    Q_PROPERTY( KnobStyle knobStyle READ knobStyle WRITE setKnobStyle )
-    Q_PROPERTY( int knobWidth READ knobWidth WRITE setKnobWidth )
-    Q_PROPERTY( Qt::Alignment alignment READ alignment WRITE setAlignment )
-    Q_PROPERTY( double totalAngle READ totalAngle WRITE setTotalAngle )
-    Q_PROPERTY( int numTurns READ numTurns WRITE setNumTurns )
-    Q_PROPERTY( MarkerStyle markerStyle READ markerStyle WRITE setMarkerStyle )
-    Q_PROPERTY( int markerSize READ markerSize WRITE setMarkerSize )
-    Q_PROPERTY( int borderWidth READ borderWidth WRITE setBorderWidth )
+    Q_PROPERTY( KnobStyle
+    knobStyle READ
+    knobStyle WRITE
+    setKnobStyle )
+
+    Q_PROPERTY(int knobWidth READ knobWidth WRITE setKnobWidth)
+
+    Q_PROPERTY( Qt::Alignment
+    alignment READ
+    alignment WRITE
+    setAlignment )
+
+    Q_PROPERTY(double totalAngle READ totalAngle WRITE setTotalAngle)
+
+    Q_PROPERTY(int numTurns READ numTurns WRITE setNumTurns)
+
+    Q_PROPERTY( MarkerStyle
+    markerStyle READ
+    markerStyle WRITE
+    setMarkerStyle )
+
+    Q_PROPERTY(int markerSize READ markerSize WRITE setMarkerSize)
+
+    Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth)
 
 public:
     /*! 
@@ -63,8 +78,7 @@ public:
 
        \sa setKnobStyle(), knobStyle()
      */
-    enum KnobStyle
-    {
+    enum KnobStyle {
         //! Fill the knob with a brush from QPalette::Button.
         Flat,
 
@@ -92,86 +106,99 @@ public:
 
         \sa setMarkerStyle(), setMarkerSize()
     */
-    enum MarkerStyle 
-    { 
+    enum MarkerStyle {
         //! Don't paint any marker
         NoMarker = -1,
 
         //! Paint a single tick in QPalette::ButtonText color
-        Tick, 
+        Tick,
 
         //! Paint a triangle in QPalette::ButtonText color
-        Triangle, 
+        Triangle,
 
         //! Paint a circle in QPalette::ButtonText color
-        Dot, 
+        Dot,
 
         /*! 
           Draw a raised ellipse with a gradient build from
           QPalette::Light and QPalette::Mid
-         */ 
-        Nub, 
+         */
+        Nub,
 
         /*! 
           Draw a sunken ellipse with a gradient build from
           QPalette::Light and QPalette::Mid
-         */ 
-        Notch 
+         */
+        Notch
     };
 
-    explicit QwtKnob( QWidget* parent = NULL );
+    explicit QwtKnob(QWidget *parent = NULL);
+
     virtual ~QwtKnob();
 
-    void setAlignment( Qt::Alignment );
+    void setAlignment(Qt::Alignment);
+
     Qt::Alignment alignment() const;
 
-    void setKnobWidth( int );
+    void setKnobWidth(int);
+
     int knobWidth() const;
 
-    void setNumTurns( int );
+    void setNumTurns(int);
+
     int numTurns() const;
 
-    void setTotalAngle ( double angle );
+    void setTotalAngle(double angle);
+
     double totalAngle() const;
 
-    void setKnobStyle( KnobStyle );
+    void setKnobStyle(KnobStyle);
+
     KnobStyle knobStyle() const;
 
-    void setBorderWidth( int bw );
+    void setBorderWidth(int bw);
+
     int borderWidth() const;
 
-    void setMarkerStyle( MarkerStyle );
+    void setMarkerStyle(MarkerStyle);
+
     MarkerStyle markerStyle() const;
 
-    void setMarkerSize( int );
+    void setMarkerSize(int);
+
     int markerSize() const;
 
     virtual QSize sizeHint() const;
+
     virtual QSize minimumSizeHint() const;
 
-    void setScaleDraw( QwtRoundScaleDraw * );
+    void setScaleDraw(QwtRoundScaleDraw *);
 
     const QwtRoundScaleDraw *scaleDraw() const;
+
     QwtRoundScaleDraw *scaleDraw();
 
     QRect knobRect() const;
 
 protected:
-    virtual void paintEvent( QPaintEvent * );
-    virtual void changeEvent( QEvent * );
+    virtual void paintEvent(QPaintEvent *);
 
-    virtual void drawKnob( QPainter *, const QRectF & ) const;
+    virtual void changeEvent(QEvent *);
 
-    virtual void drawFocusIndicator( QPainter * ) const;
+    virtual void drawKnob(QPainter *, const QRectF &) const;
 
-    virtual void drawMarker( QPainter *, 
-        const QRectF &, double arc ) const;
+    virtual void drawFocusIndicator(QPainter *) const;
 
-    virtual double scrolledTo( const QPoint & ) const;
-    virtual bool isScrollPosition( const QPoint & ) const;
+    virtual void drawMarker(QPainter *,
+                            const QRectF &, double arc) const;
+
+    virtual double scrolledTo(const QPoint &) const;
+
+    virtual bool isScrollPosition(const QPoint &) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

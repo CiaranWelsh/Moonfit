@@ -17,8 +17,8 @@ using namespace std;
 
 // ------------- Step 1: Give the location to the data files, and a folder to export results
 
-static string folder = "C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Balthyse/DATA/";
-static string folderBaseResults = "C:/Users/pprobert/Desktop/NewArchaeropteryx/Sources/Balthyse/Results";
+static string folder = "/Users/ciaranwelsh/Documents/Balthyse/Elfaki2020/DATA/";
+static string folderBaseResults = "/Users/ciaranwelsh/Documents/Balthyse/Elfaki2020/Reslts";
 
 
 

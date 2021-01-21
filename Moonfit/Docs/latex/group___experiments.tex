@@ -2,15 +2,24 @@
 \label{group___experiments}\index{Experiments: Design of simulation performed on a model.@{Experiments: Design of simulation performed on a model.}}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{struct_experiment}{Experiment}}
-\begin{DoxyCompactList}\small\item\em An experiment is the design of a simulation performed on a model. The same experiment can be performed on different models. An experiment can have several conditions. The \mbox{\hyperlink{struct_experiment}{Experiment}} class is used as mother class for each user-\/defined experiment, and implements all basic functions for simulations and data management. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}}
-\begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} is made from multiple used-\/defined Experiments, and allows to simulate them together and get a multi-\/experiment cost between simulations and data. The same model is used for each experiment, therefore the same model parameters. Each experiment can be given a coefficient for the total cost calculation. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structexp_comp_parameter_sets}{exp\+Comp\+Parameter\+Sets}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structexp_comp_parameter_sets}{exp\+Comp\+Parameter\+Sets}} takes an experiment and compares one of its condition with different parameter sets. you give an experiment, and a list of parameter sets, it creates a new experiment whose conditions are each parameter set. if the original experiment has 1 condition, nothing to do if -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- had more than 1 condition, choose which condition to compare. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}} takes an experiment and compares one of its condition from a parameter set but changing one parameter along perturbated values around the original value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    struct \mbox{\hyperlink{struct_experiment}{Experiment}}
+    \begin{DoxyCompactList}
+        \small\item\em An experiment is the design of a simulation performed on a model. The same experiment can be performed on different models. An experiment can have several conditions. The \mbox{\hyperlink{struct_experiment}{Experiment}} class is used as mother class for each user-\/defined experiment, and implements all basic functions for simulations and data management.
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}}
+    \begin{DoxyCompactList}
+        \small\item\em A \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} is made from multiple used-\/defined Experiments, and allows to simulate them together and get a multi-\/experiment cost between simulations and data. The same model is used for each experiment, therefore the same model parameters. Each experiment can be given a coefficient for the total cost calculation.
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{structexp_comp_parameter_sets}{exp\+Comp\+Parameter\+Sets}}
+    \begin{DoxyCompactList}
+        \small\item\em \mbox{\hyperlink{structexp_comp_parameter_sets}{exp\+Comp\+Parameter\+Sets}} takes an experiment and compares one of its condition with different parameter sets. you give an experiment, and a list of parameter sets, it creates a new experiment whose conditions are each parameter set. if the original experiment has 1 condition, nothing to do if -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- had more than 1 condition, choose which condition to compare.
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}}
+    \begin{DoxyCompactList}
+        \small\item\em \mbox{\hyperlink{structexp_change_one_parameter}{exp\+Change\+One\+Parameter}} takes an experiment and compares one of its condition from a parameter set but changing one parameter along perturbated values around the original value.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

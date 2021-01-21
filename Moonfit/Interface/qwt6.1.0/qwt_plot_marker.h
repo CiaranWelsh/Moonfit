@@ -26,7 +26,9 @@
 #include "qwt_plot_item.h"
 
 class QRectF;
+
 class QwtText;
+
 class QwtSymbol;
 
 /*!
@@ -53,16 +55,14 @@ class QwtSymbol;
         ( unrelated to plot coordinates )
 */
 
-class QWT_EXPORT QwtPlotMarker: public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotMarker : public QwtPlotItem {
 public:
 
     /*!
         Line styles.
         \sa setLineStyle(), lineStyle()
     */
-    enum LineStyle
-    {
+    enum LineStyle {
         //! No line
         NoLine,
 
@@ -76,62 +76,77 @@ public:
         Cross
     };
 
-    explicit QwtPlotMarker( const QString &title = QString::null );
-    explicit QwtPlotMarker( const QwtText &title );
+    explicit QwtPlotMarker(const QString &title = QString::null);
+
+    explicit QwtPlotMarker(const QwtText &title);
 
     virtual ~QwtPlotMarker();
 
     virtual int rtti() const;
 
     double xValue() const;
+
     double yValue() const;
+
     QPointF value() const;
 
-    void setXValue( double );
-    void setYValue( double );
-    void setValue( double, double );
-    void setValue( const QPointF & );
+    void setXValue(double);
 
-    void setLineStyle( LineStyle st );
+    void setYValue(double);
+
+    void setValue(double, double);
+
+    void setValue(const QPointF &);
+
+    void setLineStyle(LineStyle st);
+
     LineStyle lineStyle() const;
 
-    void setLinePen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setLinePen( const QPen &p );
+    void setLinePen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setLinePen(const QPen &p);
+
     const QPen &linePen() const;
 
-    void setSymbol( const QwtSymbol * );
+    void setSymbol(const QwtSymbol *);
+
     const QwtSymbol *symbol() const;
 
-    void setLabel( const QwtText& );
+    void setLabel(const QwtText &);
+
     QwtText label() const;
 
-    void setLabelAlignment( Qt::Alignment );
+    void setLabelAlignment(Qt::Alignment);
+
     Qt::Alignment labelAlignment() const;
 
-    void setLabelOrientation( Qt::Orientation );
+    void setLabelOrientation(Qt::Orientation);
+
     Qt::Orientation labelOrientation() const;
 
-    void setSpacing( int );
+    void setSpacing(int);
+
     int spacing() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF & ) const;
+    virtual void draw(QPainter *p,
+                      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QRectF &) const;
 
     virtual QRectF boundingRect() const;
 
-    virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
+    virtual QwtGraphic legendIcon(int index, const QSizeF &) const;
 
 protected:
-    virtual void drawLines( QPainter *, 
-        const QRectF &, const QPointF & ) const;
+    virtual void drawLines(QPainter *,
+                           const QRectF &, const QPointF &) const;
 
-    virtual void drawLabel( QPainter *, 
-        const QRectF &, const QPointF & ) const;
+    virtual void drawLabel(QPainter *,
+                           const QRectF &, const QPointF &) const;
 
 private:
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

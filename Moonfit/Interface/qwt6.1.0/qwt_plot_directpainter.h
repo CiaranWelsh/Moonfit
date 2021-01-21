@@ -14,6 +14,7 @@
 #include <qobject.h>
 
 class QRegion;
+
 class QwtPlotSeriesItem;
 
 /*!
@@ -36,15 +37,13 @@ class QwtPlotSeriesItem;
              by another operation ( like changing scales ) and nothing needs
              to be erased.
 */
-class QWT_EXPORT QwtPlotDirectPainter: public QObject
-{
+class QWT_EXPORT QwtPlotDirectPainter : public QObject {
 public:
     /*!
       \brief Paint attributes
       \sa setAttribute(), testAttribute(), drawSeries()
     */
-    enum Attribute
-    {
+    enum Attribute {
         /*!
           Initializing a QPainter is an expensive operation.
           When AtomicPainter is set each call of drawSeries() opens/closes
@@ -71,27 +70,33 @@ public:
     };
 
     //! Paint attributes
-    typedef QFlags<Attribute> Attributes;
+    typedef QFlags <Attribute> Attributes;
 
-    QwtPlotDirectPainter( QObject *parent = NULL );
+    QwtPlotDirectPainter(QObject *parent = NULL);
+
     virtual ~QwtPlotDirectPainter();
 
-    void setAttribute( Attribute, bool on );
-    bool testAttribute( Attribute ) const;
+    void setAttribute(Attribute, bool on);
 
-    void setClipping( bool );
+    bool testAttribute(Attribute) const;
+
+    void setClipping(bool);
+
     bool hasClipping() const;
 
-    void setClipRegion( const QRegion & );
+    void setClipRegion(const QRegion &);
+
     QRegion clipRegion() const;
 
-    void drawSeries( QwtPlotSeriesItem *, int from, int to );
+    void drawSeries(QwtPlotSeriesItem *, int from, int to);
+
     void reset();
 
-    virtual bool eventFilter( QObject *, QEvent * );
+    virtual bool eventFilter(QObject *, QEvent *);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

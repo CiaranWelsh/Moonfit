@@ -12,34 +12,37 @@
 
 #include "qwt_global.h"
 #include "qwt_interval.h"
+
 #ifdef QT5
 #include <qpolygon.h>
 #endif
 #ifdef QT4
 #include <QtGui/qpolygon.h>
 #endif
+
 #include <qvector.h>
 
 class QRect;
+
 class QRectF;
 
 /*!
   \brief Some clipping algorithms
 */
 
-class QWT_EXPORT QwtClipper
-{
+class QWT_EXPORT QwtClipper {
 public:
-    static QPolygon clipPolygon( const QRect &, 
-        const QPolygon &, bool closePolygon = false );
-    static QPolygon clipPolygon( const QRectF &, 
-        const QPolygon &, bool closePolygon = false );
+    static QPolygon clipPolygon(const QRect &,
+                                const QPolygon &, bool closePolygon = false);
 
-    static QPolygonF clipPolygonF( const QRectF &, 
-        const QPolygonF &, bool closePolygon = false );
+    static QPolygon clipPolygon(const QRectF &,
+                                const QPolygon &, bool closePolygon = false);
 
-    static QVector<QwtInterval> clipCircle(
-        const QRectF &, const QPointF &, double radius );
+    static QPolygonF clipPolygonF(const QRectF &,
+                                  const QPolygonF &, bool closePolygon = false);
+
+    static QVector <QwtInterval> clipCircle(
+            const QRectF &, const QPointF &, double radius);
 };
 
 #endif

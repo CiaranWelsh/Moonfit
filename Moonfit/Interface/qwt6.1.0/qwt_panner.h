@@ -11,6 +11,7 @@
 #define QWT_PANNER_H 1
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpixmap.h>
 #include <QtWidgets/qwidget.h>
@@ -38,43 +39,51 @@ class QCursor;
   For widgets, where repaints are very fast it might be better to
   implement panning manually by mapping mouse events into paint events.
 */
-class QWT_EXPORT QwtPanner: public QWidget
-{
+class QWT_EXPORT QwtPanner : public QWidget {
     Q_OBJECT
 
 public:
-    QwtPanner( QWidget* parent );
+    QwtPanner(QWidget *parent);
+
     virtual ~QwtPanner();
 
-    void setEnabled( bool );
+    void setEnabled(bool);
+
     bool isEnabled() const;
 
-    void setMouseButton( Qt::MouseButton, 
-        Qt::KeyboardModifiers = Qt::NoModifier );
-    void getMouseButton( Qt::MouseButton &button, 
-        Qt::KeyboardModifiers & ) const;
+    void setMouseButton(Qt::MouseButton,
+                        Qt::KeyboardModifiers = Qt::NoModifier);
 
-    void setAbortKey( int key, Qt::KeyboardModifiers = Qt::NoModifier );
-    void getAbortKey( int &key, Qt::KeyboardModifiers & ) const;
+    void getMouseButton(Qt::MouseButton &button,
+                        Qt::KeyboardModifiers &) const;
 
-    void setCursor( const QCursor & );
+    void setAbortKey(int key, Qt::KeyboardModifiers = Qt::NoModifier);
+
+    void getAbortKey(int &key, Qt::KeyboardModifiers &) const;
+
+    void setCursor(const QCursor &);
+
     const QCursor cursor() const;
 
-    void setOrientations( Qt::Orientations );
+    void setOrientations(Qt::Orientations);
+
     Qt::Orientations orientations() const;
 
-    bool isOrientationEnabled( Qt::Orientation ) const;
+    bool isOrientationEnabled(Qt::Orientation) const;
 
-    virtual bool eventFilter( QObject *, QEvent * );
+    virtual bool eventFilter(QObject *, QEvent *);
 
-Q_SIGNALS:
-    /*!
-      Signal emitted, when panning is done
+    Q_SIGNALS:
+            /*!
+              Signal emitted, when panning is done
 
-      \param dx Offset in horizontal direction
-      \param dy Offset in vertical direction
-    */
-    void panned( int dx, int dy );
+              \param dx Offset in horizontal direction
+              \param dy Offset in vertical direction
+            */
+            void panned(int
+    dx,
+    int dy
+    );
 
     /*!
       Signal emitted, while the widget moved, but panning
@@ -83,26 +92,34 @@ Q_SIGNALS:
       \param dx Offset in horizontal direction
       \param dy Offset in vertical direction
     */
-    void moved( int dx, int dy );
+    void moved(int dx, int dy);
 
 protected:
-    virtual void widgetMousePressEvent( QMouseEvent * );
-    virtual void widgetMouseReleaseEvent( QMouseEvent * );
-    virtual void widgetMouseMoveEvent( QMouseEvent * );
-    virtual void widgetKeyPressEvent( QKeyEvent * );
-    virtual void widgetKeyReleaseEvent( QKeyEvent * );
+    virtual void widgetMousePressEvent(QMouseEvent *);
 
-    virtual void paintEvent( QPaintEvent * );
+    virtual void widgetMouseReleaseEvent(QMouseEvent *);
+
+    virtual void widgetMouseMoveEvent(QMouseEvent *);
+
+    virtual void widgetKeyPressEvent(QKeyEvent *);
+
+    virtual void widgetKeyReleaseEvent(QKeyEvent *);
+
+    virtual void paintEvent(QPaintEvent *);
 
     virtual QBitmap contentsMask() const;
+
     virtual QPixmap grab() const;
 
 private:
 #ifndef QT_NO_CURSOR
-    void showCursor( bool );
+
+    void showCursor(bool);
+
 #endif
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

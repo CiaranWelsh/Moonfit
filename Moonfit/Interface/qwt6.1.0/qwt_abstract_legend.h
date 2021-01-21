@@ -12,6 +12,7 @@
 
 #include "qwt_global.h"
 #include "qwt_legend_data.h"
+
 #ifdef QT5
 #include <qframe.h>
 #endif
@@ -37,12 +38,12 @@ class QVariant;
 
   \sa QwtLegend
  */
-class QWT_EXPORT QwtAbstractLegend : public QFrame
-{
+class QWT_EXPORT QwtAbstractLegend : public QFrame {
     Q_OBJECT
 
 public:
-    explicit QwtAbstractLegend( QWidget *parent = NULL );
+    explicit QwtAbstractLegend(QWidget *parent = NULL);
+
     virtual ~QwtAbstractLegend();
 
     /*!
@@ -54,15 +55,16 @@ public:
 
       \sa renderLegend() is used by QwtPlotRenderer
     */
-    virtual void renderLegend( QPainter *painter, 
-        const QRectF &rect, bool fillBackground ) const = 0;
+    virtual void renderLegend(QPainter *painter,
+                              const QRectF &rect, bool fillBackground) const = 0;
 
     //! \return True, when no plot item is inserted
     virtual bool isEmpty() const = 0;
 
-    virtual int scrollExtent( Qt::Orientation ) const;
+    virtual int scrollExtent(Qt::Orientation) const;
 
-public Q_SLOTS:
+public
+    Q_SLOTS:
 
     /*!
       \brief Update the entries for a plot item
@@ -70,8 +72,8 @@ public Q_SLOTS:
       \param itemInfo Info about an item
       \param data List of legend entry attributes for the  item
      */
-    virtual void updateLegend( const QVariant &itemInfo, 
-        const QList<QwtLegendData> &data ) = 0;
+    virtual void updateLegend(const QVariant &itemInfo,
+                              const QList <QwtLegendData> &data) = 0;
 };
 
 #endif 

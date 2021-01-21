@@ -2,31 +2,32 @@
 \label{classmy_sim}\index{mySim@{mySim}}
 
 
-======================= O\+DE Solver (defined with the same interface than B\+O\+O\+ST) ===============================  
+======================= O\+DE Solver (defined with the same interface than B\+O\+O\+ST) ===============================
 
 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classmy_sim_a26161925695101c164b10c942876d9c6}\label{classmy_sim_a26161925695101c164b10c942876d9c6}} 
-{\bfseries my\+Sim} (\mbox{\hyperlink{struct_model}{Model}} $\ast$\+\_\+mm)
-\item 
-\mbox{\Hypertarget{classmy_sim_a8250e60a0a4ca6c706655c08b9ead630}\label{classmy_sim_a8250e60a0a4ca6c706655c08b9ead630}} 
-void {\bfseries operator()} (const vector$<$ double $>$ \&\+\_\+x, vector$<$ double $>$ \&\+\_\+dxdt, const double t)
+    \item
+    \mbox{\Hypertarget{classmy_sim_a26161925695101c164b10c942876d9c6}\label{classmy_sim_a26161925695101c164b10c942876d9c6}}
+    {\bfseries my\+Sim} (\mbox{\hyperlink{struct_model}{Model}} $\ast$\+\_\+mm)
+    \item
+    \mbox{\Hypertarget{classmy_sim_a8250e60a0a4ca6c706655c08b9ead630}\label{classmy_sim_a8250e60a0a4ca6c706655c08b9ead630}}
+    void {\bfseries operator()} (const vector$<$ double $>$ \&\+\_\+x, vector$<$ double $>$ \&\+\_\+dxdt, const double t)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classmy_sim_a3add4e027559c9e027393d4a500cc438}\label{classmy_sim_a3add4e027559c9e027393d4a500cc438}} 
-\mbox{\hyperlink{struct_model}{Model}} $\ast$ {\bfseries mm}
+    \item
+    \mbox{\Hypertarget{classmy_sim_a3add4e027559c9e027393d4a500cc438}\label{classmy_sim_a3add4e027559c9e027393d4a500cc438}}
+    \mbox{\hyperlink{struct_model}{Model}} $\ast$ {\bfseries mm}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-======================= O\+DE Solver (defined with the same interface than B\+O\+O\+ST) =============================== 
+======================= O\+DE Solver (defined with the same interface than B\+O\+O\+ST) ===============================
 
-This class is the interface to use boost\+::integrate functions (a class where the operator () gives the derivatives) I don\textquotesingle{}t use boost, but I keep this formalism so it\textquotesingle{}s easy to use boost when we want And I use this class to override variables with data. The strategy is to force x\mbox{[}overrided variable\mbox{]} = data each time before calling the derivatives, and to remove it after (put 0), so the solver is not confused (there is no variation on these variables. if not, the solver would compute an \textquotesingle{}error\textquotesingle{}and might adapt its dt to the forced data curves). 
+This class is the interface to use boost\+::integrate functions (a class where the operator () gives the derivatives) I don\textquotesingle{}t use boost, but I keep this formalism so it\textquotesingle{}s easy to use boost when we want And I use this class to override variables with data. The strategy is to force x\mbox{[}overrided variable\mbox{]} = data each time before calling the derivatives, and to remove it after (put 0), so the solver is not confused (there is no variation on these variables. if not, the solver would compute an \textquotesingle{}error\textquotesingle{}and might adapt its dt to the forced data curves).
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
-\item 
-Framework/modele.\+cpp\end{DoxyCompactItemize}
+                                                                             \item
+                                                                             Framework/modele.\+cpp
+\end{DoxyCompactItemize}

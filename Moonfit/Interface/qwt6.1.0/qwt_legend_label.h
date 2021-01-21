@@ -14,6 +14,7 @@
 #include "qwt_legend_data.h"
 #include "qwt_text.h"
 #include "qwt_text_label.h"
+
 #ifdef QT5
 #include <qpixmap.h>
 #endif
@@ -26,37 +27,43 @@ class QwtLegendData;
 /*!
   \brief A widget representing something on a QwtLegend.
 */
-class QWT_EXPORT QwtLegendLabel: public QwtTextLabel
-{
+class QWT_EXPORT QwtLegendLabel : public QwtTextLabel {
     Q_OBJECT
 public:
-    explicit QwtLegendLabel( QWidget *parent = 0 );
+    explicit QwtLegendLabel(QWidget *parent = 0);
+
     virtual ~QwtLegendLabel();
 
-    void setData( const QwtLegendData & );
+    void setData(const QwtLegendData &);
+
     const QwtLegendData &data() const;
 
-    void setItemMode( QwtLegendData::Mode );
+    void setItemMode(QwtLegendData::Mode);
+
     QwtLegendData::Mode itemMode() const;
 
-    void setSpacing( int spacing );
+    void setSpacing(int spacing);
+
     int spacing() const;
 
-    virtual void setText( const QwtText & );
+    virtual void setText(const QwtText &);
 
-    void setIcon( const QPixmap & );
+    void setIcon(const QPixmap &);
+
     QPixmap icon() const;
 
     virtual QSize sizeHint() const;
 
     bool isChecked() const;
 
-public Q_SLOTS:
-    void setChecked( bool on );
+public
+    Q_SLOTS:
+            void setChecked(bool
+    on );
 
-Q_SIGNALS:
-    //! Signal, when the legend item has been clicked
-    void clicked();
+    Q_SIGNALS:
+            //! Signal, when the legend item has been clicked
+            void clicked();
 
     //! Signal, when the legend item has been pressed
     void pressed();
@@ -65,20 +72,26 @@ Q_SIGNALS:
     void released();
 
     //! Signal, when the legend item has been toggled
-    void checked( bool );
+    void checked(bool);
 
 protected:
-    void setDown( bool );
+    void setDown(bool);
+
     bool isDown() const;
 
-    virtual void paintEvent( QPaintEvent * );
-    virtual void mousePressEvent( QMouseEvent * );
-    virtual void mouseReleaseEvent( QMouseEvent * );
-    virtual void keyPressEvent( QKeyEvent * );
-    virtual void keyReleaseEvent( QKeyEvent * );
+    virtual void paintEvent(QPaintEvent *);
+
+    virtual void mousePressEvent(QMouseEvent *);
+
+    virtual void mouseReleaseEvent(QMouseEvent *);
+
+    virtual void keyPressEvent(QKeyEvent *);
+
+    virtual void keyReleaseEvent(QKeyEvent *);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -39,15 +39,13 @@
 
   \sa QwtDateScaleEngine, QwtDateScaleDraw, QDate, QTime
 */
-class QWT_EXPORT QwtDate
-{
+class QWT_EXPORT QwtDate {
 public:
     /*! 
        How to identify the first week of year differs between
        countries. 
      */
-    enum Week0Type
-    {
+    enum Week0Type {
         /*!
            According to ISO 8601 the first week of a year is defined
            as "the week with the year's first Thursday in it".
@@ -72,8 +70,7 @@ public:
       Time intervals needs to be classified to decide how to
       align and divide it.
      */
-    enum IntervalType
-    {
+    enum IntervalType {
         //! The interval is related to milliseconds
         Millisecond,
 
@@ -99,30 +96,32 @@ public:
         Year
     };
 
-    enum
-    {
+    enum {
         //! The Julian day of "The Epoch"
         JulianDayForEpoch = 2440588
     };
 
     static QDate minDate();
+
     static QDate maxDate();
 
-    static QDateTime toDateTime( double value, 
-        Qt::TimeSpec = Qt::UTC );
+    static QDateTime toDateTime(double value,
+                                Qt::TimeSpec = Qt::UTC);
 
-    static double toDouble( const QDateTime & );
+    static double toDouble(const QDateTime &);
 
-    static QDateTime ceil( const QDateTime &, IntervalType );
-    static QDateTime floor( const QDateTime &, IntervalType );
+    static QDateTime ceil(const QDateTime &, IntervalType);
 
-    static QDate dateOfWeek0( int year, Week0Type );
-    static int weekNumber( const QDate &, Week0Type );
+    static QDateTime floor(const QDateTime &, IntervalType);
 
-    static int utcOffset( const QDateTime & );
+    static QDate dateOfWeek0(int year, Week0Type);
 
-    static QString toString( const QDateTime &, 
-        const QString & format, Week0Type );
+    static int weekNumber(const QDate &, Week0Type);
+
+    static int utcOffset(const QDateTime &);
+
+    static QString toString(const QDateTime &,
+                            const QString &format, Week0Type);
 };
 
 #endif

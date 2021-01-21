@@ -54,13 +54,15 @@ double QwtSystemClock::elapsed() const
     const qint64 nsecs = d_data->timer.nsecsElapsed();
     return nsecs / 1e6;
 }
-    
+
 #else // !USE_ELAPSED_TIMER
 
 #include <qdatetime.h>
 
 #if !defined(Q_OS_WIN)
+
 #include <unistd.h>
+
 #endif
 
 #if defined(Q_OS_MAC)
@@ -68,7 +70,9 @@ double QwtSystemClock::elapsed() const
 #include <mach/mach_time.h>
 #define QWT_HIGH_RESOLUTION_CLOCK
 #elif defined(_POSIX_TIMERS)
+
 #include <time.h>
+
 #define QWT_HIGH_RESOLUTION_CLOCK
 #elif defined(Q_OS_WIN)
 #define QWT_HIGH_RESOLUTION_CLOCK
@@ -77,13 +81,14 @@ double QwtSystemClock::elapsed() const
 
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
 
-class QwtHighResolutionClock
-{
+class QwtHighResolutionClock {
 public:
     QwtHighResolutionClock();
 
     void start();
+
     double restart();
+
     double elapsed() const;
 
     bool isNull() const;
@@ -98,8 +103,8 @@ private:
     uint64_t d_timeStamp;
 #elif defined(_POSIX_TIMERS)
 
-    static double msecsTo( const struct timespec &,
-        const struct timespec & );
+    static double msecsTo(const struct timespec &,
+                          const struct timespec &);
 
     static bool isMonotonic();
 
@@ -169,70 +174,61 @@ double QwtHighResolutionClock::msecsTo(
 
 #elif defined(_POSIX_TIMERS)
 
-QwtHighResolutionClock::QwtHighResolutionClock()
-{
+QwtHighResolutionClock::QwtHighResolutionClock() {
     d_clockId = isMonotonic() ? CLOCK_MONOTONIC : CLOCK_REALTIME;
     d_timeStamp.tv_sec = d_timeStamp.tv_nsec = 0;
 }
 
-double QwtHighResolutionClock::precision()
-{
+double QwtHighResolutionClock::precision() {
     struct timespec resolution;
 
     int clockId = isMonotonic() ? CLOCK_MONOTONIC : CLOCK_REALTIME;
-    ::clock_getres( clockId, &resolution );
+    ::clock_getres(clockId, &resolution);
 
     return resolution.tv_nsec / 1e3;
 }
 
-inline bool QwtHighResolutionClock::isNull() const
-{
+inline bool QwtHighResolutionClock::isNull() const {
     return d_timeStamp.tv_sec <= 0 && d_timeStamp.tv_nsec <= 0;
 }
 
-inline void QwtHighResolutionClock::start()
-{
-    ::clock_gettime( d_clockId, &d_timeStamp );
+inline void QwtHighResolutionClock::start() {
+    ::clock_gettime(d_clockId, &d_timeStamp);
 }
 
-double QwtHighResolutionClock::restart()
-{
+double QwtHighResolutionClock::restart() {
     struct timespec timeStamp;
-    ::clock_gettime( d_clockId, &timeStamp );
+    ::clock_gettime(d_clockId, &timeStamp);
 
-    const double elapsed = msecsTo( d_timeStamp, timeStamp );
+    const double elapsed = msecsTo(d_timeStamp, timeStamp);
 
     d_timeStamp = timeStamp;
     return elapsed;
 }
 
-inline double QwtHighResolutionClock::elapsed() const
-{
+inline double QwtHighResolutionClock::elapsed() const {
     struct timespec timeStamp;
-    ::clock_gettime( d_clockId, &timeStamp );
+    ::clock_gettime(d_clockId, &timeStamp);
 
-    return msecsTo( d_timeStamp, timeStamp );
+    return msecsTo(d_timeStamp, timeStamp);
 }
 
 inline double QwtHighResolutionClock::msecsTo(
-    const struct timespec &t1, const struct timespec &t2 )
-{
-    return ( t2.tv_sec - t1.tv_sec ) * 1e3
-        + ( t2.tv_nsec - t1.tv_nsec ) * 1e-6;
+        const struct timespec &t1, const struct timespec &t2) {
+    return (t2.tv_sec - t1.tv_sec) * 1e3
+           + (t2.tv_nsec - t1.tv_nsec) * 1e-6;
 }
 
-bool QwtHighResolutionClock::isMonotonic()
-{
+bool QwtHighResolutionClock::isMonotonic() {
     // code copied from qcore_unix.cpp
 
-#if (_POSIX_MONOTONIC_CLOCK-0 > 0)
+#if (_POSIX_MONOTONIC_CLOCK - 0 > 0)
     return true;
 #else
     static int returnValue = 0;
 
-    if ( returnValue == 0 )
-    {
-#if (_POSIX_MONOTONIC_CLOCK-0 < 0) || !defined(_SC_MONOTONIC_CLOCK)
+    if (returnValue == 0) {
+#if (_POSIX_MONOTONIC_CLOCK - 0 < 0) || !defined(_SC_MONOTONIC_CLOCK)
         returnValue = -1;
 #elif (_POSIX_MONOTONIC_CLOCK == 0)
         // detect if the system support monotonic timers
@@ -296,8 +292,7 @@ inline double QwtHighResolutionClock::elapsed() const
 
 #endif // QWT_HIGH_RESOLUTION_CLOCK
 
-class QwtSystemClock::PrivateData
-{
+class QwtSystemClock::PrivateData {
 public:
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
     QwtHighResolutionClock *clock;
@@ -306,20 +301,18 @@ public:
 };
 
 //!  Constructs a null clock object.
-QwtSystemClock::QwtSystemClock()
-{
+QwtSystemClock::QwtSystemClock() {
     d_data = new PrivateData;
 
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
     d_data->clock = NULL;
-    if ( QwtHighResolutionClock::precision() > 0.0 )
+    if (QwtHighResolutionClock::precision() > 0.0)
         d_data->clock = new QwtHighResolutionClock;
 #endif
 }
 
 //! Destructor
-QwtSystemClock::~QwtSystemClock()
-{
+QwtSystemClock::~QwtSystemClock() {
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
     delete d_data->clock;
 #endif
@@ -329,10 +322,9 @@ QwtSystemClock::~QwtSystemClock()
 /*!
   \return true if the clock has never been started.
 */
-bool QwtSystemClock::isNull() const
-{
+bool QwtSystemClock::isNull() const {
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
-    if ( d_data->clock )
+    if (d_data->clock)
         return d_data->clock->isNull();
 #endif
 
@@ -342,11 +334,9 @@ bool QwtSystemClock::isNull() const
 /*!
   Sets the start time to the current time.
 */
-void QwtSystemClock::start()
-{
+void QwtSystemClock::start() {
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
-    if ( d_data->clock )
-    {
+    if (d_data->clock) {
         d_data->clock->start();
         return;
     }
@@ -359,10 +349,9 @@ void QwtSystemClock::start()
   Set the start time to the current time 
   \return Time, that is elapsed since the previous start time.
 */
-double QwtSystemClock::restart()
-{
+double QwtSystemClock::restart() {
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
-    if ( d_data->clock )
+    if (d_data->clock)
         return d_data->clock->restart();
 #endif
 
@@ -373,21 +362,19 @@ double QwtSystemClock::restart()
   \return Number of milliseconds that have elapsed since the last time
           start() or restart() was called or 0.0 for null clocks.
 */
-double QwtSystemClock::elapsed() const
-{
+double QwtSystemClock::elapsed() const {
     double elapsed = 0.0;
 
 #if defined(QWT_HIGH_RESOLUTION_CLOCK)
-    if ( d_data->clock )
-    {
-        if ( !d_data->clock->isNull() )
+    if (d_data->clock) {
+        if (!d_data->clock->isNull())
             elapsed = d_data->clock->elapsed();
 
         return elapsed;
     }
 #endif
 
-    if ( !d_data->time.isNull() )
+    if (!d_data->time.isNull())
         elapsed = d_data->time.elapsed();
 
     return elapsed;

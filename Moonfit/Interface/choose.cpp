@@ -2,9 +2,8 @@
 #include "ui_choose.h"
 
 choose::choose(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::choose)
-{
+        QWidget(parent),
+        ui(new Ui::choose) {
     ui->setupUi(this);
 
     QObject::connect(ui->comboBoxModele, SIGNAL(activated(int)), this, SLOT(modelSelected(int)));
@@ -16,7 +15,7 @@ choose::choose(QWidget *parent) :
 }
 
 
-void choose::reset(){
+void choose::reset() {
     AvailModels.clear();
     AvailModels.append("Choose a model");
     AvailModels.append("M110 - ");
@@ -56,34 +55,77 @@ void choose::reset(){
 }
 
 
-void choose::modelSelected(int mod){
+void choose::modelSelected(int mod) {
     //if(currentModel) delete currentModel; // implement destructor first ...
     currentModel = NULL;
 
-    switch(mod){
-    case 1: {currentModel = new Modele110(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M110.txt")); break;}
-    case 2: {currentModel = new Modele111(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M111.txt")); break;}
-    case 3: {currentModel = new Modele112(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M112.txt")); break;}
-    case 4: {currentModel = new Modele113(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M113.txt")); break;}
-    case 5: {currentModel = new Modele114(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M114.txt")); break;}
-    case 6: {currentModel = new Modele110L(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M110L.txt")); break;}
-    case 7: {currentModel = new Modele111L(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M111L.txt")); break;}
-    case 8: {currentModel = new Modele112L(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M112L.txt")); break;}
-    case 9: {currentModel = new Modele113L(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M113L.txt")); break;}
-    case 10:{currentModel = new Modele114L(); loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M114L.txt")); break;}
-    case 11:{currentModel = new Modele1v1(); break;}
-    //case 12:{currentModel = new ModeleThTot5(); break;}
+    switch (mod) {
+        case 1: {
+            currentModel = new Modele110();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M110.txt"));
+            break;
+        }
+        case 2: {
+            currentModel = new Modele111();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M111.txt"));
+            break;
+        }
+        case 3: {
+            currentModel = new Modele112();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M112.txt"));
+            break;
+        }
+        case 4: {
+            currentModel = new Modele113();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M113.txt"));
+            break;
+        }
+        case 5: {
+            currentModel = new Modele114();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M114.txt"));
+            break;
+        }
+        case 6: {
+            currentModel = new Modele110L();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M110L.txt"));
+            break;
+        }
+        case 7: {
+            currentModel = new Modele111L();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M111L.txt"));
+            break;
+        }
+        case 8: {
+            currentModel = new Modele112L();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M112L.txt"));
+            break;
+        }
+        case 9: {
+            currentModel = new Modele113L();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M113L.txt"));
+            break;
+        }
+        case 10: {
+            currentModel = new Modele114L();
+            loadOptim(QString("C:/Users/parobert/Desktop/Optimisation/ThModelesV3/Modeles/M114L.txt"));
+            break;
+        }
+        case 11: {
+            currentModel = new Modele1v1();
+            break;
+        }
+            //case 12:{currentModel = new ModeleThTot5(); break;}
     }
-    if(currentModel){
+    if (currentModel) {
         currentModel->setBaseParameters();
         currentModel->initialise();
         currentModel->print();
         ui->textEditParamSet->clear();
-        for(int i = 0; i < currentModel->paramSize(); ++i){
+        for (int i = 0; i < currentModel->paramSize(); ++i) {
             ui->textEditParamSet->append(QString::number(currentModel->getParam(i)) + QString("\t"));
         }
         ui->comboBoxVariable->clear();
-        for(int i = 0; i < currentModel->getNbVars(); ++i){
+        for (int i = 0; i < currentModel->getNbVars(); ++i) {
             ui->comboBoxVariable->addItem(QString(currentModel->getName(i).c_str()));
         }
     }
@@ -105,24 +147,24 @@ void choose::modelSelected(int mod){
     dataSetSelected(ui->comboBoxDataSet->currentIndex());   // to update
 }
 
-void choose::dataSetSelected(int ds){
+void choose::dataSetSelected(int ds) {
     //if(currentExperiment) delete currentExperiment;   // implement destructor first
     currentExperiment = NULL;
 
-    switch(ds){
-    case 1:{
-        if(currentModel) currentExperiment = new ExpTH1(currentModel);
-        //else ui->comboBoxDataSet->setCurrentIndex(0);
-    }
+    switch (ds) {
+        case 1: {
+            if (currentModel) currentExperiment = new ExpTH1(currentModel);
+            //else ui->comboBoxDataSet->setCurrentIndex(0);
+        }
 
     }
 
-    if(currentExperiment){
+    if (currentExperiment) {
         int nb = currentExperiment->nbExp();
         cerr << "       Nb Exps : " << nb << endl;
         ui->comboBoxExperiment->clear();
-        for(int i = 0; i < nb; ++i){
-            if(currentExperiment->isDoable(i)){
+        for (int i = 0; i < nb; ++i) {
+            if (currentExperiment->isDoable(i)) {
                 ui->comboBoxExperiment->addItem(currentExperiment->expName(i).c_str());
                 cerr << "   - " << currentExperiment->expName(i).c_str() << endl;
             } else {
@@ -133,10 +175,10 @@ void choose::dataSetSelected(int ds){
     }
 }
 
-void choose::expSelected(int exp){}
-void choose::subExpSelected(int subexp){}
+void choose::expSelected(int exp) {}
 
-choose::~choose()
-{
+void choose::subExpSelected(int subexp) {}
+
+choose::~choose() {
     delete ui;
 }

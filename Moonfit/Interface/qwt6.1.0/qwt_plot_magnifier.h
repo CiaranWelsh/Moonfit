@@ -26,28 +26,32 @@ class QwtPlot;
 
   \sa QwtPlotZoomer, QwtPlotPanner, QwtPlot
 */
-class QWT_EXPORT QwtPlotMagnifier: public QwtMagnifier
-{
+class QWT_EXPORT QwtPlotMagnifier : public QwtMagnifier {
     Q_OBJECT
 
 public:
-    explicit QwtPlotMagnifier( QWidget * );
+    explicit QwtPlotMagnifier(QWidget *);
+
     virtual ~QwtPlotMagnifier();
 
-    void setAxisEnabled( int axis, bool on );
-    bool isAxisEnabled( int axis ) const;
+    void setAxisEnabled(int axis, bool on);
+
+    bool isAxisEnabled(int axis) const;
 
     QWidget *canvas();
+
     const QWidget *canvas() const;
 
     QwtPlot *plot();
+
     const QwtPlot *plot() const;
 
 protected:
-    virtual void rescale( double factor );
+    virtual void rescale(double factor);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

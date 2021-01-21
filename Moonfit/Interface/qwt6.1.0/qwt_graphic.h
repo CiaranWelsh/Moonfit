@@ -13,6 +13,7 @@
 #include "qwt_global.h"
 #include "qwt_null_paintdevice.h"
 #include <qmetatype.h>
+
 #ifdef QT5
 #include <qimage.h>
 #include <qpixmap.h>
@@ -79,15 +80,13 @@ class QwtPainterCommand;
 
     \sa QwtPainterCommand
  */
-class QWT_EXPORT QwtGraphic: public QwtNullPaintDevice
-{
+class QWT_EXPORT QwtGraphic : public QwtNullPaintDevice {
 public:
     /*! 
         Hint how to render a graphic
         \sa setRenderHint(), testRenderHint()
      */
-    enum RenderHint
-    {
+    enum RenderHint {
         /*!
            When RenderPensUnscaled is set non cosmetic pens are
            painted unscaled - like cosmetic pens. The difference to
@@ -104,73 +103,83 @@ public:
 
         The default setting is to disable all hints
      */
-    typedef QFlags<RenderHint> RenderHints;
+    typedef QFlags <RenderHint> RenderHints;
 
     QwtGraphic();
-    QwtGraphic( const QwtGraphic & );
+
+    QwtGraphic(const QwtGraphic &);
 
     virtual ~QwtGraphic();
 
-    QwtGraphic& operator=( const QwtGraphic & );
+    QwtGraphic &operator=(const QwtGraphic &);
 
     void reset();
 
     bool isNull() const;
+
     bool isEmpty() const;
 
-    void render( QPainter * ) const;
+    void render(QPainter *) const;
 
-    void render( QPainter *, const QSizeF &, 
-            Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
+    void render(QPainter *, const QSizeF &,
+                Qt::AspectRatioMode = Qt::IgnoreAspectRatio) const;
 
-    void render( QPainter *, const QRectF &, 
-            Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
+    void render(QPainter *, const QRectF &,
+                Qt::AspectRatioMode = Qt::IgnoreAspectRatio) const;
 
-    void render( QPainter *, const QPointF &,
-        Qt::Alignment = Qt::AlignTop | Qt::AlignLeft ) const;
+    void render(QPainter *, const QPointF &,
+                Qt::Alignment = Qt::AlignTop | Qt::AlignLeft) const;
 
-    QPixmap toPixmap() const; 
-    QPixmap toPixmap( const QSize &, 
-        Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
+    QPixmap toPixmap() const;
 
-    QImage toImage() const; 
-    QImage toImage( const QSize &, 
-        Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
+    QPixmap toPixmap(const QSize &,
+                     Qt::AspectRatioMode = Qt::IgnoreAspectRatio) const;
 
-    QRectF scaledBoundingRect( double sx, double sy ) const;
+    QImage toImage() const;
+
+    QImage toImage(const QSize &,
+                   Qt::AspectRatioMode = Qt::IgnoreAspectRatio) const;
+
+    QRectF scaledBoundingRect(double sx, double sy) const;
 
     QRectF boundingRect() const;
+
     QRectF controlPointRect() const;
 
-    const QVector< QwtPainterCommand > &commands() const;
-    void setCommands( QVector< QwtPainterCommand > & );
+    const QVector <QwtPainterCommand> &commands() const;
 
-    void setDefaultSize( const QSizeF & );
+    void setCommands(QVector <QwtPainterCommand> &);
+
+    void setDefaultSize(const QSizeF &);
+
     QSizeF defaultSize() const;
-    
-    void setRenderHint( RenderHint, bool on = true );
-    bool testRenderHint( RenderHint ) const;
+
+    void setRenderHint(RenderHint, bool on = true);
+
+    bool testRenderHint(RenderHint) const;
 
 protected:
     virtual QSize sizeMetrics() const;
 
-    virtual void drawPath( const QPainterPath & );
+    virtual void drawPath(const QPainterPath &);
 
-    virtual void drawPixmap( const QRectF &,
-        const QPixmap &, const QRectF & );
+    virtual void drawPixmap(const QRectF &,
+                            const QPixmap &, const QRectF &);
 
-    virtual void drawImage( const QRectF &,
-        const QImage &, const QRectF &, Qt::ImageConversionFlags );
+    virtual void drawImage(const QRectF &,
+                           const QImage &, const QRectF &, Qt::ImageConversionFlags);
 
-    virtual void updateState( const QPaintEngineState &state );
+    virtual void updateState(const QPaintEngineState &state);
 
 private:
-    void updateBoundingRect( const QRectF & );
-    void updateControlPointRect( const QRectF & );
+    void updateBoundingRect(const QRectF &);
+
+    void updateControlPointRect(const QRectF &);
 
     class PathInfo;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

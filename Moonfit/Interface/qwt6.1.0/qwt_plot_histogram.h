@@ -13,16 +13,20 @@
 #include "qwt_global.h"
 #include "qwt_plot_seriesitem.h"
 #include "qwt_column_symbol.h"
+
 #ifdef QT5
 #include <qcolor.h>
 #endif
 #ifdef QT4
 #include <QtGui/qcolor.h>
 #endif
+
 #include <qvector.h>
 
 class QwtIntervalData;
+
 class QString;
+
 class QPolygonF;
 
 /*!
@@ -41,9 +45,8 @@ class QPolygonF;
   \sa QwtPlotBarChart, QwtPlotMultiBarChart
 */
 
-class QWT_EXPORT QwtPlotHistogram: 
-    public QwtPlotSeriesItem, public QwtSeriesStore<QwtIntervalSample>
-{
+class QWT_EXPORT QwtPlotHistogram :
+        public QwtPlotSeriesItem, public QwtSeriesStore<QwtIntervalSample> {
 public:
     /*!
         Histogram styles.
@@ -51,8 +54,7 @@ public:
 
         \sa setStyle(), style(), setSymbol(), symbol(), setBaseline()
     */
-    enum HistogramStyle
-    {
+    enum HistogramStyle {
         /*!
            Draw an outline around the area, that is build by all intervals
            using the pen() and fill it with the brush(). The outline style
@@ -81,63 +83,74 @@ public:
         UserStyle = 100
     };
 
-    explicit QwtPlotHistogram( const QString &title = QString::null );
-    explicit QwtPlotHistogram( const QwtText &title );
+    explicit QwtPlotHistogram(const QString &title = QString::null);
+
+    explicit QwtPlotHistogram(const QwtText &title);
+
     virtual ~QwtPlotHistogram();
 
     virtual int rtti() const;
 
-    void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setPen( const QPen & );
+    void setPen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setPen(const QPen &);
+
     const QPen &pen() const;
 
-    void setBrush( const QBrush & );
+    void setBrush(const QBrush &);
+
     const QBrush &brush() const;
 
-    void setSamples( const QVector<QwtIntervalSample> & );
-    void setSamples( QwtSeriesData<QwtIntervalSample> * );
+    void setSamples(const QVector <QwtIntervalSample> &);
 
-    void setBaseline( double reference );
+    void setSamples(QwtSeriesData<QwtIntervalSample> *);
+
+    void setBaseline(double reference);
+
     double baseline() const;
 
-    void setStyle( HistogramStyle style );
+    void setStyle(HistogramStyle style);
+
     HistogramStyle style() const;
 
-    void setSymbol( const QwtColumnSymbol * );
+    void setSymbol(const QwtColumnSymbol *);
+
     const QwtColumnSymbol *symbol() const;
 
-    virtual void drawSeries( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int from, int to ) const;
+    virtual void drawSeries(QPainter *p,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, int from, int to) const;
 
     virtual QRectF boundingRect() const;
 
-    virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
+    virtual QwtGraphic legendIcon(int index, const QSizeF &) const;
 
 protected:
-    virtual QwtColumnRect columnRect( const QwtIntervalSample &,
-        const QwtScaleMap &, const QwtScaleMap & ) const;
+    virtual QwtColumnRect columnRect(const QwtIntervalSample &,
+                                     const QwtScaleMap &, const QwtScaleMap &) const;
 
-    virtual void drawColumn( QPainter *, const QwtColumnRect &,
-        const QwtIntervalSample & ) const;
+    virtual void drawColumn(QPainter *, const QwtColumnRect &,
+                            const QwtIntervalSample &) const;
 
-    void drawColumns( QPainter *,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        int from, int to ) const;
+    void drawColumns(QPainter *,
+                     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                     int from, int to) const;
 
-    void drawOutline( QPainter *,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        int from, int to ) const;
+    void drawOutline(QPainter *,
+                     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                     int from, int to) const;
 
-    void drawLines( QPainter *,
-         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-         int from, int to ) const;
+    void drawLines(QPainter *,
+                   const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                   int from, int to) const;
 
 private:
     void init();
-    void flushPolygon( QPainter *, double baseLine, QPolygonF & ) const;
+
+    void flushPolygon(QPainter *, double baseLine, QPolygonF &) const;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -11,16 +11,20 @@
 #define QWT_INTERVAL_SYMBOL_H
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpen.h>
 #endif
 #ifdef QT4
 #include <QtGui/qpen.h>
 #endif
+
 #include <qsize.h>
 
 class QPainter;
+
 class QRect;
+
 class QPointF;
 
 /*!
@@ -28,12 +32,10 @@ class QPointF;
 
   \sa QwtPlotIntervalCurve
 */
-class QWT_EXPORT QwtIntervalSymbol
-{
+class QWT_EXPORT QwtIntervalSymbol {
 public:
     //! Symbol style
-    enum Style
-    {
+    enum Style {
         //! No Style. The symbol cannot be drawn.
         NoSymbol = -1,
 
@@ -59,34 +61,44 @@ public:
     };
 
 public:
-    QwtIntervalSymbol( Style = NoSymbol );
-    QwtIntervalSymbol( const QwtIntervalSymbol & );
+    QwtIntervalSymbol(Style = NoSymbol);
+
+    QwtIntervalSymbol(const QwtIntervalSymbol &);
+
     virtual ~QwtIntervalSymbol();
 
-    QwtIntervalSymbol &operator=( const QwtIntervalSymbol & );
-    bool operator==( const QwtIntervalSymbol & ) const;
-    bool operator!=( const QwtIntervalSymbol & ) const;
+    QwtIntervalSymbol &operator=(const QwtIntervalSymbol &);
 
-    void setWidth( int );
+    bool operator==(const QwtIntervalSymbol &) const;
+
+    bool operator!=(const QwtIntervalSymbol &) const;
+
+    void setWidth(int);
+
     int width() const;
 
-    void setBrush( const QBrush& b );
-    const QBrush& brush() const;
+    void setBrush(const QBrush &b);
 
-    void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setPen( const QPen & );
-    const QPen& pen() const;
+    const QBrush &brush() const;
 
-    void setStyle( Style );
+    void setPen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setPen(const QPen &);
+
+    const QPen &pen() const;
+
+    void setStyle(Style);
+
     Style style() const;
 
-    virtual void draw( QPainter *, Qt::Orientation,
-        const QPointF& from, const QPointF& to ) const;
+    virtual void draw(QPainter *, Qt::Orientation,
+                      const QPointF &from, const QPointF &to) const;
 
 private:
 
     class PrivateData;
-    PrivateData* d_data;
+
+    PrivateData *d_data;
 };
 
 #endif

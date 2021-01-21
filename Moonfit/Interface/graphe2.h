@@ -2,6 +2,7 @@
 #define GRAPHE2_H
 
 #include "common.h"
+
 #ifndef WITHOUT_QT
 
 #ifdef QT5

@@ -14,6 +14,7 @@
 #include <qlist.h>
 
 class QEvent;
+
 class QwtEventPattern;
 
 /*!
@@ -25,15 +26,13 @@ class QwtEventPattern;
   \sa QwtEventPattern::MousePatternCode, QwtEventPattern::KeyPatternCode
 */
 
-class QWT_EXPORT QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerMachine {
 public:
     /*!
       Type of a selection.
       \sa selectionType()
     */
-    enum SelectionType
-    {
+    enum SelectionType {
         //! The state machine not usable for any type of selection.
         NoSelection = -1,
 
@@ -48,8 +47,7 @@ public:
     };
 
     //! Commands - the output of a state machine
-    enum Command
-    {
+    enum Command {
         Begin,
         Append,
         Move,
@@ -57,16 +55,19 @@ public:
         End
     };
 
-    QwtPickerMachine( SelectionType );
+    QwtPickerMachine(SelectionType);
+
     virtual ~QwtPickerMachine();
 
     //! Transition
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * ) = 0;
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *) = 0;
+
     void reset();
 
     int state() const;
-    void setState( int );
+
+    void setState(int);
 
     SelectionType selectionType() const;
 
@@ -82,13 +83,12 @@ private:
   corresponding to mouse movements, but is not intended for
   selecting anything. Begin/End are related to Enter/Leave events.
 */
-class QWT_EXPORT QwtPickerTrackerMachine: public QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerTrackerMachine : public QwtPickerMachine {
 public:
     QwtPickerTrackerMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 /*!
@@ -99,13 +99,12 @@ public:
 
   \sa QwtEventPattern::MousePatternCode, QwtEventPattern::KeyPatternCode
 */
-class QWT_EXPORT QwtPickerClickPointMachine: public QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerClickPointMachine : public QwtPickerMachine {
 public:
     QwtPickerClickPointMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 /*!
@@ -115,13 +114,12 @@ public:
   starts the selection, releasing QwtEventPattern::MouseSelect1 or
   a second press of QwtEventPattern::KeySelect1 terminates it.
 */
-class QWT_EXPORT QwtPickerDragPointMachine: public QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerDragPointMachine : public QwtPickerMachine {
 public:
     QwtPickerDragPointMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 /*!
@@ -137,13 +135,12 @@ public:
   \sa QwtEventPattern::MousePatternCode, QwtEventPattern::KeyPatternCode
 */
 
-class QWT_EXPORT QwtPickerClickRectMachine: public QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerClickRectMachine : public QwtPickerMachine {
 public:
     QwtPickerClickRectMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 /*!
@@ -158,13 +155,12 @@ public:
   \sa QwtEventPattern::MousePatternCode, QwtEventPattern::KeyPatternCode
 */
 
-class QWT_EXPORT QwtPickerDragRectMachine: public QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerDragRectMachine : public QwtPickerMachine {
 public:
     QwtPickerDragRectMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 /*!
@@ -180,15 +176,14 @@ public:
   distance measurements.
   
   \sa QwtEventPattern::MousePatternCode, QwtEventPattern::KeyPatternCode
-*/              
-                    
-class QWT_EXPORT QwtPickerDragLineMachine: public QwtPickerMachine
-{
+*/
+
+class QWT_EXPORT QwtPickerDragLineMachine : public QwtPickerMachine {
 public:
     QwtPickerDragLineMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 /*!
@@ -202,13 +197,12 @@ public:
   \sa QwtEventPattern::MousePatternCode, QwtEventPattern::KeyPatternCode
 */
 
-class QWT_EXPORT QwtPickerPolygonMachine: public QwtPickerMachine
-{
+class QWT_EXPORT QwtPickerPolygonMachine : public QwtPickerMachine {
 public:
     QwtPickerPolygonMachine();
 
-    virtual QList<Command> transition(
-        const QwtEventPattern &, const QEvent * );
+    virtual QList <Command> transition(
+            const QwtEventPattern &, const QEvent *);
 };
 
 #endif

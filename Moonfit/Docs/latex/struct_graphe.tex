@@ -2,72 +2,90 @@
 \label{struct_graphe}\index{Graphe@{Graphe}}
 
 
-1 -\/ Simple structure for a network \+:  
+1 -\/ Simple structure for a network \+:
 
 
 
 
-{\ttfamily \#include $<$generate.\+h$>$}
+    {\ttfamily \#include $<$generate.\+h$>$}
 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_graphe_a353a015a66afdafe9e55fbc2c189b84c}\label{struct_graphe_a353a015a66afdafe9e55fbc2c189b84c}} 
-\mbox{\hyperlink{struct_graphe_a353a015a66afdafe9e55fbc2c189b84c}{Graphe}} (int \+\_\+nb\+Nodes=0)
-\begin{DoxyCompactList}\small\item\em table\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} $<$=$>$ type/weight of interaction for i-\/-\/$>$j \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_graphe_a36dfecf2815a66d3a5a10fc3ffbb740c}\label{struct_graphe_a36dfecf2815a66d3a5a10fc3ffbb740c}} 
-{\bfseries Graphe} (\mbox{\hyperlink{struct_graphe}{Graphe}} $\ast$to\+Copy)
-\item 
-\mbox{\Hypertarget{struct_graphe_a67ace5bc82e64ce27578ede113af98ff}\label{struct_graphe_a67ace5bc82e64ce27578ede113af98ff}} 
-void \mbox{\hyperlink{struct_graphe_a67ace5bc82e64ce27578ede113af98ff}{add}} (int i, int j, valeur value)
-\begin{DoxyCompactList}\small\item\em to duplicate an existing graph \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{struct_graphe_a06e36452e3d23db8bb2fa4471711edec}{resize}} (int new\+Nb\+Nodes)
-\item 
-\mbox{\Hypertarget{struct_graphe_ac0e07381e62bab886dfeb1d00ca4d489}\label{struct_graphe_ac0e07381e62bab886dfeb1d00ca4d489}} 
-valeur \mbox{\hyperlink{struct_graphe_ac0e07381e62bab886dfeb1d00ca4d489}{operator()}} (int i, int j)
-\begin{DoxyCompactList}\small\item\em add new nodes. Clears all the interactions !! \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_graphe_afa8ddcba214b715c2e2f27c7ba5ff452}\label{struct_graphe_afa8ddcba214b715c2e2f27c7ba5ff452}} 
-vector$<$ int $>$ \mbox{\hyperlink{struct_graphe_afa8ddcba214b715c2e2f27c7ba5ff452}{operator()}} (int i)
-\begin{DoxyCompactList}\small\item\em reads the table \+: me(i,j) = table\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_graphe_a61093f1ea2bf2a46502b34f62845fc0f}\label{struct_graphe_a61093f1ea2bf2a46502b34f62845fc0f}} 
-vector$<$ int $>$ \mbox{\hyperlink{struct_graphe_a61093f1ea2bf2a46502b34f62845fc0f}{pred}} (int i)
-\begin{DoxyCompactList}\small\item\em gets the \textquotesingle{}sons\textquotesingle{} of i \+: me(i) = table\mbox{[}i\mbox{]} \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_graphe_aaa70a2cbbf5d4f144db3eaa4343e5abb}\label{struct_graphe_aaa70a2cbbf5d4f144db3eaa4343e5abb}} 
-void \mbox{\hyperlink{struct_graphe_aaa70a2cbbf5d4f144db3eaa4343e5abb}{print}} ()
-\begin{DoxyCompactList}\small\item\em gets the \textquotesingle{}parents\textquotesingle{} of i \+: pred(i) = \{j $\vert$ j -\/-\/$>$ i\} \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_graphe_a0e3a12fe476d6a651bbb4a31e36906f1}\label{struct_graphe_a0e3a12fe476d6a651bbb4a31e36906f1}} 
-int {\bfseries size} ()
-\item 
-\mbox{\Hypertarget{struct_graphe_a9ddd67e8b1691795340189bc8c4a376f}\label{struct_graphe_a9ddd67e8b1691795340189bc8c4a376f}} 
-int \mbox{\hyperlink{struct_graphe_a9ddd67e8b1691795340189bc8c4a376f}{inters}} ()
-\begin{DoxyCompactList}\small\item\em returns Nb of nodes \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\Hypertarget{struct_graphe_a353a015a66afdafe9e55fbc2c189b84c}\label{struct_graphe_a353a015a66afdafe9e55fbc2c189b84c}}
+    \mbox{\hyperlink{struct_graphe_a353a015a66afdafe9e55fbc2c189b84c}{Graphe}} (int \+\_\+nb\+Nodes=0)
+    \begin{DoxyCompactList}
+        \small\item\em table\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} $<$=$>$ type/weight of interaction for i-\/-\/$>$j
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_graphe_a36dfecf2815a66d3a5a10fc3ffbb740c}\label{struct_graphe_a36dfecf2815a66d3a5a10fc3ffbb740c}}
+    {\bfseries Graphe} (\mbox{\hyperlink{struct_graphe}{Graphe}} $\ast$to\+Copy)
+    \item
+    \mbox{\Hypertarget{struct_graphe_a67ace5bc82e64ce27578ede113af98ff}\label{struct_graphe_a67ace5bc82e64ce27578ede113af98ff}}
+    void \mbox{\hyperlink{struct_graphe_a67ace5bc82e64ce27578ede113af98ff}{add}} (int i, int j, valeur value)
+    \begin{DoxyCompactList}
+        \small\item\em to duplicate an existing graph
+    \end{DoxyCompactList}\item
+    void \mbox{\hyperlink{struct_graphe_a06e36452e3d23db8bb2fa4471711edec}{resize}} (int new\+Nb\+Nodes)
+    \item
+    \mbox{\Hypertarget{struct_graphe_ac0e07381e62bab886dfeb1d00ca4d489}\label{struct_graphe_ac0e07381e62bab886dfeb1d00ca4d489}}
+    valeur \mbox{\hyperlink{struct_graphe_ac0e07381e62bab886dfeb1d00ca4d489}{operator()}} (int i, int j)
+    \begin{DoxyCompactList}
+        \small\item\em add new nodes. Clears all the interactions !!
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_graphe_afa8ddcba214b715c2e2f27c7ba5ff452}\label{struct_graphe_afa8ddcba214b715c2e2f27c7ba5ff452}}
+    vector$<$ int $>$ \mbox{\hyperlink{struct_graphe_afa8ddcba214b715c2e2f27c7ba5ff452}{operator()}} (int i)
+    \begin{DoxyCompactList}
+        \small\item\em reads the table \+: me(i,j) = table\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_graphe_a61093f1ea2bf2a46502b34f62845fc0f}\label{struct_graphe_a61093f1ea2bf2a46502b34f62845fc0f}}
+    vector$<$ int $>$ \mbox{\hyperlink{struct_graphe_a61093f1ea2bf2a46502b34f62845fc0f}{pred}} (int i)
+    \begin{DoxyCompactList}
+        \small\item\em gets the \textquotesingle{}sons\textquotesingle{} of i \+: me(i) = table\mbox{[}i\mbox{]}
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_graphe_aaa70a2cbbf5d4f144db3eaa4343e5abb}\label{struct_graphe_aaa70a2cbbf5d4f144db3eaa4343e5abb}}
+    void \mbox{\hyperlink{struct_graphe_aaa70a2cbbf5d4f144db3eaa4343e5abb}{print}} ()
+    \begin{DoxyCompactList}
+        \small\item\em gets the \textquotesingle{}parents\textquotesingle{} of i \+: pred(i) = \{j $\vert$ j -\/-\/$>$ i\}
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_graphe_a0e3a12fe476d6a651bbb4a31e36906f1}\label{struct_graphe_a0e3a12fe476d6a651bbb4a31e36906f1}}
+    int {\bfseries size} ()
+    \item
+    \mbox{\Hypertarget{struct_graphe_a9ddd67e8b1691795340189bc8c4a376f}\label{struct_graphe_a9ddd67e8b1691795340189bc8c4a376f}}
+    int \mbox{\hyperlink{struct_graphe_a9ddd67e8b1691795340189bc8c4a376f}{inters}} ()
+    \begin{DoxyCompactList}
+        \small\item\em returns Nb of nodes
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_graphe_ab6ad83600bb7b1ce912a32e98989d81b}\label{struct_graphe_ab6ad83600bb7b1ce912a32e98989d81b}} 
-int {\bfseries nb\+Nodes}
-\item 
-\mbox{\Hypertarget{struct_graphe_a5548301165fdb7ad3fdd665ac043bbe6}\label{struct_graphe_a5548301165fdb7ad3fdd665ac043bbe6}} 
-int {\bfseries nb\+Vertices}
-\item 
-\mbox{\Hypertarget{struct_graphe_aa52689bcbe91d186f997d69aff047e97}\label{struct_graphe_aa52689bcbe91d186f997d69aff047e97}} 
-vector$<$ vector$<$ valeur $>$ $>$ {\bfseries table}
+    \item
+    \mbox{\Hypertarget{struct_graphe_ab6ad83600bb7b1ce912a32e98989d81b}\label{struct_graphe_ab6ad83600bb7b1ce912a32e98989d81b}}
+    int {\bfseries nb\+Nodes}
+    \item
+    \mbox{\Hypertarget{struct_graphe_a5548301165fdb7ad3fdd665ac043bbe6}\label{struct_graphe_a5548301165fdb7ad3fdd665ac043bbe6}}
+    int {\bfseries nb\+Vertices}
+    \item
+    \mbox{\Hypertarget{struct_graphe_aa52689bcbe91d186f997d69aff047e97}\label{struct_graphe_aa52689bcbe91d186f997d69aff047e97}}
+    vector$<$ vector$<$ valeur $>$ $>$ {\bfseries table}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-1 -\/ Simple structure for a network \+: 
+1 -\/ Simple structure for a network \+:
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{struct_graphe_a06e36452e3d23db8bb2fa4471711edec}\label{struct_graphe_a06e36452e3d23db8bb2fa4471711edec}} 
+\mbox{\Hypertarget{struct_graphe_a06e36452e3d23db8bb2fa4471711edec}\label{struct_graphe_a06e36452e3d23db8bb2fa4471711edec}}
 \index{Graphe@{Graphe}!resize@{resize}}
 \index{resize@{resize}!Graphe@{Graphe}}
 \doxysubsubsection{\texorpdfstring{resize()}{resize()}}
-{\footnotesize\ttfamily void Graphe\+::resize (\begin{DoxyParamCaption}\item[{int}]{new\+Nb\+Nodes }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Graphe\+::resize (\begin{DoxyParamCaption}
+                                                   \item[{int}]{new\+Nb\+Nodes }
+\end{DoxyParamCaption})}
 
-to add \textquotesingle{}i-\/-\/$>$j\textquotesingle{} with type/weight of interaction value. Returns a warning if interaction already existing 
+to add \textquotesingle{}i-\/-\/$>$j\textquotesingle{} with type/weight of interaction value. Returns a warning if interaction already existing
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/generate.\+h\item 
-Framework/generate.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/generate.\+h\item
+                                                                               Framework/generate.\+cpp
+\end{DoxyCompactItemize}

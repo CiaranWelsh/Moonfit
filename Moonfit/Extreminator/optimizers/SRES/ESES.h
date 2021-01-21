@@ -52,13 +52,13 @@ extern "C" {
  ** to calculate fitness and constraints and assign to ESIndividual **
  ** fg(x,dim, f, g)                                                 **
  *********************************************************************/
-typedef void(*ESfcnFG) (double *, double *, double *);
+typedef void(*ESfcnFG)(double *, double *, double *);
 
 /*********************************************************************
  ** function to transform x(op) and sp                              **
  ** double f(double)                                                **
  *********************************************************************/
-typedef double(*ESfcnTrsfm) (double );
+typedef double(*ESfcnTrsfm)(double);
 
 /*********************************************************************
  ** ESParameter: struct for ES-parameter                            **
@@ -85,23 +85,22 @@ typedef double(*ESfcnTrsfm) (double );
  ** tau: learning rates: tau = varphi/(sqrt(2*sqrt(dim)))           **
  ** tar_: learning rates: tau_ = varphi((sqrt(2*dim)                **
  *********************************************************************/
-typedef struct
-  {
+typedef struct {
     ESfcnFG fg;
     ESfcnTrsfm *trsfm;
     int seed;
     int constraint;
     int dim;
-    double *ub,*lb,*spb;
-    int miu,lambda;
+    double *ub, *lb, *spb;
+    int miu, lambda;
     int gen;
     double gamma;
     double alpha;
     double varphi;
     int retry;
     double chi, tau, tau_;
-    int es,eslambda;
-  } ESParameter;
+    int es, eslambda;
+} ESParameter;
 
 /*********************************************************************
  ** ESIndividual: struct for each individual/genome                 **
@@ -111,13 +110,12 @@ typedef struct
  ** g[constraint]: constraint value                                 **
  ** phi: phi = sum( max(0,g)^2 )                                    **
  *********************************************************************/
-typedef struct
-  {
+typedef struct {
     double *op;
     double *sp;
-    double f,phi;
+    double f, phi;
     double *g;
-  } ESIndividual;
+} ESIndividual;
 
 /*********************************************************************
  ** ESPopulation: struct for population                             **
@@ -126,13 +124,12 @@ typedef struct
  ** phi[lambda]: constraints                                        **
  ** index[lambda]: ranking index                                    **
  *********************************************************************/
-typedef struct
-  {
-    ESIndividual ** member;
+typedef struct {
+    ESIndividual **member;
     double *f;
     double *phi;
     int *index;
-  } ESPopulation;
+} ESPopulation;
 
 /*********************************************************************
  ** ESStatistics: struct for ES-statistics                          **
@@ -144,13 +141,12 @@ typedef struct
  ** bestgen: generation of the bestindividual                       **
  ** curgen: current generation                                      **
  *********************************************************************/
-typedef struct
-  {
+typedef struct {
     time_t begintime, nowtime;
     int dt;
     int bestgen, curgen;
-    ESIndividual * bestindvdl, *thisbestindvdl;
-  } ESStatistics;
+    ESIndividual *bestindvdl, *thisbestindvdl;
+} ESStatistics;
 
 /*********************************************************************
  ** initialize: parameters,populations and random seed              **
@@ -185,11 +181,13 @@ typedef struct
  ** ESDeInitial(param,populationi,stats)                            **
  ** free param and population                                       **
  *********************************************************************/
-void ESInitial(unsigned int, ESParameter**, ESfcnTrsfm *,   \
-               ESfcnFG,int, int,int,double*,double*,int,int,int,  \
-               double, double, double, int,  \
-               ESPopulation**, ESStatistics**);
-void ESDeInitial(ESParameter*, ESPopulation*, ESStatistics*);
+void ESInitial(unsigned int, ESParameter **, ESfcnTrsfm *, \
+               ESfcnFG, int, int, int, double *, double *, int, int, int, \
+               double, double, double, int, \
+               ESPopulation **, ESStatistics **);
+
+void ESDeInitial(ESParameter *, ESPopulation *, ESStatistics *);
+
 /*********************************************************************
  ** initialize parameters                                           **
  ** ESInitialParam(param,trsfm,fg,es,constraint,                    **
@@ -220,11 +218,13 @@ void ESDeInitial(ESParameter*, ESPopulation*, ESStatistics*);
  ** ESDeInitialParam(param)                                         **
  ** free param                                                      **
  *********************************************************************/
-void ESInitialParam(ESParameter **, ESfcnTrsfm *, ESfcnFG, int,   \
-                    unsigned int,  \
-                    int,int,double*,double*,int,int,int,  \
+void ESInitialParam(ESParameter **, ESfcnTrsfm *, ESfcnFG, int, \
+                    unsigned int, \
+                    int, int, double *, double *, int, int, int, \
                     double, double, double, int);
+
 void ESDeInitialParam(ESParameter *);
+
 /*********************************************************************
  ** initialize population                                           **
  ** ESInitialPopulation(population,param)                           **
@@ -240,7 +240,9 @@ void ESDeInitialParam(ESParameter *);
  ** free population                                                 **
  *********************************************************************/
 void ESInitialPopulation(ESPopulation **, ESParameter *);
+
 void ESDeInitialPopulation(ESPopulation *, ESParameter *);
+
 /*********************************************************************
  ** initialize individual                                           **
  ** ESInitialIndividual(indvdl, param)                              **
@@ -260,15 +262,21 @@ void ESDeInitialPopulation(ESPopulation *, ESParameter *);
  ** print individual information, indvdl->sp                        **
  *********************************************************************/
 void ESInitialIndividual(ESIndividual **, ESParameter *);
+
 void ESDeInitialIndividual(ESIndividual *);
+
 void ESPrintIndividual(ESIndividual *, ESParameter *);
+
 void ESPrintOp(ESIndividual *, ESParameter *);
+
 void ESPrintSp(ESIndividual *, ESParameter *);
+
 /*********************************************************************
  ** copy a individual                                               **
  ** ESCopyIndividual(from, to, param)                               **
  *********************************************************************/
 void ESCopyIndividual(ESIndividual *, ESIndividual *, ESParameter *);
+
 /*********************************************************************
  ** initialize statistics                                           **
  ** ESInitialStat(stats, population, param)                         **
@@ -280,7 +288,9 @@ void ESCopyIndividual(ESIndividual *, ESIndividual *, ESParameter *);
  ** free statistics                                                 **
  *********************************************************************/
 void ESInitialStat(ESStatistics **, ESPopulation *, ESParameter *);
+
 void ESDeInitialStat(ESStatistics *);
+
 /*********************************************************************
  ** do statistics                                                   **
  ** ESDoStat(stats, population, param)                              **
@@ -294,6 +304,7 @@ void ESDeInitialStat(ESStatistics *);
  ** gen=,time=,dt=,bestgen=,bestfitness=,bestindividual=,           **
  *********************************************************************/
 void ESDoStat(ESStatistics *, ESPopulation *, ESParameter *);
+
 void ESPrintStat(ESStatistics *, ESParameter *);
 
 /*********************************************************************

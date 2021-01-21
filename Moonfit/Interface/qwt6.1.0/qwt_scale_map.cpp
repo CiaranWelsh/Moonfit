@@ -17,42 +17,38 @@
 
   The scale and paint device intervals are both set to [0,1].
 */
-QwtScaleMap::QwtScaleMap():
-    d_s1( 0.0 ),
-    d_s2( 1.0 ),
-    d_p1( 0.0 ),
-    d_p2( 1.0 ),
-    d_cnv( 1.0 ),
-    d_ts1( 0.0 ),
-    d_transform( NULL )
-{
+QwtScaleMap::QwtScaleMap() :
+        d_s1(0.0),
+        d_s2(1.0),
+        d_p1(0.0),
+        d_p2(1.0),
+        d_cnv(1.0),
+        d_ts1(0.0),
+        d_transform(NULL) {
 }
 
 //! Copy constructor
-QwtScaleMap::QwtScaleMap( const QwtScaleMap& other ):
-    d_s1( other.d_s1 ),
-    d_s2( other.d_s2 ),
-    d_p1( other.d_p1 ),
-    d_p2( other.d_p2 ),
-    d_cnv( other.d_cnv ),
-    d_ts1( other.d_ts1 ),
-    d_transform( NULL )
-{
-    if ( other.d_transform )
+QwtScaleMap::QwtScaleMap(const QwtScaleMap &other) :
+        d_s1(other.d_s1),
+        d_s2(other.d_s2),
+        d_p1(other.d_p1),
+        d_p2(other.d_p2),
+        d_cnv(other.d_cnv),
+        d_ts1(other.d_ts1),
+        d_transform(NULL) {
+    if (other.d_transform)
         d_transform = other.d_transform->copy();
 }
 
 /*!
   Destructor
 */
-QwtScaleMap::~QwtScaleMap()
-{
+QwtScaleMap::~QwtScaleMap() {
     delete d_transform;
 }
 
 //! Assignment operator
-QwtScaleMap &QwtScaleMap::operator=( const QwtScaleMap & other )
-{
+QwtScaleMap &QwtScaleMap::operator=(const QwtScaleMap &other) {
     d_s1 = other.d_s1;
     d_s2 = other.d_s2;
     d_p1 = other.d_p1;
@@ -63,7 +59,7 @@ QwtScaleMap &QwtScaleMap::operator=( const QwtScaleMap & other )
     delete d_transform;
     d_transform = NULL;
 
-    if ( other.d_transform )
+    if (other.d_transform)
         d_transform = other.d_transform->copy();
 
     return *this;
@@ -72,20 +68,17 @@ QwtScaleMap &QwtScaleMap::operator=( const QwtScaleMap & other )
 /*!
    Initialize the map with a transformation
 */
-void QwtScaleMap::setTransformation( QwtTransform *transform )
-{
-    if ( transform != d_transform )
-    {
+void QwtScaleMap::setTransformation(QwtTransform *transform) {
+    if (transform != d_transform) {
         delete d_transform;
         d_transform = transform;
     }
 
-    setScaleInterval( d_s1, d_s2 );
+    setScaleInterval(d_s1, d_s2);
 }
 
 //! Get the transformation
-const QwtTransform *QwtScaleMap::transformation() const
-{
+const QwtTransform *QwtScaleMap::transformation() const {
     return d_transform;
 }
 
@@ -96,15 +89,13 @@ const QwtTransform *QwtScaleMap::transformation() const
   \warning scales might be aligned to 
            transformation depending boundaries
 */
-void QwtScaleMap::setScaleInterval( double s1, double s2 )
-{
+void QwtScaleMap::setScaleInterval(double s1, double s2) {
     d_s1 = s1;
     d_s2 = s2;
 
-    if ( d_transform )
-    {
-        d_s1 = d_transform->bounded( d_s1 );
-        d_s2 = d_transform->bounded( d_s2 );
+    if (d_transform) {
+        d_s1 = d_transform->bounded(d_s1);
+        d_s2 = d_transform->bounded(d_s2);
     }
 
     updateFactor();
@@ -115,28 +106,25 @@ void QwtScaleMap::setScaleInterval( double s1, double s2 )
   \param p1 first border
   \param p2 second border
 */
-void QwtScaleMap::setPaintInterval( double p1, double p2 )
-{
+void QwtScaleMap::setPaintInterval(double p1, double p2) {
     d_p1 = p1;
     d_p2 = p2;
 
     updateFactor();
 }
 
-void QwtScaleMap::updateFactor()
-{
+void QwtScaleMap::updateFactor() {
     d_ts1 = d_s1;
     double ts2 = d_s2;
 
-    if ( d_transform )
-    {
-        d_ts1 = d_transform->transform( d_ts1 );
-        ts2 = d_transform->transform( ts2 );
+    if (d_transform) {
+        d_ts1 = d_transform->transform(d_ts1);
+        ts2 = d_transform->transform(ts2);
     }
 
     d_cnv = 1.0;
-    if ( d_ts1 != ts2 )
-        d_cnv = ( d_p2 - d_p1 ) / ( ts2 - d_ts1 );
+    if (d_ts1 != ts2)
+        d_cnv = (d_p2 - d_p1) / (ts2 - d_ts1);
 }
 
 /*!
@@ -149,29 +137,28 @@ void QwtScaleMap::updateFactor()
 
    \sa invTransform()
 */
-QRectF QwtScaleMap::transform( const QwtScaleMap &xMap,
-    const QwtScaleMap &yMap, const QRectF &rect )
-{
-    double x1 = xMap.transform( rect.left() );
-    double x2 = xMap.transform( rect.right() );
-    double y1 = yMap.transform( rect.top() );
-    double y2 = yMap.transform( rect.bottom() );
+QRectF QwtScaleMap::transform(const QwtScaleMap &xMap,
+                              const QwtScaleMap &yMap, const QRectF &rect) {
+    double x1 = xMap.transform(rect.left());
+    double x2 = xMap.transform(rect.right());
+    double y1 = yMap.transform(rect.top());
+    double y2 = yMap.transform(rect.bottom());
 
-    if ( x2 < x1 )
-        qSwap( x1, x2 );
-    if ( y2 < y1 )
-        qSwap( y1, y2 );
+    if (x2 < x1)
+        qSwap(x1, x2);
+    if (y2 < y1)
+        qSwap(y1, y2);
 
-    if ( qwtFuzzyCompare( x1, 0.0, x2 - x1 ) == 0 )
+    if (qwtFuzzyCompare(x1, 0.0, x2 - x1) == 0)
         x1 = 0.0;
-    if ( qwtFuzzyCompare( x2, 0.0, x2 - x1 ) == 0 )
+    if (qwtFuzzyCompare(x2, 0.0, x2 - x1) == 0)
         x2 = 0.0;
-    if ( qwtFuzzyCompare( y1, 0.0, y2 - y1 ) == 0 )
+    if (qwtFuzzyCompare(y1, 0.0, y2 - y1) == 0)
         y1 = 0.0;
-    if ( qwtFuzzyCompare( y2, 0.0, y2 - y1 ) == 0 )
+    if (qwtFuzzyCompare(y2, 0.0, y2 - y1) == 0)
         y2 = 0.0;
 
-    return QRectF( x1, y1, x2 - x1 + 1, y2 - y1 + 1 );
+    return QRectF(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
 }
 
 /*!
@@ -183,12 +170,11 @@ QRectF QwtScaleMap::transform( const QwtScaleMap &xMap,
    \return Position in scale coordinates
    \sa transform()
 */
-QPointF QwtScaleMap::invTransform( const QwtScaleMap &xMap,
-    const QwtScaleMap &yMap, const QPointF &pos )
-{
-    return QPointF( 
-        xMap.invTransform( pos.x() ), 
-        yMap.invTransform( pos.y() ) 
+QPointF QwtScaleMap::invTransform(const QwtScaleMap &xMap,
+                                  const QwtScaleMap &yMap, const QPointF &pos) {
+    return QPointF(
+            xMap.invTransform(pos.x()),
+            yMap.invTransform(pos.y())
     );
 }
 
@@ -202,12 +188,11 @@ QPointF QwtScaleMap::invTransform( const QwtScaleMap &xMap,
 
    \sa invTransform()
 */
-QPointF QwtScaleMap::transform( const QwtScaleMap &xMap,
-    const QwtScaleMap &yMap, const QPointF &pos )
-{
-    return QPointF( 
-        xMap.transform( pos.x() ), 
-        yMap.transform( pos.y() )
+QPointF QwtScaleMap::transform(const QwtScaleMap &xMap,
+                               const QwtScaleMap &yMap, const QPointF &pos) {
+    return QPointF(
+            xMap.transform(pos.x()),
+            yMap.transform(pos.y())
     );
 }
 
@@ -220,27 +205,25 @@ QPointF QwtScaleMap::transform( const QwtScaleMap &xMap,
    \return Rectangle in scale coordinates
    \sa transform()
 */
-QRectF QwtScaleMap::invTransform( const QwtScaleMap &xMap,
-    const QwtScaleMap &yMap, const QRectF &rect )
-{
-    const double x1 = xMap.invTransform( rect.left() );
-    const double x2 = xMap.invTransform( rect.right() - 1 );
-    const double y1 = yMap.invTransform( rect.top() );
-    const double y2 = yMap.invTransform( rect.bottom() - 1 );
+QRectF QwtScaleMap::invTransform(const QwtScaleMap &xMap,
+                                 const QwtScaleMap &yMap, const QRectF &rect) {
+    const double x1 = xMap.invTransform(rect.left());
+    const double x2 = xMap.invTransform(rect.right() - 1);
+    const double y1 = yMap.invTransform(rect.top());
+    const double y2 = yMap.invTransform(rect.bottom() - 1);
 
-    const QRectF r( x1, y1, x2 - x1, y2 - y1 );
+    const QRectF r(x1, y1, x2 - x1, y2 - y1);
     return r.normalized();
 }
 
 #ifndef QT_NO_DEBUG_STREAM
 
-QDebug operator<<( QDebug debug, const QwtScaleMap &map )
-{
+QDebug operator<<(QDebug debug, const QwtScaleMap &map) {
     debug.nospace() << "QwtScaleMap("
-        << map.transformation()
-        << ", s:" << map.s1() << "->" << map.s2()
-        << ", p:" << map.p1() << "->" << map.p2()
-        << ")";
+                    << map.transformation()
+                    << ", s:" << map.s1() << "->" << map.s2()
+                    << ", p:" << map.p1() << "->" << map.p2()
+                    << ")";
 
     return debug.space();
 }

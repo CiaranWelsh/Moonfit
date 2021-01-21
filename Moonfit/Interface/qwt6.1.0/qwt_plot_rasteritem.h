@@ -40,15 +40,13 @@
   \sa QwtPlotSpectrogram
 */
 
-class QWT_EXPORT QwtPlotRasterItem: public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotRasterItem : public QwtPlotItem {
 public:
     /*!
       \brief Cache policy
       The default policy is NoCache
      */
-    enum CachePolicy
-    {
+    enum CachePolicy {
         /*!
           renderImage() is called each time the item has to be repainted
          */
@@ -69,8 +67,7 @@ public:
         Attributes to modify the drawing algorithm.
         \sa setPaintAttribute(), testPaintAttribute()
     */
-    enum PaintAttribute
-    {
+    enum PaintAttribute {
         /*!
           When the image is rendered according to the data pixels
           ( QwtRasterData::pixelHint() ) it can be expanded to paint
@@ -87,30 +84,36 @@ public:
     };
 
     //! Paint attributes
-    typedef QFlags<PaintAttribute> PaintAttributes;
+    typedef QFlags <PaintAttribute> PaintAttributes;
 
-    explicit QwtPlotRasterItem( const QString& title = QString::null );
-    explicit QwtPlotRasterItem( const QwtText& title );
+    explicit QwtPlotRasterItem(const QString &title = QString::null);
+
+    explicit QwtPlotRasterItem(const QwtText &title);
+
     virtual ~QwtPlotRasterItem();
 
-    void setPaintAttribute( PaintAttribute, bool on = true );
-    bool testPaintAttribute( PaintAttribute ) const;
+    void setPaintAttribute(PaintAttribute, bool on = true);
 
-    void setAlpha( int alpha );
+    bool testPaintAttribute(PaintAttribute) const;
+
+    void setAlpha(int alpha);
+
     int alpha() const;
 
-    void setCachePolicy( CachePolicy );
+    void setCachePolicy(CachePolicy);
+
     CachePolicy cachePolicy() const;
 
     void invalidateCache();
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+    virtual void draw(QPainter *p,
+                      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QRectF &rect) const;
 
-    virtual QRectF pixelHint( const QRectF & ) const;
+    virtual QRectF pixelHint(const QRectF &) const;
 
     virtual QwtInterval interval(Qt::Axis) const;
+
     virtual QRectF boundingRect() const;
 
 protected:
@@ -130,26 +133,28 @@ protected:
    
       \return Rendered image
      */
-    virtual QImage renderImage( const QwtScaleMap &xMap,
-        const QwtScaleMap &yMap, const QRectF &area,
-        const QSize &imageSize ) const = 0;
+    virtual QImage renderImage(const QwtScaleMap &xMap,
+                               const QwtScaleMap &yMap, const QRectF &area,
+                               const QSize &imageSize) const = 0;
 
-    virtual QwtScaleMap imageMap( Qt::Orientation,
-        const QwtScaleMap &map, const QRectF &area,
-        const QSize &imageSize, double pixelSize) const;
+    virtual QwtScaleMap imageMap(Qt::Orientation,
+                                 const QwtScaleMap &map, const QRectF &area,
+                                 const QSize &imageSize, double pixelSize) const;
 
 private:
-    QwtPlotRasterItem( const QwtPlotRasterItem & );
-    QwtPlotRasterItem &operator=( const QwtPlotRasterItem & );
+    QwtPlotRasterItem(const QwtPlotRasterItem &);
+
+    QwtPlotRasterItem &operator=(const QwtPlotRasterItem &);
 
     void init();
 
-    QImage compose( const QwtScaleMap &, const QwtScaleMap &,
-        const QRectF &imageArea, const QRectF &paintRect,
-        const QSize &imageSize, bool doCache) const;
+    QImage compose(const QwtScaleMap &, const QwtScaleMap &,
+                   const QRectF &imageArea, const QRectF &paintRect,
+                   const QSize &imageSize, bool doCache) const;
 
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

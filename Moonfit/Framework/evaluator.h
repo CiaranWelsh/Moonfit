@@ -9,6 +9,7 @@
 #include <cmath>
 #include <utility>      // for std::pair
 #include <sstream>
+
 using namespace std;
 
 #include "tableCourse.h"
@@ -27,7 +28,6 @@ using namespace std;
 /// This function can calculate the different possible costs defined below. See the class evaluator for
 /// the cost calculation of whole simulations.
 double fitnessFunction(double measured, double expected, double StdDev_or_zero);
-
 
 
 /// @brief Different types of costs (between a simulation and experimental dataset),
@@ -53,8 +53,9 @@ double fitnessFunction(double measured, double expected, double StdDev_or_zero);
 ///
 /// Note that it will be possible to give an artificial penalty when a simulation crashed and a data-point
 /// has not been computed (see 'penaltyNotRecorded' below. By default it is 0).
-enum{ SQUARE_COST, SQUARE_COST_STD, LOG_COST, PROPORTION_COST};
-
+enum {
+    SQUARE_COST, SQUARE_COST_STD, LOG_COST, PROPORTION_COST
+};
 
 
 /// @brief Different types of normalizations, that will be done by the evaluator class.
@@ -84,14 +85,16 @@ enum{ SQUARE_COST, SQUARE_COST_STD, LOG_COST, PROPORTION_COST};
 ///
 /// - NORM_MAX_AND_NB_PTS: divides by both the maximum square and the nb of points.
 ///
-enum{ NO_NORM, NORM_AVERAGE, NORM_NB_PTS, NORM_AVG_AND_NB_PTS, NORM_MAX, NORM_MAX_AND_NB_PTS};
-
+enum {
+    NO_NORM, NORM_AVERAGE, NORM_NB_PTS, NORM_AVG_AND_NB_PTS, NORM_MAX, NORM_MAX_AND_NB_PTS
+};
 
 
 /// @brief Static class that stores the current type of cost and normalization used for fitting \ingroup CostEval
 struct costConfig {
     static int typeCost;
     static int typeNorm;
+
     /// @brief Outputs the current type of cost and normalization \ingroup CostEval
     static string CurrentCost();
 };
@@ -202,21 +205,22 @@ void testFitnessFunction();
 /// 	- to save memory : inside evaluator, no time kinetics are stored excepted wished values
 ///
 struct Evaluator {
-public:Evaluator();
+public:
+    Evaluator();
 
 private:
     /// @brief Storage: list of pairs<species, time> wanted. Note. species = variable.
     /// nbPoints = nb couples (Species[i], Times[i])
     int nbPoints;
-    vector<int>         Species;
-    vector<typeTime>    Times;
+    vector<int> Species;
+    vector<typeTime> Times;
     /// @brief additionally, the experimental (expected) and their standard deviation can be given & stored,
-    vector<double>      ExpectedValues;
-    vector<double>      StdDeviations;
+    vector<double> ExpectedValues;
+    vector<double> StdDeviations;
     /// @brief table for simulated values that have to be filled with data using setValNow, then recorded[i] = true.
     /// note: initially, recorded[..] = false.
-    vector<double>      simuData;
-    vector<bool>        recorded;
+    vector<double> simuData;
+    vector<bool> recorded;
 
 public:
     /// @brief: means : 'I want the value of this species(=variable) at this time point'
@@ -228,10 +232,12 @@ public:
     /// stored in a Table (TableCourse class)
     /// Note: the data points with NAN or inf are not taken into the list of "wish list to record" points.
     /// Possible to add multiple TableCourse one by one, and when experimental values are missing, write 'nan'
-    bool getValsFromKinetics(TableCourse* _expectedValues, vector<string> listExtNamesVarsInModel, TableCourse* _StdDevs = NULL);
+    bool getValsFromKinetics(TableCourse *_expectedValues, vector<string> listExtNamesVarsInModel,
+                             TableCourse *_StdDevs = NULL);
 
     /// @brief means : the wish list is complete, now I can use 'takeDataAtThisTime?' and 'setValNow'
     void recordingCompleted();
+
 private:
     bool recording_before_simulation;
 
@@ -248,8 +254,8 @@ public:
 private:
     /// @brief calculates the next wanted time-point (minimum of not-recorded-yet time points) - when finished, returns 1e8
     typeTime updateNextPoint();
-    typeTime nextTimePoint;
 
+    typeTime nextTimePoint;
 
 
 public:
@@ -266,8 +272,10 @@ public:
 
     /// @brief is this variable/species inside the wish list?
     double contains(int _Species);
+
     /// @brief retrieve experimental value
     double getExpVal(int _Species, typeTime _time_sec);
+
     /// @brief retrieve experimental standard deviation
     double getStdDev(int _Species, typeTime _time_sec);
 
@@ -292,9 +300,12 @@ public:
     void resetDataKeepingExpected();
 
     typedef int iteratorForEvaluator;
-    iteratorForEvaluator begin(){return 0;}
-    iteratorForEvaluator end(){return nbPoints;}
-    pair<int, typeTime> operator()(iteratorForEvaluator i){return pair<int, typeTime>(Species[i], Times[i]);}
+
+    iteratorForEvaluator begin() { return 0; }
+
+    iteratorForEvaluator end() { return nbPoints; }
+
+    pair<int, typeTime> operator()(iteratorForEvaluator i) { return pair<int, typeTime>(Species[i], Times[i]); }
 };
 
 /// @brief Here, you can define a penalty in the cost when the simulation stopped before this point, so no data was recorded for that point.

@@ -11,6 +11,7 @@
 #define QWT_SYMBOL_H
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpolygon.h>
 #endif
@@ -19,30 +20,38 @@
 #endif
 
 
-
 class QPainter;
+
 class QRect;
+
 class QSize;
+
 class QBrush;
+
 class QPen;
+
 class QColor;
+
 class QPointF;
+
 class QPolygonF;
+
 class QPainterPath;
+
 class QPixmap;
+
 class QByteArray;
+
 class QwtGraphic;
 
 //! A class for drawing symbols
-class QWT_EXPORT QwtSymbol
-{
+class QWT_EXPORT QwtSymbol {
 public:
     /*!
       Symbol Style
       \sa setStyle(), style()
      */
-    enum Style
-    {
+    enum Style {
         //! No Style. The symbol cannot be drawn.
         NoSymbol = -1,
 
@@ -153,8 +162,7 @@ public:
       \warning Since Qt 4.8 raster is the default backend on X11
      */
 
-    enum CachePolicy
-    {
+    enum CachePolicy {
         //! Don't use a pixmap cache
         NoCache,
 
@@ -171,69 +179,91 @@ public:
     };
 
 public:
-    QwtSymbol( Style = NoSymbol );
-    QwtSymbol( Style, const QBrush &, const QPen &, const QSize & );
-    QwtSymbol( const QPainterPath &, const QBrush &, const QPen & );
+    QwtSymbol(Style = NoSymbol);
+
+    QwtSymbol(Style, const QBrush &, const QPen &, const QSize &);
+
+    QwtSymbol(const QPainterPath &, const QBrush &, const QPen &);
 
     virtual ~QwtSymbol();
 
-    void setCachePolicy( CachePolicy );
+    void setCachePolicy(CachePolicy);
+
     CachePolicy cachePolicy() const;
 
-    void setSize( const QSize & );
-    void setSize( int width, int height = -1 );
-    const QSize& size() const;
+    void setSize(const QSize &);
 
-    void setPinPoint( const QPointF &pos, bool enable = true );
+    void setSize(int width, int height = -1);
+
+    const QSize &size() const;
+
+    void setPinPoint(const QPointF &pos, bool enable = true);
+
     QPointF pinPoint() const;
 
-    void setPinPointEnabled( bool );
+    void setPinPointEnabled(bool);
+
     bool isPinPointEnabled() const;
 
-    virtual void setColor( const QColor & );
+    virtual void setColor(const QColor &);
 
-    void setBrush( const QBrush& b );
-    const QBrush& brush() const;
+    void setBrush(const QBrush &b);
 
-    void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setPen( const QPen & );
-    const QPen& pen() const;
+    const QBrush &brush() const;
 
-    void setStyle( Style );
+    void setPen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setPen(const QPen &);
+
+    const QPen &pen() const;
+
+    void setStyle(Style);
+
     Style style() const;
 
-    void setPath( const QPainterPath & );
+    void setPath(const QPainterPath &);
+
     const QPainterPath &path() const;
 
-    void setPixmap( const QPixmap & );
+    void setPixmap(const QPixmap &);
+
     const QPixmap &pixmap() const;
 
-    void setGraphic( const QwtGraphic & );
+    void setGraphic(const QwtGraphic &);
+
     const QwtGraphic &graphic() const;
 
 #ifndef QWT_NO_SVG
-    void setSvgDocument( const QByteArray & );
+
+    void setSvgDocument(const QByteArray &);
+
 #endif
 
-    void drawSymbol( QPainter *, const QRectF & ) const;
-    void drawSymbol( QPainter *, const QPointF & ) const;
-    void drawSymbols( QPainter *, const QPolygonF & ) const;
-    void drawSymbols( QPainter *,
-        const QPointF *, int numPoints ) const;
+    void drawSymbol(QPainter *, const QRectF &) const;
+
+    void drawSymbol(QPainter *, const QPointF &) const;
+
+    void drawSymbols(QPainter *, const QPolygonF &) const;
+
+    void drawSymbols(QPainter *,
+                     const QPointF *, int numPoints) const;
 
     virtual QRect boundingRect() const;
+
     void invalidateCache();
 
 protected:
-    virtual void renderSymbols( QPainter *,
-        const QPointF *, int numPoints ) const;
+    virtual void renderSymbols(QPainter *,
+                               const QPointF *, int numPoints) const;
 
 private:
     // Disabled copy constructor and operator=
-    QwtSymbol( const QwtSymbol & );
-    QwtSymbol &operator=( const QwtSymbol & );
+    QwtSymbol(const QwtSymbol &);
+
+    QwtSymbol &operator=(const QwtSymbol &);
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 
@@ -244,9 +274,8 @@ private:
   \param pos Position of the symbol in screen coordinates
 */
 inline void QwtSymbol::drawSymbol(
-    QPainter *painter, const QPointF &pos ) const
-{
-    drawSymbols( painter, &pos, 1 );
+        QPainter *painter, const QPointF &pos) const {
+    drawSymbols(painter, &pos, 1);
 }
 
 /*!
@@ -257,9 +286,8 @@ inline void QwtSymbol::drawSymbol(
 */
 
 inline void QwtSymbol::drawSymbols(
-    QPainter *painter, const QPolygonF &points ) const
-{
-    drawSymbols( painter, points.data(), points.size() );
+        QPainter *painter, const QPolygonF &points) const {
+    drawSymbols(painter, points.data(), points.size());
 }
 
 #endif

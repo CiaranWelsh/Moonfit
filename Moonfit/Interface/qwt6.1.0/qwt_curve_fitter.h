@@ -11,12 +11,14 @@
 #define QWT_CURVE_FITTER_H
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpolygon.h>
 #endif
 #ifdef QT4
 #include <QtGui/qpolygon.h>
 #endif
+
 #include <qrect.h>
 
 class QwtSpline;
@@ -24,8 +26,7 @@ class QwtSpline;
 /*!
   \brief Abstract base class for a curve fitter
 */
-class QWT_EXPORT QwtCurveFitter
-{
+class QWT_EXPORT QwtCurveFitter {
 public:
     virtual ~QwtCurveFitter();
 
@@ -35,29 +36,28 @@ public:
         \param polygon Series of data points
         \return Curve points
      */
-    virtual QPolygonF fitCurve( const QPolygonF &polygon ) const = 0;
+    virtual QPolygonF fitCurve(const QPolygonF &polygon) const = 0;
 
 protected:
     QwtCurveFitter();
 
 private:
-    QwtCurveFitter( const QwtCurveFitter & );
-    QwtCurveFitter &operator=( const QwtCurveFitter & );
+    QwtCurveFitter(const QwtCurveFitter &);
+
+    QwtCurveFitter &operator=(const QwtCurveFitter &);
 };
 
 /*!
   \brief A curve fitter using cubic splines
 */
-class QWT_EXPORT QwtSplineCurveFitter: public QwtCurveFitter
-{
+class QWT_EXPORT QwtSplineCurveFitter : public QwtCurveFitter {
 public:
     /*!
       Spline type
       The default setting is Auto
       \sa setFitMode(), FitMode()
      */
-    enum FitMode
-    {
+    enum FitMode {
         /*!
           Use the default spline algorithm for polygons with
           increasing x values ( p[i-1] < p[i] ), otherwise use
@@ -73,25 +73,32 @@ public:
     };
 
     QwtSplineCurveFitter();
+
     virtual ~QwtSplineCurveFitter();
 
-    void setFitMode( FitMode );
+    void setFitMode(FitMode);
+
     FitMode fitMode() const;
 
-    void setSpline( const QwtSpline& );
+    void setSpline(const QwtSpline &);
+
     const QwtSpline &spline() const;
+
     QwtSpline &spline();
 
-    void setSplineSize( int size );
+    void setSplineSize(int size);
+
     int splineSize() const;
 
-    virtual QPolygonF fitCurve( const QPolygonF & ) const;
+    virtual QPolygonF fitCurve(const QPolygonF &) const;
 
 private:
-    QPolygonF fitSpline( const QPolygonF & ) const;
-    QPolygonF fitParametric( const QPolygonF & ) const;
+    QPolygonF fitSpline(const QPolygonF &) const;
+
+    QPolygonF fitParametric(const QPolygonF &) const;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 
@@ -118,26 +125,29 @@ private:
   axis scales QwtSplineCurveFitter can be used to implement different
   level of details to speed up painting of curves of many points.
 */
-class QWT_EXPORT QwtWeedingCurveFitter: public QwtCurveFitter
-{
+class QWT_EXPORT QwtWeedingCurveFitter : public QwtCurveFitter {
 public:
-    QwtWeedingCurveFitter( double tolerance = 1.0 );
+    QwtWeedingCurveFitter(double tolerance = 1.0);
+
     virtual ~QwtWeedingCurveFitter();
 
-    void setTolerance( double );
+    void setTolerance(double);
+
     double tolerance() const;
 
-    void setChunkSize( uint );
+    void setChunkSize(uint);
+
     uint chunkSize() const;
 
-    virtual QPolygonF fitCurve( const QPolygonF & ) const;
+    virtual QPolygonF fitCurve(const QPolygonF &) const;
 
 private:
-    virtual QPolygonF simplify( const QPolygonF & ) const;
+    virtual QPolygonF simplify(const QPolygonF &) const;
 
     class Line;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

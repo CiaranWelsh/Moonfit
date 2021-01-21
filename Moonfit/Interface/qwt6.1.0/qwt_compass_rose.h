@@ -11,6 +11,7 @@
 #define QWT_COMPASS_ROSE_H 1
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpalette.h>
 #endif
@@ -23,21 +24,18 @@ class QPainter;
 /*!
   \brief Abstract base class for a compass rose
 */
-class QWT_EXPORT QwtCompassRose
-{
+class QWT_EXPORT QwtCompassRose {
 public:
     //! Destructor
     virtual ~QwtCompassRose() {};
 
     //! Assign a palette
-    virtual void setPalette( const QPalette &p )
-    {
+    virtual void setPalette(const QPalette &p) {
         d_palette = p;
     }
 
     //! \return Current palette
-    const QPalette &palette() const
-    {
+    const QPalette &palette() const {
         return d_palette;
     }
 
@@ -50,9 +48,9 @@ public:
         \param north Position
         \param colorGroup Color group
      */
-    virtual void draw( QPainter *painter, 
-        const QPointF &center, double radius, double north,
-        QPalette::ColorGroup colorGroup = QPalette::Active ) const = 0;
+    virtual void draw(QPainter *painter,
+                      const QPointF &center, double radius, double north,
+                      QPalette::ColorGroup colorGroup = QPalette::Active) const = 0;
 
 private:
     QPalette d_palette;
@@ -61,33 +59,38 @@ private:
 /*!
   \brief A simple rose for QwtCompass
 */
-class QWT_EXPORT QwtSimpleCompassRose: public QwtCompassRose
-{
+class QWT_EXPORT QwtSimpleCompassRose : public QwtCompassRose {
 public:
-    QwtSimpleCompassRose( int numThorns = 8, int numThornLevels = -1 );
+    QwtSimpleCompassRose(int numThorns = 8, int numThornLevels = -1);
+
     virtual ~QwtSimpleCompassRose();
 
-    void setWidth( double w );
+    void setWidth(double w);
+
     double width() const;
 
-    void setNumThorns( int count );
+    void setNumThorns(int count);
+
     int numThorns() const;
 
-    void setNumThornLevels( int count );
+    void setNumThornLevels(int count);
+
     int numThornLevels() const;
 
-    void setShrinkFactor( double factor );
+    void setShrinkFactor(double factor);
+
     double shrinkFactor() const;
 
-    virtual void draw( QPainter *, const QPointF &center, double radius,
-        double north, QPalette::ColorGroup = QPalette::Active ) const;
+    virtual void draw(QPainter *, const QPointF &center, double radius,
+                      double north, QPalette::ColorGroup = QPalette::Active) const;
 
-    static void drawRose( QPainter *, const QPalette &,
-        const QPointF &center, double radius, double origin, double width,
-        int numThorns, int numThornLevels, double shrinkFactor );
+    static void drawRose(QPainter *, const QPalette &,
+                         const QPointF &center, double radius, double origin, double width,
+                         int numThorns, int numThornLevels, double shrinkFactor);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

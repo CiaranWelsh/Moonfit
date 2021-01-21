@@ -28,32 +28,39 @@ class QwtPlot;
   \note The axes are not updated, while dragging the canvas
   \sa QwtPlotZoomer, QwtPlotMagnifier
 */
-class QWT_EXPORT QwtPlotPanner: public QwtPanner
-{
+class QWT_EXPORT QwtPlotPanner : public QwtPanner {
     Q_OBJECT
 
 public:
-    explicit QwtPlotPanner( QWidget * );
+    explicit QwtPlotPanner(QWidget *);
+
     virtual ~QwtPlotPanner();
 
     QWidget *canvas();
+
     const QWidget *canvas() const;
 
     QwtPlot *plot();
+
     const QwtPlot *plot() const;
 
-    void setAxisEnabled( int axis, bool on );
-    bool isAxisEnabled( int axis ) const;
+    void setAxisEnabled(int axis, bool on);
 
-protected Q_SLOTS:
-    virtual void moveCanvas( int dx, int dy );
+    bool isAxisEnabled(int axis) const;
+
+protected
+    Q_SLOTS:
+
+    virtual void moveCanvas(int dx, int dy);
 
 protected:
     virtual QBitmap contentsMask() const;
+
     virtual QPixmap grab() const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <queue>
 #include <cmath> // for NAN
+
 using namespace std;
 
 /*string printVector(vector<double> &v);*/
@@ -19,16 +20,22 @@ using namespace std;
 struct oneSet {
     vector<double> v;
     double cost;
-    oneSet() : cost(NAN){}
-    oneSet(vector<double>* pset, double _cost);
-    oneSet(vector<double>& pset, double _cost);
+
+    oneSet() : cost(NAN) {}
+
+    oneSet(vector<double> *pset, double _cost);
+
+    oneSet(vector<double> &pset, double _cost);
+
     oneSet(const oneSet &toCopy);
+
     string print();
 };
 
 /// @brief 2 - When parameter sets need to be sorted based on their cost, a comparator should be defined (based on their cost)
 class CompareSets {
-    public: bool operator()(oneSet* t1, oneSet* t2){return (t1 && t2 && ((*t1).cost > (*t2).cost));}
+public:
+    bool operator()(oneSet *t1, oneSet *t2) { return (t1 && t2 && ((*t1).cost > (*t2).cost)); }
 };
 
 /// @brief 3 - *A list of parameter sets* : store them in a queue (fast sorting), but can convert them in vector<parameter set> when wanted
@@ -37,27 +44,34 @@ class CompareSets {
 struct pSets {
     /// 3a : when creating a param set list, needs to say how many will be recorded (maximum), and how many parameters per set.
     pSets(int _MaxNb, int _nbParams);
+
     int MaxNb;
     int nbParams;
-    int size(){return store.size();}
+
+    int size() { return store.size(); }
 
     /// 3b : Data storage
-    priority_queue<oneSet*, vector<oneSet*>, CompareSets> store;
-    bool addSet(vector<double>* v, double _cost);   /// Adds the param set if there is still space (MaxNb), or if it is better than an existing set in the list (that will be wasted)
+    priority_queue<oneSet *, vector<oneSet *>, CompareSets> store;
+
+    bool addSet(vector<double> *v,
+                double _cost);   /// Adds the param set if there is still space (MaxNb), or if it is better than an existing set in the list (that will be wasted)
     double threshold;                               /// stores the cost of the worst set, so if the list is full, and a new set is not better than threshold, it will be rejected
 
     /// 3c : Getting parameter sets (because in a queue, only the top one can be read)
     ///      DANGER : these functions give the pointers to the parameter set(s). Therefore, this is not a copy, this is the original
     ///      location in memory of these parameter sets. Do not modify them !!
-    vector<oneSet*> toVector();                     /// to get the whole list as vector
-    oneSet* getSetNumber(int i);                    /// or to get a set directly.
+    vector<oneSet *> toVector();                     /// to get the whole list as vector
+    oneSet *getSetNumber(int i);                    /// or to get a set directly.
 
     oneSet bestOneSet();
+
     vector<double> bestSet();
+
     void saveBestSet(string _name);
 
     /// 3d : additional functions
     void clear();
+
     void resize(int newMaxNb);                      /// to dynamically resize the number of stored parameter sets
     string print();
 };
@@ -76,17 +90,21 @@ void testeSets();
 /// @brief 4a - one parameter set (with additional information)
 struct pointVariation {
 public:
-    pointVariation(int _indexParameter, double _val, double _cost, vector<double> _costPerVariable, vector<double> _costPerExperiment, vector<double> &_paramSet);
-    int               indexParameter;           /// Index of the parameter that was changed compared to an initial parameter set
-    double            val;                      /// Value of this particular parameter
+    pointVariation(int _indexParameter, double _val, double _cost, vector<double> _costPerVariable,
+                   vector<double> _costPerExperiment, vector<double> &_paramSet);
+
+    int indexParameter;           /// Index of the parameter that was changed compared to an initial parameter set
+    double val;                      /// Value of this particular parameter
 
     /// Note : this class could also extend the class oneSet and then these two fields would be inherited
-    double            cost;                     // is this necessary ? there is paramSet.cost as well ...
-    oneSet            paramSet;                 /// The parameter set itself (and its cost inside)
+    double cost;                     // is this necessary ? there is paramSet.cost as well ...
+    oneSet paramSet;                 /// The parameter set itself (and its cost inside)
 
-    vector<double>*   costPerVariable;          /// To additionally store the cost of each simualted/evaluated variable with this param. set.
-    vector<double>*   costPerExperiment;
+    vector<double> *costPerVariable;          /// To additionally store the cost of each simualted/evaluated variable with this param. set.
+    vector<double> *costPerExperiment;
+
     string print();
+
     ~pointVariation();
 };
 
@@ -98,18 +116,24 @@ struct oneParameterAnalysis {
 
     /// 4ci : Initial data : the initial parameter set.
     oneParameterAnalysis(vector<double> _initialParameterSet);
+
     int nbParams;
     vector<double> initialParameterSet;         /// could be a oneSet here
 
     /// 4cii : dynamic storage of new point variations
     vector<pointVariation> points;
     int nbPoints;
-    int size() {return nbPoints;}
 
-    void add(int _indexParameter, double _val, double _cost, vector<double> _costPerVariable, vector<double> _costPerExperiment, vector<double> _paramSet);
+    int size() { return nbPoints; }
+
+    void add(int _indexParameter, double _val, double _cost, vector<double> _costPerVariable,
+             vector<double> _costPerExperiment, vector<double> _paramSet);
+
     void add(pointVariation pv); // do not use &pv, because wants to copy everything, not the reference/pointer
     void sort();
+
     string print();
+
     ~oneParameterAnalysis();
 };
 

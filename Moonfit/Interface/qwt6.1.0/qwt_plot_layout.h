@@ -23,15 +23,13 @@
   \sa QwtPlot::setPlotLayout()
 */
 
-class QWT_EXPORT QwtPlotLayout
-{
+class QWT_EXPORT QwtPlotLayout {
 public:
     /*!
       Options to configure the plot layout engine
       \sa activate(), QwtPlotRenderer
      */
-    enum Option
-    {
+    enum Option {
         //! Unused
         AlignScales = 0x01,
 
@@ -55,61 +53,77 @@ public:
     };
 
     //! Layout options
-    typedef QFlags<Option> Options;
+    typedef QFlags <Option> Options;
 
     explicit QwtPlotLayout();
+
     virtual ~QwtPlotLayout();
 
-    void setCanvasMargin( int margin, int axis = -1 );
-    int canvasMargin( int axis ) const;
+    void setCanvasMargin(int margin, int axis = -1);
 
-    void setAlignCanvasToScales( bool );
+    int canvasMargin(int axis) const;
 
-    void setAlignCanvasToScale( int axisId, bool );
-    bool alignCanvasToScale( int axisId ) const;
+    void setAlignCanvasToScales(bool);
 
-    void setSpacing( int );
+    void setAlignCanvasToScale(int axisId, bool);
+
+    bool alignCanvasToScale(int axisId) const;
+
+    void setSpacing(int);
+
     int spacing() const;
 
-    void setLegendPosition( QwtPlot::LegendPosition pos, double ratio );
-    void setLegendPosition( QwtPlot::LegendPosition pos );
+    void setLegendPosition(QwtPlot::LegendPosition pos, double ratio);
+
+    void setLegendPosition(QwtPlot::LegendPosition pos);
+
     QwtPlot::LegendPosition legendPosition() const;
 
-    void setLegendRatio( double ratio );
+    void setLegendRatio(double ratio);
+
     double legendRatio() const;
 
-    virtual QSize minimumSizeHint( const QwtPlot * ) const;
+    virtual QSize minimumSizeHint(const QwtPlot *) const;
 
-    virtual void activate( const QwtPlot *,
-        const QRectF &rect, Options options = 0x00 );
+    virtual void activate(const QwtPlot *,
+                          const QRectF &rect, Options options = 0x00);
 
     virtual void invalidate();
 
     QRectF titleRect() const;
+
     QRectF footerRect() const;
+
     QRectF legendRect() const;
-    QRectF scaleRect( int axis ) const;
+
+    QRectF scaleRect(int axis) const;
+
     QRectF canvasRect() const;
 
     class LayoutData;
 
 protected:
 
-    void setTitleRect( const QRectF & );
-    void setFooterRect( const QRectF & );
-    void setLegendRect( const QRectF & );
-    void setScaleRect( int axis, const QRectF & );
-    void setCanvasRect( const QRectF & );
+    void setTitleRect(const QRectF &);
 
-    QRectF layoutLegend( Options options, const QRectF & ) const;
-    QRectF alignLegend( const QRectF &canvasRect,
-        const QRectF &legendRect ) const;
+    void setFooterRect(const QRectF &);
 
-    void expandLineBreaks( Options options, const QRectF &rect,
-        int &dimTitle, int &dimFooter, int dimAxes[QwtPlot::axisCnt] ) const;
+    void setLegendRect(const QRectF &);
 
-    void alignScales( Options options, QRectF &canvasRect,
-        QRectF scaleRect[QwtPlot::axisCnt] ) const;
+    void setScaleRect(int axis, const QRectF &);
+
+    void setCanvasRect(const QRectF &);
+
+    QRectF layoutLegend(Options options, const QRectF &) const;
+
+    QRectF alignLegend(const QRectF &canvasRect,
+                       const QRectF &legendRect) const;
+
+    void expandLineBreaks(Options options, const QRectF &rect,
+                          int &dimTitle, int &dimFooter, int dimAxes[QwtPlot::axisCnt]) const;
+
+    void alignScales(Options options, QRectF &canvasRect,
+                     QRectF scaleRect[QwtPlot::axisCnt]) const;
 
 private:
     class PrivateData;

@@ -10,50 +10,43 @@
 #include "qwt_series_data.h"
 #include "qwt_math.h"
 
-static inline QRectF qwtBoundingRect( const QPointF &sample )
-{
-    return QRectF( sample.x(), sample.y(), 0.0, 0.0 );
+static inline QRectF qwtBoundingRect(const QPointF &sample) {
+    return QRectF(sample.x(), sample.y(), 0.0, 0.0);
 }
 
-static inline QRectF qwtBoundingRect( const QwtPoint3D &sample )
-{
-    return QRectF( sample.x(), sample.y(), 0.0, 0.0 );
+static inline QRectF qwtBoundingRect(const QwtPoint3D &sample) {
+    return QRectF(sample.x(), sample.y(), 0.0, 0.0);
 }
 
-static inline QRectF qwtBoundingRect( const QwtPointPolar &sample )
-{
-    return QRectF( sample.azimuth(), sample.radius(), 0.0, 0.0 );
+static inline QRectF qwtBoundingRect(const QwtPointPolar &sample) {
+    return QRectF(sample.azimuth(), sample.radius(), 0.0, 0.0);
 }
 
-static inline QRectF qwtBoundingRect( const QwtIntervalSample &sample )
-{
-    return QRectF( sample.interval.minValue(), sample.value,
-        sample.interval.maxValue() - sample.interval.minValue(), 0.0 );
+static inline QRectF qwtBoundingRect(const QwtIntervalSample &sample) {
+    return QRectF(sample.interval.minValue(), sample.value,
+                  sample.interval.maxValue() - sample.interval.minValue(), 0.0);
 }
 
-static inline QRectF qwtBoundingRect( const QwtSetSample &sample )
-{
+static inline QRectF qwtBoundingRect(const QwtSetSample &sample) {
     double minY = sample.set[0];
     double maxY = sample.set[0];
 
-    for ( int i = 1; i < sample.set.size(); i++ )
-    {
-        if ( sample.set[i] < minY )
+    for (int i = 1; i < sample.set.size(); i++) {
+        if (sample.set[i] < minY)
             minY = sample.set[i];
-        if ( sample.set[i] > maxY )
+        if (sample.set[i] > maxY)
             maxY = sample.set[i];
     }
 
     double minX = sample.value;
     double maxX = sample.value;
 
-    return QRectF( minX, minY, maxX - minX, maxY - minY );
+    return QRectF(minX, minY, maxX - minX, maxY - minY);
 }
 
-static inline QRectF qwtBoundingRect( const QwtOHLCSample &sample )
-{
+static inline QRectF qwtBoundingRect(const QwtOHLCSample &sample) {
     const QwtInterval interval = sample.boundingInterval();
-    return QRectF( interval.minValue(), sample.time, interval.width(), 0.0 );
+    return QRectF(interval.minValue(), sample.time, interval.width(), 0.0);
 }
 
 /*!
@@ -68,42 +61,37 @@ static inline QRectF qwtBoundingRect( const QwtOHLCSample &sample )
   \return Bounding rectangle
 */
 
-template <class T>
+template<class T>
 QRectF qwtBoundingRectT(
-    const QwtSeriesData<T>& series, int from, int to )
-{
-    QRectF boundingRect( 1.0, 1.0, -2.0, -2.0 ); // invalid;
+        const QwtSeriesData<T> &series, int from, int to) {
+    QRectF boundingRect(1.0, 1.0, -2.0, -2.0); // invalid;
 
-    if ( from < 0 )
+    if (from < 0)
         from = 0;
 
-    if ( to < 0 )
+    if (to < 0)
         to = series.size() - 1;
 
-    if ( to < from )
+    if (to < from)
         return boundingRect;
 
     int i;
-    for ( i = from; i <= to; i++ )
-    {
-        const QRectF rect = qwtBoundingRect( series.sample( i ) );
-        if ( rect.width() >= 0.0 && rect.height() >= 0.0 )
-        {
+    for (i = from; i <= to; i++) {
+        const QRectF rect = qwtBoundingRect(series.sample(i));
+        if (rect.width() >= 0.0 && rect.height() >= 0.0) {
             boundingRect = rect;
             i++;
             break;
         }
     }
 
-    for ( ; i <= to; i++ )
-    {
-        const QRectF rect = qwtBoundingRect( series.sample( i ) );
-        if ( rect.width() >= 0.0 && rect.height() >= 0.0 )
-        {
-            boundingRect.setLeft( qMin( boundingRect.left(), rect.left() ) );
-            boundingRect.setRight( qMax( boundingRect.right(), rect.right() ) );
-            boundingRect.setTop( qMin( boundingRect.top(), rect.top() ) );
-            boundingRect.setBottom( qMax( boundingRect.bottom(), rect.bottom() ) );
+    for (; i <= to; i++) {
+        const QRectF rect = qwtBoundingRect(series.sample(i));
+        if (rect.width() >= 0.0 && rect.height() >= 0.0) {
+            boundingRect.setLeft(qMin(boundingRect.left(), rect.left()));
+            boundingRect.setRight(qMax(boundingRect.right(), rect.right()));
+            boundingRect.setTop(qMin(boundingRect.top(), rect.top()));
+            boundingRect.setBottom(qMax(boundingRect.bottom(), rect.bottom()));
         }
     }
 
@@ -122,9 +110,8 @@ QRectF qwtBoundingRectT(
   \return Bounding rectangle
 */
 QRectF qwtBoundingRect(
-    const QwtSeriesData<QPointF> &series, int from, int to )
-{
-    return qwtBoundingRectT<QPointF>( series, from, to );
+        const QwtSeriesData<QPointF> &series, int from, int to) {
+    return qwtBoundingRectT<QPointF>(series, from, to);
 }
 
 /*!
@@ -139,9 +126,8 @@ QRectF qwtBoundingRect(
   \return Bounding rectangle
 */
 QRectF qwtBoundingRect(
-    const QwtSeriesData<QwtPoint3D> &series, int from, int to )
-{
-    return qwtBoundingRectT<QwtPoint3D>( series, from, to );
+        const QwtSeriesData<QwtPoint3D> &series, int from, int to) {
+    return qwtBoundingRectT<QwtPoint3D>(series, from, to);
 }
 
 /*!
@@ -159,9 +145,8 @@ QRectF qwtBoundingRect(
   \return Bounding rectangle
 */
 QRectF qwtBoundingRect(
-    const QwtSeriesData<QwtPointPolar> &series, int from, int to )
-{
-    return qwtBoundingRectT<QwtPointPolar>( series, from, to );
+        const QwtSeriesData<QwtPointPolar> &series, int from, int to) {
+    return qwtBoundingRectT<QwtPointPolar>(series, from, to);
 }
 
 /*!
@@ -176,9 +161,8 @@ QRectF qwtBoundingRect(
   \return Bounding rectangle
 */
 QRectF qwtBoundingRect(
-    const QwtSeriesData<QwtIntervalSample>& series, int from, int to )
-{
-    return qwtBoundingRectT<QwtIntervalSample>( series, from, to );
+        const QwtSeriesData<QwtIntervalSample> &series, int from, int to) {
+    return qwtBoundingRectT<QwtIntervalSample>(series, from, to);
 }
 
 /*!
@@ -193,9 +177,8 @@ QRectF qwtBoundingRect(
   \return Bounding rectangle
 */
 QRectF qwtBoundingRect(
-    const QwtSeriesData<QwtOHLCSample>& series, int from, int to )
-{
-    return qwtBoundingRectT<QwtOHLCSample>( series, from, to );
+        const QwtSeriesData<QwtOHLCSample> &series, int from, int to) {
+    return qwtBoundingRectT<QwtOHLCSample>(series, from, to);
 }
 
 /*!
@@ -210,9 +193,8 @@ QRectF qwtBoundingRect(
   \return Bounding rectangle
 */
 QRectF qwtBoundingRect(
-    const QwtSeriesData<QwtSetSample>& series, int from, int to )
-{
-    return qwtBoundingRectT<QwtSetSample>( series, from, to );
+        const QwtSeriesData<QwtSetSample> &series, int from, int to) {
+    return qwtBoundingRectT<QwtSetSample>(series, from, to);
 }
 
 /*!
@@ -220,9 +202,8 @@ QRectF qwtBoundingRect(
    \param samples Samples
 */
 QwtPointSeriesData::QwtPointSeriesData(
-        const QVector<QPointF> &samples ):
-    QwtArraySeriesData<QPointF>( samples )
-{
+        const QVector <QPointF> &samples) :
+        QwtArraySeriesData<QPointF>(samples) {
 }
 
 /*!
@@ -233,10 +214,9 @@ QwtPointSeriesData::QwtPointSeriesData(
 
   \return Bounding rectangle
 */
-QRectF QwtPointSeriesData::boundingRect() const
-{
-    if ( d_boundingRect.width() < 0.0 )
-        d_boundingRect = qwtBoundingRect( *this );
+QRectF QwtPointSeriesData::boundingRect() const {
+    if (d_boundingRect.width() < 0.0)
+        d_boundingRect = qwtBoundingRect(*this);
 
     return d_boundingRect;
 }
@@ -246,9 +226,8 @@ QRectF QwtPointSeriesData::boundingRect() const
    \param samples Samples
 */
 QwtPoint3DSeriesData::QwtPoint3DSeriesData(
-        const QVector<QwtPoint3D> &samples ):
-    QwtArraySeriesData<QwtPoint3D>( samples )
-{
+        const QVector <QwtPoint3D> &samples) :
+        QwtArraySeriesData<QwtPoint3D>(samples) {
 }
 
 /*!
@@ -259,10 +238,9 @@ QwtPoint3DSeriesData::QwtPoint3DSeriesData(
 
   \return Bounding rectangle
 */
-QRectF QwtPoint3DSeriesData::boundingRect() const
-{
-    if ( d_boundingRect.width() < 0.0 )
-        d_boundingRect = qwtBoundingRect( *this );
+QRectF QwtPoint3DSeriesData::boundingRect() const {
+    if (d_boundingRect.width() < 0.0)
+        d_boundingRect = qwtBoundingRect(*this);
 
     return d_boundingRect;
 }
@@ -272,9 +250,8 @@ QRectF QwtPoint3DSeriesData::boundingRect() const
    \param samples Samples
 */
 QwtIntervalSeriesData::QwtIntervalSeriesData(
-        const QVector<QwtIntervalSample> &samples ):
-    QwtArraySeriesData<QwtIntervalSample>( samples )
-{
+        const QVector <QwtIntervalSample> &samples) :
+        QwtArraySeriesData<QwtIntervalSample>(samples) {
 }
 
 /*!
@@ -285,10 +262,9 @@ QwtIntervalSeriesData::QwtIntervalSeriesData(
 
   \return Bounding rectangle
 */
-QRectF QwtIntervalSeriesData::boundingRect() const
-{
-    if ( d_boundingRect.width() < 0.0 )
-        d_boundingRect = qwtBoundingRect( *this );
+QRectF QwtIntervalSeriesData::boundingRect() const {
+    if (d_boundingRect.width() < 0.0)
+        d_boundingRect = qwtBoundingRect(*this);
 
     return d_boundingRect;
 }
@@ -298,9 +274,8 @@ QRectF QwtIntervalSeriesData::boundingRect() const
    \param samples Samples
 */
 QwtSetSeriesData::QwtSetSeriesData(
-        const QVector<QwtSetSample> &samples ):
-    QwtArraySeriesData<QwtSetSample>( samples )
-{
+        const QVector <QwtSetSample> &samples) :
+        QwtArraySeriesData<QwtSetSample>(samples) {
 }
 
 /*!
@@ -311,10 +286,9 @@ QwtSetSeriesData::QwtSetSeriesData(
 
   \return Bounding rectangle
 */
-QRectF QwtSetSeriesData::boundingRect() const
-{
-    if ( d_boundingRect.width() < 0.0 )
-        d_boundingRect = qwtBoundingRect( *this );
+QRectF QwtSetSeriesData::boundingRect() const {
+    if (d_boundingRect.width() < 0.0)
+        d_boundingRect = qwtBoundingRect(*this);
 
     return d_boundingRect;
 }
@@ -324,9 +298,8 @@ QRectF QwtSetSeriesData::boundingRect() const
    \param samples Samples
 */
 QwtTradingChartData::QwtTradingChartData(
-        const QVector<QwtOHLCSample> &samples ):
-    QwtArraySeriesData<QwtOHLCSample>( samples )
-{
+        const QVector <QwtOHLCSample> &samples) :
+        QwtArraySeriesData<QwtOHLCSample>(samples) {
 }
 
 /*!
@@ -337,10 +310,9 @@ QwtTradingChartData::QwtTradingChartData(
 
   \return Bounding rectangle
 */
-QRectF QwtTradingChartData::boundingRect() const
-{
-    if ( d_boundingRect.width() < 0.0 )
-        d_boundingRect = qwtBoundingRect( *this );
+QRectF QwtTradingChartData::boundingRect() const {
+    if (d_boundingRect.width() < 0.0)
+        d_boundingRect = qwtBoundingRect(*this);
 
     return d_boundingRect;
 }

@@ -11,6 +11,7 @@
 #define QWT_SPLINE_H
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpolygon.h>
 #endif
@@ -60,12 +61,10 @@ QPolygonF interpolate(const QPolygonF& points, int numValues)
   \endcode
 */
 
-class QWT_EXPORT QwtSpline
-{
+class QWT_EXPORT QwtSpline {
 public:
     //! Spline type
-    enum SplineType
-    {
+    enum SplineType {
         //! A natural spline
         Natural,
 
@@ -74,33 +73,41 @@ public:
     };
 
     QwtSpline();
-    QwtSpline( const QwtSpline & );
+
+    QwtSpline(const QwtSpline &);
 
     ~QwtSpline();
 
-    QwtSpline &operator=( const QwtSpline & );
+    QwtSpline &operator=(const QwtSpline &);
 
-    void setSplineType( SplineType );
+    void setSplineType(SplineType);
+
     SplineType splineType() const;
 
-    bool setPoints( const QPolygonF& points );
+    bool setPoints(const QPolygonF &points);
+
     QPolygonF points() const;
 
     void reset();
 
     bool isValid() const;
-    double value( double x ) const;
+
+    double value(double x) const;
 
     const QVector<double> &coefficientsA() const;
+
     const QVector<double> &coefficientsB() const;
+
     const QVector<double> &coefficientsC() const;
 
 protected:
-    bool buildNaturalSpline( const QPolygonF & );
-    bool buildPeriodicSpline( const QPolygonF & );
+    bool buildNaturalSpline(const QPolygonF &);
+
+    bool buildPeriodicSpline(const QPolygonF &);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

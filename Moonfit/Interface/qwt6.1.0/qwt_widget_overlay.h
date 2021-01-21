@@ -45,8 +45,7 @@ class QPainter;
 
    \sa QwtPlotCanvas::BackingStore
  */
-class QWT_EXPORT QwtWidgetOverlay: public QWidget
-{
+class QWT_EXPORT QwtWidgetOverlay : public QWidget {
 public:
     /*!
        \brief Mask mode
@@ -65,8 +64,7 @@ public:
 
        \sa setMaskMode(), maskMode()
      */
-    enum MaskMode
-    {
+    enum MaskMode {
         //! Don't use a mask.
         NoMask,
 
@@ -107,8 +105,7 @@ public:
 
        \note The render mode has no effect, when maskMode() != AlphaMask.
      */
-    enum RenderMode
-    {
+    enum RenderMode {
         //! Copy the buffer, when using the raster paint engine.
         AutoRenderMode,
 
@@ -119,22 +116,26 @@ public:
         DrawOverlay
     };
 
-    QwtWidgetOverlay( QWidget* );
+    QwtWidgetOverlay(QWidget *);
+
     virtual ~QwtWidgetOverlay();
 
-    void setMaskMode( MaskMode );
+    void setMaskMode(MaskMode);
+
     MaskMode maskMode() const;
 
-    void setRenderMode( RenderMode );
+    void setRenderMode(RenderMode);
+
     RenderMode renderMode() const;
 
     void updateOverlay();
 
-    virtual bool eventFilter( QObject *, QEvent *);
+    virtual bool eventFilter(QObject *, QEvent *);
 
 protected:
-    virtual void paintEvent( QPaintEvent* event );
-    virtual void resizeEvent( QResizeEvent* event );
+    virtual void paintEvent(QPaintEvent *event);
+
+    virtual void resizeEvent(QResizeEvent *event);
 
     virtual QRegion maskHint() const;
 
@@ -142,14 +143,16 @@ protected:
        Draw the widget overlay
        \param painter Painter
      */
-    virtual void drawOverlay( QPainter *painter ) const = 0;
+    virtual void drawOverlay(QPainter *painter) const = 0;
 
 private:
     void updateMask();
-    void draw( QPainter * ) const;
+
+    void draw(QPainter *) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

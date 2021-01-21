@@ -1,4 +1,4 @@
-var searchData=
-[
-  ['ui_585',['Ui',['../namespace_ui.html',1,'']]]
-];
+var searchData =
+    [
+        ['ui_585', ['Ui', ['../namespace_ui.html', 1, '']]]
+    ];

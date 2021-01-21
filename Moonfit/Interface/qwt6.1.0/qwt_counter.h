@@ -11,6 +11,7 @@
 #define QWT_COUNTER_H
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qwidget.h>
 #endif
@@ -50,27 +51,32 @@ connect(counter, SIGNAL(valueChanged(double)), myClass, SLOT(newValue(double)));
 \endcode
  */
 
-class QWT_EXPORT QwtCounter : public QWidget
-{
+class QWT_EXPORT QwtCounter : public QWidget {
     Q_OBJECT
 
-    Q_PROPERTY( double value READ value WRITE setValue )
-    Q_PROPERTY( double minimum READ minimum WRITE setMinimum )
-    Q_PROPERTY( double maximum READ maximum WRITE setMaximum )
-    Q_PROPERTY( double singleStep READ singleStep WRITE setSingleStep )
+    Q_PROPERTY(double value READ value WRITE setValue)
 
-    Q_PROPERTY( int numButtons READ numButtons WRITE setNumButtons )
-    Q_PROPERTY( int stepButton1 READ stepButton1 WRITE setStepButton1 )
-    Q_PROPERTY( int stepButton2 READ stepButton2 WRITE setStepButton2 )
-    Q_PROPERTY( int stepButton3 READ stepButton3 WRITE setStepButton3 )
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
 
-    Q_PROPERTY( bool readOnly READ isReadOnly WRITE setReadOnly )
-    Q_PROPERTY( bool wrapping READ wrapping WRITE setWrapping )
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
+
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
+
+    Q_PROPERTY(int numButtons READ numButtons WRITE setNumButtons)
+
+    Q_PROPERTY(int stepButton1 READ stepButton1 WRITE setStepButton1)
+
+    Q_PROPERTY(int stepButton2 READ stepButton2 WRITE setStepButton2)
+
+    Q_PROPERTY(int stepButton3 READ stepButton3 WRITE setStepButton3)
+
+    Q_PROPERTY(bool readOnly READ isReadOnly WRITE setReadOnly)
+
+    Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
 
 public:
     //! Button index
-    enum Button
-    {
+    enum Button {
         //! Button intended for minor steps
         Button1,
 
@@ -84,82 +90,105 @@ public:
         ButtonCnt
     };
 
-    explicit QwtCounter( QWidget *parent = NULL );
+    explicit QwtCounter(QWidget *parent = NULL);
+
     virtual ~QwtCounter();
 
-    void setValid( bool );
+    void setValid(bool);
+
     bool isValid() const;
 
-    void setWrapping( bool );
+    void setWrapping(bool);
+
     bool wrapping() const;
 
     bool isReadOnly() const;
-    void setReadOnly( bool );
 
-    void setNumButtons( int n );
+    void setReadOnly(bool);
+
+    void setNumButtons(int n);
+
     int numButtons() const;
 
-    void setIncSteps( QwtCounter::Button btn, int nSteps );
-    int incSteps( QwtCounter::Button btn ) const;
+    void setIncSteps(QwtCounter::Button btn, int nSteps);
+
+    int incSteps(QwtCounter::Button btn) const;
 
     virtual QSize sizeHint() const;
 
     double singleStep() const;
-    void setSingleStep( double s );
 
-    void setRange( double min, double max );
-    
+    void setSingleStep(double s);
+
+    void setRange(double min, double max);
+
     double minimum() const;
-    void setMinimum( double min );
+
+    void setMinimum(double min);
 
     double maximum() const;
-    void setMaximum( double max );
 
-    void setStepButton1( int nSteps );
+    void setMaximum(double max);
+
+    void setStepButton1(int nSteps);
+
     int stepButton1() const;
 
-    void setStepButton2( int nSteps );
+    void setStepButton2(int nSteps);
+
     int stepButton2() const;
 
-    void setStepButton3( int nSteps );
+    void setStepButton3(int nSteps);
+
     int stepButton3() const;
 
     double value() const;
 
-public Q_SLOTS:
-    void setValue( double );
+public
+    Q_SLOTS:
+            void setValue(double);
 
 
-Q_SIGNALS:
-    /*!
-        This signal is emitted when a button has been released
-        \param value The new value
-    */
-    void buttonReleased ( double value );
+    Q_SIGNALS:
+            /*!
+                This signal is emitted when a button has been released
+                \param value The new value
+            */
+            void buttonReleased(double
+    value );
 
     /*!
         This signal is emitted when the counter's value has changed
         \param value The new value
     */
-    void valueChanged ( double value );
+    void valueChanged(double value);
 
 protected:
-    virtual bool event( QEvent * );
-    virtual void wheelEvent( QWheelEvent * );
-    virtual void keyPressEvent( QKeyEvent * );
+    virtual bool event(QEvent *);
 
-private Q_SLOTS:
-    void btnReleased();
+    virtual void wheelEvent(QWheelEvent *);
+
+    virtual void keyPressEvent(QKeyEvent *);
+
+private
+    Q_SLOTS:
+            void btnReleased();
+
     void btnClicked();
+
     void textChanged();
 
 private:
-    void incrementValue( int numSteps );
+    void incrementValue(int numSteps);
+
     void initCounter();
+
     void updateButtons();
-    void showNumber( double );
+
+    void showNumber(double);
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

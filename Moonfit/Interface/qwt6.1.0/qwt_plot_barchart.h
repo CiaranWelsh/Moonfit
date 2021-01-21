@@ -15,6 +15,7 @@
 #include "qwt_series_data.h"
 
 class QwtColumnRect;
+
 class QwtColumnSymbol;
 
 /*!
@@ -38,9 +39,8 @@ class QwtColumnSymbol;
   \sa QwtPlotMultiBarChart, QwtPlotHistogram, QwtPlotCurve::Sticks,
       QwtPlotSeriesItem::orientation(), QwtPlotAbstractBarChart::baseline()
  */
-class QWT_EXPORT QwtPlotBarChart:
-    public QwtPlotAbstractBarChart, public QwtSeriesStore<QPointF>
-{
+class QWT_EXPORT QwtPlotBarChart :
+        public QwtPlotAbstractBarChart, public QwtSeriesStore<QPointF> {
 public:
     /*!
       \brief Legend modes.
@@ -48,8 +48,7 @@ public:
       The default setting is QwtPlotBarChart::LegendChartTitle.
       \sa setLegendMode(), legendMode()
     */
-    enum LegendMode
-    {
+    enum LegendMode {
         /*! 
           One entry on the legend showing the default symbol
           and the title() of the chart
@@ -67,51 +66,58 @@ public:
         LegendBarTitles
     };
 
-    explicit QwtPlotBarChart( const QString &title = QString::null );
-    explicit QwtPlotBarChart( const QwtText &title );
+    explicit QwtPlotBarChart(const QString &title = QString::null);
+
+    explicit QwtPlotBarChart(const QwtText &title);
 
     virtual ~QwtPlotBarChart();
 
     virtual int rtti() const;
 
-    void setSamples( const QVector<QPointF> & );
-    void setSamples( const QVector<double> & );
-    void setSamples( QwtSeriesData<QPointF> *series );
+    void setSamples(const QVector <QPointF> &);
 
-    void setSymbol( QwtColumnSymbol * );
+    void setSamples(const QVector<double> &);
+
+    void setSamples(QwtSeriesData<QPointF> *series);
+
+    void setSymbol(QwtColumnSymbol *);
+
     const QwtColumnSymbol *symbol() const;
 
-    void setLegendMode( LegendMode );
+    void setLegendMode(LegendMode);
+
     LegendMode legendMode() const;
 
-    virtual void drawSeries( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int from, int to ) const;
+    virtual void drawSeries(QPainter *painter,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, int from, int to) const;
 
     virtual QRectF boundingRect() const;
 
-    virtual QwtColumnSymbol *specialSymbol( 
-        int sampleIndex, const QPointF& ) const;
+    virtual QwtColumnSymbol *specialSymbol(
+            int sampleIndex, const QPointF &) const;
 
-    virtual QwtText barTitle( int sampleIndex ) const;
+    virtual QwtText barTitle(int sampleIndex) const;
 
 protected:
-    virtual void drawSample( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, const QwtInterval &boundingInterval,
-        int index, const QPointF& sample ) const;
+    virtual void drawSample(QPainter *painter,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, const QwtInterval &boundingInterval,
+                            int index, const QPointF &sample) const;
 
-    virtual void drawBar( QPainter *,
-        int sampleIndex, const QPointF& point, 
-        const QwtColumnRect & ) const;
+    virtual void drawBar(QPainter *,
+                         int sampleIndex, const QPointF &point,
+                         const QwtColumnRect &) const;
 
-    QList<QwtLegendData> legendData() const;
-    QwtGraphic legendIcon( int index, const QSizeF & ) const;
+    QList <QwtLegendData> legendData() const;
+
+    QwtGraphic legendIcon(int index, const QSizeF &) const;
 
 private:
     void init();
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

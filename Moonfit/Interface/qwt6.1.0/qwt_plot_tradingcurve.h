@@ -35,9 +35,8 @@
   When setting the minimum and maximum to the same value, the width of 
   the symbol is fixed. 
 */
-class QWT_EXPORT QwtPlotTradingCurve: 
-    public QwtPlotSeriesItem, QwtSeriesStore<QwtOHLCSample>
-{
+class QWT_EXPORT QwtPlotTradingCurve :
+        public QwtPlotSeriesItem, QwtSeriesStore<QwtOHLCSample> {
 public:
     /*!
         \brief Symbol styles.
@@ -45,8 +44,7 @@ public:
         The default setting is QwtPlotSeriesItem::CandleStick.
         \sa setSymbolStyle(), symbolStyle()
     */
-    enum SymbolStyle
-    {
+    enum SymbolStyle {
         //! Nothing is displayed
         NoSymbol = -1,
 
@@ -79,8 +77,7 @@ public:
     /*!
         \brief Direction of a price movement
      */
-    enum Direction
-    {
+    enum Direction {
         //! The closing price is higher than the opening price
         Increasing,
 
@@ -92,80 +89,90 @@ public:
         Attributes to modify the drawing algorithm.
         \sa setPaintAttribute(), testPaintAttribute()
     */
-    enum PaintAttribute
-    {
+    enum PaintAttribute {
         //! Check if a symbol is on the plot canvas before painting it.
-        ClipSymbols   = 0x01
+        ClipSymbols = 0x01
     };
 
     //! Paint attributes
-    typedef QFlags<PaintAttribute> PaintAttributes;
+    typedef QFlags <PaintAttribute> PaintAttributes;
 
-    explicit QwtPlotTradingCurve( const QString &title = QString::null );
-    explicit QwtPlotTradingCurve( const QwtText &title );
+    explicit QwtPlotTradingCurve(const QString &title = QString::null);
+
+    explicit QwtPlotTradingCurve(const QwtText &title);
 
     virtual ~QwtPlotTradingCurve();
 
     virtual int rtti() const;
 
-    void setPaintAttribute( PaintAttribute, bool on = true );
-    bool testPaintAttribute( PaintAttribute ) const;
+    void setPaintAttribute(PaintAttribute, bool on = true);
 
-    void setSamples( const QVector<QwtOHLCSample> & );
-    void setSamples( QwtSeriesData<QwtOHLCSample> * );
+    bool testPaintAttribute(PaintAttribute) const;
 
-    void setSymbolStyle( SymbolStyle style );
+    void setSamples(const QVector <QwtOHLCSample> &);
+
+    void setSamples(QwtSeriesData<QwtOHLCSample> *);
+
+    void setSymbolStyle(SymbolStyle style);
+
     SymbolStyle symbolStyle() const;
 
-    void setSymbolPen( const QColor &, 
-        qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setSymbolPen( const QPen & );
+    void setSymbolPen(const QColor &,
+                      qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setSymbolPen(const QPen &);
+
     QPen symbolPen() const;
 
-    void setSymbolBrush( Direction, const QBrush & );
-    QBrush symbolBrush( Direction ) const;
+    void setSymbolBrush(Direction, const QBrush &);
 
-    void setSymbolExtent( double width );
+    QBrush symbolBrush(Direction) const;
+
+    void setSymbolExtent(double width);
+
     double symbolExtent() const;
 
-    void setMinSymbolWidth( double );
+    void setMinSymbolWidth(double);
+
     double minSymbolWidth() const;
 
-    void setMaxSymbolWidth( double );
+    void setMaxSymbolWidth(double);
+
     double maxSymbolWidth() const;
 
-    virtual void drawSeries( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int from, int to ) const;
+    virtual void drawSeries(QPainter *painter,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, int from, int to) const;
 
     virtual QRectF boundingRect() const;
 
-    virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
+    virtual QwtGraphic legendIcon(int index, const QSizeF &) const;
 
 protected:
 
     void init();
 
-    virtual void drawSymbols( QPainter *,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int from, int to ) const;
+    virtual void drawSymbols(QPainter *,
+                             const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                             const QRectF &canvasRect, int from, int to) const;
 
-    virtual void drawUserSymbol( QPainter *, 
-        SymbolStyle, const QwtOHLCSample &,
-        Qt::Orientation, bool inverted, double width ) const;
+    virtual void drawUserSymbol(QPainter *,
+                                SymbolStyle, const QwtOHLCSample &,
+                                Qt::Orientation, bool inverted, double width) const;
 
-    void drawBar( QPainter *painter, const QwtOHLCSample &, 
-        Qt::Orientation, bool inverted, double width ) const;
+    void drawBar(QPainter *painter, const QwtOHLCSample &,
+                 Qt::Orientation, bool inverted, double width) const;
 
-    void drawCandleStick( QPainter *, const QwtOHLCSample &, 
-        Qt::Orientation, double width ) const;
+    void drawCandleStick(QPainter *, const QwtOHLCSample &,
+                         Qt::Orientation, double width) const;
 
     virtual double scaledSymbolWidth(
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect ) const;
+            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+            const QRectF &canvasRect) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

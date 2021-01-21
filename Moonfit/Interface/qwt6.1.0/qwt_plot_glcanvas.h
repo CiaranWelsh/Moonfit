@@ -20,6 +20,7 @@
 #endif
 //#include <qgl.h>
 #include <QtOpenGL/qgl.h>
+
 class QwtPlot;
 
 /*!
@@ -46,18 +47,30 @@ class QwtPlot;
         type of buffers can be converted into a QImage and 
         used in combination with a regular QwtPlotCanvas.
 */
-class QWT_EXPORT QwtPlotGLCanvas: public QGLWidget
-{
+class QWT_EXPORT QwtPlotGLCanvas : public QGLWidget {
     Q_OBJECT
 
-    Q_ENUMS( Shape Shadow )
+    Q_ENUMS(Shape Shadow)
 
-    Q_PROPERTY( Shadow frameShadow READ frameShadow WRITE setFrameShadow )
-    Q_PROPERTY( Shape frameShape READ frameShape WRITE setFrameShape )
-    Q_PROPERTY( int lineWidth READ lineWidth WRITE setLineWidth )
-    Q_PROPERTY( int midLineWidth READ midLineWidth WRITE setMidLineWidth )
-    Q_PROPERTY( int frameWidth READ frameWidth )
-    Q_PROPERTY( QRect frameRect READ frameRect DESIGNABLE false )
+    Q_PROPERTY( Shadow
+    frameShadow READ
+    frameShadow WRITE
+    setFrameShadow )
+    Q_PROPERTY( Shape
+    frameShape READ
+    frameShape WRITE
+    setFrameShape )
+
+    Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth)
+
+    Q_PROPERTY(int midLineWidth READ midLineWidth WRITE setMidLineWidth)
+
+    Q_PROPERTY(int frameWidth READ frameWidth)
+
+    Q_PROPERTY( QRect
+    frameRect READ
+    frameRect DESIGNABLE
+    false )
 
 public:
     /*!
@@ -68,8 +81,7 @@ public:
          The following enum is made for the designer only. It is safe
          to use QFrame::Shadow instead.
      */
-    enum Shadow
-    {
+    enum Shadow {
         //! QFrame::Plain
         Plain = QFrame::Plain,
 
@@ -91,51 +103,63 @@ public:
         \note QFrame::StyledPanel and QFrame::WinPanel are unsuported 
               and will be displayed as QFrame::Panel.
      */
-    enum Shape
-    {
+    enum Shape {
         NoFrame = QFrame::NoFrame,
 
         Box = QFrame::Box,
         Panel = QFrame::Panel
     };
 
-    explicit QwtPlotGLCanvas( QwtPlot * = NULL );
+    explicit QwtPlotGLCanvas(QwtPlot * = NULL);
+
     virtual ~QwtPlotGLCanvas();
 
-    void setFrameStyle( int style );
+    void setFrameStyle(int style);
+
     int frameStyle() const;
 
-    void setFrameShadow( Shadow );
+    void setFrameShadow(Shadow);
+
     Shadow frameShadow() const;
 
-    void setFrameShape( Shape );
+    void setFrameShape(Shape);
+
     Shape frameShape() const;
 
-    void setLineWidth( int );
+    void setLineWidth(int);
+
     int lineWidth() const;
 
-    void setMidLineWidth( int );
+    void setMidLineWidth(int);
+
     int midLineWidth() const;
 
     int frameWidth() const;
+
     QRect frameRect() const;
 
-    Q_INVOKABLE QPainterPath borderPath( const QRect & ) const;
+    Q_INVOKABLE QPainterPath
 
-    virtual bool event( QEvent * );
+    borderPath(const QRect &) const;
 
-public Q_SLOTS:
-    void replot();
+    virtual bool event(QEvent *);
+
+public
+    Q_SLOTS:
+            void replot();
 
 protected:
-    virtual void paintEvent( QPaintEvent * );
+    virtual void paintEvent(QPaintEvent *);
 
-    virtual void drawBackground( QPainter * );
-    virtual void drawBorder( QPainter * );
-    virtual void drawItems( QPainter * );
+    virtual void drawBackground(QPainter *);
+
+    virtual void drawBorder(QPainter *);
+
+    virtual void drawItems(QPainter *);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

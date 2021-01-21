@@ -15,13 +15,19 @@
 #include <qsize.h>
 
 class QwtPlot;
+
 class QwtScaleMap;
+
 class QRectF;
+
 class QPainter;
+
 class QPaintDevice;
 
 #ifndef QT_NO_PRINTER
+
 class QPrinter;
+
 #endif
 
 #ifndef QWT_NO_SVG
@@ -34,31 +40,29 @@ class QSvgGenerator;
     \brief Renderer for exporting a plot to a document, a printer
            or anything else, that is supported by QPainter/QPaintDevice
 */
-class QWT_EXPORT QwtPlotRenderer: public QObject
-{
+class QWT_EXPORT QwtPlotRenderer : public QObject {
     Q_OBJECT
 
 public:
     //! Disard flags
-    enum DiscardFlag
-    {
+    enum DiscardFlag {
         //! Render all components of the plot
-        DiscardNone             = 0x00,
+        DiscardNone = 0x00,
 
         //! Don't render the background of the plot
-        DiscardBackground       = 0x01,
+        DiscardBackground = 0x01,
 
         //! Don't render the title of the plot
-        DiscardTitle            = 0x02,
+        DiscardTitle = 0x02,
 
         //! Don't render the legend of the plot
-        DiscardLegend           = 0x04,
+        DiscardLegend = 0x04,
 
         //! Don't render the background of the canvas
         DiscardCanvasBackground = 0x08,
 
         //! Don't render the footer of the plot
-        DiscardFooter           = 0x10,
+        DiscardFooter = 0x10,
 
         /*! 
             Don't render the frame of the canvas
@@ -67,21 +71,20 @@ public:
                   style sheets, where the frame is part
                   of the background
          */
-        DiscardCanvasFrame           = 0x20
+        DiscardCanvasFrame = 0x20
 
     };
 
     //! Disard flags
-    typedef QFlags<DiscardFlag> DiscardFlags;
+    typedef QFlags <DiscardFlag> DiscardFlags;
 
     /*!
        \brief Layout flags
        \sa setLayoutFlag(), testLayoutFlag()
      */
-    enum LayoutFlag
-    {
+    enum LayoutFlag {
         //! Use the default layout as on screen
-        DefaultLayout   = 0x00,
+        DefaultLayout = 0x00,
 
         /*!
           Instead of the scales a box is painted around the plot canvas,
@@ -91,29 +94,34 @@ public:
     };
 
     //! Layout flags
-    typedef QFlags<LayoutFlag> LayoutFlags;
+    typedef QFlags <LayoutFlag> LayoutFlags;
 
-    explicit QwtPlotRenderer( QObject * = NULL );
+    explicit QwtPlotRenderer(QObject * = NULL);
+
     virtual ~QwtPlotRenderer();
 
-    void setDiscardFlag( DiscardFlag flag, bool on = true );
-    bool testDiscardFlag( DiscardFlag flag ) const;
+    void setDiscardFlag(DiscardFlag flag, bool on = true);
 
-    void setDiscardFlags( DiscardFlags flags );
+    bool testDiscardFlag(DiscardFlag flag) const;
+
+    void setDiscardFlags(DiscardFlags flags);
+
     DiscardFlags discardFlags() const;
 
-    void setLayoutFlag( LayoutFlag flag, bool on = true );
-    bool testLayoutFlag( LayoutFlag flag ) const;
+    void setLayoutFlag(LayoutFlag flag, bool on = true);
 
-    void setLayoutFlags( LayoutFlags flags );
+    bool testLayoutFlag(LayoutFlag flag) const;
+
+    void setLayoutFlags(LayoutFlags flags);
+
     LayoutFlags layoutFlags() const;
 
-    void renderDocument( QwtPlot *, const QString &fileName,
-        const QSizeF &sizeMM, int resolution = 85 );
+    void renderDocument(QwtPlot *, const QString &fileName,
+                        const QSizeF &sizeMM, int resolution = 85);
 
-    void renderDocument( QwtPlot *,
-        const QString &fileName, const QString &format,
-        const QSizeF &sizeMM, int resolution = 85 );
+    void renderDocument(QwtPlot *,
+                        const QString &fileName, const QString &format,
+                        const QSizeF &sizeMM, int resolution = 85);
 
 #ifndef QWT_NO_SVG
 #ifdef QT_SVG_LIB
@@ -124,43 +132,46 @@ public:
 #endif
 
 #ifndef QT_NO_PRINTER
-    void renderTo( QwtPlot *, QPrinter & ) const;
+
+    void renderTo(QwtPlot *, QPrinter &) const;
+
 #endif
 
-    void renderTo( QwtPlot *, QPaintDevice &p ) const;
+    void renderTo(QwtPlot *, QPaintDevice &p) const;
 
-    virtual void render( QwtPlot *,
-        QPainter *, const QRectF &rect ) const;
+    virtual void render(QwtPlot *,
+                        QPainter *, const QRectF &rect) const;
 
-    virtual void renderTitle( const QwtPlot *,
-        QPainter *, const QRectF & ) const;
+    virtual void renderTitle(const QwtPlot *,
+                             QPainter *, const QRectF &) const;
 
-    virtual void renderFooter( const QwtPlot *,
-        QPainter *, const QRectF & ) const;
+    virtual void renderFooter(const QwtPlot *,
+                              QPainter *, const QRectF &) const;
 
-    virtual void renderScale( const QwtPlot *, QPainter *,
-        int axisId, int startDist, int endDist,
-        int baseDist, const QRectF & ) const;
+    virtual void renderScale(const QwtPlot *, QPainter *,
+                             int axisId, int startDist, int endDist,
+                             int baseDist, const QRectF &) const;
 
-    virtual void renderCanvas( const QwtPlot *,
-        QPainter *, const QRectF &canvasRect,
-        const QwtScaleMap* maps ) const;
+    virtual void renderCanvas(const QwtPlot *,
+                              QPainter *, const QRectF &canvasRect,
+                              const QwtScaleMap *maps) const;
 
-    virtual void renderLegend( 
-        const QwtPlot *, QPainter *, const QRectF & ) const;
+    virtual void renderLegend(
+            const QwtPlot *, QPainter *, const QRectF &) const;
 
-    bool exportTo( QwtPlot *, const QString &documentName,
-        const QSizeF &sizeMM = QSizeF( 300, 200 ), int resolution = 85 );
+    bool exportTo(QwtPlot *, const QString &documentName,
+                  const QSizeF &sizeMM = QSizeF(300, 200), int resolution = 85);
 
 private:
-    void buildCanvasMaps( const QwtPlot *,
-        const QRectF &, QwtScaleMap maps[] ) const;
+    void buildCanvasMaps(const QwtPlot *,
+                         const QRectF &, QwtScaleMap maps[]) const;
 
-    bool updateCanvasMargins( QwtPlot *,
-        const QRectF &, const QwtScaleMap maps[] ) const;
+    bool updateCanvasMargins(QwtPlot *,
+                             const QRectF &, const QwtScaleMap maps[]) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -27,20 +27,23 @@
         If none is available it falls back on QTimer.
 */
 
-class QWT_EXPORT QwtSystemClock
-{
+class QWT_EXPORT QwtSystemClock {
 public:
     QwtSystemClock();
+
     virtual ~QwtSystemClock();
 
     bool isNull() const;
 
     void start();
+
     double restart();
+
     double elapsed() const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

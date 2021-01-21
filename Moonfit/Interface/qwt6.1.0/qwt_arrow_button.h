@@ -11,6 +11,7 @@
 #define QWT_ARROW_BUTTON_H
 
 #include "qwt_global.h"
+
 #ifdef QT5
 #include <qpushbutton.h>
 #endif
@@ -26,32 +27,38 @@
   An Arrow button can have 1 to 3 arrows in a row, pointing
   up, down, left or right.
 */
-class QWT_EXPORT QwtArrowButton : public QPushButton
-{
+class QWT_EXPORT QwtArrowButton : public QPushButton {
 public:
-    explicit QwtArrowButton ( int num, Qt::ArrowType, QWidget *parent = NULL );
+    explicit QwtArrowButton(int num, Qt::ArrowType, QWidget *parent = NULL);
+
     virtual ~QwtArrowButton();
 
     Qt::ArrowType arrowType() const;
+
     int num() const;
 
     virtual QSize sizeHint() const;
+
     virtual QSize minimumSizeHint() const;
 
 protected:
-    virtual void paintEvent( QPaintEvent *event );
+    virtual void paintEvent(QPaintEvent *event);
 
-    virtual void drawButtonLabel( QPainter *p );
-    virtual void drawArrow( QPainter *,
-        const QRect &, Qt::ArrowType ) const;
+    virtual void drawButtonLabel(QPainter *p);
+
+    virtual void drawArrow(QPainter *,
+                           const QRect &, Qt::ArrowType) const;
+
     virtual QRect labelRect() const;
-    virtual QSize arrowSize( Qt::ArrowType,
-        const QSize &boundingSize ) const;
 
-    virtual void keyPressEvent( QKeyEvent * );
+    virtual QSize arrowSize(Qt::ArrowType,
+                            const QSize &boundingSize) const;
+
+    virtual void keyPressEvent(QKeyEvent *);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

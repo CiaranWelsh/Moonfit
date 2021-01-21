@@ -16,22 +16,25 @@
 
   \sa QwtPlotCurve, QwtPlotSeriesItem
 */
-class QWT_EXPORT QwtSamplingThread: public QThread
-{
+class QWT_EXPORT QwtSamplingThread : public QThread {
     Q_OBJECT
 
 public:
     virtual ~QwtSamplingThread();
 
     double interval() const;
+
     double elapsed() const;
 
-public Q_SLOTS:
-    void setInterval( double interval );
+public
+    Q_SLOTS:
+            void setInterval(double
+    interval );
+
     void stop();
 
 protected:
-    explicit QwtSamplingThread( QObject *parent = NULL );
+    explicit QwtSamplingThread(QObject *parent = NULL);
 
     virtual void run();
 
@@ -40,10 +43,11 @@ protected:
 
        \param elapsed Time since the thread was started in milliseconds
      */
-    virtual void sample( double elapsed ) = 0;
+    virtual void sample(double elapsed) = 0;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -12,6 +12,7 @@
 
 #include "qwt_global.h"
 #include "qwt_text.h"
+
 #ifdef QT5
 #include <qframe.h>
 #endif
@@ -20,33 +21,46 @@
 #endif
 
 class QString;
+
 class QPaintEvent;
+
 class QPainter;
 
 /*!
    \brief A Widget which displays a QwtText
 */
 
-class QWT_EXPORT QwtTextLabel : public QFrame
-{
+class QWT_EXPORT QwtTextLabel : public QFrame {
     Q_OBJECT
 
-    Q_PROPERTY( int indent READ indent WRITE setIndent )
-    Q_PROPERTY( int margin READ margin WRITE setMargin )
-    Q_PROPERTY( QString plainText READ plainText WRITE setPlainText )
+    Q_PROPERTY(int indent READ indent WRITE setIndent)
+
+    Q_PROPERTY(int margin READ margin WRITE setMargin)
+
+    Q_PROPERTY( QString
+    plainText READ
+    plainText WRITE
+    setPlainText )
 
 public:
-    explicit QwtTextLabel( QWidget *parent = NULL );
-    explicit QwtTextLabel( const QwtText &, QWidget *parent = NULL );
+    explicit QwtTextLabel(QWidget *parent = NULL);
+
+    explicit QwtTextLabel(const QwtText &, QWidget *parent = NULL);
+
     virtual ~QwtTextLabel();
 
-    void setPlainText( const QString & );
+    void setPlainText(const QString &);
+
     QString plainText() const;
 
-public Q_SLOTS:
-    void setText( const QString &,
-        QwtText::TextFormat textFormat = QwtText::AutoText );
-    virtual void setText( const QwtText & );
+public
+    Q_SLOTS:
+            void setText(
+    const QString &,
+    QwtText::TextFormat textFormat = QwtText::AutoText
+    );
+
+    virtual void setText(const QwtText &);
 
     void clear();
 
@@ -54,28 +68,35 @@ public:
     const QwtText &text() const;
 
     int indent() const;
-    void setIndent( int );
+
+    void setIndent(int);
 
     int margin() const;
-    void setMargin( int );
+
+    void setMargin(int);
 
     virtual QSize sizeHint() const;
+
     virtual QSize minimumSizeHint() const;
-    virtual int heightForWidth( int ) const;
+
+    virtual int heightForWidth(int) const;
 
     QRect textRect() const;
 
-    virtual void drawText( QPainter *, const QRectF & );
+    virtual void drawText(QPainter *, const QRectF &);
 
 protected:
-    virtual void paintEvent( QPaintEvent *e );
-    virtual void drawContents( QPainter * );
+    virtual void paintEvent(QPaintEvent *e);
+
+    virtual void drawContents(QPainter *);
 
 private:
     void init();
+
     int defaultIndent() const;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

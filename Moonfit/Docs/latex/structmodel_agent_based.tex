@@ -2,59 +2,68 @@
 \label{structmodel_agent_based}\index{modelAgentBased@{modelAgentBased}}
 
 
-A general mother class to perform agent-\/based dynamical simulations. It contains its own parameter set and variables, that will be observations of the agent-\/based model. The used needs to define a sub-\/class that will implement the functions /// time\+Step(...) and analyze\+State(...), on top of the functions required by the \mbox{\hyperlink{struct_model}{Model}} mother class. All functions of the \mbox{\hyperlink{struct_model}{Model}} class are available, except simulate(...), that calls time\+Step(...) instead of an O\+DE solver.  
+A general mother class to perform agent-\/based dynamical simulations. It contains its own parameter set and variables, that will be observations of the agent-\/based model. The used needs to define a sub-\/class that will implement the functions /// time\+Step(...) and analyze\+State(...), on top of the functions required by the \mbox{\hyperlink{struct_model}{Model}} mother class. All functions of the \mbox{\hyperlink{struct_model}{Model}} class are available, except simulate(...), that calls time\+Step(...) instead of an O\+DE solver.
 
 
 
 
-{\ttfamily \#include $<$modele.\+h$>$}
+    {\ttfamily \#include $<$modele.\+h$>$}
 
 Inheritance diagram for model\+Agent\+Based\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=2.000000cm]{structmodel_agent_based}
-\end{center}
+                                                  \begin{center}
+                                                      \leavevmode
+                                                      \includegraphics[height=2.000000cm]{structmodel_agent_based}
+                                                  \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{structmodel_agent_based_a5bc807638722705112d86f0f9b8f724b}\label{structmodel_agent_based_a5bc807638722705112d86f0f9b8f724b}} 
-{\bfseries model\+Agent\+Based} (int \+\_\+nb\+Vars, int \+\_\+nb\+Params)
-\item 
-void \mbox{\hyperlink{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}{simulate}} (double sec\+\_\+max, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E)
-\begin{DoxyCompactList}\small\item\em 3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structmodel_agent_based_aa6755c12cb817b8d68b4e5251f02b052}\label{structmodel_agent_based_aa6755c12cb817b8d68b4e5251f02b052}} 
-virtual void \mbox{\hyperlink{structmodel_agent_based_aa6755c12cb817b8d68b4e5251f02b052}{time\+Step}} (const double tstart, const double tend)
-\begin{DoxyCompactList}\small\item\em Function to be implemented by the user, that will perform time-\/steps between t=tstart to t=tend. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{structmodel_agent_based_adb2ee657ade536a45f49c66d7f50b552}\label{structmodel_agent_based_adb2ee657ade536a45f49c66d7f50b552}} 
-virtual void \mbox{\hyperlink{structmodel_agent_based_adb2ee657ade536a45f49c66d7f50b552}{analyze\+State}} (const double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}})
-\begin{DoxyCompactList}\small\item\em Function to be implemented by the user, that analyses the agent-\/based model, and fills values of the variables (observations) that are plotted and used for cost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\Hypertarget{structmodel_agent_based_a5bc807638722705112d86f0f9b8f724b}\label{structmodel_agent_based_a5bc807638722705112d86f0f9b8f724b}}
+    {\bfseries model\+Agent\+Based} (int \+\_\+nb\+Vars, int \+\_\+nb\+Params)
+    \item
+    void \mbox{\hyperlink{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}{simulate}} (double sec\+\_\+max, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E)
+    \begin{DoxyCompactList}
+        \small\item\em 3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{structmodel_agent_based_aa6755c12cb817b8d68b4e5251f02b052}\label{structmodel_agent_based_aa6755c12cb817b8d68b4e5251f02b052}}
+    virtual void \mbox{\hyperlink{structmodel_agent_based_aa6755c12cb817b8d68b4e5251f02b052}{time\+Step}} (const double tstart, const double tend)
+    \begin{DoxyCompactList}
+        \small\item\em Function to be implemented by the user, that will perform time-\/steps between t=tstart to t=tend.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{structmodel_agent_based_adb2ee657ade536a45f49c66d7f50b552}\label{structmodel_agent_based_adb2ee657ade536a45f49c66d7f50b552}}
+    virtual void \mbox{\hyperlink{structmodel_agent_based_adb2ee657ade536a45f49c66d7f50b552}{analyze\+State}} (const double \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{t}})
+    \begin{DoxyCompactList}
+        \small\item\em Function to be implemented by the user, that analyses the agent-\/based model, and fills values of the variables (observations) that are plotted and used for cost.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 
 \doxysubsection{Detailed Description}
-A general mother class to perform agent-\/based dynamical simulations. It contains its own parameter set and variables, that will be observations of the agent-\/based model. The used needs to define a sub-\/class that will implement the functions /// time\+Step(...) and analyze\+State(...), on top of the functions required by the \mbox{\hyperlink{struct_model}{Model}} mother class. All functions of the \mbox{\hyperlink{struct_model}{Model}} class are available, except simulate(...), that calls time\+Step(...) instead of an O\+DE solver. 
+A general mother class to perform agent-\/based dynamical simulations. It contains its own parameter set and variables, that will be observations of the agent-\/based model. The used needs to define a sub-\/class that will implement the functions /// time\+Step(...) and analyze\+State(...), on top of the functions required by the \mbox{\hyperlink{struct_model}{Model}} mother class. All functions of the \mbox{\hyperlink{struct_model}{Model}} class are available, except simulate(...), that calls time\+Step(...) instead of an O\+DE solver.
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}\label{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}} 
+\mbox{\Hypertarget{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}\label{structmodel_agent_based_a2b2acdbaf271174acbabcac920c6dd70}}
 \index{modelAgentBased@{modelAgentBased}!simulate@{simulate}}
 \index{simulate@{simulate}!modelAgentBased@{modelAgentBased}}
 \doxysubsubsection{\texorpdfstring{simulate()}{simulate()}}
-{\footnotesize\ttfamily void model\+Agent\+Based\+::simulate (\begin{DoxyParamCaption}\item[{double}]{\+\_\+sec\+\_\+max,  }\item[{\mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$}]{E }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void model\+Agent\+Based\+::simulate (\begin{DoxyParamCaption}
+                                                                  \item[{double}]{\+\_\+sec\+\_\+max,  }\item[{\mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$}]{E }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
-3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver) 
+3 -\/ functions for simulating (automatically calling the sub-\/class derivatives function, using the solver)
 
 function to simulate from t to t+sec\+\_\+max. The value of \mbox{\hyperlink{struct_model_a9cbdab555a02e0ec5a57ee3c91f76b64}{Model\+::t}} is updated
 
-Now, the interests of using the \mbox{\hyperlink{struct_model}{Model}} mother class are coming \+: whatever the sub-\/class model, the following functions are implemented and can be used to simulate, or do interesting manipulations of the model. 
+Now, the interests of using the \mbox{\hyperlink{struct_model}{Model}} mother class are coming \+: whatever the sub-\/class model, the following functions are implemented and can be used to simulate, or do interesting manipulations of the model.
 
 Reimplemented from \mbox{\hyperlink{struct_model_a52f0e17fdcc59f9e4ef9cc58ef657c58}{Model}}.
 
 
-
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/modele.\+h\item 
-Framework/modele.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/modele.\+h\item
+                                                                               Framework/modele.\+cpp
+\end{DoxyCompactItemize}

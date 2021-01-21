@@ -19,10 +19,9 @@
 
   \note lowerBound might be greater than upperBound for inverted scales
  */
-QwtScaleDiv::QwtScaleDiv( double lowerBound, double upperBound ):
-    d_lowerBound( lowerBound ),
-    d_upperBound( upperBound )
-{
+QwtScaleDiv::QwtScaleDiv(double lowerBound, double upperBound) :
+        d_lowerBound(lowerBound),
+        d_upperBound(upperBound) {
 }
 
 /*!
@@ -31,12 +30,11 @@ QwtScaleDiv::QwtScaleDiv( double lowerBound, double upperBound ):
   \param interval Interval
   \param ticks List of major, medium and minor ticks
 */
-QwtScaleDiv::QwtScaleDiv( const QwtInterval &interval,
-        QList<double> ticks[NTickTypes] ):
-    d_lowerBound( interval.minValue() ),
-    d_upperBound( interval.maxValue() )
-{
-    for ( int i = 0; i < NTickTypes; i++ )
+QwtScaleDiv::QwtScaleDiv(const QwtInterval &interval,
+                         QList<double> ticks[NTickTypes]) :
+        d_lowerBound(interval.minValue()),
+        d_upperBound(interval.maxValue()) {
+    for (int i = 0; i < NTickTypes; i++)
         d_ticks[i] = ticks[i];
 }
 
@@ -49,12 +47,11 @@ QwtScaleDiv::QwtScaleDiv( const QwtInterval &interval,
 
   \note lowerBound might be greater than upperBound for inverted scales
 */
-QwtScaleDiv::QwtScaleDiv( double lowerBound, double upperBound,
-        QList<double> ticks[NTickTypes] ):
-    d_lowerBound( lowerBound ),
-    d_upperBound( upperBound )
-{
-    for ( int i = 0; i < NTickTypes; i++ )
+QwtScaleDiv::QwtScaleDiv(double lowerBound, double upperBound,
+                         QList<double> ticks[NTickTypes]) :
+        d_lowerBound(lowerBound),
+        d_upperBound(upperBound) {
+    for (int i = 0; i < NTickTypes; i++)
         d_ticks[i] = ticks[i];
 }
 
@@ -69,16 +66,15 @@ QwtScaleDiv::QwtScaleDiv( double lowerBound, double upperBound,
 
   \note lowerBound might be greater than upperBound for inverted scales
 */
-QwtScaleDiv::QwtScaleDiv( double lowerBound, double upperBound,
-        const QList<double> &minorTicks, 
-        const QList<double> &mediumTicks,
-        const QList<double> &majorTicks ):
-    d_lowerBound( lowerBound ),
-    d_upperBound( upperBound )
-{
-    d_ticks[ MinorTick ] = minorTicks;
-    d_ticks[ MediumTick ] = mediumTicks;
-    d_ticks[ MajorTick ] = majorTicks;
+QwtScaleDiv::QwtScaleDiv(double lowerBound, double upperBound,
+                         const QList<double> &minorTicks,
+                         const QList<double> &mediumTicks,
+                         const QList<double> &majorTicks) :
+        d_lowerBound(lowerBound),
+        d_upperBound(upperBound) {
+    d_ticks[MinorTick] = minorTicks;
+    d_ticks[MediumTick] = mediumTicks;
+    d_ticks[MajorTick] = majorTicks;
 }
 
 /*!
@@ -89,8 +85,7 @@ QwtScaleDiv::QwtScaleDiv( double lowerBound, double upperBound,
 
   \note lowerBound might be greater than upperBound for inverted scales
 */
-void QwtScaleDiv::setInterval( double lowerBound, double upperBound )
-{
+void QwtScaleDiv::setInterval(double lowerBound, double upperBound) {
     d_lowerBound = lowerBound;
     d_upperBound = upperBound;
 }
@@ -100,8 +95,7 @@ void QwtScaleDiv::setInterval( double lowerBound, double upperBound )
 
    \param interval Interval
 */
-void QwtScaleDiv::setInterval( const QwtInterval &interval )
-{
+void QwtScaleDiv::setInterval(const QwtInterval &interval) {
     d_lowerBound = interval.minValue();
     d_upperBound = interval.maxValue();
 }
@@ -109,9 +103,8 @@ void QwtScaleDiv::setInterval( const QwtInterval &interval )
 /*!
   \return lowerBound -> upperBound
 */
-QwtInterval QwtScaleDiv::interval() const
-{
-    return QwtInterval( d_lowerBound, d_upperBound );
+QwtInterval QwtScaleDiv::interval() const {
+    return QwtInterval(d_lowerBound, d_upperBound);
 }
 
 /*!
@@ -120,8 +113,7 @@ QwtInterval QwtScaleDiv::interval() const
   \param lowerBound First boundary
   \sa lowerBiound(), setUpperBound()
  */
-void QwtScaleDiv::setLowerBound( double lowerBound  )
-{
+void QwtScaleDiv::setLowerBound(double lowerBound) {
     d_lowerBound = lowerBound;
 }
 
@@ -129,10 +121,9 @@ void QwtScaleDiv::setLowerBound( double lowerBound  )
   \return First boundary
   \sa upperBound()
 */
-double QwtScaleDiv::lowerBound() const
-{
+double QwtScaleDiv::lowerBound() const {
     return d_lowerBound;
-}   
+}
 
 /*!
   Set the second boundary
@@ -140,25 +131,22 @@ double QwtScaleDiv::lowerBound() const
   \param upperBound Second boundary
   \sa upperBound(), setLowerBound()
  */
-void QwtScaleDiv::setUpperBound( double upperBound  )
-{
+void QwtScaleDiv::setUpperBound(double upperBound) {
     d_upperBound = upperBound;
-} 
+}
 
 /*!
   \return upper bound
   \sa lowerBound()
 */
-double QwtScaleDiv::upperBound() const
-{
+double QwtScaleDiv::upperBound() const {
     return d_upperBound;
 }
 
 /*!
   \return upperBound() - lowerBound()
 */
-double QwtScaleDiv::range() const
-{
+double QwtScaleDiv::range() const {
     return d_upperBound - d_lowerBound;
 }
 
@@ -166,17 +154,14 @@ double QwtScaleDiv::range() const
   \brief Equality operator
   \return true if this instance is equal to other
 */
-bool QwtScaleDiv::operator==( const QwtScaleDiv &other ) const
-{
-    if ( d_lowerBound != other.d_lowerBound ||
-        d_upperBound != other.d_upperBound )
-    {
+bool QwtScaleDiv::operator==(const QwtScaleDiv &other) const {
+    if (d_lowerBound != other.d_lowerBound ||
+        d_upperBound != other.d_upperBound) {
         return false;
     }
 
-    for ( int i = 0; i < NTickTypes; i++ )
-    {
-        if ( d_ticks[i] != other.d_ticks[i] )
+    for (int i = 0; i < NTickTypes; i++) {
+        if (d_ticks[i] != other.d_ticks[i])
             return false;
     }
 
@@ -187,20 +172,17 @@ bool QwtScaleDiv::operator==( const QwtScaleDiv &other ) const
   \brief Inequality
   \return true if this instance is not equal to other
 */
-bool QwtScaleDiv::operator!=( const QwtScaleDiv &other ) const
-{
-    return ( !( *this == other ) );
+bool QwtScaleDiv::operator!=(const QwtScaleDiv &other) const {
+    return (!(*this == other));
 }
 
 //! Check if the scale division is empty( lowerBound() == upperBound() )
-bool QwtScaleDiv::isEmpty() const
-{
-    return ( d_lowerBound == d_upperBound );
+bool QwtScaleDiv::isEmpty() const {
+    return (d_lowerBound == d_upperBound);
 }
 
 //! Check if the scale division is increasing( lowerBound() <= upperBound() )
-bool QwtScaleDiv::isIncreasing() const
-{
+bool QwtScaleDiv::isIncreasing() const {
     return d_lowerBound <= d_upperBound;
 }
 
@@ -210,10 +192,9 @@ bool QwtScaleDiv::isIncreasing() const
   \param value Value
   \return true/false
 */
-bool QwtScaleDiv::contains( double value ) const
-{
-    const double min = qMin( d_lowerBound, d_upperBound );
-    const double max = qMax( d_lowerBound, d_upperBound );
+bool QwtScaleDiv::contains(double value) const {
+    const double min = qMin(d_lowerBound, d_upperBound);
+    const double max = qMax(d_lowerBound, d_upperBound);
 
     return value >= min && value <= max;
 }
@@ -222,19 +203,17 @@ bool QwtScaleDiv::contains( double value ) const
    Invert the scale division
    \sa inverted()
  */
-void QwtScaleDiv::invert()
-{
-    qSwap( d_lowerBound, d_upperBound );
+void QwtScaleDiv::invert() {
+    qSwap(d_lowerBound, d_upperBound);
 
-    for ( int i = 0; i < NTickTypes; i++ )
-    {
-        QList<double>& ticks = d_ticks[i];
+    for (int i = 0; i < NTickTypes; i++) {
+        QList<double> &ticks = d_ticks[i];
 
         const int size = ticks.count();
         const int size2 = size / 2;
 
-        for ( int j = 0; j < size2; j++ )
-            qSwap( ticks[j], ticks[size - 1 - j] );
+        for (int j = 0; j < size2; j++)
+            qSwap(ticks[j], ticks[size - 1 - j]);
     }
 }
 
@@ -242,8 +221,7 @@ void QwtScaleDiv::invert()
   \return A scale division with inverted boundaries and ticks
   \sa invert()
  */
-QwtScaleDiv QwtScaleDiv::inverted() const
-{
+QwtScaleDiv QwtScaleDiv::inverted() const {
     QwtScaleDiv other = *this;
     other.invert();
 
@@ -261,28 +239,25 @@ QwtScaleDiv QwtScaleDiv::inverted() const
 
    \note lowerBound might be greater than upperBound for inverted scales
 */
-QwtScaleDiv QwtScaleDiv::bounded( 
-    double lowerBound, double upperBound ) const
-{
-    const double min = qMin( lowerBound, upperBound );
-    const double max = qMax( lowerBound, upperBound );
+QwtScaleDiv QwtScaleDiv::bounded(
+        double lowerBound, double upperBound) const {
+    const double min = qMin(lowerBound, upperBound);
+    const double max = qMax(lowerBound, upperBound);
 
     QwtScaleDiv sd;
-    sd.setInterval( lowerBound, upperBound );
+    sd.setInterval(lowerBound, upperBound);
 
-    for ( int tickType = 0; tickType < QwtScaleDiv::NTickTypes; tickType++ )
-    {
-        const QList<double> &ticks = d_ticks[ tickType ];
+    for (int tickType = 0; tickType < QwtScaleDiv::NTickTypes; tickType++) {
+        const QList<double> &ticks = d_ticks[tickType];
 
         QList<double> boundedTicks;
-        for ( int i = 0; i < ticks.size(); i++ )
-        {
+        for (int i = 0; i < ticks.size(); i++) {
             const double tick = ticks[i];
-            if ( tick >= min && tick <= max )
+            if (tick >= min && tick <= max)
                 boundedTicks += tick;
         }
 
-        sd.setTicks( tickType, boundedTicks );
+        sd.setTicks(tickType, boundedTicks);
     }
 
     return sd;
@@ -295,9 +270,8 @@ QwtScaleDiv QwtScaleDiv::bounded(
    \param type MinorTick, MediumTick or MajorTick
    \param ticks Values of the tick positions
 */
-void QwtScaleDiv::setTicks( int type, const QList<double> &ticks )
-{
-    if ( type >= 0 && type < NTickTypes )
+void QwtScaleDiv::setTicks(int type, const QList<double> &ticks) {
+    if (type >= 0 && type < NTickTypes)
         d_ticks[type] = ticks;
 }
 
@@ -307,9 +281,8 @@ void QwtScaleDiv::setTicks( int type, const QList<double> &ticks )
    \param type MinorTick, MediumTick or MajorTick
    \return Tick list
 */
-QList<double> QwtScaleDiv::ticks( int type ) const
-{
-    if ( type >= 0 && type < NTickTypes )
+QList<double> QwtScaleDiv::ticks(int type) const {
+    if (type >= 0 && type < NTickTypes)
         return d_ticks[type];
 
     return QList<double>();
@@ -317,12 +290,11 @@ QList<double> QwtScaleDiv::ticks( int type ) const
 
 #ifndef QT_NO_DEBUG_STREAM
 
-QDebug operator<<( QDebug debug, const QwtScaleDiv &scaleDiv )
-{
+QDebug operator<<(QDebug debug, const QwtScaleDiv &scaleDiv) {
     debug << scaleDiv.lowerBound() << "<->" << scaleDiv.upperBound();
-    debug << "Major: " << scaleDiv.ticks( QwtScaleDiv::MajorTick );
-    debug << "Medium: " << scaleDiv.ticks( QwtScaleDiv::MediumTick );
-    debug << "Minor: " << scaleDiv.ticks( QwtScaleDiv::MinorTick );
+    debug << "Major: " << scaleDiv.ticks(QwtScaleDiv::MajorTick);
+    debug << "Medium: " << scaleDiv.ticks(QwtScaleDiv::MediumTick);
+    debug << "Minor: " << scaleDiv.ticks(QwtScaleDiv::MinorTick);
 
     return debug;
 }

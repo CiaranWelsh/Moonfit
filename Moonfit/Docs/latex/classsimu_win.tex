@@ -2,181 +2,205 @@
 \label{classsimu_win}\index{simuWin@{simuWin}}
 
 
-Graphical interface class. It uses all functions from the mother class \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} to perform the complex tasks, but also handles the Qt graphical interface to display the settings, produce the curves, make the reports, and show the state of an optimization.  
+Graphical interface class. It uses all functions from the mother class \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} to perform the complex tasks, but also handles the Qt graphical interface to display the settings, produce the curves, make the reports, and show the state of an optimization.
 
 
 
 
-{\ttfamily \#include $<$simuwin.\+h$>$}
+    {\ttfamily \#include $<$simuwin.\+h$>$}
 
 Inheritance diagram for simu\+Win\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=3.000000cm]{classsimu_win}
-\end{center}
+                                        \begin{center}
+                                            \leavevmode
+                                            \includegraphics[height=3.000000cm]{classsimu_win}
+                                        \end{center}
 \end{figure}
 \doxysubsection*{Public Slots}
 \begin{DoxyCompactItemize}
-\item 
-void \mbox{\hyperlink{classsimu_win_a2b4a74566c2b701f945ac5430b869c4b}{reset}} ()
-\begin{DoxyCompactList}\small\item\em Initialization of the window. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_acfd7df01084f97be36b55811ce0b709e}\label{classsimu_win_acfd7df01084f97be36b55811ce0b709e}} 
-void \mbox{\hyperlink{classsimu_win_acfd7df01084f97be36b55811ce0b709e}{var\+Changed}} (int id\+Var)
-\begin{DoxyCompactList}\small\item\em Display another variable in the graph (without simulating, according to recorded data) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a82d3d38e58c61ca7c49d4326c2f80411}\label{classsimu_win_a82d3d38e58c61ca7c49d4326c2f80411}} 
-void \mbox{\hyperlink{classsimu_win_a82d3d38e58c61ca7c49d4326c2f80411}{update\+Parms\+From\+Model}} ()
-\begin{DoxyCompactList}\small\item\em To refresh the table from model\textquotesingle{}s values. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a13a8b5b1b23ddffafed07380806eceb3}\label{classsimu_win_a13a8b5b1b23ddffafed07380806eceb3}} 
-void \mbox{\hyperlink{classsimu_win_a13a8b5b1b23ddffafed07380806eceb3}{refresh\+History}} ()
-\begin{DoxyCompactList}\small\item\em To refresh the table of best parameter sets. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a32a436b600e6970324378886f6435646}\label{classsimu_win_a32a436b600e6970324378886f6435646}} 
-void \mbox{\hyperlink{classsimu_win_a32a436b600e6970324378886f6435646}{create\+Comb}} ()
-\begin{DoxyCompactList}\small\item\em To save the current combination (of parameters to fit and variables to override) into a new column. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_adf3e4f8cc13128aad3bbe0408b2d4610}\label{classsimu_win_adf3e4f8cc13128aad3bbe0408b2d4610}} 
-void \mbox{\hyperlink{classsimu_win_adf3e4f8cc13128aad3bbe0408b2d4610}{remove\+Combs}} ()
-\begin{DoxyCompactList}\small\item\em To change the buttons from \char`\"{}\+Use\char`\"{} to \char`\"{}delete\char`\"{} and vice-\/versa. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a455e80ec44f28650d66b8c9772fbf545}\label{classsimu_win_a455e80ec44f28650d66b8c9772fbf545}} 
-void {\bfseries show\+Only\+Comb\+Checked} (int new\+State)
-\item 
-\mbox{\Hypertarget{classsimu_win_a8933ee7b876fde034eef80814728ed0a}\label{classsimu_win_a8933ee7b876fde034eef80814728ed0a}} 
-void \mbox{\hyperlink{classsimu_win_a8933ee7b876fde034eef80814728ed0a}{update\+Cost\+Label}} ()
-\begin{DoxyCompactList}\small\item\em When the cost function is changed, will erase history, identifiabilities and sensitivities. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_af5d03e182a7bd1a6bf27ae04f8b4fd26}\label{classsimu_win_af5d03e182a7bd1a6bf27ae04f8b4fd26}} 
-void {\bfseries change\+LogY} (int put\+To\+Log)
-\item 
-\mbox{\Hypertarget{classsimu_win_a961e6b2993396b5d881f3489f0e6e50f}\label{classsimu_win_a961e6b2993396b5d881f3489f0e6e50f}} 
-void \mbox{\hyperlink{classsimu_win_a961e6b2993396b5d881f3489f0e6e50f}{use\+Comb}} (int I\+D\+Comb=-\/1)
-\begin{DoxyCompactList}\small\item\em Tu use (or delete) a saved combination. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a0cb156c06ccbfb653499741fe885d52e}\label{classsimu_win_a0cb156c06ccbfb653499741fe885d52e}} 
-void {\bfseries cost\+Report} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_ad6fb8ed88ce602d2ca9c5e1a18d6d508}\label{classsimu_win_ad6fb8ed88ce602d2ca9c5e1a18d6d508}} 
-void {\bfseries refresh\+Macro} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_a4a970c6e8a6adde7503f0daf04e584a9}\label{classsimu_win_a4a970c6e8a6adde7503f0daf04e584a9}} 
-void {\bfseries reset\+Macro} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_a11effc03fd7e83dcc42a136c0e16a9e8}\label{classsimu_win_a11effc03fd7e83dcc42a136c0e16a9e8}} 
-void {\bfseries change\+Record} (int)
-\item 
-\mbox{\Hypertarget{classsimu_win_a194e0e7d273f7e16bd4c65679798ec94}\label{classsimu_win_a194e0e7d273f7e16bd4c65679798ec94}} 
-void \mbox{\hyperlink{classsimu_win_a194e0e7d273f7e16bd4c65679798ec94}{simulate}} ()
-\begin{DoxyCompactList}\small\item\em Use set of parameter (inside the model) to simulate and record/display the kinetics. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a5b477d2d18d61028e3b617e1d7cd1659}\label{classsimu_win_a5b477d2d18d61028e3b617e1d7cd1659}} 
-double \mbox{\hyperlink{classsimu_win_a5b477d2d18d61028e3b617e1d7cd1659}{get\+Cost}} ()
-\begin{DoxyCompactList}\small\item\em From the mother class general\+Implementation, takes the velues in parameters\mbox{[}\mbox{]}, put them in the model, do simulate, put the set of parameters with its cost in the \mbox{\hyperlink{structp_sets}{p\+Sets}}, and returns the cost. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a1acf511b5ba034f649980f8acb79180f}\label{classsimu_win_a1acf511b5ba034f649980f8acb79180f}} 
-void \mbox{\hyperlink{classsimu_win_a1acf511b5ba034f649980f8acb79180f}{save\+History}} (Q\+String \+\_\+name=Q\+String(\char`\"{}\char`\"{}))
-\begin{DoxyCompactList}\small\item\em Not reimplemented \+: save the current list of best parameters in a file. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_a8eb943bedcc2357399de7ed5652911ba}\label{classsimu_win_a8eb943bedcc2357399de7ed5652911ba}} 
-void {\bfseries load\+History} (Q\+String \+\_\+name=Q\+String(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_a149b69b4228bc4fa1efa0dc84d3a6ee6}\label{classsimu_win_a149b69b4228bc4fa1efa0dc84d3a6ee6}} 
-void \mbox{\hyperlink{classsimu_win_a149b69b4228bc4fa1efa0dc84d3a6ee6}{change\+Override}} (int new\+State)
-\begin{DoxyCompactList}\small\item\em When user clicks to override or not a variable in the table. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classsimu_win_aea65a8178d11c637312132ef6032b398}\label{classsimu_win_aea65a8178d11c637312132ef6032b398}} 
-void {\bfseries optimize} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_a0c7c05db76be14dbf239bf94b29035cb}\label{classsimu_win_a0c7c05db76be14dbf239bf94b29035cb}} 
-void {\bfseries current\+Experiment\+Changed} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_adb1519c548c2a5ebcab8c1257ab55491}\label{classsimu_win_adb1519c548c2a5ebcab8c1257ab55491}} 
-string {\bfseries create\+Optimizer\+File} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_aa3f2493cda986242a0cf0b249142319a}\label{classsimu_win_aa3f2493cda986242a0cf0b249142319a}} 
-void {\bfseries cell\+Clicked} (int row, int column)
-\item 
-\mbox{\Hypertarget{classsimu_win_aa2a9a5e2f22edbcefed3b998922d2f0f}\label{classsimu_win_aa2a9a5e2f22edbcefed3b998922d2f0f}} 
-void {\bfseries cell\+Changed} (int row, int column)
-\item 
-\mbox{\Hypertarget{classsimu_win_a5dfe0d89b629e5debe9962f6e83d2386}\label{classsimu_win_a5dfe0d89b629e5debe9962f6e83d2386}} 
-void {\bfseries cell\+Pressed} (int row, int column)
-\item 
-\mbox{\Hypertarget{classsimu_win_aa0fbc5f676ce26b78b9265fc98f2d86b}\label{classsimu_win_aa0fbc5f676ce26b78b9265fc98f2d86b}} 
-void {\bfseries coefficients\+Changed} (Q\+Model\+Index left, Q\+Model\+Index right)
-\item 
-\mbox{\Hypertarget{classsimu_win_aa127f3b4755db05c1853510899097246}\label{classsimu_win_aa127f3b4755db05c1853510899097246}} 
-void {\bfseries param\+Set\+Double\+Clicked\+From\+History} (const Q\+Model\+Index \&Q\+MI)
-\item 
-\mbox{\Hypertarget{classsimu_win_ab307826fcaa7e62963b8a6d5596eb712}\label{classsimu_win_ab307826fcaa7e62963b8a6d5596eb712}} 
-void {\bfseries load\+Optim} (string \+\_\+name=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_a464e4744a5424fcc3dd4d9620dce8a13}\label{classsimu_win_a464e4744a5424fcc3dd4d9620dce8a13}} 
-void {\bfseries load\+Set} (string dest=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_a45cb1ada7cfb787c64d1ab2e887e565c}\label{classsimu_win_a45cb1ada7cfb787c64d1ab2e887e565c}} 
-void {\bfseries save\+Set} (string \+\_\+name=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_af1d8a4992ada8432a69bca7321b5187b}\label{classsimu_win_af1d8a4992ada8432a69bca7321b5187b}} 
-string {\bfseries load\+Config} (string \+\_\+name=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_adc9209d6681a468bb12b20c1b5fdb05c}\label{classsimu_win_adc9209d6681a468bb12b20c1b5fdb05c}} 
-void {\bfseries save\+Config} (string \+\_\+name=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_ad9eaabf7b6436ab77c68b19a1b4458af}\label{classsimu_win_ad9eaabf7b6436ab77c68b19a1b4458af}} 
-void {\bfseries reset\+Params} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_a934960f1a0d356e9ab65187e6935fcd9}\label{classsimu_win_a934960f1a0d356e9ab65187e6935fcd9}} 
-void {\bfseries param\+Changed\+From\+Box} (double new\+Value)
-\item 
-\mbox{\Hypertarget{classsimu_win_a974f1e7dac86661cc18b87036bcb1fd8}\label{classsimu_win_a974f1e7dac86661cc18b87036bcb1fd8}} 
-vector$<$ string $>$ {\bfseries make\+Fig\+Report\+Param\+Set} (string \+\_\+folder=string(\char`\"{}\char`\"{}), string explanations=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{classsimu_win_ab5f18ef98a90a65d0d07069362a8e605}\label{classsimu_win_ab5f18ef98a90a65d0d07069362a8e605}} 
-void {\bfseries set\+Color\+Scale} (int new\+Scale)
-\item 
-\mbox{\Hypertarget{classsimu_win_a273b4f48bf7181af75ac9a97044b77e4}\label{classsimu_win_a273b4f48bf7181af75ac9a97044b77e4}} 
-void {\bfseries expand\+Plot} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_a060fd761e65404bf1f632b10e43fc688}\label{classsimu_win_a060fd761e65404bf1f632b10e43fc688}} 
-void {\bfseries sensitivity} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_aac15a9e7f35b0bbcb2e85bb6881a7c24}\label{classsimu_win_aac15a9e7f35b0bbcb2e85bb6881a7c24}} 
-void {\bfseries identifiability} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_aee17d6e9be20f1fe18c79d8fe0707fbb}\label{classsimu_win_aee17d6e9be20f1fe18c79d8fe0707fbb}} 
-void {\bfseries stop\+Optimization} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_af0ace99ecea0e9979d7325303523e388}\label{classsimu_win_af0ace99ecea0e9979d7325303523e388}} 
-void {\bfseries button\+Perturbate\+Pushed} ()
-\item 
-\mbox{\Hypertarget{classsimu_win_ad0961fd00c4de964290ef9dfe945baa4}\label{classsimu_win_ad0961fd00c4de964290ef9dfe945baa4}} 
-void {\bfseries button\+Param\+Sets\+Pushed} ()
+    \item
+    void \mbox{\hyperlink{classsimu_win_a2b4a74566c2b701f945ac5430b869c4b}{reset}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Initialization of the window.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_acfd7df01084f97be36b55811ce0b709e}\label{classsimu_win_acfd7df01084f97be36b55811ce0b709e}}
+    void \mbox{\hyperlink{classsimu_win_acfd7df01084f97be36b55811ce0b709e}{var\+Changed}} (int id\+Var)
+    \begin{DoxyCompactList}
+        \small\item\em Display another variable in the graph (without simulating, according to recorded data)
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a82d3d38e58c61ca7c49d4326c2f80411}\label{classsimu_win_a82d3d38e58c61ca7c49d4326c2f80411}}
+    void \mbox{\hyperlink{classsimu_win_a82d3d38e58c61ca7c49d4326c2f80411}{update\+Parms\+From\+Model}} ()
+    \begin{DoxyCompactList}
+        \small\item\em To refresh the table from model\textquotesingle{}s values.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a13a8b5b1b23ddffafed07380806eceb3}\label{classsimu_win_a13a8b5b1b23ddffafed07380806eceb3}}
+    void \mbox{\hyperlink{classsimu_win_a13a8b5b1b23ddffafed07380806eceb3}{refresh\+History}} ()
+    \begin{DoxyCompactList}
+        \small\item\em To refresh the table of best parameter sets.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a32a436b600e6970324378886f6435646}\label{classsimu_win_a32a436b600e6970324378886f6435646}}
+    void \mbox{\hyperlink{classsimu_win_a32a436b600e6970324378886f6435646}{create\+Comb}} ()
+    \begin{DoxyCompactList}
+        \small\item\em To save the current combination (of parameters to fit and variables to override) into a new column.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_adf3e4f8cc13128aad3bbe0408b2d4610}\label{classsimu_win_adf3e4f8cc13128aad3bbe0408b2d4610}}
+    void \mbox{\hyperlink{classsimu_win_adf3e4f8cc13128aad3bbe0408b2d4610}{remove\+Combs}} ()
+    \begin{DoxyCompactList}
+        \small\item\em To change the buttons from \char`\"{}\+Use\char`\"{} to \char`\"{}delete\char`\"{} and vice-\/versa.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a455e80ec44f28650d66b8c9772fbf545}\label{classsimu_win_a455e80ec44f28650d66b8c9772fbf545}}
+    void {\bfseries show\+Only\+Comb\+Checked} (int new\+State)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a8933ee7b876fde034eef80814728ed0a}\label{classsimu_win_a8933ee7b876fde034eef80814728ed0a}}
+    void \mbox{\hyperlink{classsimu_win_a8933ee7b876fde034eef80814728ed0a}{update\+Cost\+Label}} ()
+    \begin{DoxyCompactList}
+        \small\item\em When the cost function is changed, will erase history, identifiabilities and sensitivities.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_af5d03e182a7bd1a6bf27ae04f8b4fd26}\label{classsimu_win_af5d03e182a7bd1a6bf27ae04f8b4fd26}}
+    void {\bfseries change\+LogY} (int put\+To\+Log)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a961e6b2993396b5d881f3489f0e6e50f}\label{classsimu_win_a961e6b2993396b5d881f3489f0e6e50f}}
+    void \mbox{\hyperlink{classsimu_win_a961e6b2993396b5d881f3489f0e6e50f}{use\+Comb}} (int I\+D\+Comb=-\/1)
+    \begin{DoxyCompactList}
+        \small\item\em Tu use (or delete) a saved combination.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a0cb156c06ccbfb653499741fe885d52e}\label{classsimu_win_a0cb156c06ccbfb653499741fe885d52e}}
+    void {\bfseries cost\+Report} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_ad6fb8ed88ce602d2ca9c5e1a18d6d508}\label{classsimu_win_ad6fb8ed88ce602d2ca9c5e1a18d6d508}}
+    void {\bfseries refresh\+Macro} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_a4a970c6e8a6adde7503f0daf04e584a9}\label{classsimu_win_a4a970c6e8a6adde7503f0daf04e584a9}}
+    void {\bfseries reset\+Macro} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_a11effc03fd7e83dcc42a136c0e16a9e8}\label{classsimu_win_a11effc03fd7e83dcc42a136c0e16a9e8}}
+    void {\bfseries change\+Record} (int)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a194e0e7d273f7e16bd4c65679798ec94}\label{classsimu_win_a194e0e7d273f7e16bd4c65679798ec94}}
+    void \mbox{\hyperlink{classsimu_win_a194e0e7d273f7e16bd4c65679798ec94}{simulate}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Use set of parameter (inside the model) to simulate and record/display the kinetics.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a5b477d2d18d61028e3b617e1d7cd1659}\label{classsimu_win_a5b477d2d18d61028e3b617e1d7cd1659}}
+    double \mbox{\hyperlink{classsimu_win_a5b477d2d18d61028e3b617e1d7cd1659}{get\+Cost}} ()
+    \begin{DoxyCompactList}
+        \small\item\em From the mother class general\+Implementation, takes the velues in parameters\mbox{[}\mbox{]}, put them in the model, do simulate, put the set of parameters with its cost in the \mbox{\hyperlink{structp_sets}{p\+Sets}}, and returns the cost.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a1acf511b5ba034f649980f8acb79180f}\label{classsimu_win_a1acf511b5ba034f649980f8acb79180f}}
+    void \mbox{\hyperlink{classsimu_win_a1acf511b5ba034f649980f8acb79180f}{save\+History}} (Q\+String \+\_\+name=Q\+String(\char`\"{}\char`\"{}))
+    \begin{DoxyCompactList}
+        \small\item\em Not reimplemented \+: save the current list of best parameters in a file.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_a8eb943bedcc2357399de7ed5652911ba}\label{classsimu_win_a8eb943bedcc2357399de7ed5652911ba}}
+    void {\bfseries load\+History} (Q\+String \+\_\+name=Q\+String(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_a149b69b4228bc4fa1efa0dc84d3a6ee6}\label{classsimu_win_a149b69b4228bc4fa1efa0dc84d3a6ee6}}
+    void \mbox{\hyperlink{classsimu_win_a149b69b4228bc4fa1efa0dc84d3a6ee6}{change\+Override}} (int new\+State)
+    \begin{DoxyCompactList}
+        \small\item\em When user clicks to override or not a variable in the table.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{classsimu_win_aea65a8178d11c637312132ef6032b398}\label{classsimu_win_aea65a8178d11c637312132ef6032b398}}
+    void {\bfseries optimize} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_a0c7c05db76be14dbf239bf94b29035cb}\label{classsimu_win_a0c7c05db76be14dbf239bf94b29035cb}}
+    void {\bfseries current\+Experiment\+Changed} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_adb1519c548c2a5ebcab8c1257ab55491}\label{classsimu_win_adb1519c548c2a5ebcab8c1257ab55491}}
+    string {\bfseries create\+Optimizer\+File} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_aa3f2493cda986242a0cf0b249142319a}\label{classsimu_win_aa3f2493cda986242a0cf0b249142319a}}
+    void {\bfseries cell\+Clicked} (int row, int column)
+    \item
+    \mbox{\Hypertarget{classsimu_win_aa2a9a5e2f22edbcefed3b998922d2f0f}\label{classsimu_win_aa2a9a5e2f22edbcefed3b998922d2f0f}}
+    void {\bfseries cell\+Changed} (int row, int column)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a5dfe0d89b629e5debe9962f6e83d2386}\label{classsimu_win_a5dfe0d89b629e5debe9962f6e83d2386}}
+    void {\bfseries cell\+Pressed} (int row, int column)
+    \item
+    \mbox{\Hypertarget{classsimu_win_aa0fbc5f676ce26b78b9265fc98f2d86b}\label{classsimu_win_aa0fbc5f676ce26b78b9265fc98f2d86b}}
+    void {\bfseries coefficients\+Changed} (Q\+Model\+Index left, Q\+Model\+Index right)
+    \item
+    \mbox{\Hypertarget{classsimu_win_aa127f3b4755db05c1853510899097246}\label{classsimu_win_aa127f3b4755db05c1853510899097246}}
+    void {\bfseries param\+Set\+Double\+Clicked\+From\+History} (const Q\+Model\+Index \&Q\+MI)
+    \item
+    \mbox{\Hypertarget{classsimu_win_ab307826fcaa7e62963b8a6d5596eb712}\label{classsimu_win_ab307826fcaa7e62963b8a6d5596eb712}}
+    void {\bfseries load\+Optim} (string \+\_\+name=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_a464e4744a5424fcc3dd4d9620dce8a13}\label{classsimu_win_a464e4744a5424fcc3dd4d9620dce8a13}}
+    void {\bfseries load\+Set} (string dest=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_a45cb1ada7cfb787c64d1ab2e887e565c}\label{classsimu_win_a45cb1ada7cfb787c64d1ab2e887e565c}}
+    void {\bfseries save\+Set} (string \+\_\+name=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_af1d8a4992ada8432a69bca7321b5187b}\label{classsimu_win_af1d8a4992ada8432a69bca7321b5187b}}
+    string {\bfseries load\+Config} (string \+\_\+name=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_adc9209d6681a468bb12b20c1b5fdb05c}\label{classsimu_win_adc9209d6681a468bb12b20c1b5fdb05c}}
+    void {\bfseries save\+Config} (string \+\_\+name=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_ad9eaabf7b6436ab77c68b19a1b4458af}\label{classsimu_win_ad9eaabf7b6436ab77c68b19a1b4458af}}
+    void {\bfseries reset\+Params} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_a934960f1a0d356e9ab65187e6935fcd9}\label{classsimu_win_a934960f1a0d356e9ab65187e6935fcd9}}
+    void {\bfseries param\+Changed\+From\+Box} (double new\+Value)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a974f1e7dac86661cc18b87036bcb1fd8}\label{classsimu_win_a974f1e7dac86661cc18b87036bcb1fd8}}
+    vector$<$ string $>$ {\bfseries make\+Fig\+Report\+Param\+Set} (string \+\_\+folder=string(\char`\"{}\char`\"{}), string explanations=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{classsimu_win_ab5f18ef98a90a65d0d07069362a8e605}\label{classsimu_win_ab5f18ef98a90a65d0d07069362a8e605}}
+    void {\bfseries set\+Color\+Scale} (int new\+Scale)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a273b4f48bf7181af75ac9a97044b77e4}\label{classsimu_win_a273b4f48bf7181af75ac9a97044b77e4}}
+    void {\bfseries expand\+Plot} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_a060fd761e65404bf1f632b10e43fc688}\label{classsimu_win_a060fd761e65404bf1f632b10e43fc688}}
+    void {\bfseries sensitivity} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_aac15a9e7f35b0bbcb2e85bb6881a7c24}\label{classsimu_win_aac15a9e7f35b0bbcb2e85bb6881a7c24}}
+    void {\bfseries identifiability} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_aee17d6e9be20f1fe18c79d8fe0707fbb}\label{classsimu_win_aee17d6e9be20f1fe18c79d8fe0707fbb}}
+    void {\bfseries stop\+Optimization} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_af0ace99ecea0e9979d7325303523e388}\label{classsimu_win_af0ace99ecea0e9979d7325303523e388}}
+    void {\bfseries button\+Perturbate\+Pushed} ()
+    \item
+    \mbox{\Hypertarget{classsimu_win_ad0961fd00c4de964290ef9dfe945baa4}\label{classsimu_win_ad0961fd00c4de964290ef9dfe945baa4}}
+    void {\bfseries button\+Param\+Sets\+Pushed} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classsimu_win_a5147378a228c8413f37245f1aa305d4d}\label{classsimu_win_a5147378a228c8413f37245f1aa305d4d}} 
-{\bfseries simu\+Win} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$\+\_\+\+Exp, Q\+Widget $\ast$parent=nullptr)
-\item 
-\mbox{\Hypertarget{classsimu_win_ab9ca64184ef5ed1bb256675f6ad25c80}\label{classsimu_win_ab9ca64184ef5ed1bb256675f6ad25c80}} 
-{\bfseries simu\+Win} (\mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} $\ast$\+\_\+\+Exp, Q\+Widget $\ast$parent=nullptr)
+    \item
+    \mbox{\Hypertarget{classsimu_win_a5147378a228c8413f37245f1aa305d4d}\label{classsimu_win_a5147378a228c8413f37245f1aa305d4d}}
+    {\bfseries simu\+Win} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$\+\_\+\+Exp, Q\+Widget $\ast$parent=nullptr)
+    \item
+    \mbox{\Hypertarget{classsimu_win_ab9ca64184ef5ed1bb256675f6ad25c80}\label{classsimu_win_ab9ca64184ef5ed1bb256675f6ad25c80}}
+    {\bfseries simu\+Win} (\mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} $\ast$\+\_\+\+Exp, Q\+Widget $\ast$parent=nullptr)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classsimu_win_a732311cb4541cc8c694f89e22ec1c129}\label{classsimu_win_a732311cb4541cc8c694f89e22ec1c129}} 
-Q\+List\+Widget $\ast$ {\bfseries list\+Sub\+Exps}
-\item 
-\mbox{\Hypertarget{classsimu_win_aea7ffc966294f4e52fe97fbf165fdda7}\label{classsimu_win_aea7ffc966294f4e52fe97fbf165fdda7}} 
-Q\+Standard\+Item\+Model $\ast$ {\bfseries table\+History}
-\item 
-\mbox{\Hypertarget{classsimu_win_a9b0b1ac62aea2e5cee116914714fbe0e}\label{classsimu_win_a9b0b1ac62aea2e5cee116914714fbe0e}} 
-Q\+Table\+Widget $\ast$ {\bfseries current\+Table}
-\item 
-\mbox{\Hypertarget{classsimu_win_a0ddaf9c7f387f513d51f21695735d85e}\label{classsimu_win_a0ddaf9c7f387f513d51f21695735d85e}} 
-Q\+Standard\+Item\+Model $\ast$ {\bfseries table\+Multi\+Exp\+Costs}
-\item 
-\mbox{\Hypertarget{classsimu_win_ae46450c2b48072f1fe4282d132249ad9}\label{classsimu_win_ae46450c2b48072f1fe4282d132249ad9}} 
-\mbox{\hyperlink{classopt_select}{opt\+Select}} $\ast$ {\bfseries opt\+Choice}
+    \item
+    \mbox{\Hypertarget{classsimu_win_a732311cb4541cc8c694f89e22ec1c129}\label{classsimu_win_a732311cb4541cc8c694f89e22ec1c129}}
+    Q\+List\+Widget $\ast$ {\bfseries list\+Sub\+Exps}
+    \item
+    \mbox{\Hypertarget{classsimu_win_aea7ffc966294f4e52fe97fbf165fdda7}\label{classsimu_win_aea7ffc966294f4e52fe97fbf165fdda7}}
+    Q\+Standard\+Item\+Model $\ast$ {\bfseries table\+History}
+    \item
+    \mbox{\Hypertarget{classsimu_win_a9b0b1ac62aea2e5cee116914714fbe0e}\label{classsimu_win_a9b0b1ac62aea2e5cee116914714fbe0e}}
+    Q\+Table\+Widget $\ast$ {\bfseries current\+Table}
+    \item
+    \mbox{\Hypertarget{classsimu_win_a0ddaf9c7f387f513d51f21695735d85e}\label{classsimu_win_a0ddaf9c7f387f513d51f21695735d85e}}
+    Q\+Standard\+Item\+Model $\ast$ {\bfseries table\+Multi\+Exp\+Costs}
+    \item
+    \mbox{\Hypertarget{classsimu_win_ae46450c2b48072f1fe4282d132249ad9}\label{classsimu_win_ae46450c2b48072f1fe4282d132249ad9}}
+    \mbox{\hyperlink{classopt_select}{opt\+Select}} $\ast$ {\bfseries opt\+Choice}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Graphical interface class. It uses all functions from the mother class \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} to perform the complex tasks, but also handles the Qt graphical interface to display the settings, produce the curves, make the reports, and show the state of an optimization. 
+Graphical interface class. It uses all functions from the mother class \mbox{\hyperlink{classmanage_sims}{manage\+Sims}} to perform the complex tasks, but also handles the Qt graphical interface to display the settings, produce the curves, make the reports, and show the state of an optimization.
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classsimu_win_a2b4a74566c2b701f945ac5430b869c4b}\label{classsimu_win_a2b4a74566c2b701f945ac5430b869c4b}} 
+\mbox{\Hypertarget{classsimu_win_a2b4a74566c2b701f945ac5430b869c4b}\label{classsimu_win_a2b4a74566c2b701f945ac5430b869c4b}}
 \index{simuWin@{simuWin}!reset@{reset}}
 \index{reset@{reset}!simuWin@{simuWin}}
 \doxysubsubsection{\texorpdfstring{reset}{reset}}
@@ -184,13 +208,14 @@ Graphical interface class. It uses all functions from the mother class \mbox{\hy
 
 
 
-Initialization of the window. 
+Initialization of the window.
 
 H\+E\+R\+E\+H\+E\+RE
 
 mistake! why ???
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Interface/simuwin.\+h\item 
-Interface/simuwin.\+cpp\end{DoxyCompactItemize}
+                                                                              \item
+                                                                              Interface/simuwin.\+h\item
+                                                                              Interface/simuwin.\+cpp
+\end{DoxyCompactItemize}

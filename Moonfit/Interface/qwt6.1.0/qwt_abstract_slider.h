@@ -29,72 +29,96 @@
   a fixed step size.
 */
 
-class QWT_EXPORT QwtAbstractSlider: public QwtAbstractScale
-{
+class QWT_EXPORT QwtAbstractSlider : public QwtAbstractScale {
     Q_OBJECT
 
-    Q_PROPERTY( double value READ value WRITE setValue )
+    Q_PROPERTY(double value READ value WRITE setValue)
 
-    Q_PROPERTY( uint totalSteps READ totalSteps WRITE setTotalSteps )
-    Q_PROPERTY( uint singleSteps READ singleSteps WRITE setSingleSteps )
-    Q_PROPERTY( uint pageSteps READ pageSteps WRITE setPageSteps )
-    Q_PROPERTY( bool stepAlignment READ stepAlignment WRITE setStepAlignment )
+    Q_PROPERTY( uint
+    totalSteps READ
+    totalSteps WRITE
+    setTotalSteps )
+    Q_PROPERTY( uint
+    singleSteps READ
+    singleSteps WRITE
+    setSingleSteps )
+    Q_PROPERTY( uint
+    pageSteps READ
+    pageSteps WRITE
+    setPageSteps )
 
-    Q_PROPERTY( bool readOnly READ isReadOnly WRITE setReadOnly )
-    Q_PROPERTY( bool tracking READ isTracking WRITE setTracking )
-    Q_PROPERTY( bool wrapping READ wrapping WRITE setWrapping )
+    Q_PROPERTY(bool stepAlignment READ stepAlignment WRITE setStepAlignment)
 
-    Q_PROPERTY( bool invertedControls READ invertedControls WRITE setInvertedControls )
+    Q_PROPERTY(bool readOnly READ isReadOnly WRITE setReadOnly)
+
+    Q_PROPERTY(bool tracking READ isTracking WRITE setTracking)
+
+    Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
+
+    Q_PROPERTY(bool invertedControls READ invertedControls WRITE setInvertedControls)
 
 public:
-    explicit QwtAbstractSlider( QWidget *parent = NULL );
+    explicit QwtAbstractSlider(QWidget *parent = NULL);
+
     virtual ~QwtAbstractSlider();
 
-    void setValid( bool );
+    void setValid(bool);
+
     bool isValid() const;
 
     double value() const;
 
-    void setWrapping( bool );
+    void setWrapping(bool);
+
     bool wrapping() const;
 
-    void setTotalSteps( uint );
+    void setTotalSteps(uint);
+
     uint totalSteps() const;
 
-    void setSingleSteps( uint );
+    void setSingleSteps(uint);
+
     uint singleSteps() const;
 
-    void setPageSteps( uint );
+    void setPageSteps(uint);
+
     uint pageSteps() const;
 
-    void setStepAlignment( bool ); 
+    void setStepAlignment(bool);
+
     bool stepAlignment() const;
 
-    void setTracking( bool );
+    void setTracking(bool);
+
     bool isTracking() const;
 
-    void setReadOnly( bool );
+    void setReadOnly(bool);
+
     bool isReadOnly() const;
 
-    void setInvertedControls( bool );
+    void setInvertedControls(bool);
+
     bool invertedControls() const;
 
-public Q_SLOTS:
-    void setValue( double val );
+public
+    Q_SLOTS:
+            void setValue(double
+    val );
 
-Q_SIGNALS:
+    Q_SIGNALS:
 
-    /*!
-      \brief Notify a change of value.
+            /*!
+              \brief Notify a change of value.
 
-      When tracking is enabled (default setting), 
-      this signal will be emitted every time the value changes. 
+              When tracking is enabled (default setting),
+              this signal will be emitted every time the value changes.
 
-      \param value New value
+              \param value New value
 
-      \sa setTracking(), sliderMoved()
-    */
-    void valueChanged( double value );
+              \sa setTracking(), sliderMoved()
+            */
+            void valueChanged(double
+    value );
 
     /*!
       This signal is emitted when the user presses the
@@ -116,14 +140,18 @@ Q_SIGNALS:
 
       \sa valueChanged()
     */
-    void sliderMoved( double value );
+    void sliderMoved(double value);
 
 protected:
-    virtual void mousePressEvent( QMouseEvent * );
-    virtual void mouseReleaseEvent( QMouseEvent * );
-    virtual void mouseMoveEvent( QMouseEvent * );
-    virtual void keyPressEvent( QKeyEvent * );
-    virtual void wheelEvent( QWheelEvent * );
+    virtual void mousePressEvent(QMouseEvent *);
+
+    virtual void mouseReleaseEvent(QMouseEvent *);
+
+    virtual void mouseMoveEvent(QMouseEvent *);
+
+    virtual void keyPressEvent(QKeyEvent *);
+
+    virtual void wheelEvent(QWheelEvent *);
 
     /*!
       \brief Determine what to do when the user presses a mouse button.
@@ -133,7 +161,7 @@ protected:
       \retval True, when pos is a valid scroll position
       \sa scrolledTo()
     */
-    virtual bool isScrollPosition( const QPoint &pos ) const = 0;
+    virtual bool isScrollPosition(const QPoint &pos) const = 0;
 
     /*!
       \brief Determine the value for a new position of the
@@ -144,23 +172,25 @@ protected:
       \return Value for the mouse position
       \sa isScrollPosition()
     */
-    virtual double scrolledTo( const QPoint &pos ) const = 0;
+    virtual double scrolledTo(const QPoint &pos) const = 0;
 
-    void incrementValue( int numSteps );
+    void incrementValue(int numSteps);
 
     virtual void scaleChange();
 
 protected:
     virtual void sliderChange();
 
-    double incrementedValue( 
-        double value, int stepCount ) const;
+    double incrementedValue(
+            double value, int stepCount) const;
 
 private:
-    double alignedValue( double ) const;
-    double boundedValue( double ) const;
+    double alignedValue(double) const;
+
+    double boundedValue(double) const;
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

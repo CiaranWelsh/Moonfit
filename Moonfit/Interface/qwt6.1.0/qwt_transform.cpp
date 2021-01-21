@@ -22,41 +22,35 @@
 //QT_STATIC_CONST_IMPL double QwtLogTransform::LogMax = 1.0e150;
 
 //! Constructor
-QwtTransform::QwtTransform()
-{
+QwtTransform::QwtTransform() {
 }
 
 //! Destructor
-QwtTransform::~QwtTransform()
-{
+QwtTransform::~QwtTransform() {
 }
 
 /*! 
   \param value Value to be bounded
   \return value unmodified
  */
-double QwtTransform::bounded( double value ) const
-{
+double QwtTransform::bounded(double value) const {
     return value;
 }
 
 //! Constructor
-QwtNullTransform::QwtNullTransform():
-    QwtTransform()
-{
+QwtNullTransform::QwtNullTransform() :
+        QwtTransform() {
 }
 
 //! Destructor
-QwtNullTransform::~QwtNullTransform()
-{
+QwtNullTransform::~QwtNullTransform() {
 }
 
 /*! 
   \param value Value to be transformed
   \return value unmodified
  */
-double QwtNullTransform::transform( double value ) const
-{
+double QwtNullTransform::transform(double value) const {
     return value;
 }
 
@@ -64,58 +58,50 @@ double QwtNullTransform::transform( double value ) const
   \param value Value to be transformed
   \return value unmodified
  */
-double QwtNullTransform::invTransform( double value ) const
-{
+double QwtNullTransform::invTransform(double value) const {
     return value;
 }
 
 //! \return Clone of the transformation
-QwtTransform *QwtNullTransform::copy() const
-{
+QwtTransform *QwtNullTransform::copy() const {
     return new QwtNullTransform();
 }
 
 //! Constructor
-QwtLogTransform::QwtLogTransform():
-    QwtTransform()
-{
+QwtLogTransform::QwtLogTransform() :
+        QwtTransform() {
 }
 
 //! Destructor
-QwtLogTransform::~QwtLogTransform()
-{
+QwtLogTransform::~QwtLogTransform() {
 }
 
 /*! 
   \param value Value to be transformed
   \return log( value )
  */
-double QwtLogTransform::transform( double value ) const
-{
-    return ::log( value );
+double QwtLogTransform::transform(double value) const {
+    return ::log(value);
 }
 
 /*! 
   \param value Value to be transformed
   \return exp( value )
  */
-double QwtLogTransform::invTransform( double value ) const
-{
-    return qExp( value );
+double QwtLogTransform::invTransform(double value) const {
+    return qExp(value);
 }
 
 /*! 
   \param value Value to be bounded
   \return qBound( LogMin, value, LogMax )
  */
-double QwtLogTransform::bounded( double value ) const
-{
-    return qBound( LogMin, value, LogMax );
+double QwtLogTransform::bounded(double value) const {
+    return qBound(LogMin, value, LogMax);
 }
 
 //! \return Clone of the transformation
-QwtTransform *QwtLogTransform::copy() const
-{
+QwtTransform *QwtLogTransform::copy() const {
     return new QwtLogTransform();
 }
 
@@ -123,44 +109,39 @@ QwtTransform *QwtLogTransform::copy() const
   Constructor
   \param exponent Exponent
 */
-QwtPowerTransform::QwtPowerTransform( double exponent ):
-    QwtTransform(),
-    d_exponent( exponent )
-{
+QwtPowerTransform::QwtPowerTransform(double exponent) :
+        QwtTransform(),
+        d_exponent(exponent) {
 }
 
 //! Destructor
-QwtPowerTransform::~QwtPowerTransform()
-{
+QwtPowerTransform::~QwtPowerTransform() {
 }
 
 /*! 
   \param value Value to be transformed
   \return Exponentiation preserving the sign
  */
-double QwtPowerTransform::transform( double value ) const
-{
-    if ( value < 0.0 )
-        return -qPow( -value, 1.0 / d_exponent );
+double QwtPowerTransform::transform(double value) const {
+    if (value < 0.0)
+        return -qPow(-value, 1.0 / d_exponent);
     else
-        return qPow( value, 1.0 / d_exponent );
-    
+        return qPow(value, 1.0 / d_exponent);
+
 }
 
 /*! 
   \param value Value to be transformed
   \return Inverse exponentiation preserving the sign
  */
-double QwtPowerTransform::invTransform( double value ) const
-{
-    if ( value < 0.0 )
-        return -qPow( -value, d_exponent );
+double QwtPowerTransform::invTransform(double value) const {
+    if (value < 0.0)
+        return -qPow(-value, d_exponent);
     else
-        return qPow( value, d_exponent );
+        return qPow(value, d_exponent);
 }
 
 //! \return Clone of the transformation
-QwtTransform *QwtPowerTransform::copy() const
-{
-    return new QwtPowerTransform( d_exponent );
+QwtTransform *QwtPowerTransform::copy() const {
+    return new QwtPowerTransform(d_exponent);
 }

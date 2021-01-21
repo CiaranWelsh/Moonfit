@@ -14,6 +14,7 @@
 #include "qwt_abstract_scale_draw.h"
 #include <qpoint.h>
 #include <qrect.h>
+
 #ifdef QT5
 #include <qtransform.h>
 #endif
@@ -34,79 +35,92 @@
   using QwtAbstractScaleDraw::setScaleDiv(const QwtScaleDiv &s),
   the scale can be drawn with the QwtAbstractScaleDraw::draw() member.
 */
-class QWT_EXPORT QwtScaleDraw: public QwtAbstractScaleDraw
-{
+class QWT_EXPORT QwtScaleDraw : public QwtAbstractScaleDraw {
 public:
     /*!
         Alignment of the scale draw
         \sa setAlignment(), alignment()
      */
-    enum Alignment 
-    { 
+    enum Alignment {
         //! The scale is below
-        BottomScale, 
+        BottomScale,
 
         //! The scale is above
-        TopScale, 
+        TopScale,
 
         //! The scale is left
-        LeftScale, 
+        LeftScale,
 
         //! The scale is right
-        RightScale 
+        RightScale
     };
 
     QwtScaleDraw();
+
     virtual ~QwtScaleDraw();
 
-    void getBorderDistHint( const QFont &, int &start, int &end ) const;
-    int minLabelDist( const QFont & ) const;
+    void getBorderDistHint(const QFont &, int &start, int &end) const;
 
-    int minLength( const QFont & ) const;
-    virtual double extent( const QFont & ) const;
+    int minLabelDist(const QFont &) const;
 
-    void move( double x, double y );
-    void move( const QPointF & );
-    void setLength( double length );
+    int minLength(const QFont &) const;
+
+    virtual double extent(const QFont &) const;
+
+    void move(double x, double y);
+
+    void move(const QPointF &);
+
+    void setLength(double length);
 
     Alignment alignment() const;
-    void setAlignment( Alignment );
+
+    void setAlignment(Alignment);
 
     Qt::Orientation orientation() const;
 
     QPointF pos() const;
+
     double length() const;
 
-    void setLabelAlignment( Qt::Alignment );
+    void setLabelAlignment(Qt::Alignment);
+
     Qt::Alignment labelAlignment() const;
 
-    void setLabelRotation( double rotation );
+    void setLabelRotation(double rotation);
+
     double labelRotation() const;
 
-    int maxLabelHeight( const QFont & ) const;
-    int maxLabelWidth( const QFont & ) const;
+    int maxLabelHeight(const QFont &) const;
 
-    QPointF labelPosition( double val ) const;
+    int maxLabelWidth(const QFont &) const;
 
-    QRectF labelRect( const QFont &, double val ) const;
-    QSizeF labelSize( const QFont &, double val ) const;
+    QPointF labelPosition(double val) const;
 
-    QRect boundingLabelRect( const QFont &, double val ) const;
+    QRectF labelRect(const QFont &, double val) const;
+
+    QSizeF labelSize(const QFont &, double val) const;
+
+    QRect boundingLabelRect(const QFont &, double val) const;
 
 protected:
-    QTransform labelTransformation( const QPointF &, const QSizeF & ) const;
+    QTransform labelTransformation(const QPointF &, const QSizeF &) const;
 
-    virtual void drawTick( QPainter *, double val, double len ) const;
-    virtual void drawBackbone( QPainter * ) const;
-    virtual void drawLabel( QPainter *, double val ) const;
+    virtual void drawTick(QPainter *, double val, double len) const;
+
+    virtual void drawBackbone(QPainter *) const;
+
+    virtual void drawLabel(QPainter *, double val) const;
 
 private:
-    QwtScaleDraw( const QwtScaleDraw & );
-    QwtScaleDraw &operator=( const QwtScaleDraw &other );
+    QwtScaleDraw(const QwtScaleDraw &);
+
+    QwtScaleDraw &operator=(const QwtScaleDraw &other);
 
     void updateMap();
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 
@@ -118,9 +132,8 @@ private:
 
    \sa move(const QPointF &)
 */
-inline void QwtScaleDraw::move( double x, double y )
-{
-    move( QPointF( x, y ) );
+inline void QwtScaleDraw::move(double x, double y) {
+    move(QPointF(x, y));
 }
 
 #endif

@@ -35,15 +35,13 @@ class QwtScaleMap;
   that maps the raster of the matrix into the requested raster of
   the raster item ( depending on resolution and scales of the canvas ).
 */
-class QWT_EXPORT QwtRasterData
-{
+class QWT_EXPORT QwtRasterData {
 public:
     //! Contour lines
     typedef QMap<double, QPolygonF> ContourLines;
 
     //! Flags to modify the contour algorithm
-    enum ConrecFlag
-    {
+    enum ConrecFlag {
         //! Ignore all vertices on the same level
         IgnoreAllVerticesOnLevel = 0x01,
 
@@ -52,17 +50,20 @@ public:
     };
 
     //! Flags to modify the contour algorithm
-    typedef QFlags<ConrecFlag> ConrecFlags;
+    typedef QFlags <ConrecFlag> ConrecFlags;
 
     QwtRasterData();
+
     virtual ~QwtRasterData();
 
-    virtual void setInterval( Qt::Axis, const QwtInterval & );
+    virtual void setInterval(Qt::Axis, const QwtInterval &);
+
     const QwtInterval &interval(Qt::Axis) const;
 
-    virtual QRectF pixelHint( const QRectF & ) const;
+    virtual QRectF pixelHint(const QRectF &) const;
 
-    virtual void initRaster( const QRectF &, const QSize& raster );
+    virtual void initRaster(const QRectF &, const QSize &raster);
+
     virtual void discardRaster();
 
     /*!
@@ -70,19 +71,21 @@ public:
        \param x X value in plot coordinates
        \param y Y value in plot coordinates
     */
-    virtual double value( double x, double y ) const = 0;
+    virtual double value(double x, double y) const = 0;
 
-    virtual ContourLines contourLines( const QRectF &rect,
-        const QSize &raster, const QList<double> &levels,
-        ConrecFlags ) const;
+    virtual ContourLines contourLines(const QRectF &rect,
+                                      const QSize &raster, const QList<double> &levels,
+                                      ConrecFlags) const;
 
     class Contour3DPoint;
+
     class ContourPlane;
 
 private:
     // Disabled copy constructor and operator=
-    QwtRasterData( const QwtRasterData & );
-    QwtRasterData &operator=( const QwtRasterData & );
+    QwtRasterData(const QwtRasterData &);
+
+    QwtRasterData &operator=(const QwtRasterData &);
 
     QwtInterval d_intervals[3];
 };
@@ -91,8 +94,7 @@ private:
    \return Bounding interval for a axis
    \sa setInterval
 */
-inline const QwtInterval &QwtRasterData::interval( Qt::Axis axis) const
-{
+inline const QwtInterval &QwtRasterData::interval(Qt::Axis axis) const {
     return d_intervals[axis];
 }
 

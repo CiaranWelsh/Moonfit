@@ -2,33 +2,48 @@
 \label{group___param_sets}\index{Parameter Sets@{Parameter Sets}}
 
 
-Classes to manipulate parameter sets (especially for sensitivity and identifiability)  
+Classes to manipulate parameter sets (especially for sensitivity and identifiability)
 
 
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{structone_set}{one\+Set}}
-\begin{DoxyCompactList}\small\item\em 1 -\/ {\itshape A set of parameters} is a table of parameter values and possibly a cost. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{class_compare_sets}{Compare\+Sets}}
-\begin{DoxyCompactList}\small\item\em 2 -\/ When parameter sets need to be sorted based on their cost, a comparator should be defined (based on their cost) \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structp_sets}{p\+Sets}}
-\begin{DoxyCompactList}\small\item\em 3 -\/ {\itshape A list of parameter sets} \+: store them in a queue (fast sorting), but can convert them in vector$<$parameter set$>$ when wanted note \+: this data structure manages pointers to \mbox{\hyperlink{structone_set}{one\+Set}}, which are already in memory somewhere. It doesn\textquotesingle{}t change their localization nor content. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structpoint_variation}{point\+Variation}}
-\begin{DoxyCompactList}\small\item\em 4a -\/ one parameter set (with additional information) \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structone_parameter_analysis}{one\+Parameter\+Analysis}}
-\begin{DoxyCompactList}\small\item\em 4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    struct \mbox{\hyperlink{structone_set}{one\+Set}}
+    \begin{DoxyCompactList}
+        \small\item\em 1 -\/ {\itshape A set of parameters} is a table of parameter values and possibly a cost.
+    \end{DoxyCompactList}\item
+    class \mbox{\hyperlink{class_compare_sets}{Compare\+Sets}}
+    \begin{DoxyCompactList}
+        \small\item\em 2 -\/ When parameter sets need to be sorted based on their cost, a comparator should be defined (based on their cost)
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{structp_sets}{p\+Sets}}
+    \begin{DoxyCompactList}
+        \small\item\em 3 -\/ {\itshape A list of parameter sets} \+: store them in a queue (fast sorting), but can convert them in vector$<$parameter set$>$ when wanted note \+: this data structure manages pointers to \mbox{\hyperlink{structone_set}{one\+Set}}, which are already in memory somewhere. It doesn\textquotesingle{}t change their localization nor content.
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{structpoint_variation}{point\+Variation}}
+    \begin{DoxyCompactList}
+        \small\item\em 4a -\/ one parameter set (with additional information)
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{structone_parameter_analysis}{one\+Parameter\+Analysis}}
+    \begin{DoxyCompactList}
+        \small\item\em 4c -\/ to store the result of an analysis (identifiability or sensitivity), by playing around one parameter.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{group___param_sets_ga7c778e94c0eded6b61311342628e3314}\label{group___param_sets_ga7c778e94c0eded6b61311342628e3314}} 
-void \mbox{\hyperlink{group___param_sets_ga7c778e94c0eded6b61311342628e3314}{teste\+Sets}} ()
-\begin{DoxyCompactList}\small\item\em 3e \+: example function on how to use parameter sets. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___param_sets_gaec5d6e2b394315088f6f3959480f1ae8}\label{group___param_sets_gaec5d6e2b394315088f6f3959480f1ae8}} 
-bool \mbox{\hyperlink{group___param_sets_gaec5d6e2b394315088f6f3959480f1ae8}{Compare\+Point\+Vars}} (\mbox{\hyperlink{structpoint_variation}{point\+Variation}} t1, \mbox{\hyperlink{structpoint_variation}{point\+Variation}} t2)
-\begin{DoxyCompactList}\small\item\em 4b -\/ a comparator between point\+Variations (based on the cost), in order to sort them \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___param_sets_gaa678dec8b3d5a6c9fd248bf87962462b}\label{group___param_sets_gaa678dec8b3d5a6c9fd248bf87962462b}} 
-void {\bfseries test\+Point\+Variations} ()
+    \item
+    \mbox{\Hypertarget{group___param_sets_ga7c778e94c0eded6b61311342628e3314}\label{group___param_sets_ga7c778e94c0eded6b61311342628e3314}}
+    void \mbox{\hyperlink{group___param_sets_ga7c778e94c0eded6b61311342628e3314}{teste\+Sets}} ()
+    \begin{DoxyCompactList}
+        \small\item\em 3e \+: example function on how to use parameter sets.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___param_sets_gaec5d6e2b394315088f6f3959480f1ae8}\label{group___param_sets_gaec5d6e2b394315088f6f3959480f1ae8}}
+    bool \mbox{\hyperlink{group___param_sets_gaec5d6e2b394315088f6f3959480f1ae8}{Compare\+Point\+Vars}} (\mbox{\hyperlink{structpoint_variation}{point\+Variation}} t1, \mbox{\hyperlink{structpoint_variation}{point\+Variation}} t2)
+    \begin{DoxyCompactList}
+        \small\item\em 4b -\/ a comparator between point\+Variations (based on the cost), in order to sort them
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___param_sets_gaa678dec8b3d5a6c9fd248bf87962462b}\label{group___param_sets_gaa678dec8b3d5a6c9fd248bf87962462b}}
+    void {\bfseries test\+Point\+Variations} ()
 \end{DoxyCompactItemize}
 
 

@@ -53,9 +53,11 @@ int anOldMain(int argc, char *argv[])
 #include <vector>
 #include <sstream>
 #include <stdlib.h>     // for atof
+
 using namespace std;
 
 #include "common.h"
+
 #ifndef WITHOUT_QT
 #ifdef USE_QWT
 #include "graphe2.h"
@@ -81,11 +83,13 @@ using namespace std;
 
 // penser à  update model from table after load
 #ifdef ALLOW_OPTIMIZE
+
 #include "optselect.h"
 #include "../Extreminator/optimizers/baseOptimizer.h"
 #include "../Extreminator/common/myRandom.h"
 #include "../Extreminator/baseProblem.h"
 #include "../Extreminator/optimizers/baseOptimizer.h"
+
 #endif
 
 
@@ -99,11 +103,13 @@ private:
     int sizeGroups;
     int currentGroup;
     int nbInCurrentGroup;
-    vector< vector<double>* > tables;
+    vector<vector<double> *> tables;
 
 public:
     void clear();
+
     void newValue(double _v);
+
     string print();
 
     vector<double> stddevs; // size : currentGroup, attention !
@@ -114,32 +120,33 @@ public:
 };
 
 
-
-
 /// @brief Modes of starting a manageSim. By default, only one experiment is simulated, but
 /// one can give a multi-experiment class instead. The other modes mean that the original experiment
 /// has been switched by a new ecperiment that simulates perturbations of the original one,
 /// either by comparing parameter sets or by perturbating one parameter value.
-enum modes {MONO_EXPERIMENT, MULTI_EXPERIMENT, modePerturbate, modeComparison};
+enum modes {
+    MONO_EXPERIMENT, MULTI_EXPERIMENT, modePerturbate, modeComparison
+};
 
 /// @brief main mother class, to perform simulations, optimizations, load configuration files, saving results as tables, etc.
 /// it has all the functions we might want to use without graphical interface.
 /// Note: To optimize, we give this class to the optimizer, optimizer does what he wants, changes the parameters and calls getCost()
 /// and this class records the sets it was asked to simulate (so a black optimizer can be used).
 class manageSims
-        #ifdef ALLOW_OPTIMIZE
+#ifdef ALLOW_OPTIMIZE
         : public GeneralImplementation
-        #endif
+#endif
 {
 public:
     modes currentMode;
+
     // first way to launch it : only one experiment
-    manageSims(Experiment* _Exp) :
-        #ifdef ALLOW_OPTIMIZE
-        GeneralImplementation(_Exp->m->getNbParams()),
-        #endif
-        currentMode(MONO_EXPERIMENT), listExperiments(nullptr), currentExperiment(_Exp), currentModel(_Exp->m), history(1000, _Exp->m->getNbParams()), costRecords(50), recording(false)
-    {
+    manageSims(Experiment *_Exp) :
+#ifdef ALLOW_OPTIMIZE
+            GeneralImplementation(_Exp->m->getNbParams()),
+#endif
+            currentMode(MONO_EXPERIMENT), listExperiments(nullptr), currentExperiment(_Exp), currentModel(_Exp->m),
+            history(1000, _Exp->m->getNbParams()), costRecords(50), recording(false) {
         resetConfigFromModel();
         sensitivities.resize(_Exp->m->getNbParams(), nullptr);
         identifiabilities.resize(_Exp->m->getNbParams(), nullptr);
@@ -151,13 +158,16 @@ public:
     }
 
     // second way to launch it : with a group of experiments (MultiExperiments)
-    manageSims(MultiExperiments* _Exp) :
-        #ifdef ALLOW_OPTIMIZE
-        GeneralImplementation(_Exp->m->getNbParams()),
-        #endif
-        currentMode(MULTI_EXPERIMENT), listExperiments(_Exp), currentExperiment(nullptr), currentModel(_Exp->m), history(1000, _Exp->m->getNbParams()), costRecords(50), recording(false)
-    {
-        if(_Exp->nbBigExp() < 1) {cerr << "ERR: manageSims constructor can not be called with an empty multiExperiments\n"; return;}
+    manageSims(MultiExperiments *_Exp) :
+#ifdef ALLOW_OPTIMIZE
+            GeneralImplementation(_Exp->m->getNbParams()),
+#endif
+            currentMode(MULTI_EXPERIMENT), listExperiments(_Exp), currentExperiment(nullptr), currentModel(_Exp->m),
+            history(1000, _Exp->m->getNbParams()), costRecords(50), recording(false) {
+        if (_Exp->nbBigExp() < 1) {
+            cerr << "ERR: manageSims constructor can not be called with an empty multiExperiments\n";
+            return;
+        }
         currentExperiment = _Exp->getExperiment(0);
         resetConfigFromModel();
         sensitivities.resize(_Exp->m->getNbParams(), nullptr);
@@ -170,16 +180,14 @@ public:
     }
 
 
-
-
     /// @brief Module 1 (independent) : performing a simulation
     virtual void simulate();            /// @brief  call the simulate function for each sub-experiment
-    MultiExperiments* listExperiments;  /// @brief the list of experiments that are all simulated (NULL = mode one experiment only)
-    Experiment* currentExperiment;      /// @brief  the experiment that is currently DISPLAYED
-    Model* currentModel;
-    vector<TableCourse*> currentData;   /// @brief  to save the kinetics of the last simulation
+    MultiExperiments *listExperiments;  /// @brief the list of experiments that are all simulated (NULL = mode one experiment only)
+    Experiment *currentExperiment;      /// @brief  the experiment that is currently DISPLAYED
+    Model *currentModel;
+    vector<TableCourse *> currentData;   /// @brief  to save the kinetics of the last simulation
 
-    bool isMultiExperiments(){return (currentMode == MULTI_EXPERIMENT);}
+    bool isMultiExperiments() { return (currentMode == MULTI_EXPERIMENT); }
 
     /// @brief Module 2 (depends on module 1) : optimization :
     ///     -> vector<double> parameters; is inherited from GeneralImplementation, together with the functions setParameter, etc
@@ -189,11 +197,17 @@ public:
     //     -> additionally, these fields record what's happening (i.e. which parameter sets the optimizer was asking)
     //        it allows, whatever the optimization toolbox, to make plots analyze the efficiency of optimization over time
     pSets history;
+
     virtual void saveHistory(string _name = string(""));
+
     virtual void loadHistory(string _name = string(""));
+
     vector<double> bestSetFromHistory();
+
     void saveBestSetFromHistory(string _name);
+
     vector<double> useParamSetFromHistory(int indexSet, int indexCombToOverride = -1);
+
     int nbCostCalls;
     evolution costRecords;
     bool currentlyOptimizing; // will allows to stop an optimization from external events, like from the user interface simuWin
@@ -202,58 +216,79 @@ public:
     /// @brief Module 3 : handling configurations (only depends/works on the currentModel)
     /// note : manageSims is not made to manually modify a configuration. Only reads/writes file. simuWin provides on top the graphical interface to modifu the configuration; if you don't want to use the GUI, then change the text file of the configuration itself and update it.
     virtual string loadConfig(string _name);
-    virtual void saveConfig(string _name);
-    int nbCombs;
-    vector< vector<string> > currentConfig;
-    string resetParamSetFromConfig(string _name);
-    void updateConfigParamsFromModel();
-    void resetConfigFromModel(); // to start with a non-empty config. Note that IF the graphical interface (simuWin) is used, currentConfig DOES NOT follow the changes made in the table.
-    bool isInConfig(int idParameter, int idConfig);
-    vector<int> parametersInConfig(int idConfig);
 
+    virtual void saveConfig(string _name);
+
+    int nbCombs;
+    vector<vector<string> > currentConfig;
+
+    string resetParamSetFromConfig(string _name);
+
+    void updateConfigParamsFromModel();
+
+    void
+    resetConfigFromModel(); // to start with a non-empty config. Note that IF the graphical interface (simuWin) is used, currentConfig DOES NOT follow the changes made in the table.
+    bool isInConfig(int idParameter, int idConfig);
+
+    vector<int> parametersInConfig(int idConfig);
 
 
     ///@brief Module 4 : (independent) get track of the function called and gives the C++ code equivalent to it.
     string getMacro();
+
     bool recording;
     stringstream currentMacro;
     int macroID;
-    void startMacro(string experimentName = string("MyExperiment"));
-    void addMacro(string text);
-    void addFileTextToMacro(string text, string fileName = string(""));
-    void addFileToMacro(string fileName);
 
+    void startMacro(string experimentName = string("MyExperiment"));
+
+    void addMacro(string text);
+
+    void addFileTextToMacro(string text, string fileName = string(""));
+
+    void addFileToMacro(string fileName);
 
 
     ///@brief Module 5 : Elaborate functions of the mother class to replace what the interface was doing
     void motherOptimize(string optText, int nbSetsToRecord);
+
     void motherOverrideUsingComb(int newIndex);
+
     string motherCreateOptimizerFile(int indexComb, string optMethodText, int parameterToExclude = -1);
+
     string makeTextReportParamSet(string _folder, int configuration, double simDt = -1, double displayDt = -1);
 
     //string makeMultiExpReport();
 
     void motherSensitivity(vector<double> &initialSet, int parameterIndex, int nbPoints = -1);
-    void motherRecursiveSensitivity(vector<double>& initialSet, int parameterIndex, int nbPoints, bool logarithmic, double base, double vstart, double vending, int deepLevel);
+
+    void motherRecursiveSensitivity(vector<double> &initialSet, int parameterIndex, int nbPoints, bool logarithmic,
+                                    double base, double vstart, double vending, int deepLevel);
 
     void motherIdentifiability(vector<double> &initialSet, int parameterIndex, int nrPoints = 20);
-    void motherRecursiveIdentifibiality(vector<double> &initialSet, int parameterIndex, int nbPoints, bool logarithmic, double base, double vstart, double vending, int deepLevel);
 
-    vector<oneParameterAnalysis* > sensitivities;
-    vector<oneParameterAnalysis* > identifiabilities;
+    void motherRecursiveIdentifibiality(vector<double> &initialSet, int parameterIndex, int nbPoints, bool logarithmic,
+                                        double base, double vstart, double vending, int deepLevel);
+
+    vector<oneParameterAnalysis *> sensitivities;
+    vector<oneParameterAnalysis *> identifiabilities;
     vector<string> optFileNamesIdentifiability; // one file per parameter.
 
     void makeIdentifibialityReport(int parameterID, string existingBaseFolder, int currentConfigID = -1);
+
     void prepareOptFilesForIdentifibiality(string folder, int parameterIndex, int indexComb, string optMethodText);
 
-    virtual ~manageSims(){} // for the subclass simuWin
+    virtual ~manageSims() {} // for the subclass simuWin
 
 
     // Module 6: Perturbate one parameter, one curve per value; Compare the best N parameter sets. Only worksfor monoexp
     void switchToPerturbatedExperiment(int IDcondition, int IDparameter, int nbCurves);
+
     void switchToComparingExperiment(int IDcondition, int nbSetsToComp);
+
     void switchBackNormalMode();
-    Experiment* savedExperiment;
+
+    Experiment *savedExperiment;
 };
 
 /// @brief function defined independently of any class, to cut an interval in nbPoints (for identifiability/sensitivity)

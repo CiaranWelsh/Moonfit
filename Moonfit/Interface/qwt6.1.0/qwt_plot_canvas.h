@@ -23,6 +23,7 @@
 
 
 class QwtPlot;
+
 class QPixmap;
 
 /*!
@@ -32,11 +33,10 @@ class QPixmap;
 
   \sa QwtPlot::setCanvas(), QwtPlotGLCanvas
 */
-class QWT_EXPORT QwtPlotCanvas : public QFrame
-{
+class QWT_EXPORT QwtPlotCanvas : public QFrame {
     Q_OBJECT
 
-    Q_PROPERTY( double borderRadius READ borderRadius WRITE setBorderRadius )
+    Q_PROPERTY(double borderRadius READ borderRadius WRITE setBorderRadius)
 
 public:
 
@@ -47,8 +47,7 @@ public:
 
       \sa setPaintAttribute(), testPaintAttribute()
      */
-    enum PaintAttribute
-    {
+    enum PaintAttribute {
         /*!
           \brief Paint double buffered reusing the content 
                  of the pixmap buffer when possible. 
@@ -77,7 +76,7 @@ public:
 
           \warning Will not work for semitransparent backgrounds 
          */
-        Opaque       = 2,
+        Opaque = 2,
 
         /*!
           \brief Try to improve painting of styled backgrounds
@@ -106,7 +105,7 @@ public:
     };
 
     //! Paint attributes
-    typedef QFlags<PaintAttribute> PaintAttributes;
+    typedef QFlags <PaintAttribute> PaintAttributes;
 
     /*!
       \brief Focus indicator
@@ -114,8 +113,7 @@ public:
       \sa setFocusIndicator(), focusIndicator(), paintFocus()
     */
 
-    enum FocusIndicator
-    {
+    enum FocusIndicator {
         //! Don't paint a focus indicator
         NoFocusIndicator,
 
@@ -133,44 +131,56 @@ public:
         ItemFocusIndicator
     };
 
-    explicit QwtPlotCanvas( QwtPlot * = NULL );
+    explicit QwtPlotCanvas(QwtPlot * = NULL);
+
     virtual ~QwtPlotCanvas();
 
     QwtPlot *plot();
+
     const QwtPlot *plot() const;
 
-    void setFocusIndicator( FocusIndicator );
+    void setFocusIndicator(FocusIndicator);
+
     FocusIndicator focusIndicator() const;
 
-    void setBorderRadius( double );
+    void setBorderRadius(double);
+
     double borderRadius() const;
 
-    void setPaintAttribute( PaintAttribute, bool on = true );
-    bool testPaintAttribute( PaintAttribute ) const;
+    void setPaintAttribute(PaintAttribute, bool on = true);
+
+    bool testPaintAttribute(PaintAttribute) const;
 
     const QPixmap *backingStore() const;
+
     void invalidateBackingStore();
 
-    virtual bool event( QEvent * );
+    virtual bool event(QEvent *);
 
-    Q_INVOKABLE QPainterPath borderPath( const QRect & ) const;
+    Q_INVOKABLE QPainterPath
 
-public Q_SLOTS:
-    void replot();
+    borderPath(const QRect &) const;
+
+public
+    Q_SLOTS:
+            void replot();
 
 protected:
-    virtual void paintEvent( QPaintEvent * );
-    virtual void resizeEvent( QResizeEvent * );
+    virtual void paintEvent(QPaintEvent *);
 
-    virtual void drawFocusIndicator( QPainter * );
-    virtual void drawBorder( QPainter * );
+    virtual void resizeEvent(QResizeEvent *);
+
+    virtual void drawFocusIndicator(QPainter *);
+
+    virtual void drawBorder(QPainter *);
 
     void updateStyleSheetInfo();
 
 private:
-    void drawCanvas( QPainter *, bool withBackground );
+    void drawCanvas(QPainter *, bool withBackground);
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

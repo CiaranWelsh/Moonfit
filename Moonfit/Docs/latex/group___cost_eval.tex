@@ -2,101 +2,122 @@
 \label{group___cost_eval}\index{Cost Definitions@{Cost Definitions}}
 
 
-The cost of a simulation versus data is first evaluated point-\/by-\/point (fitness\+Function) and then at the scale of a simulation by the evaluator class. Different cost functions and normalizations are defined here.  
+The cost of a simulation versus data is first evaluated point-\/by-\/point (fitness\+Function) and then at the scale of a simulation by the evaluator class. Different cost functions and normalizations are defined here.
 
 
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{structcost_config}{cost\+Config}}
-\begin{DoxyCompactList}\small\item\em Static class that stores the current type of cost and normalization used for fitting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    struct \mbox{\hyperlink{structcost_config}{cost\+Config}}
+    \begin{DoxyCompactList}
+        \small\item\em Static class that stores the current type of cost and normalization used for fitting.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{group___cost_eval_gafd2c78192fbe7b4d758b98f198124090}\label{group___cost_eval_gafd2c78192fbe7b4d758b98f198124090}} 
-\#define \mbox{\hyperlink{group___cost_eval_gafd2c78192fbe7b4d758b98f198124090}{minimum\+Boundary\+Log\+Cost}}~1e-\/8
-\begin{DoxyCompactList}\small\item\em Predefined boundaries for the fitness function when experimental or simulated values get extreme, to avoid that the cost calculation diverges. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___cost_eval_gaae05fcf80cf72f86d52f2e66b47e696c}\label{group___cost_eval_gaae05fcf80cf72f86d52f2e66b47e696c}} 
-\#define {\bfseries minimum\+Boundary\+Proportion\+Cost}~1e-\/3
-\item 
-\mbox{\Hypertarget{group___cost_eval_gade462ad5c141ddf2b967caa8a570dece}\label{group___cost_eval_gade462ad5c141ddf2b967caa8a570dece}} 
-\#define {\bfseries minimum\+Boundary\+Standard\+Deviations}~1e-\/8
+    \item
+    \mbox{\Hypertarget{group___cost_eval_gafd2c78192fbe7b4d758b98f198124090}\label{group___cost_eval_gafd2c78192fbe7b4d758b98f198124090}}
+    \#define \mbox{\hyperlink{group___cost_eval_gafd2c78192fbe7b4d758b98f198124090}{minimum\+Boundary\+Log\+Cost}}~1e-\/8
+    \begin{DoxyCompactList}
+        \small\item\em Predefined boundaries for the fitness function when experimental or simulated values get extreme, to avoid that the cost calculation diverges.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___cost_eval_gaae05fcf80cf72f86d52f2e66b47e696c}\label{group___cost_eval_gaae05fcf80cf72f86d52f2e66b47e696c}}
+    \#define {\bfseries minimum\+Boundary\+Proportion\+Cost}~1e-\/3
+    \item
+    \mbox{\Hypertarget{group___cost_eval_gade462ad5c141ddf2b967caa8a570dece}\label{group___cost_eval_gade462ad5c141ddf2b967caa8a570dece}}
+    \#define {\bfseries minimum\+Boundary\+Standard\+Deviations}~1e-\/8
 \end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
-\item 
-enum \{ {\bfseries S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+ST}, 
-{\bfseries S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+S\+T\+\_\+\+S\+TD}, 
-{\bfseries L\+O\+G\+\_\+\+C\+O\+ST}, 
-{\bfseries P\+R\+O\+P\+O\+R\+T\+I\+O\+N\+\_\+\+C\+O\+ST}
- \}
-\begin{DoxyCompactList}\small\item\em Different types of costs (between a simulation and experimental dataset), this will define how each data-\/point is treated. See \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function()}}. with Xi the simulated datapoint and Ei the experimental one,. \end{DoxyCompactList}\item 
-enum \{ \newline
-{\bfseries N\+O\+\_\+\+N\+O\+RM}, 
-{\bfseries N\+O\+R\+M\+\_\+\+A\+V\+E\+R\+A\+GE}, 
-{\bfseries N\+O\+R\+M\+\_\+\+N\+B\+\_\+\+P\+TS}, 
-{\bfseries N\+O\+R\+M\+\_\+\+A\+V\+G\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}, 
-\newline
-{\bfseries N\+O\+R\+M\+\_\+\+M\+AX}, 
-{\bfseries N\+O\+R\+M\+\_\+\+M\+A\+X\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}
- \}
-\begin{DoxyCompactList}\small\item\em Different types of normalizations, that will be done by the evaluator class. Note that each condition receives an independent cost calculation. Therefore a normalization is done W\+I\+T\+H\+IN one condition separately. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    enum \{ {\bfseries S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+ST},
+        {\bfseries S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+S\+T\+\_\+\+S\+TD},
+        {\bfseries L\+O\+G\+\_\+\+C\+O\+ST},
+        {\bfseries P\+R\+O\+P\+O\+R\+T\+I\+O\+N\+\_\+\+C\+O\+ST}
+    \}
+    \begin{DoxyCompactList}
+        \small\item\em Different types of costs (between a simulation and experimental dataset), this will define how each data-\/point is treated. See \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function()}}. with Xi the simulated datapoint and Ei the experimental one,.
+    \end{DoxyCompactList}\item
+    enum \{ \newline
+    {\bfseries N\+O\+\_\+\+N\+O\+RM},
+        {\bfseries N\+O\+R\+M\+\_\+\+A\+V\+E\+R\+A\+GE},
+        {\bfseries N\+O\+R\+M\+\_\+\+N\+B\+\_\+\+P\+TS},
+        {\bfseries N\+O\+R\+M\+\_\+\+A\+V\+G\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS},
+    \newline
+    {\bfseries N\+O\+R\+M\+\_\+\+M\+AX},
+        {\bfseries N\+O\+R\+M\+\_\+\+M\+A\+X\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}
+    \}
+    \begin{DoxyCompactList}
+        \small\item\em Different types of normalizations, that will be done by the evaluator class. Note that each condition receives an independent cost calculation. Therefore a normalization is done W\+I\+T\+H\+IN one condition separately.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}\label{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}} 
-double \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function}} (double measured, double expected, double Std\+Dev\+\_\+or\+\_\+zero)
-\begin{DoxyCompactList}\small\item\em Main function to calculate the cost for one data-\/point, between simulation and experimental data. This function can calculate the different possible costs defined below. See the class evaluator for the cost calculation of whole simulations. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___cost_eval_ga959e027260ac4c15f84892231bafdc9a}\label{group___cost_eval_ga959e027260ac4c15f84892231bafdc9a}} 
-static string \mbox{\hyperlink{group___cost_eval_ga959e027260ac4c15f84892231bafdc9a}{cost\+Config\+::\+Current\+Cost}} ()
-\begin{DoxyCompactList}\small\item\em Outputs the current type of cost and normalization. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}\label{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}} 
-void \mbox{\hyperlink{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}{set\+Type\+Cost}} (int \+\_\+type\+Cost)
-\begin{DoxyCompactList}\small\item\em Change the type of Cost. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}\label{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}} 
-void \mbox{\hyperlink{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}{set\+Type\+Norm}} (int \+\_\+type\+Norm)
-\begin{DoxyCompactList}\small\item\em Change the type of Normalization. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}\label{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}} 
-void \mbox{\hyperlink{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}{test\+Fitness\+Function}} ()
-\begin{DoxyCompactList}\small\item\em a test function for the current fitness function \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    \mbox{\Hypertarget{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}\label{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}}
+    double \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function}} (double measured, double expected, double Std\+Dev\+\_\+or\+\_\+zero)
+    \begin{DoxyCompactList}
+        \small\item\em Main function to calculate the cost for one data-\/point, between simulation and experimental data. This function can calculate the different possible costs defined below. See the class evaluator for the cost calculation of whole simulations.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___cost_eval_ga959e027260ac4c15f84892231bafdc9a}\label{group___cost_eval_ga959e027260ac4c15f84892231bafdc9a}}
+    static string \mbox{\hyperlink{group___cost_eval_ga959e027260ac4c15f84892231bafdc9a}{cost\+Config\+::\+Current\+Cost}} ()
+    \begin{DoxyCompactList}
+        \small\item\em Outputs the current type of cost and normalization.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}\label{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}}
+    void \mbox{\hyperlink{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}{set\+Type\+Cost}} (int \+\_\+type\+Cost)
+    \begin{DoxyCompactList}
+        \small\item\em Change the type of Cost.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}\label{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}}
+    void \mbox{\hyperlink{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}{set\+Type\+Norm}} (int \+\_\+type\+Norm)
+    \begin{DoxyCompactList}
+        \small\item\em Change the type of Normalization.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}\label{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}}
+    void \mbox{\hyperlink{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}{test\+Fitness\+Function}} ()
+    \begin{DoxyCompactList}
+        \small\item\em a test function for the current fitness function
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-The cost of a simulation versus data is first evaluated point-\/by-\/point (fitness\+Function) and then at the scale of a simulation by the evaluator class. Different cost functions and normalizations are defined here. 
+The cost of a simulation versus data is first evaluated point-\/by-\/point (fitness\+Function) and then at the scale of a simulation by the evaluator class. Different cost functions and normalizations are defined here.
 
 
 
 \doxysubsection{Enumeration Type Documentation}
-\mbox{\Hypertarget{group___cost_eval_ga06fc87d81c62e9abb8790b6e5713c55b}\label{group___cost_eval_ga06fc87d81c62e9abb8790b6e5713c55b}} 
+\mbox{\Hypertarget{group___cost_eval_ga06fc87d81c62e9abb8790b6e5713c55b}\label{group___cost_eval_ga06fc87d81c62e9abb8790b6e5713c55b}}
 \doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
 {\footnotesize\ttfamily anonymous enum}
 
 
 
-Different types of costs (between a simulation and experimental dataset), this will define how each data-\/point is treated. See \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function()}}. with Xi the simulated datapoint and Ei the experimental one,. 
+Different types of costs (between a simulation and experimental dataset), this will define how each data-\/point is treated. See \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function()}}. with Xi the simulated datapoint and Ei the experimental one,.
 
 
 \begin{DoxyItemize}
-\item S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+ST (R\+SS) gives the square difference at this data-\/point\+: (Xi -\/ Ei)$^\wedge$2
-\item S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+S\+T\+\_\+\+S\+TD (R\+SS) sums the square difference at this time-\/point, divided by square of experimental given standard deviation. If no standard deviation, uses 1. instead. Std values less than 1e-\/8 are not counted (see minimum\+Boundary\+Standard\+Deviations below). (Xi -\/ Ei)$^\wedge$2 / Stdi$^\wedge$2, Stdi $>$ 1e-\/8
-\item L\+O\+G\+\_\+\+C\+O\+ST sums the absolute difference between the ln of simulation versus data. the log is rescaled such that values lower than 1e-\/8 all return a ln of zero. (see minimum\+Boundary\+Log\+Cost below) Abs(ln(\+Xi) -\/ ln(\+Ei)), Xi, Ei $>$ 1e-\/8
-\item P\+R\+O\+P\+O\+R\+T\+I\+O\+N\+\_\+\+C\+O\+ST returns the ratio between experimental to experimental. Denominator values less than 1e-\/3 stay 1e-\/3 (see minimum\+Boundary\+Proportion\+Cost below) abs(Xi / max(1e-\/3, Ei))
+    \item S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+ST (R\+SS) gives the square difference at this data-\/point\+: (Xi -\/ Ei)$^\wedge$2
+    \item S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+S\+T\+\_\+\+S\+TD (R\+SS) sums the square difference at this time-\/point, divided by square of experimental given standard deviation. If no standard deviation, uses 1. instead. Std values less than 1e-\/8 are not counted (see minimum\+Boundary\+Standard\+Deviations below). (Xi -\/ Ei)$^\wedge$2 / Stdi$^\wedge$2, Stdi $>$ 1e-\/8
+    \item L\+O\+G\+\_\+\+C\+O\+ST sums the absolute difference between the ln of simulation versus data. the log is rescaled such that values lower than 1e-\/8 all return a ln of zero. (see minimum\+Boundary\+Log\+Cost below) Abs(ln(\+Xi) -\/ ln(\+Ei)), Xi, Ei $>$ 1e-\/8
+    \item P\+R\+O\+P\+O\+R\+T\+I\+O\+N\+\_\+\+C\+O\+ST returns the ratio between experimental to experimental. Denominator values less than 1e-\/3 stay 1e-\/3 (see minimum\+Boundary\+Proportion\+Cost below) abs(Xi / max(1e-\/3, Ei))
 \end{DoxyItemize}
 
-Note that it will be possible to give an artificial penalty when a simulation crashed and a data-\/point has not been computed (see \textquotesingle{}penalty\+Not\+Recorded\textquotesingle{} below. By default it is 0). \mbox{\Hypertarget{group___cost_eval_gadf764cbdea00d65edcd07bb9953ad2b7}\label{group___cost_eval_gadf764cbdea00d65edcd07bb9953ad2b7}} 
+Note that it will be possible to give an artificial penalty when a simulation crashed and a data-\/point has not been computed (see \textquotesingle{}penalty\+Not\+Recorded\textquotesingle{} below. By default it is 0). \mbox{\Hypertarget{group___cost_eval_gadf764cbdea00d65edcd07bb9953ad2b7}\label{group___cost_eval_gadf764cbdea00d65edcd07bb9953ad2b7}}
 \doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
 {\footnotesize\ttfamily anonymous enum}
 
 
 
-Different types of normalizations, that will be done by the evaluator class. Note that each condition receives an independent cost calculation. Therefore a normalization is done W\+I\+T\+H\+IN one condition separately. 
+Different types of normalizations, that will be done by the evaluator class. Note that each condition receives an independent cost calculation. Therefore a normalization is done W\+I\+T\+H\+IN one condition separately.
 
 
 \begin{DoxyItemize}
-\item N\+O\+\_\+\+N\+O\+RM\+: Equally sums the costs of each datapoints (fitness function), for each variable in this condition.
-\item N\+O\+R\+M\+\_\+\+A\+V\+E\+R\+A\+GE\+: For each variable, takes the experimental average of this variable over the experimental time-\/points (curve) of this condition. Each data-\/point cost (fitness function) will be divided by this {\bfseries{average square}}. Therefore, only use for S\+Q\+U\+A\+RE costs. Be careful that the average of a variable in different conditions will be different, so each curve\textquotesingle{}s cost will be normalized differently. This can be good or bad depending on the problem.
-\item N\+O\+R\+M\+\_\+\+N\+B\+\_\+\+P\+TS\+: For each variable, the cost of the time-\/points is divided by the number of experimental datapoints of this variable in this condition.
-\item N\+O\+R\+M\+\_\+\+M\+AX\+: For each variable, takes the experimental maximum of this variable over the experimental time-\/points (curve) of this condition. Each data-\/point cost (fitness function) will be divided by this {\bfseries{maximum square}}. Therefore, only use for S\+Q\+U\+A\+RE costs. Be careful that the maximum of a variable in different conditions will be different, so each curve\textquotesingle{}s cost will be normalized differently. This can be good or bad depending on the problem.
-\item N\+O\+R\+M\+\_\+\+A\+V\+G\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS\+: divides by both the average square and the nb of points.
-\item N\+O\+R\+M\+\_\+\+M\+A\+X\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS\+: divides by both the maximum square and the nb of points. 
+    \item N\+O\+\_\+\+N\+O\+RM\+: Equally sums the costs of each datapoints (fitness function), for each variable in this condition.
+    \item N\+O\+R\+M\+\_\+\+A\+V\+E\+R\+A\+GE\+: For each variable, takes the experimental average of this variable over the experimental time-\/points (curve) of this condition. Each data-\/point cost (fitness function) will be divided by this {\bfseries{average square}}. Therefore, only use for S\+Q\+U\+A\+RE costs. Be careful that the average of a variable in different conditions will be different, so each curve\textquotesingle{}s cost will be normalized differently. This can be good or bad depending on the problem.
+    \item N\+O\+R\+M\+\_\+\+N\+B\+\_\+\+P\+TS\+: For each variable, the cost of the time-\/points is divided by the number of experimental datapoints of this variable in this condition.
+    \item N\+O\+R\+M\+\_\+\+M\+AX\+: For each variable, takes the experimental maximum of this variable over the experimental time-\/points (curve) of this condition. Each data-\/point cost (fitness function) will be divided by this {\bfseries{maximum square}}. Therefore, only use for S\+Q\+U\+A\+RE costs. Be careful that the maximum of a variable in different conditions will be different, so each curve\textquotesingle{}s cost will be normalized differently. This can be good or bad depending on the problem.
+    \item N\+O\+R\+M\+\_\+\+A\+V\+G\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS\+: divides by both the average square and the nb of points.
+    \item N\+O\+R\+M\+\_\+\+M\+A\+X\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS\+: divides by both the maximum square and the nb of points.
 \end{DoxyItemize}

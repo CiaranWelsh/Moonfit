@@ -12,6 +12,7 @@
 
 #include "qwt_global.h"
 #include "qwt_plot_item.h"
+
 #ifdef QT5
 #include <qpainterpath.h>
 #endif
@@ -33,8 +34,7 @@
 
   \sa QwtPlotZone
 */
-class QWT_EXPORT QwtPlotShapeItem: public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotShapeItem : public QwtPlotItem {
 public:
     /*!
         Attributes to modify the drawing algorithm.
@@ -42,8 +42,7 @@ public:
 
         \sa setPaintAttribute(), testPaintAttribute()
     */
-    enum PaintAttribute
-    {
+    enum PaintAttribute {
         /*!
           Clip polygons before painting them. In situations, where points
           are far outside the visible area (f.e when zooming deep) this
@@ -57,11 +56,10 @@ public:
     };
 
     //! Paint attributes
-    typedef QFlags<PaintAttribute> PaintAttributes;
+    typedef QFlags <PaintAttribute> PaintAttributes;
 
     //! Mode how to display the item on the legend
-    enum LegendMode
-    {
+    enum LegendMode {
         //! Display a scaled down version of the shape
         LegendShape,
 
@@ -69,40 +67,49 @@ public:
         LegendColor
     };
 
-    explicit QwtPlotShapeItem( const QString &title = QString::null );
-    explicit QwtPlotShapeItem( const QwtText &title );
+    explicit QwtPlotShapeItem(const QString &title = QString::null);
+
+    explicit QwtPlotShapeItem(const QwtText &title);
 
     virtual ~QwtPlotShapeItem();
 
-    void setPaintAttribute( PaintAttribute, bool on = true );
-    bool testPaintAttribute( PaintAttribute ) const;
+    void setPaintAttribute(PaintAttribute, bool on = true);
 
-    void setLegendMode( LegendMode );
+    bool testPaintAttribute(PaintAttribute) const;
+
+    void setLegendMode(LegendMode);
+
     LegendMode legendMode() const;
 
-    void setRect( const QRectF & );
-    void setPolygon( const QPolygonF & );
+    void setRect(const QRectF &);
 
-    void setShape( const QPainterPath & );
+    void setPolygon(const QPolygonF &);
+
+    void setShape(const QPainterPath &);
+
     QPainterPath shape() const;
 
-    void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setPen( const QPen & );
+    void setPen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setPen(const QPen &);
+
     QPen pen() const;
 
-    void setBrush( const QBrush & );
+    void setBrush(const QBrush &);
+
     QBrush brush() const;
 
-    void setRenderTolerance( double );
+    void setRenderTolerance(double);
+
     double renderTolerance() const;
 
     virtual QRectF boundingRect() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+    virtual void draw(QPainter *p,
+                      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QRectF &rect) const;
 
-    virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
+    virtual QwtGraphic legendIcon(int index, const QSizeF &) const;
 
     virtual int rtti() const;
 
@@ -110,6 +117,7 @@ private:
     void init();
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

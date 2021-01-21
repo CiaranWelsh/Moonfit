@@ -21,22 +21,25 @@
 /// ================================= 1 - GRAPHES ========================================
 
 void printGrVect(vector<Graphe *>);
-void testeGraphManip(){
-    enum {A,B,C,D,E};
+
+void testeGraphManip() {
+    enum {
+        A, B, C, D, E
+    };
     Graphe a(5);
-    a.add(A,B,+1);
-    a.add(A,D,-1);
-    a.add(B,D,+1);
-    a.add(D,B,+1);
-    a.add(B,E,-1);
-    a.add(D,C,+1);
-    a.add(C,E,+1);
-    a.add(E,C,+1);
-    a.add(C,A,-1);
-    a.add(E,D,-1);
+    a.add(A, B, +1);
+    a.add(A, D, -1);
+    a.add(B, D, +1);
+    a.add(D, B, +1);
+    a.add(B, E, -1);
+    a.add(D, C, +1);
+    a.add(C, E, +1);
+    a.add(E, C, +1);
+    a.add(C, A, -1);
+    a.add(E, D, -1);
     Graphe b(5);
-    b.add(A,B,+1);
-    b.add(A,D,-1);
+    b.add(A, B, +1);
+    b.add(A, D, -1);
     cerr << "---------- Starting Graph ------------\n";
     a.print();
     cerr << "---------- Subgraphes with size 4 ------------\n";
@@ -46,147 +49,163 @@ void testeGraphManip(){
 }
 
 
-
-    Graphe::Graphe(int _nbNodes) : nbNodes(_nbNodes), nbVertices(0) {
-         table.clear();
-         table.resize(nbNodes);
-         for(int i = 0; i < nbNodes; ++i){
-            table[i].resize(nbNodes, (valeur) 0);
-         }
+Graphe::Graphe(int _nbNodes) : nbNodes(_nbNodes), nbVertices(0) {
+    table.clear();
+    table.resize(nbNodes);
+    for (int i = 0; i < nbNodes; ++i) {
+        table[i].resize(nbNodes, (valeur) 0);
     }
+}
 
-    Graphe::Graphe(Graphe* toCopy) : nbNodes(toCopy->size()), nbVertices(0) {
-         table.clear();
-         table.resize(nbNodes);
-         for(int i = 0; i < nbNodes; ++i){
-            table[i].resize(nbNodes, (valeur) 0);
-            for(int j = 0; j < nbNodes; ++j){
-                //table[i][j] = (*toCopy)[i][j];
-                add(i,j,(*toCopy)(i,j));
-            }
-         }
-    }
-
-    void Graphe::resize(int newNbNodes) {
-        nbNodes = newNbNodes;
-        nbVertices = 0;
-        table.clear();
-        table.resize(nbNodes);
-        for(int i = 0; i < nbNodes; ++i){
-           table[i].resize(nbNodes, (valeur) 0);
+Graphe::Graphe(Graphe *toCopy) : nbNodes(toCopy->size()), nbVertices(0) {
+    table.clear();
+    table.resize(nbNodes);
+    for (int i = 0; i < nbNodes; ++i) {
+        table[i].resize(nbNodes, (valeur) 0);
+        for (int j = 0; j < nbNodes; ++j) {
+            //table[i][j] = (*toCopy)[i][j];
+            add(i, j, (*toCopy)(i, j));
         }
     }
-    void Graphe::add(int i, int j, valeur value){
-         if((i < 0) || (j < 0) || (i >= nbNodes) || (j >= nbNodes)) {cerr << "add : wrong indices"; return;}
-         if((table[i][j] == 0) && (value != 0)) nbVertices++;
-         if((table[i][j] != 0) && (value == 0)) nbVertices--;
-         if(nbVertices < 0) cerr << "ERR: graphe::add, problem counting the number of non-zero vertices, get negative number" << endl;
-         table[i][j] = value;
+}
+
+void Graphe::resize(int newNbNodes) {
+    nbNodes = newNbNodes;
+    nbVertices = 0;
+    table.clear();
+    table.resize(nbNodes);
+    for (int i = 0; i < nbNodes; ++i) {
+        table[i].resize(nbNodes, (valeur) 0);
     }
-    //    int nbNodes;
-    int Graphe::size(){return nbNodes;}
-    int Graphe::inters(){return nbVertices;}
-    vector<int> Graphe::operator()(int i){  // successors
-        vector<int> z;
-        z.clear();
-        if((i<0) || (i>nbNodes)) return z;
-        for(int j = 0; j < nbNodes; ++j){
-            if(table[i][j] != (valeur) 0) z.push_back(j);
-        }
-        return z;
+}
+
+void Graphe::add(int i, int j, valeur value) {
+    if ((i < 0) || (j < 0) || (i >= nbNodes) || (j >= nbNodes)) {
+        cerr << "add : wrong indices";
+        return;
     }
-    valeur Graphe::operator()(int i, int j){
-        if((i < 0) || (j < 0) || (i >= nbNodes) || (j >= nbNodes)) return 0;
-        else return table[i][j];
+    if ((table[i][j] == 0) && (value != 0)) nbVertices++;
+    if ((table[i][j] != 0) && (value == 0)) nbVertices--;
+    if (nbVertices < 0)
+        cerr << "ERR: graphe::add, problem counting the number of non-zero vertices, get negative number" << endl;
+    table[i][j] = value;
+}
+
+//    int nbNodes;
+int Graphe::size() { return nbNodes; }
+
+int Graphe::inters() { return nbVertices; }
+
+vector<int> Graphe::operator()(int i) {  // successors
+    vector<int> z;
+    z.clear();
+    if ((i < 0) || (i > nbNodes)) return z;
+    for (int j = 0; j < nbNodes; ++j) {
+        if (table[i][j] != (valeur) 0) z.push_back(j);
     }
-    vector<int> Graphe::pred(int i){    // predecessors
-        vector<int> z;
-        z.clear();
-        if((i<0) || (i>nbNodes)) return z;
-        for(int j = 0; j < nbNodes; ++j){
-            if(table[j][i] != (valeur) 0) z.push_back(j);
-        }
-        return z;
+    return z;
+}
+
+valeur Graphe::operator()(int i, int j) {
+    if ((i < 0) || (j < 0) || (i >= nbNodes) || (j >= nbNodes)) return 0;
+    else return table[i][j];
+}
+
+vector<int> Graphe::pred(int i) {    // predecessors
+    vector<int> z;
+    z.clear();
+    if ((i < 0) || (i > nbNodes)) return z;
+    for (int j = 0; j < nbNodes; ++j) {
+        if (table[j][i] != (valeur) 0) z.push_back(j);
     }
+    return z;
+}
 
-    //string generateGraph();
-    void Graphe::print(){
-        cerr << "--------- Graphe, size= " << nbNodes << " ; nbInteractions= " << nbVertices << " --------" << endl;
-        for(int i = 0; i < nbNodes; ++i){
-            for(int j = 0; j < nbNodes; ++j){
-                cerr << table[i][j] << "\t";
-            }
-            cerr << endl;
+//string generateGraph();
+void Graphe::print() {
+    cerr << "--------- Graphe, size= " << nbNodes << " ; nbInteractions= " << nbVertices << " --------" << endl;
+    for (int i = 0; i < nbNodes; ++i) {
+        for (int j = 0; j < nbNodes; ++j) {
+            cerr << table[i][j] << "\t";
         }
+        cerr << endl;
     }
+}
 
 
-    bool compInters(Graphe*a, Graphe*b) {return a->inters() < b->inters();}     // function to sort graphs based on the number of interactions.
+bool compInters(Graphe *a, Graphe *b) {
+    return a->inters() < b->inters();
+}     // function to sort graphs based on the number of interactions.
 
-    vector<Graphe*> between(Graphe Gbig, Graphe Gsmall, int new_size){ // very important that this is not a referenece or a ppinter, because will be modified !
+vector<Graphe *> between(Graphe Gbig, Graphe Gsmall,
+                         int new_size) { // very important that this is not a referenece or a ppinter, because will be modified !
 
-        // removes Gsmall from Gbig and checks size
-        vector<Graphe*> vres;
-        vres.clear();
+    // removes Gsmall from Gbig and checks size
+    vector<Graphe *> vres;
+    vres.clear();
 
-        int s = Gbig.size();
-        int sS = Gsmall.size();
-        if(s != sS) {cerr << "ERR:Graphe::between(), the two graphs don't share the same size ! " << s << " != " << sS << endl;
-            return vres;}
-        /*if(new_size < 0) return vres;
-        if(new_size == 0) {
-            Graphe* gg = new Graphe(G->size());
-            vres.push_back(gg);
-            return vres;
-        }*/
-
-        for(int i = 0; i < s; ++i){
-            for(int j = 0; j < s; ++j){
-                if((Gsmall(i,j) != 0) && (Gbig(i,j) != 0)){
-                    if(Gsmall(i,j) != Gbig(i,j)) cerr << "WRN:Graphe::between, the small graph has vertices in common with the big one and they don't have the same value !! Gsmall value is taking over.";
-                    Gbig.add(i,j,0);
-                }
-            }
-        }
-
-        Graphe* Start = new Graphe(&Gsmall);
-        vres.push_back(Start);
-        //for(int K = 0; K < new_size; ++K){
-
-            for(int i = 0; i < s; ++i){
-                for(int j = 0; j < s; ++j){
-                    if(Gbig(i,j) != 0){
-                        int currS = vres.size();
-                        for(int m = 0; m < currS; ++m){
-                            Graphe* extended = new Graphe(vres[m]);
-                            extended->add(i,j,Gbig(i,j));
-                            vres.push_back(extended);
-                        }
-                    }
-                }
-            }
-        //}
-        // manual sorting ...
-        sort (vres.begin(), vres.end(), compInters);
-
-        if(new_size != 0){
-            vector<Graphe*> vtemp = vres;
-            int st = vtemp.size();
-            vres.clear();
-            for(int i = 0; i < st; ++i){
-                if(vtemp[i]->inters() == new_size) vres.push_back(vtemp[i]);
-            }
-        }
+    int s = Gbig.size();
+    int sS = Gsmall.size();
+    if (s != sS) {
+        cerr << "ERR:Graphe::between(), the two graphs don't share the same size ! " << s << " != " << sS << endl;
         return vres;
     }
+    /*if(new_size < 0) return vres;
+    if(new_size == 0) {
+        Graphe* gg = new Graphe(G->size());
+        vres.push_back(gg);
+        return vres;
+    }*/
 
-
-    void printGrVect(vector<Graphe*> v){
-        int s = v.size();
-        for(int i = 0; i < s; ++i){
-            v[i]->print();
+    for (int i = 0; i < s; ++i) {
+        for (int j = 0; j < s; ++j) {
+            if ((Gsmall(i, j) != 0) && (Gbig(i, j) != 0)) {
+                if (Gsmall(i, j) != Gbig(i, j))
+                    cerr
+                            << "WRN:Graphe::between, the small graph has vertices in common with the big one and they don't have the same value !! Gsmall value is taking over.";
+                Gbig.add(i, j, 0);
+            }
         }
     }
+
+    Graphe *Start = new Graphe(&Gsmall);
+    vres.push_back(Start);
+    //for(int K = 0; K < new_size; ++K){
+
+    for (int i = 0; i < s; ++i) {
+        for (int j = 0; j < s; ++j) {
+            if (Gbig(i, j) != 0) {
+                int currS = vres.size();
+                for (int m = 0; m < currS; ++m) {
+                    Graphe *extended = new Graphe(vres[m]);
+                    extended->add(i, j, Gbig(i, j));
+                    vres.push_back(extended);
+                }
+            }
+        }
+    }
+    //}
+    // manual sorting ...
+    sort(vres.begin(), vres.end(), compInters);
+
+    if (new_size != 0) {
+        vector<Graphe *> vtemp = vres;
+        int st = vtemp.size();
+        vres.clear();
+        for (int i = 0; i < st; ++i) {
+            if (vtemp[i]->inters() == new_size) vres.push_back(vtemp[i]);
+        }
+    }
+    return vres;
+}
+
+
+void printGrVect(vector<Graphe *> v) {
+    int s = v.size();
+    for (int i = 0; i < s; ++i) {
+        v[i]->print();
+    }
+}
 
 
 
@@ -214,7 +233,7 @@ Generate::Generate(string _MName) : MName(_MName), nbVar(0) {
     Types.clear();
 }
 
-void Generate::addVar(string nameVar, D degPolicy, B basalPolicy, string globalName, int typeVar){
+void Generate::addVar(string nameVar, D degPolicy, B basalPolicy, string globalName, int typeVar) {
     nbVar++;
     VarEnum.push_back(nameVar);
     GlobVarEnum.push_back(globalName);
@@ -223,20 +242,21 @@ void Generate::addVar(string nameVar, D degPolicy, B basalPolicy, string globalN
     Types.push_back(typeVar);
     g.resize(nbVar);
 }
-void Generate::addReaction(string Var1, string Var2, int IDfunction){
+
+void Generate::addReaction(string Var1, string Var2, int IDfunction) {
     int ID1 = -1, ID2 = -1;
-    for(int i = 0; i < nbVar; ++i){
-        if(!Var1.compare(VarEnum[i])) ID1 = i;
-        if(!Var2.compare(VarEnum[i])) ID2 = i;
+    for (int i = 0; i < nbVar; ++i) {
+        if (!Var1.compare(VarEnum[i])) ID1 = i;
+        if (!Var2.compare(VarEnum[i])) ID2 = i;
     }
     g.add(ID1, ID2, IDfunction);
 }
 
-void Generate::addInclude(string fileName){
+void Generate::addInclude(string fileName) {
     filesToInclude.push_back(fileName);
 }
 
-void Generate::setBorderPolicy(vector<typeVar> policy){
+void Generate::setBorderPolicy(vector<typeVar> policy) {
     ParamBordersPolicy = policy;
 }
 
@@ -260,12 +280,12 @@ void Generate::setBorderPolicy(vector<typeVar> policy){
 
 /// ================================= Generate the LIST of PARAMETERS ========================================
 
-vector<string> Generate::generateParameters(){
+vector<string> Generate::generateParameters() {
     vector<string> res;
     res.clear();
     // Degradation parameters;
-    for(int i = 0; i < nbVar; ++i){
-        if(Degradation[i] == PROP_DEG) res.push_back(string("KD") + VarEnum[i]);
+    for (int i = 0; i < nbVar; ++i) {
+        if (Degradation[i] == PROP_DEG) res.push_back(string("KD") + VarEnum[i]);
     }
 #ifdef OLD
     // Basal parameters, in case they are not automatically set
@@ -279,27 +299,30 @@ vector<string> Generate::generateParameters(){
 #endif
 
 
-    for(int i = 0; i < nbVar; ++i){
-        if(Basal[i] == CST_FROM_EQ) res.push_back(VarEnum[i] + string("EQ"));
+    for (int i = 0; i < nbVar; ++i) {
+        if (Basal[i] == CST_FROM_EQ) res.push_back(VarEnum[i] + string("EQ"));
     }
     // for each receiving node, Cst translation * big formula
-    if(g.size() != nbVar) cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar << endl;
-    for(int i = 0; i < nbVar; ++i){
+    if (g.size() != nbVar)
+        cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar
+             << endl;
+    for (int i = 0; i < nbVar; ++i) {
         vector<int> vpred = g.pred(i);
         int nbAct = vpred.size();
-        if(nbAct > 0){
+        if (nbAct > 0) {
             res.push_back(string("C") + VarEnum[i]);
-            for(int j = 0; j < nbAct; ++j){
+            for (int j = 0; j < nbAct; ++j) {
 #ifdef NEW
                 //for(int i = 0; i < nbVar; ++i){
-                    if((Basal[i] == CST) || (Basal[i] == CST_FROM_EQ)) res.push_back(string("S") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i]);
+                if ((Basal[i] == CST) || (Basal[i] == CST_FROM_EQ))
+                    res.push_back(string("S") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i]);
                 //}
 #endif
                 res.push_back(string("K") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i]);
                 res.push_back(string("N") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i]);
             }
         }
-        if((nbAct == 0) && (Basal[i] == CST_FROM_EQ)){
+        if ((nbAct == 0) && (Basal[i] == CST_FROM_EQ)) {
             res.push_back(string("P") + VarEnum[i]);
         }
     }
@@ -333,20 +356,22 @@ vector<string> Generate::generateParameters(){
 
 // function to access a vector index, but if out of range, returns the constructor,
 // in case of border policy, if it doesn't exist, avoids a seg fault and returns the basal policy
-template <typename T>
-T fr(vector<T> v, int index){
+template<typename T>
+T fr(vector<T> v, int index) {
     T a = T();  // carefull, because with numbers this will be weird ... don't use T=int ...
     if ((index < 0) || (index > (int) v.size())) return a; else return v[index];
 }
 
-string Generate::generateParamBorders(){
+string Generate::generateParamBorders() {
     stringstream f;
 
     // Degradation parameters;
-    for(int i = 0; i < nbVar; ++i){
-        if(Degradation[i] == PROP_DEG) {
-            f << "\tparamLowBounds[" << "KD" << VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Deg_min << ";\t";
-            f << "\tparamUpBounds[" << "KD" << VarEnum[i] << "] \t= " <<  fr(ParamBordersPolicy, Types[i]).Deg_max << ";\n";
+    for (int i = 0; i < nbVar; ++i) {
+        if (Degradation[i] == PROP_DEG) {
+            f << "\tparamLowBounds[" << "KD" << VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Deg_min
+              << ";\t";
+            f << "\tparamUpBounds[" << "KD" << VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Deg_max
+              << ";\n";
         }
     }
 #ifdef OLD
@@ -357,37 +382,52 @@ string Generate::generateParamBorders(){
         }
     }
 #endif
-    for(int i = 0; i < nbVar; ++i){
-        if(Basal[i] == CST_FROM_EQ) {
-            f << "\tparamLowBounds[" << VarEnum[i] << "EQ" << "] \t= " << fr(ParamBordersPolicy, Types[i]).ValueEQ_min << ";\t";
-            f << "\tparamUpBounds[" << VarEnum[i] << "EQ" << "] \t= " <<  fr(ParamBordersPolicy, Types[i]).ValueEQ_max << ";\n";
+    for (int i = 0; i < nbVar; ++i) {
+        if (Basal[i] == CST_FROM_EQ) {
+            f << "\tparamLowBounds[" << VarEnum[i] << "EQ" << "] \t= " << fr(ParamBordersPolicy, Types[i]).ValueEQ_min
+              << ";\t";
+            f << "\tparamUpBounds[" << VarEnum[i] << "EQ" << "] \t= " << fr(ParamBordersPolicy, Types[i]).ValueEQ_max
+              << ";\n";
         }
     }
 
     // for each receiving node, Cst translation * big formula
-    if(g.size() != nbVar) cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar << endl;
-    for(int i = 0; i < nbVar; ++i){
+    if (g.size() != nbVar)
+        cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar
+             << endl;
+    for (int i = 0; i < nbVar; ++i) {
         vector<int> vpred = g.pred(i);
         int nbAct = vpred.size();
-        if(nbAct > 0){
-            f << "\tparamLowBounds[" << "C" << VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Trans_min << ";\t";
-            f << "\tparamUpBounds[" << "C" << VarEnum[i] << "] \t= " <<  fr(ParamBordersPolicy, Types[i]).Trans_max << ";\n";
-            for(int j = 0; j < nbAct; ++j){
+        if (nbAct > 0) {
+            f << "\tparamLowBounds[" << "C" << VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Trans_min
+              << ";\t";
+            f << "\tparamUpBounds[" << "C" << VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Trans_max
+              << ";\n";
+            for (int j = 0; j < nbAct; ++j) {
 #ifdef NEW
-                if((Basal[i] == CST) || (Basal[i] == CST_FROM_EQ)) {    // careful to keep the same order than generate parameters !!
-                    if(g(vpred[j],i) > 0){  // activation
-                        f << "\tparamLowBounds[" << "S" << VarEnum[vpred[j]]  + string("_TO_") + VarEnum[i] << "] \t= " << 1.1 << ";\t";
-                        f << "\tparamUpBounds["  << "S" << VarEnum[vpred[j]]  + string("_TO_") + VarEnum[i] << "] \t= " <<  fr(ParamBordersPolicy, Types[i]).Basal_Cst_max << ";\n";
-                    } else if(g(vpred[j],i) < 0) {
-                        f << "\tparamLowBounds[" << "S" << VarEnum[vpred[j]]  + string("_TO_") + VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Basal_Cst_min << ";\t";
-                        f << "\tparamUpBounds["  << "S" << VarEnum[vpred[j]]  + string("_TO_") + VarEnum[i] << "] \t= " <<  0.9 << ";\n";
+                if ((Basal[i] == CST) ||
+                    (Basal[i] == CST_FROM_EQ)) {    // careful to keep the same order than generate parameters !!
+                    if (g(vpred[j], i) > 0) {  // activation
+                        f << "\tparamLowBounds[" << "S" << VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                          << 1.1 << ";\t";
+                        f << "\tparamUpBounds[" << "S" << VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                          << fr(ParamBordersPolicy, Types[i]).Basal_Cst_max << ";\n";
+                    } else if (g(vpred[j], i) < 0) {
+                        f << "\tparamLowBounds[" << "S" << VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                          << fr(ParamBordersPolicy, Types[i]).Basal_Cst_min << ";\t";
+                        f << "\tparamUpBounds[" << "S" << VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                          << 0.9 << ";\n";
                     }
                 }
 #endif
-                f << "\tparamLowBounds[" << string("K") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Khill_min << ";\t";
-                f << "\tparamUpBounds["  << string("K") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= " <<  fr(ParamBordersPolicy, Types[i]).Khill_max << ";\n";
-                f << "\tparamLowBounds[" << string("N") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= " << fr(ParamBordersPolicy, Types[i]).Nhill_min << ";\t";
-                f << "\tparamUpBounds["  << string("N") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= " <<  fr(ParamBordersPolicy, Types[i]).Nhill_max << ";\n";
+                f << "\tparamLowBounds[" << string("K") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                  << fr(ParamBordersPolicy, Types[i]).Khill_min << ";\t";
+                f << "\tparamUpBounds[" << string("K") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                  << fr(ParamBordersPolicy, Types[i]).Khill_max << ";\n";
+                f << "\tparamLowBounds[" << string("N") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                  << fr(ParamBordersPolicy, Types[i]).Nhill_min << ";\t";
+                f << "\tparamUpBounds[" << string("N") + VarEnum[vpred[j]] + string("_TO_") + VarEnum[i] << "] \t= "
+                  << fr(ParamBordersPolicy, Types[i]).Nhill_max << ";\n";
             }
         }
     }
@@ -455,75 +495,80 @@ string Generate::generateActivFunction(int nbAct, int nbInh){
 #endif
 
 #ifdef NEW
-string Generate::generateActivFunction(int nbAct, int nbInh){
-        std::stringstream ss;
-        if((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
-            cerr << "ERR: generateActiv, Out of bounds" << endl;
-            return ss.str();
-        }
-        if(nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
-        // Implicitely, the first ones are activating, the last ones inhibiting
 
-        ss << "\tdouble Activ" << nbAct << "Inhib" << nbInh << "(";
-        int i = nbAct + nbInh;
-        for(int j = 1; j <= i-1; ++j ){
-            ss << "double Val" << j << ", double K" << j << ", double N" << j << ", double S" << j <<",";
-        }
-        ss << "double Val" << i << ", double K" << i << ", double N" << i << ", double S" << i << "){\n";
-        ss << "\t\tif(";
-        for(int j = 1; j <= i-1; ++j){
-            ss << "(Val" << j <<" <= 0.0) || ";
-        }
-        ss << "(Val" << i <<" <= 0.0)) return 0.0; \n\t\telse return (";
-
-        for(int j = 1; j <= nbAct; ++j){
-            ss << "(1.0 + (S" << j << " - 1.0) * (pow(Val" << j << ", N" << j <<") / ( pow(K" << j << ", N" << j << ") + pow(Val" << j << ", N" << j <<") ) ) )*";
-        }
-        if(nbInh == 0) ss << "1";
-        for(int j = nbAct+1; j <= i; ++j){
-            ss << "(S" << j << " + (1.0 - S" << j << ") * ( pow(K" << j << ", N" << j << ") / ( pow(K" << j << ", N" << j << ") + pow(Val" << j << ", N" << j <<") ) ) )";
-            if(j != i) ss << " * ";
-        }
-
-        ss << "); }\n";
+string Generate::generateActivFunction(int nbAct, int nbInh) {
+    std::stringstream ss;
+    if ((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
+        cerr << "ERR: generateActiv, Out of bounds" << endl;
         return ss.str();
+    }
+    if (nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
+    // Implicitely, the first ones are activating, the last ones inhibiting
+
+    ss << "\tdouble Activ" << nbAct << "Inhib" << nbInh << "(";
+    int i = nbAct + nbInh;
+    for (int j = 1; j <= i - 1; ++j) {
+        ss << "double Val" << j << ", double K" << j << ", double N" << j << ", double S" << j << ",";
+    }
+    ss << "double Val" << i << ", double K" << i << ", double N" << i << ", double S" << i << "){\n";
+    ss << "\t\tif(";
+    for (int j = 1; j <= i - 1; ++j) {
+        ss << "(Val" << j << " <= 0.0) || ";
+    }
+    ss << "(Val" << i << " <= 0.0)) return 0.0; \n\t\telse return (";
+
+    for (int j = 1; j <= nbAct; ++j) {
+        ss << "(1.0 + (S" << j << " - 1.0) * (pow(Val" << j << ", N" << j << ") / ( pow(K" << j << ", N" << j
+           << ") + pow(Val" << j << ", N" << j << ") ) ) )*";
+    }
+    if (nbInh == 0) ss << "1";
+    for (int j = nbAct + 1; j <= i; ++j) {
+        ss << "(S" << j << " + (1.0 - S" << j << ") * ( pow(K" << j << ", N" << j << ") / ( pow(K" << j << ", N" << j
+           << ") + pow(Val" << j << ", N" << j << ") ) ) )";
+        if (j != i) ss << " * ";
+    }
+
+    ss << "); }\n";
+    return ss.str();
 }
+
 #endif
 
-string generateActivFunction(int nbAct, int nbInh){
-        std::stringstream ss;
-        if((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
-            cerr << "ERR: generateActiv, Out of bounds" << endl;
-            return ss.str();
-        }
-        if(nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
-        // Implicitely, the first ones are activating, the last ones inhibiting
-
-        ss << "\tdouble Activ" << nbAct << "Inhib" << nbInh << "(";
-        int i = nbAct + nbInh;
-        for(int j = 1; j <= i-1; ++j ){
-            ss << "double Val" << j << ", double K" << j << ", double N" << j << ", double S" << j <<",";
-        }
-        ss << "double Val" << i << ", double K" << i << ", double N" << i << ", double S" << i << "){\n";
-        ss << "\t\tif(";
-        for(int j = 1; j <= i-1; ++j){
-            ss << "(Val" << j <<" <= 0.0) || ";
-        }
-        ss << "(Val" << i <<" <= 0.0)) return 0.0; \n\t\telse return (";
-
-        for(int j = 1; j <= nbAct; ++j){
-            ss << "(1.0 + (S" << j << " - 1.0) * (pow(Val" << j << ", N" << j <<") / ( pow(K" << j << ", N" << j << ") + pow(Val" << j << ", N" << j <<") ) ) )*";
-        }
-        if(nbInh == 0) ss << "1";
-        for(int j = nbAct+1; j <= i; ++j){
-            ss << "(S" << j << " + (1.0 - S" << j << ") * ( pow(K" << j << ", N" << j << ") / ( pow(K" << j << ", N" << j << ") + pow(Val" << j << ", N" << j <<") ) ) )";
-            if(j != i) ss << " * ";
-        }
-
-        ss << "); }\n";
+string generateActivFunction(int nbAct, int nbInh) {
+    std::stringstream ss;
+    if ((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
+        cerr << "ERR: generateActiv, Out of bounds" << endl;
         return ss.str();
-}
+    }
+    if (nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
+    // Implicitely, the first ones are activating, the last ones inhibiting
 
+    ss << "\tdouble Activ" << nbAct << "Inhib" << nbInh << "(";
+    int i = nbAct + nbInh;
+    for (int j = 1; j <= i - 1; ++j) {
+        ss << "double Val" << j << ", double K" << j << ", double N" << j << ", double S" << j << ",";
+    }
+    ss << "double Val" << i << ", double K" << i << ", double N" << i << ", double S" << i << "){\n";
+    ss << "\t\tif(";
+    for (int j = 1; j <= i - 1; ++j) {
+        ss << "(Val" << j << " <= 0.0) || ";
+    }
+    ss << "(Val" << i << " <= 0.0)) return 0.0; \n\t\telse return (";
+
+    for (int j = 1; j <= nbAct; ++j) {
+        ss << "(1.0 + (S" << j << " - 1.0) * (pow(Val" << j << ", N" << j << ") / ( pow(K" << j << ", N" << j
+           << ") + pow(Val" << j << ", N" << j << ") ) ) )*";
+    }
+    if (nbInh == 0) ss << "1";
+    for (int j = nbAct + 1; j <= i; ++j) {
+        ss << "(S" << j << " + (1.0 - S" << j << ") * ( pow(K" << j << ", N" << j << ") / ( pow(K" << j << ", N" << j
+           << ") + pow(Val" << j << ", N" << j << ") ) ) )";
+        if (j != i) ss << " * ";
+    }
+
+    ss << "); }\n";
+    return ss.str();
+}
 
 
 #ifdef OLD
@@ -541,17 +586,21 @@ string latexHillInh(string X, string K, string N){
 #endif
 
 #ifdef NEW
-string latexHillAct(string X, string K, string N, string S){
+
+string latexHillAct(string X, string K, string N, string S) {
     stringstream ss;
-    ss << "\\left(1 + (1 - " << S << ").\\frac{" << X << "^{" << N << "} }{" << K << "^{" << N << "} + " << X << "^{" << N << "} } \\right)";
+    ss << "\\left(1 + (1 - " << S << ").\\frac{" << X << "^{" << N << "} }{" << K << "^{" << N << "} + " << X << "^{"
+       << N << "} } \\right)";
     return ss.str();
 }
 
-string latexHillInh(string X, string K, string N, string S){
+string latexHillInh(string X, string K, string N, string S) {
     stringstream ss;
-    ss << "\\left(" << S << " + (1 - " << S << "). \\frac{" << K << "^{" << N << "} }{" << K << "^{" << N << "} + " << X << "^{" << N << "} } \\right)";
+    ss << "\\left(" << S << " + (1 - " << S << "). \\frac{" << K << "^{" << N << "} }{" << K << "^{" << N << "} + " << X
+       << "^{" << N << "} } \\right)";
     return ss.str();
 }
+
 #endif
 
 
@@ -572,19 +621,22 @@ string latexHillInh(string X, string K, string N, string S){
 
 /// ================================= Generate MODEL HEADER ========================================
 
-string Generate::generateCodeHeader(){
+string Generate::generateCodeHeader() {
 
-    if((int) filesToInclude.size() == 0) {cerr << "WRN: Generate::generateCodeHeader(), you didn't give any files to include. You might probably want to provide a file with namespaces ... \n";}
+    if ((int) filesToInclude.size() == 0) {
+        cerr
+                << "WRN: Generate::generateCodeHeader(), you didn't give any files to include. You might probably want to provide a file with namespaces ... \n";
+    }
     stringstream f;
     f << "// ------- Automatically generated model -------- //\n";
-    f << "#ifndef Model" << MName <<"_H\n";
-    f << "#define Model" << MName <<"_H\n";
+    f << "#ifndef Model" << MName << "_H\n";
+    f << "#define Model" << MName << "_H\n";
     f << "#include \"../common.h\"\n\n";
     f << "#include \"../Framework/Model.h\"\n\n";
     f << "#ifdef COMPILE_AUTOGEN\n";
-    for(int i = 0; i < (int) filesToInclude.size(); ++i){
-        if((int) filesToInclude[i].size() > 0){
-            if(filesToInclude[i][0] == '<')
+    for (int i = 0; i < (int) filesToInclude.size(); ++i) {
+        if ((int) filesToInclude[i].size() > 0) {
+            if (filesToInclude[i][0] == '<')
                 f << "#include " << filesToInclude[i] << "\n\n";
             else
                 f << "#include \"" << filesToInclude[i] << "\"\n\n";
@@ -595,47 +647,48 @@ string Generate::generateCodeHeader(){
     f << "struct Model" << MName << " : public Model {\n";
     f << "\tModel" << MName << "();\n";
     f << "\tenum {";
-        if(nbVar < 1) cerr << "ErR:Generate::nVar should be >= 1\n";
-        for(int i = 0; i < nbVar-1; ++i){
-            f << VarEnum[i] << ", ";
-        }
-        f << VarEnum[nbVar-1] << ", NBVAR};\n";
+    if (nbVar < 1) cerr << "ErR:Generate::nVar should be >= 1\n";
+    for (int i = 0; i < nbVar - 1; ++i) {
+        f << VarEnum[i] << ", ";
+    }
+    f << VarEnum[nbVar - 1] << ", NBVAR};\n";
     f << "\tenum {";
-        vector<string> listPar = generateParameters();
-        int nbPar = listPar.size();
-        for(int i = 0; i < nbPar-1; ++i){
-            f << listPar[i] << ", ";
-        }
-        f << listPar[nbPar-1] << ", NBPARAM};\n\n";
+    vector<string> listPar = generateParameters();
+    int nbPar = listPar.size();
+    for (int i = 0; i < nbPar - 1; ++i) {
+        f << listPar[i] << ", ";
+    }
+    f << listPar[nbPar - 1] << ", NBPARAM};\n\n";
     f << "\tlong long background;\n";
     f << "\tvoid derivatives(const vector<double> &x, vector<double> &dxdt, const double t);\n";
     f << "\tvoid initialise(long long _background = Back::WT);\n";
     f << "\tvoid setBaseParameters();\n";
 
-    vector <vector <bool> > needed;
+    vector<vector<bool> > needed;
     needed.clear();
-    needed.resize(MAX_DEGREE+1);
-    for(int i = 0; i < MAX_DEGREE+1; ++i){
-        needed[i].resize(MAX_DEGREE+1,false);
+    needed.resize(MAX_DEGREE + 1);
+    for (int i = 0; i < MAX_DEGREE + 1; ++i) {
+        needed[i].resize(MAX_DEGREE + 1, false);
     }
-    for(int i = 0; i < nbVar; ++i){
+    for (int i = 0; i < nbVar; ++i) {
         vector<int> vpred = g.pred(i);
         int nbPred = vpred.size();
         int nbAct = 0;
         int nbInh = 0;
-        for(int m = 0; m < nbPred; ++m){
-            if(g(vpred[m],i) > 0) nbAct++; else nbInh++;
+        for (int m = 0; m < nbPred; ++m) {
+            if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
         }
-        if((nbAct > MAX_DEGREE) || (nbInh > MAX_DEGREE)) {
-            cerr << "ERR : GenerateHeader, The number of Activators (or Inhibitors) of a node are exceeding MAX_DEGREE = " << MAX_DEGREE << endl;
-        }
-        else needed[nbAct][nbInh] = true;
+        if ((nbAct > MAX_DEGREE) || (nbInh > MAX_DEGREE)) {
+            cerr
+                    << "ERR : GenerateHeader, The number of Activators (or Inhibitors) of a node are exceeding MAX_DEGREE = "
+                    << MAX_DEGREE << endl;
+        } else needed[nbAct][nbInh] = true;
     }
 
 
-    for(int i = 0 ; i < MAX_DEGREE; ++i){
-        for(int j = 0; j <= MAX_DEGREE /*- i*/ ; ++j){
-            if(needed[i][j]) f << generateActivFunction(i, j);
+    for (int i = 0; i < MAX_DEGREE; ++i) {
+        for (int j = 0; j <= MAX_DEGREE /*- i*/ ; ++j) {
+            if (needed[i][j]) f << generateActivFunction(i, j);
         }
     }
     f << "};\n";
@@ -646,17 +699,7 @@ string Generate::generateCodeHeader(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-string Generate::generateCodeSource(){
+string Generate::generateCodeSource() {
     stringstream f;
     f << "// ------- Automatically generated model -------- //\n";
     f << "#include \"../common.h\"\n\n";
@@ -670,18 +713,18 @@ string Generate::generateCodeSource(){
     //f << "\tparametersLoaded = false;\n";
     //f << "\tnames.clear();\n";
     //f << "\tnames.resize(NBVAR);\n";
-    for(int i = 0; i < nbVar; ++i){
+    for (int i = 0; i < nbVar; ++i) {
         f << "\tnames[" << VarEnum[i] << "] = string(\"" << VarEnum[i] << "\");\n";
     }
     f << "\t// the names of variables that can be accessed by outside (by setValue and getValue)\n";
     //f << "\textNames.clear();\n";
     //f << "\textNames.resize(NBVAR);\n";
-    for(int i = 0; i < nbVar; ++i){
+    for (int i = 0; i < nbVar; ++i) {
         f << "\textNames[" << VarEnum[i] << "] = " << GlobVarEnum[i] << ";\n";
     }
     vector<string> listPar = generateParameters();
     int nbPar = listPar.size();
-    for(int i = 0; i < nbPar; ++i){
+    for (int i = 0; i < nbPar; ++i) {
         f << "\tparamNames[" << listPar[i] << "] = \"" << listPar[i] << "\";\n";
     }
     f << generateParamBorders();
@@ -693,7 +736,7 @@ string Generate::generateCodeSource(){
     f << "\tparams.clear();     // to make sure they are all put to zero\n";
     f << "\tparams.resize(NBPARAM, 0.0);\n";
 
-    for(int i = 0; i < nbPar; ++i){
+    for (int i = 0; i < nbPar; ++i) {
         f << "\tparams[" << listPar[i] << "] = 1e-1;\n";
     }
     //f << "\tparametersLoaded = true;\n";
@@ -716,9 +759,11 @@ string Generate::generateCodeSource(){
         if(Basal[i] == CST_FROM_EQ){
             f << "\tif(params[B" <<  VarEnum[i] << "] < 0) params[B" <<  VarEnum[i] << "] = 0;\n";}}
 #endif
-    for(int i = 0; i < nbVar; ++i){
-        if(Basal[i] == CST_FROM_EQ){
-            f << "\tinit[" <<  VarEnum[i] << "] = params[" <<  VarEnum[i] << "EQ];\n";}}
+    for (int i = 0; i < nbVar; ++i) {
+        if (Basal[i] == CST_FROM_EQ) {
+            f << "\tinit[" << VarEnum[i] << "] = params[" << VarEnum[i] << "EQ];\n";
+        }
+    }
     //params[BS4P]= params[KDS4P] * params[S4PEQ] - params[CS4P] * Activ2(0.0, params[K12_TO_S4P], params[N12_TO_S4P], params[S4PEQ], params[KS4P_AMPLI], params[NS4P_AMPLI])   ;
     //params[BTBET] = params[KDTBET] * params[TBETEQ] - params[CTBET] * Activ2(params[S4PEQ], params[KS4P_TO_TBET], params[NS4P_TO_TBET], params[TBETEQ] * (1 + params[CTCR]), KTBET_TO_TBET, NTBET_TO_TBET);
     //if(params[BS4P] < 0) params[BS4P] = 0;
@@ -750,26 +795,7 @@ string Generate::generateCodeSource(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-string Generate::generateLatex(){
+string Generate::generateLatex() {
     stringstream f;
     vector<string> listPar = generateParameters();
     int nbPar = listPar.size();
@@ -786,8 +812,8 @@ string Generate::generateLatex(){
 
     f << "List of variables : \n";
     f << "\\begin{verbatim}\n";
-    for(int i = 0; i < nbVar; ++i){
-        if((i % 10) == (9 % 10)) f << "\n";
+    for (int i = 0; i < nbVar; ++i) {
+        if ((i % 10) == (9 % 10)) f << "\n";
         f << VarEnum[i] << ", ";
     }
     f << "\\end{verbatim}\n";
@@ -816,10 +842,10 @@ string Generate::generateLatex(){
     // init[STAT4P] = params[S4PEQ];
 
 
-    for(int i = 0; i < nbVar; ++i){
+    for (int i = 0; i < nbVar; ++i) {
         f << "\\begin{eqnarray}\n";
         f << "\\frac{d" << VarEnum[i] << "}{dt} &=& ";
-        if(Degradation[i] == PROP_DEG) f << "- K_{D," << VarEnum[i] << "} . [" << VarEnum[i] << "] ";
+        if (Degradation[i] == PROP_DEG) f << "- K_{D," << VarEnum[i] << "} . [" << VarEnum[i] << "] ";
 #ifdef OLD
         if((Basal[i] == CST) || (Basal[i] == CST_FROM_EQ)) f << "+ B_{" << VarEnum[i] << "}";
 #endif
@@ -827,53 +853,53 @@ string Generate::generateLatex(){
         int nbPred = vpred.size();
         int nbAct = 0;
         int nbInh = 0;
-        for(int m = 0; m < nbPred; ++m){
-            if(g(vpred[m],i) > 0) nbAct++; else nbInh++;
+        for (int m = 0; m < nbPred; ++m) {
+            if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
         }
         //if(VERBOSE) cerr << "" << endl;
-        if(nbAct + nbInh > 0){
+        if (nbAct + nbInh > 0) {
             f << " + C_{" << VarEnum[i] << "} . ("; //\\left(";
             // activators
             int nbAdded = 0;
-            for(int m = 0; m < nbPred; ++m){
-                if(g(vpred[m],i) > 0) {
+            for (int m = 0; m < nbPred; ++m) {
+                if (g(vpred[m], i) > 0) {
                     f << " \\nonumber \\\\\n & &";
                     stringstream X, K, N, S;
                     X << "[" << VarEnum[vpred[m]] << "]";
                     K << "K_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
                     N << "N_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
-                    #ifdef NEW
+#ifdef NEW
                     S << "S_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
                     f << latexHillAct(X.str(), K.str(), N.str(), S.str());
-                    #endif
-                    #ifdef OLD
+#endif
+#ifdef OLD
                     f << latexHillAct(X.str(), K.str(), N.str());
-                    #endif
+#endif
                     nbAdded++;
-                    if(nbAdded < nbPred) f << ".";
+                    if (nbAdded < nbPred) f << ".";
                 }
             }
-            for(int m = 0; m < nbPred; ++m){
-                if(g(vpred[m],i) < 0) {
+            for (int m = 0; m < nbPred; ++m) {
+                if (g(vpred[m], i) < 0) {
                     f << " \\nonumber \\\\\n & &";
                     stringstream X, K, N, S;
                     X << "[" << VarEnum[vpred[m]] << "]";
                     K << "K_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
                     N << "N_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
-                    #ifdef NEW
+#ifdef NEW
                     S << "S_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
                     f << latexHillInh(X.str(), K.str(), N.str(), S.str());
-                    #endif
-                    #ifdef OLD
+#endif
+#ifdef OLD
                     f << latexHillInh(X.str(), K.str(), N.str());
-                    #endif
+#endif
                     nbAdded++;
-                    if(nbAdded < nbPred) f << ".";
+                    if (nbAdded < nbPred) f << ".";
                 }
             }
             f << ")"; //"\\right)";
         } else {
-            if((Basal[i] == CST_FROM_EQ)){
+            if ((Basal[i] == CST_FROM_EQ)) {
                 f << " + P_{" << VarEnum[i] << "}";
             }
         }
@@ -886,12 +912,6 @@ string Generate::generateLatex(){
     return f.str();
 
 }
-
-
-
-
-
-
 
 
 #ifdef OLD
@@ -954,77 +974,91 @@ string Generate::generateBasalParameters(){
 #endif
 
 #ifdef NEW
-string Generate::generateBasalParameters(){
+
+string Generate::generateBasalParameters() {
     stringstream f;
 
-    for(int i = 0; i < nbVar; ++i){
-        if(Basal[i] == CST_FROM_EQ){
+    for (int i = 0; i < nbVar; ++i) {
+        if (Basal[i] == CST_FROM_EQ) {
             vector<int> vpred = g.pred(i);
             int nbPred = vpred.size();
             int nbAct = 0;
             int nbInh = 0;
-            for(int m = 0; m < nbPred; ++m){
-                if(g(vpred[m],i) > 0) nbAct++; else nbInh++;
+            for (int m = 0; m < nbPred; ++m) {
+                if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
             }
 
-            #ifdef OLD
+#ifdef OLD
             f << "\tparams[B" << VarEnum[i] << "] = ";
-            #endif
-            #ifdef NEW
-            if(nbPred == 0){
+#endif
+#ifdef NEW
+            if (nbPred == 0) {
                 f << "\tparams[P" << VarEnum[i] << "] = ";
             } else {
                 f << "\tparams[C" << VarEnum[i] << "] = ";
             }
-            #endif
-            if(Degradation[i] == PROP_DEG) f << "params[KD" << VarEnum[i] << "] * params[" << VarEnum[i] + string("EQ") << "] / (";
+#endif
+            if (Degradation[i] == PROP_DEG)
+                f << "params[KD" << VarEnum[i] << "] * params[" << VarEnum[i] + string("EQ") << "] / (";
 
 
 
             //if(VERBOSE) cerr << "" << endl;
-            if(nbAct + nbInh > 0){
-                #ifdef OLD
+            if (nbAct + nbInh > 0) {
+#ifdef OLD
                 f << "params[C" << VarEnum[i] << "] * Activ" << nbAct << "Inhib" << nbInh << "(";
-                #endif
-                #ifdef NEW
+#endif
+#ifdef NEW
                 f << "Activ" << nbAct << "Inhib" << nbInh << "(";
-                #endif
+#endif
                 // activators
                 int nbAdded = 0;
-                for(int m = 0; m < nbPred; ++m){
-                    if(g(vpred[m],i) > 0) {
-                        if(Basal[vpred[m]] == CST_FROM_EQ){
+                for (int m = 0; m < nbPred; ++m) {
+                    if (g(vpred[m], i) > 0) {
+                        if (Basal[vpred[m]] == CST_FROM_EQ) {
                             f << "params[" << VarEnum[vpred[m]] + string("EQ") << "],";
                         } else {
-                            cerr << "WRN: Generate::generateBasalParameters : You ask a (" << VarEnum[i] << ") to have a basal production term (params[B" << VarEnum[i] << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables (" << VarEnum[vpred[m]] << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params[" << VarEnum[vpred[m]] + string("EQ") << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n\n";
+                            cerr << "WRN: Generate::generateBasalParameters : You ask a (" << VarEnum[i]
+                                 << ") to have a basal production term (params[B" << VarEnum[i]
+                                 << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables ("
+                                 << VarEnum[vpred[m]]
+                                 << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params["
+                                 << VarEnum[vpred[m]] + string("EQ")
+                                 << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n\n";
                             f << "init[" << VarEnum[vpred[m]] << "], /* ERR : no equilibrium parameter for it */ ";
                         }
                         f << "params[K" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
                         f << "params[N" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
                         f << "params[S" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "]";
                         nbAdded++;
-                        if(nbAdded < nbPred) f << ",";
+                        if (nbAdded < nbPred) f << ",";
                     }
                 }
-                for(int m = 0; m < nbPred; ++m){
-                    if(g(vpred[m],i) < 0) {
-                        if(Basal[vpred[m]] == CST_FROM_EQ){
+                for (int m = 0; m < nbPred; ++m) {
+                    if (g(vpred[m], i) < 0) {
+                        if (Basal[vpred[m]] == CST_FROM_EQ) {
                             f << "params[" << VarEnum[vpred[m]] + string("EQ") << "],";
                         } else {
-                            cerr << "generate::generateBasalParameters : You ask a variable (" << VarEnum[i] << ") to have a basal production term (params[B" << VarEnum[i] << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables (" << VarEnum[vpred[m]] << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params[" << VarEnum[vpred[m]] + string("EQ") << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n";
+                            cerr << "generate::generateBasalParameters : You ask a variable (" << VarEnum[i]
+                                 << ") to have a basal production term (params[B" << VarEnum[i]
+                                 << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables ("
+                                 << VarEnum[vpred[m]]
+                                 << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params["
+                                 << VarEnum[vpred[m]] + string("EQ")
+                                 << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n";
                             f << "init[" << VarEnum[vpred[m]] << "], /* ERR : no equilibrium parameter for it */ ";
                         }
                         f << "params[K" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
                         f << "params[N" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
                         f << "params[S" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "]";
                         nbAdded++;
-                        if(nbAdded < nbPred) f << ",";
+                        if (nbAdded < nbPred) f << ",";
                     }
                 }
 
                 f << ")";
             }
-            if((nbPred == 0) && (Basal[i] == CST_FROM_EQ)){
+            if ((nbPred == 0) && (Basal[i] == CST_FROM_EQ)) {
                 f << 1.0; //"params[P" << VarEnum[i] << "]";
             }
             f << ");\n";
@@ -1032,16 +1066,17 @@ string Generate::generateBasalParameters(){
     }
     return f.str();
 }
+
 #endif
 
-string Generate::generateEquations(){
+string Generate::generateEquations() {
 
     stringstream f;
 
-    for(int i = 0; i < nbVar; ++i){
+    for (int i = 0; i < nbVar; ++i) {
         f << "\tif(!over(" << VarEnum[i] << "))"; /// NEW trick !!
         f << "\tdxdt[" << VarEnum[i] << "] = (";
-        if(Degradation[i] == PROP_DEG) f << "- params[KD" << VarEnum[i] << "] * x[" << VarEnum[i] << "] ";
+        if (Degradation[i] == PROP_DEG) f << "- params[KD" << VarEnum[i] << "] * x[" << VarEnum[i] << "] ";
 #ifdef OLD
         if((Basal[i] == CST) || (Basal[i] == CST_FROM_EQ)) f << "+ params[B" << VarEnum[i] << "]";
 #endif
@@ -1050,44 +1085,44 @@ string Generate::generateEquations(){
         int nbPred = vpred.size();
         int nbAct = 0;
         int nbInh = 0;
-        for(int m = 0; m < nbPred; ++m){
-            if(g(vpred[m],i) > 0) nbAct++; else nbInh++;
+        for (int m = 0; m < nbPred; ++m) {
+            if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
         }
         //if(VERBOSE) cerr << "" << endl;
-        if(nbAct + nbInh > 0){
+        if (nbAct + nbInh > 0) {
             f << " + params[C" << VarEnum[i] << "] * Activ" << nbAct << "Inhib" << nbInh << "(";
             // activators
             int nbAdded = 0;
-            for(int m = 0; m < nbPred; ++m){
-                if(g(vpred[m],i) > 0) {
+            for (int m = 0; m < nbPred; ++m) {
+                if (g(vpred[m], i) > 0) {
                     f << "x[" << VarEnum[vpred[m]] << "],";
                     f << "params[K" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
                     f << "params[N" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "]";
-                    #ifdef NEW
+#ifdef NEW
                     f << ", params[S" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "]";
-                    #endif
+#endif
                     nbAdded++;
-                    if(nbAdded < nbPred) f << ",";
+                    if (nbAdded < nbPred) f << ",";
                 }
             }
-            for(int m = 0; m < nbPred; ++m){
-                if(g(vpred[m],i) < 0) {
+            for (int m = 0; m < nbPred; ++m) {
+                if (g(vpred[m], i) < 0) {
                     f << "x[" << VarEnum[vpred[m]] << "],";
                     f << "params[K" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
                     f << "params[N" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "]";
-                    #ifdef NEW
+#ifdef NEW
                     f << ", params[S" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "]";
-                    #endif
+#endif
                     nbAdded++;
-                    if(nbAdded < nbPred) f << ",";
+                    if (nbAdded < nbPred) f << ",";
                 }
             }
             f << ")";
         } else {
-            if(Basal[i] == CST_FROM_EQ){
+            if (Basal[i] == CST_FROM_EQ) {
                 f << "+ params[P" << VarEnum[i] << "]";
             }
-            if((Degradation[i] == NO_D) && (Basal[i] == NO_B)) f << "0.0"; // to avoid "delta_t * ()";
+            if ((Degradation[i] == NO_D) && (Basal[i] == NO_B)) f << "0.0"; // to avoid "delta_t * ()";
         }
         f << ");\n";
     }
@@ -1095,19 +1130,25 @@ string Generate::generateEquations(){
     return f.str();
 }
 
-   // erases the current graph
-void Generate::clearReactions(){
+// erases the current graph
+void Generate::clearReactions() {
     g = Graphe(nbVar);
 }
 
-void Generate::useReactionsFromGraph(Graphe G){
-    if(G.size() != nbVar) {cerr << "ERR : Generate::addReactionsFromGraph, incorrect graph size (" << G.size() << "), versus nb of variables already defined (" << nbVar << ")\n";  return;}
-    if((int) VarEnum.size() != nbVar) {cerr << "ERR : Generate::addReactionsFromGraph, incorrect varEnum size\n";}
-    for(int i = 0; i < nbVar; ++i){
+void Generate::useReactionsFromGraph(Graphe G) {
+    if (G.size() != nbVar) {
+        cerr << "ERR : Generate::addReactionsFromGraph, incorrect graph size (" << G.size()
+             << "), versus nb of variables already defined (" << nbVar << ")\n";
+        return;
+    }
+    if ((int) VarEnum.size() != nbVar) { cerr << "ERR : Generate::addReactionsFromGraph, incorrect varEnum size\n"; }
+    for (int i = 0; i < nbVar; ++i) {
         vector<int> succ = G(i);
-        for(int j = 0; j < (int) succ.size(); ++j){
-            if((succ[j] >= nbVar) || (succ[j] < 0)) {cerr << "ERR : Generate::addReactionsFromGraph, out of bounds values in the graph !!\n";}
-            addReaction(VarEnum[i], VarEnum[succ[j]], G(i,succ[j]));
+        for (int j = 0; j < (int) succ.size(); ++j) {
+            if ((succ[j] >= nbVar) || (succ[j] < 0)) {
+                cerr << "ERR : Generate::addReactionsFromGraph, out of bounds values in the graph !!\n";
+            }
+            addReaction(VarEnum[i], VarEnum[succ[j]], G(i, succ[j]));
         }
     }
     g = Graphe(&G);
@@ -1117,7 +1158,7 @@ void Generate::useReactionsFromGraph(Graphe G){
 //    void generateModelFromGraph(Graphe& G){
 
 
-string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string timeUnit){
+string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string timeUnit) {
     stringstream f(dataTxt);
 
     stringstream of; // output code
@@ -1136,37 +1177,37 @@ string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string time
     //int itrash;
 
 
-    for(int i = 0; i < nbConditions; ++i){
+    for (int i = 0; i < nbConditions; ++i) {
         stringstream recapTransv;
         int nbL, nbV;
         f >> IDexp;
         char essai;
 
         stringstream toGetComment;
-        while ((f.peek()!='\n') && (f>>essai)) toGetComment << essai;
+        while ((f.peek() != '\n') && (f >> essai)) toGetComment << essai;
         string toGetComment2 = toGetComment.str();
         f >> nbL >> nbV;
 
         // version transversale (coût par time-point), suppose that each variable is simulated (bad guess ...)
-        if(nbL > 0){
+        if (nbL > 0) {
             vector<string> varNames;
             //vector<int> varGlobalIDs;
             f >> strash;    // for 'time'
 
             // this is not allowed in C++ vector<stringstream>
-            vector<stringstream*> of2;
-            vector<stringstream*> of2Data;
-            vector<stringstream*> foroverrider;
+            vector<stringstream *> of2;
+            vector<stringstream *> of2Data;
+            vector<stringstream *> foroverrider;
             of2.resize(nbV);
             of2Data.resize(nbV);
             foroverrider.resize(nbV);
-            for(int i = 0; i < nbV; ++i) {
+            for (int i = 0; i < nbV; ++i) {
                 of2[i] = new stringstream();
                 of2Data[i] = new stringstream();
                 foroverrider[i] = new stringstream();
             }
 
-            for(int j = 0; j < nbV; ++j){
+            for (int j = 0; j < nbV; ++j) {
                 f >> strash;
                 //f >> itrash;
                 varNames.push_back(strash);
@@ -1174,54 +1215,56 @@ string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string time
             }
 
             overrider << "\\Experiment " << IDexp << ")){     // " << toGetComment.str() << "\n";
-            if(!CostsPerCurves)    of << "\tif(isDoable(" << toGetComment2 << ")){     // " << IDexp << "\n";
+            if (!CostsPerCurves) of << "\tif(isDoable(" << toGetComment2 << ")){     // " << IDexp << "\n";
             int cptForf = 0;
-            for(int k = 0; k < nbL; ++k){
+            for (int k = 0; k < nbL; ++k) {
                 double tvalue, yvalue;
-                if(!CostsPerCurves)  of << "\t\tdouble c" << cptForf << "a[] = {";
+                if (!CostsPerCurves) of << "\t\tdouble c" << cptForf << "a[] = {";
                 f >> tvalue;
-                for(int j = 0; j < nbV; ++j){
-                    if(!CostsPerCurves){
+                for (int j = 0; j < nbV; ++j) {
+                    if (!CostsPerCurves) {
                         of << "V(" << toGetComment2 << ", " << varNames[j] << ", " << tvalue << timeUnit << " )";
-                        if(j < nbV-1) of << ",\t"; else of << "};\n";
+                        if (j < nbV - 1) of << ",\t"; else of << "};\n";
                     } else {
                         *(of2[j]) << "V(" << toGetComment2 << ", " << varNames[j] << ", " << tvalue << timeUnit << ")";
-                        if(k < nbL-1) *(of2[j]) << ",\t"; else *(of2[j]) << "};\n";
+                        if (k < nbL - 1) *(of2[j]) << ",\t"; else *(of2[j]) << "};\n";
                     }
                     (*foroverrider[j]) << "set(" << IDexp << ", " << varNames[j] << ", " << tvalue << timeUnit << ",";
                 }
-                if(!CostsPerCurves)  of << "\t\tdouble c" << cptForf << "b[] = {";
-                for(int j = 0; j < nbV; ++j){
+                if (!CostsPerCurves) of << "\t\tdouble c" << cptForf << "b[] = {";
+                for (int j = 0; j < nbV; ++j) {
                     f >> yvalue;
-                    if(!CostsPerCurves)  {
+                    if (!CostsPerCurves) {
                         of << yvalue;// << " DAY";
-                        if(j < nbV-1) of << ",\t"; else of << "};\n";
+                        if (j < nbV - 1) of << ",\t"; else of << "};\n";
                     } else {
                         *(of2Data[j]) << yvalue;// << " DAY";
-                        if(k < nbL-1) *(of2Data[j]) << ",\t"; else *(of2Data[j]) << "};\n";
+                        if (k < nbL - 1) *(of2Data[j]) << ",\t"; else *(of2Data[j]) << "};\n";
                     }
                     (*foroverrider[j]) << yvalue << "); ";
                 }
-                if(!CostsPerCurves) of << "\t\tres += functCost(c" << cptForf << "a, c" << cptForf << "b, " << nbV << ");\n";
+                if (!CostsPerCurves)
+                    of << "\t\tres += functCost(c" << cptForf << "a, c" << cptForf << "b, " << nbV << ");\n";
                 cptForf++;
 
             }
 
 
-            if(CostsPerCurves){
+            if (CostsPerCurves) {
                 int cptForf2 = 0;
                 recapTransv << "\tif(isDoable(" << toGetComment2 << ")){     // " << IDexp << "\n";
-                for(int j = 0; j < nbV; ++j){
-                     recapTransv <<"\t\tif(m->isVarKnown(" << varNames[j] << ")){\n";
-                     recapTransv << "\t\t\tdouble c" << cptForf2 << "a[] = {";
-                     recapTransv << (of2[j])->str();
-                     recapTransv << "\t\t\tdouble c" << cptForf2 << "b[] = {";
-                     recapTransv << (of2Data[j])->str();
-                     recapTransv << "\t\t\tres += functCost(c" << cptForf2 << "a, c" << cptForf2 << "b, " << nbL << ");\n";
-                     recapTransv <<"\t\t}\n";
-                     (*foroverrider[j]) << "\n";
-                     overrider << (foroverrider[j])->str();
-                     cptForf2++;
+                for (int j = 0; j < nbV; ++j) {
+                    recapTransv << "\t\tif(m->isVarKnown(" << varNames[j] << ")){\n";
+                    recapTransv << "\t\t\tdouble c" << cptForf2 << "a[] = {";
+                    recapTransv << (of2[j])->str();
+                    recapTransv << "\t\t\tdouble c" << cptForf2 << "b[] = {";
+                    recapTransv << (of2Data[j])->str();
+                    recapTransv << "\t\t\tres += functCost(c" << cptForf2 << "a, c" << cptForf2 << "b, " << nbL
+                                << ");\n";
+                    recapTransv << "\t\t}\n";
+                    (*foroverrider[j]) << "\n";
+                    overrider << (foroverrider[j])->str();
+                    cptForf2++;
                 }
                 //recapTransv << "\t}\n";
                 of << recapTransv.str();

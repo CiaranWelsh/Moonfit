@@ -15,6 +15,7 @@
 #include "qwt_series_data.h"
 
 class QwtColumnRect;
+
 class QwtColumnSymbol;
 
 /*!
@@ -38,9 +39,8 @@ class QwtColumnSymbol;
   \sa QwtPlotBarChart, QwtPlotHistogram
       QwtPlotSeriesItem::orientation(), QwtPlotAbstractBarChart::baseline()
  */
-class QWT_EXPORT QwtPlotMultiBarChart: 
-    public QwtPlotAbstractBarChart, public QwtSeriesStore<QwtSetSample>
-{
+class QWT_EXPORT QwtPlotMultiBarChart :
+        public QwtPlotAbstractBarChart, public QwtSeriesStore<QwtSetSample> {
 public:
     /*!
         \brief Chart styles.
@@ -48,8 +48,7 @@ public:
         The default setting is QwtPlotMultiBarChart::Grouped.
         \sa setStyle(), style()
     */
-    enum ChartStyle
-    {
+    enum ChartStyle {
         //! The bars of a set are displayed side by side
         Grouped,
 
@@ -61,66 +60,73 @@ public:
         Stacked
     };
 
-    explicit QwtPlotMultiBarChart( const QString &title = QString::null );
-    explicit QwtPlotMultiBarChart( const QwtText &title );
+    explicit QwtPlotMultiBarChart(const QString &title = QString::null);
+
+    explicit QwtPlotMultiBarChart(const QwtText &title);
 
     virtual ~QwtPlotMultiBarChart();
 
     virtual int rtti() const;
 
-    void setBarTitles( const QList<QwtText> & );
-    QList<QwtText> barTitles() const;
+    void setBarTitles(const QList <QwtText> &);
 
-    void setSamples( const QVector<QwtSetSample> & );
-    void setSamples( const QVector< QVector<double> > & );
-    void setSamples( QwtSeriesData<QwtSetSample> * );
+    QList <QwtText> barTitles() const;
 
-    void setStyle( ChartStyle style );
+    void setSamples(const QVector <QwtSetSample> &);
+
+    void setSamples(const QVector <QVector<double>> &);
+
+    void setSamples(QwtSeriesData<QwtSetSample> *);
+
+    void setStyle(ChartStyle style);
+
     ChartStyle style() const;
 
-    void setSymbol( int barIndex, QwtColumnSymbol *symbol );
-    const QwtColumnSymbol *symbol( int barIndex ) const;
+    void setSymbol(int barIndex, QwtColumnSymbol *symbol);
+
+    const QwtColumnSymbol *symbol(int barIndex) const;
 
     void resetSymbolMap();
 
-    virtual void drawSeries( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int from, int to ) const;
+    virtual void drawSeries(QPainter *painter,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, int from, int to) const;
 
     virtual QRectF boundingRect() const;
 
-    virtual QList<QwtLegendData> legendData() const;
+    virtual QList <QwtLegendData> legendData() const;
 
-    virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
+    virtual QwtGraphic legendIcon(int index, const QSizeF &) const;
 
 protected:
-    QwtColumnSymbol *symbol( int barIndex );
+    QwtColumnSymbol *symbol(int barIndex);
 
-    virtual QwtColumnSymbol *specialSymbol( 
-        int sampleIndex, int valueIndex ) const;
+    virtual QwtColumnSymbol *specialSymbol(
+            int sampleIndex, int valueIndex) const;
 
-    virtual void drawSample( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, const QwtInterval &boundingInterval,
-        int index, const QwtSetSample& sample ) const;
+    virtual void drawSample(QPainter *painter,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, const QwtInterval &boundingInterval,
+                            int index, const QwtSetSample &sample) const;
 
-    virtual void drawBar( QPainter *, int sampleIndex,
-        int barIndex, const QwtColumnRect & ) const;
+    virtual void drawBar(QPainter *, int sampleIndex,
+                         int barIndex, const QwtColumnRect &) const;
 
-    void drawStackedBars( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int index,
-        double sampleWidth, const QwtSetSample& sample ) const;
+    void drawStackedBars(QPainter *painter,
+                         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                         const QRectF &canvasRect, int index,
+                         double sampleWidth, const QwtSetSample &sample) const;
 
-    void drawGroupedBars( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int index,
-        double sampleWidth, const QwtSetSample& sample ) const;
+    void drawGroupedBars(QPainter *painter,
+                         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                         const QRectF &canvasRect, int index,
+                         double sampleWidth, const QwtSetSample &sample) const;
 
 private:
     void init();
 
     class PrivateData;
+
     PrivateData *d_data;
 };
 

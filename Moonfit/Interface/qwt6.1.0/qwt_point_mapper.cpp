@@ -44,12 +44,11 @@
 
 #endif
 
-static QRectF qwtInvalidRect( 0.0, 0.0, -1.0, -1.0 );
+static QRectF qwtInvalidRect(0.0, 0.0, -1.0, -1.0);
 
 // Helper class to work around the 5 parameters
 // limitation of QtConcurrent::run()
-class QwtDotsCommand
-{
+class QwtDotsCommand {
 public:
     const QwtSeriesData<QPointF> *series;
     int from;
@@ -58,11 +57,10 @@ public:
 };
 
 static void qwtRenderDots(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtDotsCommand command, const QPoint &pos, QImage *image ) 
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtDotsCommand command, const QPoint &pos, QImage *image) {
     const QRgb rgb = command.rgb;
-    QRgb *bits = reinterpret_cast<QRgb *>( image->bits() );
+    QRgb *bits = reinterpret_cast<QRgb *>( image->bits());
 
     const int w = image->width();
     const int h = image->height();
@@ -70,22 +68,20 @@ static void qwtRenderDots(
     const int x0 = pos.x();
     const int y0 = pos.y();
 
-    for ( int i = command.from; i <= command.to; i++ )
-    {
-        const QPointF sample = command.series->sample( i );
+    for (int i = command.from; i <= command.to; i++) {
+        const QPointF sample = command.series->sample(i);
 
-        const int x = static_cast<int>( xMap.transform( sample.x() ) + 0.5 ) - x0;
-        const int y = static_cast<int>( yMap.transform( sample.y() ) + 0.5 ) - y0;
+        const int x = static_cast<int>( xMap.transform(sample.x()) + 0.5 ) - x0;
+        const int y = static_cast<int>( yMap.transform(sample.y()) + 0.5 ) - y0;
 
-        if ( x >= 0 && x < w && y >= 0 && y < h )
-            bits[ y * w + x ] = rgb;
+        if (x >= 0 && x < w && y >= 0 && y < h)
+            bits[y * w + x] = rgb;
     }
 }
 
-static inline int qwtRoundValue( double value )
-{
+static inline int qwtRoundValue(double value) {
 #if 1
-    return qRound( value );
+    return qRound(value);
 #else
     // A little bit faster, but differs from qRound()
     // for negative values. Should be no problem as we are
@@ -98,26 +94,20 @@ static inline int qwtRoundValue( double value )
 }
 
 // some functors, so that the compile can inline
-struct QwtRoundI
-{
-    inline int operator()( double value )
-    {
-        return qwtRoundValue( value );
+struct QwtRoundI {
+    inline int operator()(double value) {
+        return qwtRoundValue(value);
     }
 };
 
-struct QwtRoundF
-{
-    inline double operator()( double value )
-    {
-        return static_cast<double>( qwtRoundValue( value ) );
+struct QwtRoundF {
+    inline double operator()(double value) {
+        return static_cast<double>( qwtRoundValue(value));
     }
 };
 
-struct QwtNoRoundF
-{   
-    inline double operator()( double value )
-    {
+struct QwtNoRoundF {
+    inline double operator()(double value) {
         return value;
     }
 };
@@ -126,55 +116,48 @@ struct QwtNoRoundF
 // the bounding rectangle
 
 template<class Polygon, class Point, class Round>
-static inline Polygon qwtToPoints( 
-    const QRectF &boundingRect,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, 
-    int from, int to, Round round )
-{
-    Polygon polyline( to - from + 1 );
+static inline Polygon qwtToPoints(
+        const QRectF &boundingRect,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series,
+        int from, int to, Round round) {
+    Polygon polyline(to - from + 1);
     Point *points = polyline.data();
 
     int numPoints = 0;
 
-    if ( boundingRect.isValid() )
-    {
+    if (boundingRect.isValid()) {
         // iterating over all values
         // filtering out all points outside of
         // the bounding rectangle
 
-        for ( int i = from; i <= to; i++ )
-        {
-            const QPointF sample = series->sample( i );
+        for (int i = from; i <= to; i++) {
+            const QPointF sample = series->sample(i);
 
-            const double x = xMap.transform( sample.x() );
-            const double y = yMap.transform( sample.y() );
+            const double x = xMap.transform(sample.x());
+            const double y = yMap.transform(sample.y());
 
-            if ( boundingRect.contains( x, y ) )
-            {
-                points[ numPoints ].rx() = round( x );
-                points[ numPoints ].ry() = round( y );
+            if (boundingRect.contains(x, y)) {
+                points[numPoints].rx() = round(x);
+                points[numPoints].ry() = round(y);
 
                 numPoints++;
             }
         }
 
-        polyline.resize( numPoints );
-    }
-    else
-    {
+        polyline.resize(numPoints);
+    } else {
         // simply iterating over all values
         // without any filtering
 
-        for ( int i = from; i <= to; i++ )
-        {
-            const QPointF sample = series->sample( i );
+        for (int i = from; i <= to; i++) {
+            const QPointF sample = series->sample(i);
 
-            const double x = xMap.transform( sample.x() );
-            const double y = yMap.transform( sample.y() );
+            const double x = xMap.transform(sample.x());
+            const double y = yMap.transform(sample.y());
 
-            points[ numPoints ].rx() = round( x );
-            points[ numPoints ].ry() = round( y );
+            points[numPoints].rx() = round(x);
+            points[numPoints].ry() = round(y);
 
             numPoints++;
         }
@@ -184,142 +167,129 @@ static inline Polygon qwtToPoints(
 }
 
 static inline QPolygon qwtToPointsI(
-    const QRectF &boundingRect,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series,
-    int from, int to )
-{
-    return qwtToPoints<QPolygon, QPoint>( 
-        boundingRect, xMap, yMap, series, from, to, QwtRoundI() );
+        const QRectF &boundingRect,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series,
+        int from, int to) {
+    return qwtToPoints<QPolygon, QPoint>(
+            boundingRect, xMap, yMap, series, from, to, QwtRoundI());
 }
 
 template<class Round>
 static inline QPolygonF qwtToPointsF(
-    const QRectF &boundingRect,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series,
-    int from, int to, Round round )
-{
-    return qwtToPoints<QPolygonF, QPointF>( 
-        boundingRect, xMap, yMap, series, from, to, round );
+        const QRectF &boundingRect,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series,
+        int from, int to, Round round) {
+    return qwtToPoints<QPolygonF, QPointF>(
+            boundingRect, xMap, yMap, series, from, to, round);
 }
 
 // Mapping points with filtering out consecutive
 // points mapped to the same position
 
 template<class Polygon, class Point, class Round>
-static inline Polygon qwtToPolylineFiltered( 
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, 
-    int from, int to, Round round )
-{
+static inline Polygon qwtToPolylineFiltered(
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series,
+        int from, int to, Round round) {
     // in curves with many points consecutive points
     // are often mapped to the same position. As this might
     // result in empty lines ( or symbols hidden by others )
     // we try to filter them out
 
-    Polygon polyline( to - from + 1 );
+    Polygon polyline(to - from + 1);
     Point *points = polyline.data();
 
-    const QPointF sample0 = series->sample( from );
+    const QPointF sample0 = series->sample(from);
 
-    points[0].rx() = round( xMap.transform( sample0.x() ) );
-    points[0].ry() = round( yMap.transform( sample0.y() ) );
+    points[0].rx() = round(xMap.transform(sample0.x()));
+    points[0].ry() = round(yMap.transform(sample0.y()));
 
     int pos = 0;
-    for ( int i = from + 1; i <= to; i++ )
-    {
-        const QPointF sample = series->sample( i );
+    for (int i = from + 1; i <= to; i++) {
+        const QPointF sample = series->sample(i);
 
-        const Point p( round( xMap.transform( sample.x() ) ),
-            round( yMap.transform( sample.y() ) ) );
+        const Point p(round(xMap.transform(sample.x())),
+                      round(yMap.transform(sample.y())));
 
-        if ( points[pos] != p )
+        if (points[pos] != p)
             points[++pos] = p;
     }
 
-    polyline.resize( pos + 1 );
+    polyline.resize(pos + 1);
     return polyline;
 }
 
 static inline QPolygon qwtToPolylineFilteredI(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series,
-    int from, int to )
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series,
+        int from, int to) {
     return qwtToPolylineFiltered<QPolygon, QPoint>(
-        xMap, yMap, series, from, to, QwtRoundI() );
+            xMap, yMap, series, from, to, QwtRoundI());
 }
 
 template<class Round>
 static inline QPolygonF qwtToPolylineFilteredF(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series,
-    int from, int to, Round round )
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series,
+        int from, int to, Round round) {
     return qwtToPolylineFiltered<QPolygonF, QPointF>(
-        xMap, yMap, series, from, to, round );
-} 
+            xMap, yMap, series, from, to, round);
+}
 
 template<class Polygon, class Point>
 static inline Polygon qwtToPointsFiltered(
-    const QRectF &boundingRect,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to )
-{
+        const QRectF &boundingRect,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) {
     // F.e. in scatter plots ( no connecting lines ) we
     // can sort out all duplicates ( not only consecutive points )
 
-    Polygon polygon( to - from + 1 );
+    Polygon polygon(to - from + 1);
     Point *points = polygon.data();
 
-    QwtPixelMatrix pixelMatrix( boundingRect.toAlignedRect() );
+    QwtPixelMatrix pixelMatrix(boundingRect.toAlignedRect());
 
     int numPoints = 0;
-    for ( int i = from; i <= to; i++ )
-    {
-        const QPointF sample = series->sample( i );
+    for (int i = from; i <= to; i++) {
+        const QPointF sample = series->sample(i);
 
-        const int x = qwtRoundValue( xMap.transform( sample.x() ) );
-        const int y = qwtRoundValue( yMap.transform( sample.y() ) );
+        const int x = qwtRoundValue(xMap.transform(sample.x()));
+        const int y = qwtRoundValue(yMap.transform(sample.y()));
 
-        if ( pixelMatrix.testAndSetPixel( x, y, true ) == false )
-        {
-            points[ numPoints ].rx() = x;
-            points[ numPoints ].ry() = y;
+        if (pixelMatrix.testAndSetPixel(x, y, true) == false) {
+            points[numPoints].rx() = x;
+            points[numPoints].ry() = y;
 
             numPoints++;
         }
     }
 
-    polygon.resize( numPoints );
+    polygon.resize(numPoints);
     return polygon;
 }
 
 static inline QPolygon qwtToPointsFilteredI(
-    const QRectF &boundingRect,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to )
-{
+        const QRectF &boundingRect,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) {
     return qwtToPointsFiltered<QPolygon, QPoint>(
-        boundingRect, xMap, yMap, series, from, to );
-} 
-
-static inline QPolygonF qwtToPointsFilteredF(
-    const QRectF &boundingRect,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to )
-{
-    return qwtToPointsFiltered<QPolygonF, QPointF>(
-        boundingRect, xMap, yMap, series, from, to );
+            boundingRect, xMap, yMap, series, from, to);
 }
 
-class QwtPointMapper::PrivateData
-{
+static inline QPolygonF qwtToPointsFilteredF(
+        const QRectF &boundingRect,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) {
+    return qwtToPointsFiltered<QPolygonF, QPointF>(
+            boundingRect, xMap, yMap, series, from, to);
+}
+
+class QwtPointMapper::PrivateData {
 public:
-    PrivateData():
-        boundingRect( qwtInvalidRect )
-    {
+    PrivateData() :
+            boundingRect(qwtInvalidRect) {
     }
 
     QRectF boundingRect;
@@ -327,14 +297,12 @@ public:
 };
 
 //! Constructor
-QwtPointMapper::QwtPointMapper()
-{
+QwtPointMapper::QwtPointMapper() {
     d_data = new PrivateData();
 }
 
 //! Destructor
-QwtPointMapper::~QwtPointMapper()
-{
+QwtPointMapper::~QwtPointMapper() {
     delete d_data;
 }
 
@@ -344,8 +312,7 @@ QwtPointMapper::~QwtPointMapper()
   \param flags Flags
   \sa flags(), setFlag()
  */
-void QwtPointMapper::setFlags( TransformationFlags flags )
-{
+void QwtPointMapper::setFlags(TransformationFlags flags) {
     d_data->flags = flags;
 }
 
@@ -353,8 +320,7 @@ void QwtPointMapper::setFlags( TransformationFlags flags )
   \return Flags affecting the transformation process
   \sa setFlags(), setFlag()
  */
-QwtPointMapper::TransformationFlags QwtPointMapper::flags() const
-{
+QwtPointMapper::TransformationFlags QwtPointMapper::flags() const {
     return d_data->flags;
 }
 
@@ -366,9 +332,8 @@ QwtPointMapper::TransformationFlags QwtPointMapper::flags() const
 
   \sa flag(), setFlags()
  */
-void QwtPointMapper::setFlag( TransformationFlag flag, bool on )
-{
-    if ( on )
+void QwtPointMapper::setFlag(TransformationFlag flag, bool on) {
+    if (on)
         d_data->flags |= flag;
     else
         d_data->flags &= ~flag;
@@ -379,8 +344,7 @@ void QwtPointMapper::setFlag( TransformationFlag flag, bool on )
   \param flag Flag type
   \sa setFlag(), setFlags()
  */
-bool QwtPointMapper::testFlag( TransformationFlag flag ) const
-{
+bool QwtPointMapper::testFlag(TransformationFlag flag) const {
     return d_data->flags & flag;
 }
 
@@ -392,8 +356,7 @@ bool QwtPointMapper::testFlag( TransformationFlag flag ) const
   \param rect Bounding rectangle
   \sa boundingRect()
  */
-void QwtPointMapper::setBoundingRect( const QRectF &rect )
-{
+void QwtPointMapper::setBoundingRect(const QRectF &rect) {
     d_data->boundingRect = rect;
 }
 
@@ -401,8 +364,7 @@ void QwtPointMapper::setBoundingRect( const QRectF &rect )
   \return Bounding rectangle
   \sa setBoundingRect()
  */
-QRectF QwtPointMapper::boundingRect() const
-{
+QRectF QwtPointMapper::boundingRect() const {
     return d_data->boundingRect;
 }
 
@@ -425,35 +387,25 @@ QRectF QwtPointMapper::boundingRect() const
   \return Translated polygon
 */
 QPolygonF QwtPointMapper::toPolygonF(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to ) const
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) const {
     QPolygonF polyline;
 
-    if ( d_data->flags & WeedOutPoints )
-    {
-        if ( d_data->flags & RoundPoints )
-        {
-            polyline = qwtToPolylineFilteredF( 
-                xMap, yMap, series, from, to, QwtRoundF() );
+    if (d_data->flags & WeedOutPoints) {
+        if (d_data->flags & RoundPoints) {
+            polyline = qwtToPolylineFilteredF(
+                    xMap, yMap, series, from, to, QwtRoundF());
+        } else {
+            polyline = qwtToPolylineFilteredF(
+                    xMap, yMap, series, from, to, QwtNoRoundF());
         }
-        else
-        {
-            polyline = qwtToPolylineFilteredF( 
-                xMap, yMap, series, from, to, QwtNoRoundF() );
-        }
-    }
-    else
-    {
-        if ( d_data->flags & RoundPoints )
-        {
-            polyline = qwtToPointsF( qwtInvalidRect, 
-                xMap, yMap, series, from, to, QwtRoundF() );
-        }
-        else
-        {
-            polyline = qwtToPointsF( qwtInvalidRect, 
-                xMap, yMap, series, from, to, QwtNoRoundF() );
+    } else {
+        if (d_data->flags & RoundPoints) {
+            polyline = qwtToPointsF(qwtInvalidRect,
+                                    xMap, yMap, series, from, to, QwtRoundF());
+        } else {
+            polyline = qwtToPointsF(qwtInvalidRect,
+                                    xMap, yMap, series, from, to, QwtNoRoundF());
         }
     }
 
@@ -475,20 +427,16 @@ QPolygonF QwtPointMapper::toPolygonF(
   \return Translated polygon
 */
 QPolygon QwtPointMapper::toPolygon(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to ) const
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) const {
     QPolygon polyline;
 
-    if ( d_data->flags & WeedOutPoints )
-    {
-        polyline = qwtToPolylineFilteredI( 
-            xMap, yMap, series, from, to );
-    }
-    else
-    {
-        polyline = qwtToPointsI( 
-            qwtInvalidRect, xMap, yMap, series, from, to );
+    if (d_data->flags & WeedOutPoints) {
+        polyline = qwtToPolylineFilteredI(
+                xMap, yMap, series, from, to);
+    } else {
+        polyline = qwtToPointsI(
+                qwtInvalidRect, xMap, yMap, series, from, to);
     }
 
     return polyline;
@@ -526,50 +474,37 @@ QPolygon QwtPointMapper::toPolygon(
   \return Translated polygon
 */
 QPolygonF QwtPointMapper::toPointsF(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to ) const
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) const {
     QPolygonF points;
 
-    if ( d_data->flags & WeedOutPoints )
-    {
-        if ( d_data->flags & RoundPoints )
-        {
-            if ( d_data->boundingRect.isValid() )
-            {   
-                points = qwtToPointsFilteredF( d_data->boundingRect,
-                    xMap, yMap, series, from, to );
-            }
-            else
-            {   
+    if (d_data->flags & WeedOutPoints) {
+        if (d_data->flags & RoundPoints) {
+            if (d_data->boundingRect.isValid()) {
+                points = qwtToPointsFilteredF(d_data->boundingRect,
+                                              xMap, yMap, series, from, to);
+            } else {
                 // without a bounding rectangle all we can
                 // do is to filter out duplicates of
                 // consecutive points
 
-                points = qwtToPolylineFilteredF( 
-                    xMap, yMap, series, from, to, QwtRoundF() );
+                points = qwtToPolylineFilteredF(
+                        xMap, yMap, series, from, to, QwtRoundF());
             }
-        }
-        else
-        {
+        } else {
             // when rounding is not allowed we can't use
             // qwtToPointsFilteredF
 
-            points = qwtToPolylineFilteredF( 
-                xMap, yMap, series, from, to, QwtNoRoundF() );
+            points = qwtToPolylineFilteredF(
+                    xMap, yMap, series, from, to, QwtNoRoundF());
         }
-    }
-    else
-    {
-        if ( d_data->flags & RoundPoints )
-        {
-            points = qwtToPointsF( d_data->boundingRect,
-                xMap, yMap, series, from, to, QwtRoundF() );
-        }
-        else
-        {
-            points = qwtToPointsF( d_data->boundingRect,
-                xMap, yMap, series, from, to, QwtNoRoundF() );
+    } else {
+        if (d_data->flags & RoundPoints) {
+            points = qwtToPointsF(d_data->boundingRect,
+                                  xMap, yMap, series, from, to, QwtRoundF());
+        } else {
+            points = qwtToPointsF(d_data->boundingRect,
+                                  xMap, yMap, series, from, to, QwtNoRoundF());
         }
     }
 
@@ -600,31 +535,24 @@ QPolygonF QwtPointMapper::toPointsF(
   \return Translated polygon
 */
 QPolygon QwtPointMapper::toPoints(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to ) const
-{
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to) const {
     QPolygon points;
 
-    if ( d_data->flags & WeedOutPoints )
-    {
-        if ( d_data->boundingRect.isValid() )
-        {
-            points = qwtToPointsFilteredI( d_data->boundingRect,
-                xMap, yMap, series, from, to );
-        }
-        else
-        {
+    if (d_data->flags & WeedOutPoints) {
+        if (d_data->boundingRect.isValid()) {
+            points = qwtToPointsFilteredI(d_data->boundingRect,
+                                          xMap, yMap, series, from, to);
+        } else {
             // when we don't have the bounding rectangle all
             // we can do is to filter out consecutive duplicates
 
-            points = qwtToPolylineFilteredI( 
-                xMap, yMap, series, from, to );
+            points = qwtToPolylineFilteredI(
+                    xMap, yMap, series, from, to);
         }
-    }
-    else
-    {
-        points = qwtToPointsI( 
-            d_data->boundingRect, xMap, yMap, series, from, to );
+    } else {
+        points = qwtToPointsI(
+                d_data->boundingRect, xMap, yMap, series, from, to);
     }
 
     return points;
@@ -650,11 +578,10 @@ QPolygon QwtPointMapper::toPoints(
   \return Image displaying the series
 */
 QImage QwtPointMapper::toImage(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QwtSeriesData<QPointF> *series, int from, int to, 
-    const QPen &pen, bool antialiased, uint numThreads ) const
-{
-    Q_UNUSED( antialiased )
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+        const QwtSeriesData<QPointF> *series, int from, int to,
+        const QPen &pen, bool antialiased, uint numThreads) const {
+    Q_UNUSED(antialiased)
 
 #if QWT_USE_THREADS
     if ( numThreads == 0 )
@@ -663,7 +590,7 @@ QImage QwtPointMapper::toImage(
     if ( numThreads <= 0 )
         numThreads = 1;
 #else
-    Q_UNUSED( numThreads )
+    Q_UNUSED(numThreads)
 #endif
 
     // a very special optimization for scatter plots
@@ -671,11 +598,10 @@ QImage QwtPointMapper::toImage(
 
     const QRect rect = d_data->boundingRect.toAlignedRect();
 
-    QImage image( rect.size(), QImage::Format_ARGB32 );
-    image.fill( Qt::transparent );
+    QImage image(rect.size(), QImage::Format_ARGB32);
+    image.fill(Qt::transparent);
 
-    if ( pen.width() <= 1 && pen.color().alpha() == 255 )
-    {
+    if (pen.width() <= 1 && pen.color().alpha() == 255) {
         QwtDotsCommand command;
         command.series = series;
         command.rgb = pen.color().rgba();
@@ -711,26 +637,23 @@ QImage QwtPointMapper::toImage(
         command.from = from;
         command.to = to;
 
-        qwtRenderDots( xMap, yMap, command, rect.topLeft(), &image );
+        qwtRenderDots(xMap, yMap, command, rect.topLeft(), &image);
 #endif
-    }
-    else
-    {
+    } else {
         // fallback implementation: to be replaced later by
         // setting the pixels of the image like above, TODO ...
 
-        QPainter painter( &image );
-        painter.setPen( pen );
-        painter.setRenderHint( QPainter::Antialiasing, antialiased );
+        QPainter painter(&image);
+        painter.setPen(pen);
+        painter.setRenderHint(QPainter::Antialiasing, antialiased);
 
         const int chunkSize = 1000;
-        for ( int i = from; i <= to; i += chunkSize )
-        {
-            const int indexTo = qMin( i + chunkSize - 1, to );
+        for (int i = from; i <= to; i += chunkSize) {
+            const int indexTo = qMin(i + chunkSize - 1, to);
             const QPolygon points = toPoints(
-                xMap, yMap, series, i, indexTo );
+                    xMap, yMap, series, i, indexTo);
 
-            painter.drawPoints( points );
+            painter.drawPoints(points);
         }
     }
 

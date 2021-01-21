@@ -19,20 +19,18 @@
    \param p Point in Cartesian coordinates
    \sa setPoint(), toPoint()
 */
-QwtPointPolar::QwtPointPolar( const QPointF &p )
-{
-    d_radius = qSqrt( qwtSqr( p.x() ) + qwtSqr( p.y() ) );
-    d_azimuth = qAtan2( p.y(), p.x() );
+QwtPointPolar::QwtPointPolar(const QPointF &p) {
+    d_radius = qSqrt(qwtSqr(p.x()) + qwtSqr(p.y()));
+    d_azimuth = qAtan2(p.y(), p.x());
 }
 
 /*!
    Convert and assign values from a point in Cartesian coordinates
    \param p Point in Cartesian coordinates
 */
-void QwtPointPolar::setPoint( const QPointF &p )
-{
-    d_radius = qSqrt( qwtSqr( p.x() ) + qwtSqr( p.y() ) );
-    d_azimuth = qAtan2( p.y(), p.x() );
+void QwtPointPolar::setPoint(const QPointF &p) {
+    d_radius = qSqrt(qwtSqr(p.x()) + qwtSqr(p.y()));
+    d_azimuth = qAtan2(p.y(), p.x());
 }
 
 /*!
@@ -43,15 +41,14 @@ void QwtPointPolar::setPoint( const QPointF &p )
    \note Invalid or null points will be returned as QPointF(0.0, 0.0)
    \sa isValid(), isNull()
 */
-QPointF QwtPointPolar::toPoint() const
-{
-    if ( d_radius <= 0.0 )
-        return QPointF( 0.0, 0.0 );
+QPointF QwtPointPolar::toPoint() const {
+    if (d_radius <= 0.0)
+        return QPointF(0.0, 0.0);
 
-    const double x = d_radius * qCos( d_azimuth );
-    const double y = d_radius * qSin( d_azimuth );
+    const double x = d_radius * qCos(d_azimuth);
+    const double y = d_radius * qSin(d_azimuth);
 
-    return QPointF( x, y );
+    return QPointF(x, y);
 }
 
 /*!
@@ -65,8 +62,7 @@ QPointF QwtPointPolar::toPoint() const
 
     \sa normalized()
 */
-bool QwtPointPolar::operator==( const QwtPointPolar &other ) const
-{
+bool QwtPointPolar::operator==(const QwtPointPolar &other) const {
     return d_radius == other.d_radius && d_azimuth == other.d_azimuth;
 }
 
@@ -80,8 +76,7 @@ bool QwtPointPolar::operator==( const QwtPointPolar &other ) const
     \return True if the point is not equal to other; otherwise return false.
     \sa normalized()
 */
-bool QwtPointPolar::operator!=( const QwtPointPolar &other ) const
-{
+bool QwtPointPolar::operator!=(const QwtPointPolar &other) const {
     return d_radius != other.d_radius || d_azimuth != other.d_azimuth;
 }
 
@@ -93,26 +88,24 @@ bool QwtPointPolar::operator!=( const QwtPointPolar &other ) const
 
    \return Normalized point
 */
-QwtPointPolar QwtPointPolar::normalized() const
-{
-    const double radius = qMax( d_radius, 0.0 );
+QwtPointPolar QwtPointPolar::normalized() const {
+    const double radius = qMax(d_radius, 0.0);
 
     double azimuth = d_azimuth;
-    if ( azimuth < -2.0 * M_PI || azimuth >= 2 * M_PI )
-        azimuth = ::fmod( d_azimuth, 2 * M_PI );
+    if (azimuth < -2.0 * M_PI || azimuth >= 2 * M_PI)
+        azimuth = ::fmod(d_azimuth, 2 * M_PI);
 
-    if ( azimuth < 0.0 )
+    if (azimuth < 0.0)
         azimuth += 2 * M_PI;
 
-    return QwtPointPolar( azimuth, radius );
+    return QwtPointPolar(azimuth, radius);
 }
 
 #ifndef QT_NO_DEBUG_STREAM
 
-QDebug operator<<( QDebug debug, const QwtPointPolar &point )
-{
-    debug.nospace() << "QwtPointPolar(" 
-        << point.azimuth() << "," << point.radius() << ")";
+QDebug operator<<(QDebug debug, const QwtPointPolar &point) {
+    debug.nospace() << "QwtPointPolar("
+                    << point.azimuth() << "," << point.radius() << ")";
 
     return debug.space();
 }

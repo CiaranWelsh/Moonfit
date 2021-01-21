@@ -12,37 +12,33 @@
 #include "qwt_interval.h"
 #include <qnumeric.h>
 
-class QwtLinearColorMap::ColorStops
-{
+class QwtLinearColorMap::ColorStops {
 public:
-    ColorStops()
-    {
-        _stops.reserve( 256 );
+    ColorStops() {
+        _stops.reserve(256);
     }
 
-    void insert( double pos, const QColor &color );
-    QRgb rgb( QwtLinearColorMap::Mode, double pos ) const;
+    void insert(double pos, const QColor &color);
+
+    QRgb rgb(QwtLinearColorMap::Mode, double pos) const;
 
     QVector<double> stops() const;
 
 private:
 
-    class ColorStop
-    {
+    class ColorStop {
     public:
-        ColorStop():
-            pos( 0.0 ),
-            rgb( 0 )
-        {
+        ColorStop() :
+                pos(0.0),
+                rgb(0) {
         };
 
-        ColorStop( double p, const QColor &c ):
-            pos( p ),
-            rgb( c.rgb() )
-        {
-            r = qRed( rgb );
-            g = qGreen( rgb );
-            b = qBlue( rgb );
+        ColorStop(double p, const QColor &c) :
+                pos(p),
+                rgb(c.rgb()) {
+            r = qRed(rgb);
+            g = qGreen(rgb);
+            b = qBlue(rgb);
         }
 
         double pos;
@@ -50,65 +46,56 @@ private:
         int r, g, b;
     };
 
-    inline int findUpper( double pos ) const;
-    QVector<ColorStop> _stops;
+    inline int findUpper(double pos) const;
+
+    QVector <ColorStop> _stops;
 };
 
-void QwtLinearColorMap::ColorStops::insert( double pos, const QColor &color )
-{
+void QwtLinearColorMap::ColorStops::insert(double pos, const QColor &color) {
     // Lookups need to be very fast, insertions are not so important.
     // Anyway, a balanced tree is what we need here. TODO ...
 
-    if ( pos < 0.0 || pos > 1.0 )
+    if (pos < 0.0 || pos > 1.0)
         return;
 
     int index;
-    if ( _stops.size() == 0 )
-    {
+    if (_stops.size() == 0) {
         index = 0;
-        _stops.resize( 1 );
-    }
-    else
-    {
-        index = findUpper( pos );
-        if ( index == _stops.size() ||
-                qAbs( _stops[index].pos - pos ) >= 0.001 )
-        {
-            _stops.resize( _stops.size() + 1 );
-            for ( int i = _stops.size() - 1; i > index; i-- )
-                _stops[i] = _stops[i-1];
+        _stops.resize(1);
+    } else {
+        index = findUpper(pos);
+        if (index == _stops.size() ||
+            qAbs(_stops[index].pos - pos) >= 0.001) {
+            _stops.resize(_stops.size() + 1);
+            for (int i = _stops.size() - 1; i > index; i--)
+                _stops[i] = _stops[i - 1];
         }
     }
 
-    _stops[index] = ColorStop( pos, color );
+    _stops[index] = ColorStop(pos, color);
 }
 
-inline QVector<double> QwtLinearColorMap::ColorStops::stops() const
-{
-    QVector<double> positions( _stops.size() );
-    for ( int i = 0; i < _stops.size(); i++ )
+inline QVector<double> QwtLinearColorMap::ColorStops::stops() const {
+    QVector<double> positions(_stops.size());
+    for (int i = 0; i < _stops.size(); i++)
         positions[i] = _stops[i].pos;
     return positions;
 }
 
-inline int QwtLinearColorMap::ColorStops::findUpper( double pos ) const
-{
+inline int QwtLinearColorMap::ColorStops::findUpper(double pos) const {
     int index = 0;
     int n = _stops.size();
 
     const ColorStop *stops = _stops.data();
 
-    while ( n > 0 )
-    {
+    while (n > 0) {
         const int half = n >> 1;
         const int middle = index + half;
 
-        if ( stops[middle].pos <= pos )
-        {
+        if (stops[middle].pos <= pos) {
             index = middle + 1;
             n -= half + 1;
-        }
-        else
+        } else
             n = half;
     }
 
@@ -116,42 +103,36 @@ inline int QwtLinearColorMap::ColorStops::findUpper( double pos ) const
 }
 
 inline QRgb QwtLinearColorMap::ColorStops::rgb(
-    QwtLinearColorMap::Mode mode, double pos ) const
-{
-    if ( pos <= 0.0 )
+        QwtLinearColorMap::Mode mode, double pos) const {
+    if (pos <= 0.0)
         return _stops[0].rgb;
-    if ( pos >= 1.0 )
-        return _stops[ _stops.size() - 1 ].rgb;
+    if (pos >= 1.0)
+        return _stops[_stops.size() - 1].rgb;
 
-    const int index = findUpper( pos );
-    if ( mode == FixedColors )
-    {
-        return _stops[index-1].rgb;
-    }
-    else
-    {
-        const ColorStop &s1 = _stops[index-1];
+    const int index = findUpper(pos);
+    if (mode == FixedColors) {
+        return _stops[index - 1].rgb;
+    } else {
+        const ColorStop &s1 = _stops[index - 1];
         const ColorStop &s2 = _stops[index];
 
-        const double ratio = ( pos - s1.pos ) / ( s2.pos - s1.pos );
+        const double ratio = (pos - s1.pos) / (s2.pos - s1.pos);
 
-        const int r = s1.r + qRound( ratio * ( s2.r - s1.r ) );
-        const int g = s1.g + qRound( ratio * ( s2.g - s1.g ) );
-        const int b = s1.b + qRound( ratio * ( s2.b - s1.b ) );
+        const int r = s1.r + qRound(ratio * (s2.r - s1.r));
+        const int g = s1.g + qRound(ratio * (s2.g - s1.g));
+        const int b = s1.b + qRound(ratio * (s2.b - s1.b));
 
-        return qRgb( r, g, b );
+        return qRgb(r, g, b);
     }
 }
 
 //! Constructor
-QwtColorMap::QwtColorMap( Format format ):
-    d_format( format )
-{
+QwtColorMap::QwtColorMap(Format format) :
+        d_format(format) {
 }
 
 //! Destructor
-QwtColorMap::~QwtColorMap()
-{
+QwtColorMap::~QwtColorMap() {
 }
 
 /*!
@@ -163,22 +144,19 @@ QwtColorMap::~QwtColorMap()
    \param interval Range for the values
    \return A color table, that can be used for a QImage
 */
-QVector<QRgb> QwtColorMap::colorTable( const QwtInterval &interval ) const
-{
-    QVector<QRgb> table( 256 );
+QVector <QRgb> QwtColorMap::colorTable(const QwtInterval &interval) const {
+    QVector <QRgb> table(256);
 
-    if ( interval.isValid() )
-    {
-        const double step = interval.width() / ( table.size() - 1 );
-        for ( int i = 0; i < table.size(); i++ )
-            table[i] = rgb( interval, interval.minValue() + step * i );
+    if (interval.isValid()) {
+        const double step = interval.width() / (table.size() - 1);
+        for (int i = 0; i < table.size(); i++)
+            table[i] = rgb(interval, interval.minValue() + step * i);
     }
 
     return table;
 }
 
-class QwtLinearColorMap::PrivateData
-{
+class QwtLinearColorMap::PrivateData {
 public:
     ColorStops colorStops;
     QwtLinearColorMap::Mode mode;
@@ -190,13 +168,12 @@ public:
 
    \param format Preferred format of the color map
 */
-QwtLinearColorMap::QwtLinearColorMap( QwtColorMap::Format format ):
-    QwtColorMap( format )
-{
+QwtLinearColorMap::QwtLinearColorMap(QwtColorMap::Format format) :
+        QwtColorMap(format) {
     d_data = new PrivateData;
     d_data->mode = ScaledColors;
 
-    setColorInterval( Qt::blue, Qt::yellow );
+    setColorInterval(Qt::blue, Qt::yellow);
 }
 
 /*!
@@ -206,18 +183,16 @@ QwtLinearColorMap::QwtLinearColorMap( QwtColorMap::Format format ):
    \param color2 Color used for the maximum value of the value interval
    \param format Preferred format for the color map
 */
-QwtLinearColorMap::QwtLinearColorMap( const QColor &color1,
-        const QColor &color2, QwtColorMap::Format format ):
-    QwtColorMap( format )
-{
+QwtLinearColorMap::QwtLinearColorMap(const QColor &color1,
+                                     const QColor &color2, QwtColorMap::Format format) :
+        QwtColorMap(format) {
     d_data = new PrivateData;
     d_data->mode = ScaledColors;
-    setColorInterval( color1, color2 );
+    setColorInterval(color1, color2);
 }
 
 //! Destructor
-QwtLinearColorMap::~QwtLinearColorMap()
-{
+QwtLinearColorMap::~QwtLinearColorMap() {
     delete d_data;
 }
 
@@ -230,8 +205,7 @@ QwtLinearColorMap::~QwtLinearColorMap()
 
    \sa mode()
 */
-void QwtLinearColorMap::setMode( Mode mode )
-{
+void QwtLinearColorMap::setMode(Mode mode) {
     d_data->mode = mode;
 }
 
@@ -239,8 +213,7 @@ void QwtLinearColorMap::setMode( Mode mode )
    \return Mode of the color map
    \sa setMode()
 */
-QwtLinearColorMap::Mode QwtLinearColorMap::mode() const
-{
+QwtLinearColorMap::Mode QwtLinearColorMap::mode() const {
     return d_data->mode;
 }
 
@@ -255,11 +228,10 @@ QwtLinearColorMap::Mode QwtLinearColorMap::mode() const
    \sa color1(), color2()
 */
 void QwtLinearColorMap::setColorInterval(
-    const QColor &color1, const QColor &color2 )
-{
+        const QColor &color1, const QColor &color2) {
     d_data->colorStops = ColorStops();
-    d_data->colorStops.insert( 0.0, color1 );
-    d_data->colorStops.insert( 1.0, color2 );
+    d_data->colorStops.insert(0.0, color1);
+    d_data->colorStops.insert(1.0, color2);
 }
 
 /*!
@@ -272,17 +244,15 @@ void QwtLinearColorMap::setColorInterval(
    \param value Value between [0.0, 1.0]
    \param color Color stop
 */
-void QwtLinearColorMap::addColorStop( double value, const QColor& color )
-{
-    if ( value >= 0.0 && value <= 1.0 )
-        d_data->colorStops.insert( value, color );
+void QwtLinearColorMap::addColorStop(double value, const QColor &color) {
+    if (value >= 0.0 && value <= 1.0)
+        d_data->colorStops.insert(value, color);
 }
 
 /*!
    \return Positions of color stops in increasing order
 */
-QVector<double> QwtLinearColorMap::colorStops() const
-{
+QVector<double> QwtLinearColorMap::colorStops() const {
     return d_data->colorStops.stops();
 }
 
@@ -290,18 +260,16 @@ QVector<double> QwtLinearColorMap::colorStops() const
   \return the first color of the color range
   \sa setColorInterval()
 */
-QColor QwtLinearColorMap::color1() const
-{
-    return QColor( d_data->colorStops.rgb( d_data->mode, 0.0 ) );
+QColor QwtLinearColorMap::color1() const {
+    return QColor(d_data->colorStops.rgb(d_data->mode, 0.0));
 }
 
 /*!
   \return the second color of the color range
   \sa setColorInterval()
 */
-QColor QwtLinearColorMap::color2() const
-{
-    return QColor( d_data->colorStops.rgb( d_data->mode, 1.0 ) );
+QColor QwtLinearColorMap::color2() const {
+    return QColor(d_data->colorStops.rgb(d_data->mode, 1.0));
 }
 
 /*!
@@ -313,18 +281,17 @@ QColor QwtLinearColorMap::color2() const
   \return RGB value for value
 */
 QRgb QwtLinearColorMap::rgb(
-    const QwtInterval &interval, double value ) const
-{
-    if ( qIsNaN(value) )
+        const QwtInterval &interval, double value) const {
+    if (qIsNaN(value))
         return qRgba(0, 0, 0, 0);
 
     const double width = interval.width();
 
     double ratio = 0.0;
-    if ( width > 0.0 )
-        ratio = ( value - interval.minValue() ) / width;
+    if (width > 0.0)
+        ratio = (value - interval.minValue()) / width;
 
-    return d_data->colorStops.rgb( d_data->mode, ratio );
+    return d_data->colorStops.rgb(d_data->mode, ratio);
 }
 
 /*!
@@ -336,29 +303,27 @@ QRgb QwtLinearColorMap::rgb(
   \return Index, between 0 and 255
 */
 unsigned char QwtLinearColorMap::colorIndex(
-    const QwtInterval &interval, double value ) const
-{
+        const QwtInterval &interval, double value) const {
     const double width = interval.width();
 
-    if ( qIsNaN(value) || width <= 0.0 || value <= interval.minValue() )
+    if (qIsNaN(value) || width <= 0.0 || value <= interval.minValue())
         return 0;
 
-    if ( value >= interval.maxValue() )
+    if (value >= interval.maxValue())
         return 255;
 
-    const double ratio = ( value - interval.minValue() ) / width;
+    const double ratio = (value - interval.minValue()) / width;
 
     unsigned char index;
-    if ( d_data->mode == FixedColors )
+    if (d_data->mode == FixedColors)
         index = static_cast<unsigned char>( ratio * 255 ); // always floor
     else
-        index = static_cast<unsigned char>( qRound( ratio * 255 ) );
+        index = static_cast<unsigned char>( qRound(ratio * 255));
 
     return index;
 }
 
-class QwtAlphaColorMap::PrivateData
-{
+class QwtAlphaColorMap::PrivateData {
 public:
     QColor color;
     QRgb rgb;
@@ -369,17 +334,15 @@ public:
    Constructor
    \param color Color of the map
 */
-QwtAlphaColorMap::QwtAlphaColorMap( const QColor &color ):
-    QwtColorMap( QwtColorMap::RGB )
-{
+QwtAlphaColorMap::QwtAlphaColorMap(const QColor &color) :
+        QwtColorMap(QwtColorMap::RGB) {
     d_data = new PrivateData;
     d_data->color = color;
-    d_data->rgb = color.rgb() & qRgba( 255, 255, 255, 0 );
+    d_data->rgb = color.rgb() & qRgba(255, 255, 255, 0);
 }
 
 //! Destructor
-QwtAlphaColorMap::~QwtAlphaColorMap()
-{
+QwtAlphaColorMap::~QwtAlphaColorMap() {
     delete d_data;
 }
 
@@ -389,8 +352,7 @@ QwtAlphaColorMap::~QwtAlphaColorMap()
    \param color Color
    \sa color()
 */
-void QwtAlphaColorMap::setColor( const QColor &color )
-{
+void QwtAlphaColorMap::setColor(const QColor &color) {
     d_data->color = color;
     d_data->rgb = color.rgb();
 }
@@ -399,8 +361,7 @@ void QwtAlphaColorMap::setColor( const QColor &color )
   \return the color
   \sa setColor()
 */
-QColor QwtAlphaColorMap::color() const
-{
+QColor QwtAlphaColorMap::color() const {
     return d_data->color;
 }
 
@@ -413,19 +374,17 @@ QColor QwtAlphaColorMap::color() const
   \param value Value to map into a RGB value
   \return RGB value, with an alpha value
 */
-QRgb QwtAlphaColorMap::rgb( const QwtInterval &interval, double value ) const
-{
+QRgb QwtAlphaColorMap::rgb(const QwtInterval &interval, double value) const {
     const double width = interval.width();
-    if ( !qIsNaN(value) && width >= 0.0 )
-    {
-        const double ratio = ( value - interval.minValue() ) / width;
-        int alpha = qRound( 255 * ratio );
-        if ( alpha < 0 )
+    if (!qIsNaN(value) && width >= 0.0) {
+        const double ratio = (value - interval.minValue()) / width;
+        int alpha = qRound(255 * ratio);
+        if (alpha < 0)
             alpha = 0;
-        if ( alpha > 255 )
+        if (alpha > 255)
             alpha = 255;
 
-        return d_data->rgb | ( alpha << 24 );
+        return d_data->rgb | (alpha << 24);
     }
     return d_data->rgb;
 }
@@ -438,7 +397,6 @@ QRgb QwtAlphaColorMap::rgb( const QwtInterval &interval, double value ) const
   \return Always 0
 */
 unsigned char QwtAlphaColorMap::colorIndex(
-    const QwtInterval &, double ) const
-{
+        const QwtInterval &, double) const {
     return 0;
 }

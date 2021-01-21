@@ -15,6 +15,7 @@
 #include "qwt_interval.h"
 
 class QPen;
+
 class QBrush;
 
 /*!
@@ -28,37 +29,44 @@ class QBrush;
         use QwtPlotShapeItem
 */
 
-class QWT_EXPORT QwtPlotZoneItem: 
-    public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotZoneItem :
+        public QwtPlotItem {
 public:
     explicit QwtPlotZoneItem();
+
     virtual ~QwtPlotZoneItem();
 
     virtual int rtti() const;
 
-    void setOrientation( Qt::Orientation );
+    void setOrientation(Qt::Orientation);
+
     Qt::Orientation orientation();
 
-    void setInterval( double min, double max );
-    void setInterval( const QwtInterval & );
+    void setInterval(double min, double max);
+
+    void setInterval(const QwtInterval &);
+
     QwtInterval interval() const;
 
-    void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setPen( const QPen & );
+    void setPen(const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine);
+
+    void setPen(const QPen &);
+
     const QPen &pen() const;
 
-    void setBrush( const QBrush & );
+    void setBrush(const QBrush &);
+
     const QBrush &brush() const;
 
-    virtual void draw( QPainter *,
-        const QwtScaleMap &, const QwtScaleMap &,
-        const QRectF &) const;
+    virtual void draw(QPainter *,
+                      const QwtScaleMap &, const QwtScaleMap &,
+                      const QRectF &) const;
 
     virtual QRectF boundingRect() const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

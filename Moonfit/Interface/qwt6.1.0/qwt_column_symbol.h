@@ -12,6 +12,7 @@
 
 #include "qwt_global.h"
 #include "qwt_interval.h"
+
 #ifdef QT5
 #include <qpen.h>
 #endif
@@ -23,20 +24,21 @@
 #include <qrect.h>
 
 class QPainter;
+
 class QPalette;
+
 class QRect;
+
 class QwtText;
 
 /*!
     \brief Directed rectangle representing bounding rectangle and orientation
     of a column.
 */
-class QWT_EXPORT QwtColumnRect
-{
+class QWT_EXPORT QwtColumnRect {
 public:
     //! Direction of the column
-    enum Direction
-    {
+    enum Direction {
         //! From left to right
         LeftToRight,
 
@@ -51,35 +53,32 @@ public:
     };
 
     //! Build an rectangle with invalid intervals directed BottomToTop.
-    QwtColumnRect():
-        direction( BottomToTop )
-    {
+    QwtColumnRect() :
+            direction(BottomToTop) {
     }
 
     //! \return A normalized QRect built from the intervals
-    QRectF toRect() const
-    {
-        QRectF r( hInterval.minValue(), vInterval.minValue(),
-            hInterval.maxValue() - hInterval.minValue(),
-            vInterval.maxValue() - vInterval.minValue() );
+    QRectF toRect() const {
+        QRectF r(hInterval.minValue(), vInterval.minValue(),
+                 hInterval.maxValue() - hInterval.minValue(),
+                 vInterval.maxValue() - vInterval.minValue());
         r = r.normalized();
 
-        if ( hInterval.borderFlags() & QwtInterval::ExcludeMinimum )
-            r.adjust( 1, 0, 0, 0 );
-        if ( hInterval.borderFlags() & QwtInterval::ExcludeMaximum )
-            r.adjust( 0, 0, -1, 0 );
-        if ( vInterval.borderFlags() & QwtInterval::ExcludeMinimum )
-            r.adjust( 0, 1, 0, 0 );
-        if ( vInterval.borderFlags() & QwtInterval::ExcludeMaximum )
-            r.adjust( 0, 0, 0, -1 );
+        if (hInterval.borderFlags() & QwtInterval::ExcludeMinimum)
+            r.adjust(1, 0, 0, 0);
+        if (hInterval.borderFlags() & QwtInterval::ExcludeMaximum)
+            r.adjust(0, 0, -1, 0);
+        if (vInterval.borderFlags() & QwtInterval::ExcludeMinimum)
+            r.adjust(0, 1, 0, 0);
+        if (vInterval.borderFlags() & QwtInterval::ExcludeMaximum)
+            r.adjust(0, 0, 0, -1);
 
         return r;
     }
 
     //! \return Orientation
-    Qt::Orientation orientation() const
-    {
-        if ( direction == LeftToRight || direction == RightToLeft )
+    Qt::Orientation orientation() const {
+        if (direction == LeftToRight || direction == RightToLeft)
             return Qt::Horizontal;
 
         return Qt::Vertical;
@@ -96,15 +95,13 @@ public:
 };
 
 //! A drawing primitive for columns
-class QWT_EXPORT QwtColumnSymbol
-{
+class QWT_EXPORT QwtColumnSymbol {
 public:
     /*!
       Style
       \sa setStyle(), style()
     */
-    enum Style
-    {
+    enum Style {
         //! No Style, the symbol draws nothing
         NoStyle = -1,
 
@@ -126,8 +123,7 @@ public:
       Frame Style used in Box style().
       \sa Style, setFrameStyle(), frameStyle(), setStyle(), setPalette()
      */
-    enum FrameStyle
-    {
+    enum FrameStyle {
         //! No frame
         NoFrame,
 
@@ -139,29 +135,35 @@ public:
     };
 
 public:
-    QwtColumnSymbol( Style = NoStyle );
+    QwtColumnSymbol(Style = NoStyle);
+
     virtual ~QwtColumnSymbol();
 
-    void setFrameStyle( FrameStyle style );
+    void setFrameStyle(FrameStyle style);
+
     FrameStyle frameStyle() const;
 
-    void setLineWidth( int width );
+    void setLineWidth(int width);
+
     int lineWidth() const;
 
-    void setPalette( const QPalette & );
+    void setPalette(const QPalette &);
+
     const QPalette &palette() const;
 
-    void setStyle( Style );
+    void setStyle(Style);
+
     Style style() const;
 
-    virtual void draw( QPainter *, const QwtColumnRect & ) const;
+    virtual void draw(QPainter *, const QwtColumnRect &) const;
 
 protected:
-    void drawBox( QPainter *, const QwtColumnRect & ) const;
+    void drawBox(QPainter *, const QwtColumnRect &) const;
 
 private:
     class PrivateData;
-    PrivateData* d_data;
+
+    PrivateData *d_data;
 };
 
 #endif

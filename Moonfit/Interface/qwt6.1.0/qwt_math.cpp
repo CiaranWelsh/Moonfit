@@ -14,14 +14,13 @@
   \param array Pointer to an array
   \param size Array size
 */
-double qwtGetMin( const double *array, int size )
-{
-    if ( size <= 0 )
+double qwtGetMin(const double *array, int size) {
+    if (size <= 0)
         return 0.0;
 
     double rv = array[0];
-    for ( int i = 1; i < size; i++ )
-        rv = qMin( rv, array[i] );
+    for (int i = 1; i < size; i++)
+        rv = qMin(rv, array[i]);
 
     return rv;
 }
@@ -32,14 +31,13 @@ double qwtGetMin( const double *array, int size )
   \param array Pointer to an array
   \param size Array size
 */
-double qwtGetMax( const double *array, int size )
-{
-    if ( size <= 0 )
+double qwtGetMax(const double *array, int size) {
+    if (size <= 0)
         return 0.0;
 
     double rv = array[0];
-    for ( int i = 1; i < size; i++ )
-        rv = qMax( rv, array[i] );
+    for (int i = 1; i < size; i++)
+        rv = qMax(rv, array[i]);
 
     return rv;
 }
@@ -49,10 +47,9 @@ double qwtGetMax( const double *array, int size )
   \param radians Angle in radians
   \return Normalized angle in radians
 */
-double qwtNormalizeRadians( double radians )
-{
-    double a = ::fmod( radians, 2.0 * M_PI );
-    if ( a < 0.0 )
+double qwtNormalizeRadians(double radians) {
+    double a = ::fmod(radians, 2.0 * M_PI);
+    if (a < 0.0)
         a += 2.0 * M_PI;
 
     return a;
@@ -64,10 +61,9 @@ double qwtNormalizeRadians( double radians )
   \param radians Angle in degrees
   \return Normalized angle in degrees
 */
-double qwtNormalizeDegrees( double degrees )
-{
-    double a = ::fmod( degrees, 360.0 );
-    if ( a < 0.0 )
+double qwtNormalizeDegrees(double degrees) {
+    double a = ::fmod(degrees, 360.0);
+    if (a < 0.0)
         a += 360.0;
 
     return a;

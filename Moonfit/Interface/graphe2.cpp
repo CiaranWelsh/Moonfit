@@ -1,4 +1,5 @@
 #include "graphe2.h"
+
 #define MAXCURVES 15
 
 #ifndef WITHOUT_QT

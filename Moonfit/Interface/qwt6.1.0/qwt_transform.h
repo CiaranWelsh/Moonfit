@@ -32,17 +32,17 @@
    - p = p1 + ( p2 - p1 ) * ( T( s ) - T( s1 ) / ( T( s2 ) - T( s1 ) );
    - s = invT ( T( s1 ) + ( T( s2 ) - T( s1 ) ) * ( p - p1 ) / ( p2 - p1 ) );
 */
-class QWT_EXPORT QwtTransform
-{
+class QWT_EXPORT QwtTransform {
 public:
     QwtTransform();
+
     virtual ~QwtTransform();
 
     /*!
        Modify value to be a valid value for the transformation.
        The default implementation does nothing.
      */
-    virtual double bounded( double value ) const;
+    virtual double bounded(double value) const;
 
     /*!
         Transformation function
@@ -52,7 +52,7 @@ public:
 
         \sa invTransform()
      */
-    virtual double transform( double value ) const = 0;
+    virtual double transform(double value) const = 0;
 
     /*!
         Inverse transformation function
@@ -62,7 +62,7 @@ public:
 
         \sa transform()
      */
-    virtual double invTransform( double value ) const = 0;
+    virtual double invTransform(double value) const = 0;
 
     //! Virtualized copy operation
     virtual QwtTransform *copy() const = 0;
@@ -74,17 +74,19 @@ public:
    QwtNullTransform returns the values unmodified.
    
  */
-class QWT_EXPORT QwtNullTransform: public QwtTransform
-{
+class QWT_EXPORT QwtNullTransform : public QwtTransform {
 public:
     QwtNullTransform();
+
     virtual ~QwtNullTransform();
 
-    virtual double transform( double value ) const;
-    virtual double invTransform( double value ) const;
+    virtual double transform(double value) const;
+
+    virtual double invTransform(double value) const;
 
     virtual QwtTransform *copy() const;
 };
+
 /*!
    \brief Logarithmic transformation
 
@@ -94,16 +96,17 @@ public:
          has no effect on the mapping. So QwtLogTransform can be used 
          for log2(), log10() or any other logarithmic scale.
  */
-class QWT_EXPORT QwtLogTransform: public QwtTransform
-{   
+class QWT_EXPORT QwtLogTransform : public QwtTransform {
 public:
     QwtLogTransform();
-    virtual ~QwtLogTransform();
-    
-    virtual double transform( double value ) const;
-    virtual double invTransform( double value ) const;
 
-    virtual double bounded( double value ) const;
+    virtual ~QwtLogTransform();
+
+    virtual double transform(double value) const;
+
+    virtual double invTransform(double value) const;
+
+    virtual double bounded(double value) const;
 
     virtual QwtTransform *copy() const;
 
@@ -123,14 +126,15 @@ public:
    transforms a value of -3 to -9 and v.v. Thus QwtPowerTransform
    can be used for scales including negative values.
  */
-class QWT_EXPORT QwtPowerTransform: public QwtTransform
-{
+class QWT_EXPORT QwtPowerTransform : public QwtTransform {
 public:
-    QwtPowerTransform( double exponent );
+    QwtPowerTransform(double exponent);
+
     virtual ~QwtPowerTransform();
 
-    virtual double transform( double value ) const;
-    virtual double invTransform( double value ) const;
+    virtual double transform(double value) const;
+
+    virtual double invTransform(double value) const;
 
     virtual QwtTransform *copy() const;
 

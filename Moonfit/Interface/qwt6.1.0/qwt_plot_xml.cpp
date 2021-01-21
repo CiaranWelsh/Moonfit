@@ -15,8 +15,7 @@
 
   \warning The plot editor has never been implemented.
 */
-void QwtPlot::applyProperties( const QString & /* xmlDocument */ )
-{
+void QwtPlot::applyProperties(const QString & /* xmlDocument */ ) {
 #if 0
     // Temporary dummy code, for designer tests
     setTitle( xmlDocument );
@@ -31,8 +30,7 @@ void QwtPlot::applyProperties( const QString & /* xmlDocument */ )
   \return QString::null
   \warning The plot editor has never been implemented.
 */
-QString QwtPlot::grabProperties() const
-{
+QString QwtPlot::grabProperties() const {
 #if 0
     // Temporary dummy code, for designer tests
     return title().text();

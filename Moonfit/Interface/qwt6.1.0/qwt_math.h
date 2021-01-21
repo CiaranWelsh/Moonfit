@@ -42,11 +42,13 @@
 #define LOG_MAX 1.0e100
 #endif
 
-QWT_EXPORT double qwtGetMin( const double *array, int size );
-QWT_EXPORT double qwtGetMax( const double *array, int size );
+QWT_EXPORT double qwtGetMin(const double *array, int size);
 
-QWT_EXPORT double qwtNormalizeRadians( double radians );
-QWT_EXPORT double qwtNormalizeDegrees( double degrees );
+QWT_EXPORT double qwtGetMax(const double *array, int size);
+
+QWT_EXPORT double qwtNormalizeRadians(double radians);
+
+QWT_EXPORT double qwtNormalizeDegrees(double degrees);
 
 /*!
   \brief Compare 2 values, relative to an interval
@@ -60,89 +62,79 @@ QWT_EXPORT double qwtNormalizeDegrees( double degrees );
 
   \return 0: if equal, -1: if value2 > value1, 1: if value1 > value2
 */
-inline int qwtFuzzyCompare( double value1, double value2, double intervalSize )
-{
-    const double eps = qAbs( 1.0e-6 * intervalSize );
+inline int qwtFuzzyCompare(double value1, double value2, double intervalSize) {
+    const double eps = qAbs(1.0e-6 * intervalSize);
 
-    if ( value2 - value1 > eps )
+    if (value2 - value1 > eps)
         return -1;
 
-    if ( value1 - value2 > eps )
+    if (value1 - value2 > eps)
         return 1;
 
     return 0;
 }
 
 
-inline bool qwtFuzzyGreaterOrEqual( double d1, double d2 )
-{
-    return ( d1 >= d2 ) || qFuzzyCompare( d1, d2 );
+inline bool qwtFuzzyGreaterOrEqual(double d1, double d2) {
+    return (d1 >= d2) || qFuzzyCompare(d1, d2);
 }
 
-inline bool qwtFuzzyLessOrEqual( double d1, double d2 )
-{
-    return ( d1 <= d2 ) || qFuzzyCompare( d1, d2 );
+inline bool qwtFuzzyLessOrEqual(double d1, double d2) {
+    return (d1 <= d2) || qFuzzyCompare(d1, d2);
 }
 
 //! Return the sign
-inline int qwtSign( double x )
-{
-    if ( x > 0.0 )
+inline int qwtSign(double x) {
+    if (x > 0.0)
         return 1;
-    else if ( x < 0.0 )
-        return ( -1 );
+    else if (x < 0.0)
+        return (-1);
     else
         return 0;
 }
 
 //! Return the square of a number
-inline double qwtSqr( double x )
-{
+inline double qwtSqr(double x) {
     return x * x;
 }
 
 //! Approximation of arc tangent ( error below 0,005 radians )
-inline double qwtFastAtan( double x )
-{
-    if ( x < -1.0 )
-        return -M_PI_2 - x / ( x * x + 0.28 );
+inline double qwtFastAtan(double x) {
+    if (x < -1.0)
+        return -M_PI_2 - x / (x * x + 0.28);
 
-    if ( x > 1.0 )
-        return M_PI_2 - x / ( x * x + 0.28 );
+    if (x > 1.0)
+        return M_PI_2 - x / (x * x + 0.28);
 
-    return x / ( 1.0 + x * x * 0.28 );
+    return x / (1.0 + x * x * 0.28);
 }
 
 //! Approximation of arc tangent ( error below 0,005 radians )
-inline double qwtFastAtan2( double y, double x )
-{
-    if ( x > 0 )
-        return qwtFastAtan( y / x );
+inline double qwtFastAtan2(double y, double x) {
+    if (x > 0)
+        return qwtFastAtan(y / x);
 
-    if ( x < 0 )
-    {
-        const double d = qwtFastAtan( y / x );
-        return ( y >= 0 ) ? d + M_PI : d - M_PI;
+    if (x < 0) {
+        const double d = qwtFastAtan(y / x);
+        return (y >= 0) ? d + M_PI : d - M_PI;
     }
 
-    if ( y < 0.0 )
+    if (y < 0.0)
         return -M_PI_2;
 
-    if ( y > 0.0 )
+    if (y > 0.0)
         return M_PI_2;
 
     return 0.0;
 }
 
 // Translate degrees into radians
-inline double qwtRadians( double degrees )
-{
+inline double qwtRadians(double degrees) {
     return degrees * M_PI / 180.0;
 }
 
 // Translate radians into degrees
-inline double qwtDegrees( double degrees )
-{
+inline double qwtDegrees(double degrees) {
     return degrees * 180.0 / M_PI;
 }
 

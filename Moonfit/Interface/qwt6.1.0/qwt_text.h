@@ -13,19 +13,26 @@
 #include "qwt_global.h"
 #include <qstring.h>
 #include <qsize.h>
+
 #ifdef QT4
 #include <QtGui/QFont>
 #endif
 #ifdef QT5
 #include <qfont.h>
 #endif
+
 #include <qmetatype.h>
 
 class QColor;
+
 class QPen;
+
 class QBrush;
+
 class QRectF;
+
 class QPainter;
+
 class QwtTextEngine;
 
 /*!
@@ -53,8 +60,7 @@ class QwtTextEngine;
   \sa QwtTextEngine, QwtTextLabel
 */
 
-class QWT_EXPORT QwtText
-{
+class QWT_EXPORT QwtText {
 public:
 
     /*!
@@ -66,8 +72,7 @@ public:
       \sa QwtTextEngine, setTextEngine()
     */
 
-    enum TextFormat
-    {
+    enum TextFormat {
         /*!
           The text format is determined using QwtTextEngine::mightRender() for
           all available text engines in increasing order > PlainText.
@@ -111,8 +116,7 @@ public:
       Font and color and background are optional attributes of a QwtText.
       The paint attributes hold the information, if they are set.
     */
-    enum PaintAttribute
-    {
+    enum PaintAttribute {
         //! The text has an individual font.
         PaintUsingTextFont = 0x01,
 
@@ -124,14 +128,13 @@ public:
     };
 
     //! Paint attributes
-    typedef QFlags<PaintAttribute> PaintAttributes;
+    typedef QFlags <PaintAttribute> PaintAttributes;
 
     /*!
       \brief Layout Attributes
       The layout attributes affects some aspects of the layout of the text.
     */
-    enum LayoutAttribute
-    {
+    enum LayoutAttribute {
         /*!
           Layout the text without its margins. This mode is useful if a
           text needs to be aligned accurately, like the tick labels of a scale.
@@ -142,81 +145,96 @@ public:
     };
 
     //! Layout attributes
-    typedef QFlags<LayoutAttribute> LayoutAttributes;
+    typedef QFlags <LayoutAttribute> LayoutAttributes;
 
-    QwtText( const QString & = QString::null,
-             TextFormat textFormat = AutoText );
-    QwtText( const QwtText & );
+    QwtText(const QString & = QString::null,
+            TextFormat textFormat = AutoText);
+
+    QwtText(const QwtText &);
+
     ~QwtText();
 
-    QwtText &operator=( const QwtText & );
+    QwtText &operator=(const QwtText &);
 
-    bool operator==( const QwtText & ) const;
-    bool operator!=( const QwtText & ) const;
+    bool operator==(const QwtText &) const;
 
-    void setText( const QString &,
-        QwtText::TextFormat textFormat = AutoText );
+    bool operator!=(const QwtText &) const;
+
+    void setText(const QString &,
+                 QwtText::TextFormat textFormat = AutoText);
+
     QString text() const;
 
     bool isNull() const;
+
     bool isEmpty() const;
 
-    void setFont( const QFont & );
+    void setFont(const QFont &);
+
     QFont font() const;
 
-    QFont usedFont( const QFont & ) const;
+    QFont usedFont(const QFont &) const;
 
-    void setRenderFlags( int flags );
+    void setRenderFlags(int flags);
+
     int renderFlags() const;
 
-    void setColor( const QColor & );
+    void setColor(const QColor &);
+
     QColor color() const;
 
-    QColor usedColor( const QColor & ) const;
+    QColor usedColor(const QColor &) const;
 
-    void setBorderRadius( double );
+    void setBorderRadius(double);
+
     double borderRadius() const;
 
-    void setBorderPen( const QPen & );
+    void setBorderPen(const QPen &);
+
     QPen borderPen() const;
 
-    void setBackgroundBrush( const QBrush & );
+    void setBackgroundBrush(const QBrush &);
+
     QBrush backgroundBrush() const;
 
-    void setPaintAttribute( PaintAttribute, bool on = true );
-    bool testPaintAttribute( PaintAttribute ) const;
+    void setPaintAttribute(PaintAttribute, bool on = true);
 
-    void setLayoutAttribute( LayoutAttribute, bool on = true );
-    bool testLayoutAttribute( LayoutAttribute ) const;
+    bool testPaintAttribute(PaintAttribute) const;
 
-    double heightForWidth( double width, const QFont & = QFont() ) const;
-    QSizeF textSize( const QFont & = QFont() ) const;
+    void setLayoutAttribute(LayoutAttribute, bool on = true);
 
-    void draw( QPainter *painter, const QRectF &rect ) const;
+    bool testLayoutAttribute(LayoutAttribute) const;
 
-    static const QwtTextEngine *textEngine( 
-        const QString &text, QwtText::TextFormat = AutoText );
+    double heightForWidth(double width, const QFont & = QFont()) const;
 
-    static const QwtTextEngine *textEngine( QwtText::TextFormat );
-    static void setTextEngine( QwtText::TextFormat, QwtTextEngine * );
+    QSizeF textSize(const QFont & = QFont()) const;
+
+    void draw(QPainter *painter, const QRectF &rect) const;
+
+    static const QwtTextEngine *textEngine(
+            const QString &text, QwtText::TextFormat = AutoText);
+
+    static const QwtTextEngine *textEngine(QwtText::TextFormat);
+
+    static void setTextEngine(QwtText::TextFormat, QwtTextEngine *);
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 
     class LayoutCache;
+
     LayoutCache *d_layoutCache;
 };
 
 //! \return text().isNull()
-inline bool QwtText::isNull() const
-{
+inline bool QwtText::isNull() const {
     return text().isNull();
 }
 
 //! \return text().isEmpty()
-inline bool QwtText::isEmpty() const
-{
+inline bool QwtText::isEmpty() const {
     return text().isEmpty();
 }
 

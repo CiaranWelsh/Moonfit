@@ -22,16 +22,14 @@
   API  how to calculate the width of the bars and how they affect
   the layout of the attached plot.
  */
-class QWT_EXPORT QwtPlotAbstractBarChart: public QwtPlotSeriesItem
-{
+class QWT_EXPORT QwtPlotAbstractBarChart : public QwtPlotSeriesItem {
 public:
     /*!
         \brief Mode how to calculate the bar width
 
         setLayoutPolicy(), setLayoutHint(), barWidthHint()
      */
-    enum LayoutPolicy
-    {
+    enum LayoutPolicy {
         /*!
           The sample width is calculated by dividing the bounding rectangle
           by the number of samples.
@@ -60,37 +58,44 @@ public:
         FixedSampleSize
     };
 
-    explicit QwtPlotAbstractBarChart( const QwtText &title );
+    explicit QwtPlotAbstractBarChart(const QwtText &title);
+
     virtual ~QwtPlotAbstractBarChart();
 
-    void setLayoutPolicy( LayoutPolicy );
+    void setLayoutPolicy(LayoutPolicy);
+
     LayoutPolicy layoutPolicy() const;
 
-    void setLayoutHint( double );
+    void setLayoutHint(double);
+
     double layoutHint() const;
 
-    void setSpacing( int );
+    void setSpacing(int);
+
     int spacing() const;
 
-    void setMargin( int );
+    void setMargin(int);
+
     int margin() const;
 
-    void setBaseline( double );
+    void setBaseline(double);
+
     double baseline() const;
 
-    virtual void getCanvasMarginHint( 
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect,
-        double &left, double &top, double &right, double &bottom) const;
+    virtual void getCanvasMarginHint(
+            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+            const QRectF &canvasRect,
+            double &left, double &top, double &right, double &bottom) const;
 
 
 protected:
-    double sampleWidth( const QwtScaleMap &map,
-        double canvasSize, double dataSize,
-        double value ) const;
+    double sampleWidth(const QwtScaleMap &map,
+                       double canvasSize, double dataSize,
+                       double value) const;
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

@@ -19,21 +19,22 @@
 /*!
   \brief Base class for plot items representing a series of samples
 */
-class QWT_EXPORT QwtPlotSeriesItem: public QwtPlotItem,
-    public virtual QwtAbstractSeriesStore
-{
+class QWT_EXPORT QwtPlotSeriesItem : public QwtPlotItem,
+                                     public virtual QwtAbstractSeriesStore {
 public:
-    explicit QwtPlotSeriesItem( const QString &title = QString::null );
-    explicit QwtPlotSeriesItem( const QwtText &title );
+    explicit QwtPlotSeriesItem(const QString &title = QString::null);
+
+    explicit QwtPlotSeriesItem(const QwtText &title);
 
     virtual ~QwtPlotSeriesItem();
 
-    void setOrientation( Qt::Orientation );
+    void setOrientation(Qt::Orientation);
+
     Qt::Orientation orientation() const;
 
-    virtual void draw( QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF & ) const;
+    virtual void draw(QPainter *p,
+                      const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                      const QRectF &) const;
 
     /*!
       Draw a subset of the samples
@@ -46,20 +47,21 @@ public:
       \param to Index of the last point to be painted. If to < 0 the
              curve will be painted to its last point.
     */
-    virtual void drawSeries( QPainter *painter,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &canvasRect, int from, int to ) const = 0;
+    virtual void drawSeries(QPainter *painter,
+                            const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+                            const QRectF &canvasRect, int from, int to) const = 0;
 
     virtual QRectF boundingRect() const;
 
-    virtual void updateScaleDiv( 
-        const QwtScaleDiv &, const QwtScaleDiv & );
+    virtual void updateScaleDiv(
+            const QwtScaleDiv &, const QwtScaleDiv &);
 
 protected:
     virtual void dataChanged();
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 

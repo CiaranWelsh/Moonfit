@@ -10,43 +10,56 @@
 {\ttfamily \#include \char`\"{}table\+Course.\+h\char`\"{}}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{structcost_config}{cost\+Config}}
-\begin{DoxyCompactList}\small\item\em Static class that stores the current type of cost and normalization used for fitting. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{struct_evaluator}{Evaluator}}
+    \item
+    struct \mbox{\hyperlink{structcost_config}{cost\+Config}}
+    \begin{DoxyCompactList}
+        \small\item\em Static class that stores the current type of cost and normalization used for fitting.
+    \end{DoxyCompactList}\item
+    struct \mbox{\hyperlink{struct_evaluator}{Evaluator}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
-\item 
-typedef int \mbox{\hyperlink{group___eval_gaf00f4aeb6dfe43aece15fbfc487520a2}{iterator\+For\+Evaluator}}
+    \item
+    typedef int \mbox{\hyperlink{group___eval_gaf00f4aeb6dfe43aece15fbfc487520a2}{iterator\+For\+Evaluator}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
-\item 
-enum \{ \mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55ba0b6ed7bcdc0ffa9e90c42c6ba0869d57}{S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+ST}}, 
-\mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55bab8585423825b614d877ca054d3b3cf0e}{S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+S\+T\+\_\+\+S\+TD}}, 
-\mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55ba2a35fc58ace26f250333132d0065b888}{L\+O\+G\+\_\+\+C\+O\+ST}}, 
-\mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55ba38c798aa0441df959d4dc88c01571d2f}{P\+R\+O\+P\+O\+R\+T\+I\+O\+N\+\_\+\+C\+O\+ST}}
- \}
-\begin{DoxyCompactList}\small\item\em Different types of costs. \end{DoxyCompactList}\item 
-enum \{ \newline
-\mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7a95cd2346f3fd3dd5ecff2dfa19d0e538}{N\+O\+\_\+\+N\+O\+RM}}, 
-\mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7a7de7d85f4d939d5eb9ea87b3aacf5a33}{N\+O\+R\+M\+\_\+\+A\+V\+E\+R\+A\+GE}}, 
-\mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7a1a7a7aca642b4b5d1c612011723164f6}{N\+O\+R\+M\+\_\+\+N\+B\+\_\+\+P\+TS}}, 
-\mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7aae6081f1cffa68b04dceb28338b3ec1e}{N\+O\+R\+M\+\_\+\+A\+V\+G\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}}, 
-\newline
-\mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7ac76980114e6ef692d209332f25898345}{N\+O\+R\+M\+\_\+\+M\+AX}}, 
-\mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7adb21e3dca57fc0a79eec5420ba5e226b}{N\+O\+R\+M\+\_\+\+M\+A\+X\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}}
- \}
-\begin{DoxyCompactList}\small\item\em Different types of normalizations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+    \item
+    enum \{ \mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55ba0b6ed7bcdc0ffa9e90c42c6ba0869d57}{S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+ST}},
+    \mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55bab8585423825b614d877ca054d3b3cf0e}{S\+Q\+U\+A\+R\+E\+\_\+\+C\+O\+S\+T\+\_\+\+S\+TD}},
+    \mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55ba2a35fc58ace26f250333132d0065b888}{L\+O\+G\+\_\+\+C\+O\+ST}},
+    \mbox{\hyperlink{group___cost_eval_gga06fc87d81c62e9abb8790b6e5713c55ba38c798aa0441df959d4dc88c01571d2f}{P\+R\+O\+P\+O\+R\+T\+I\+O\+N\+\_\+\+C\+O\+ST}}
+    \}
+    \begin{DoxyCompactList}
+        \small\item\em Different types of costs.
+    \end{DoxyCompactList}\item
+    enum \{ \newline
+    \mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7a95cd2346f3fd3dd5ecff2dfa19d0e538}{N\+O\+\_\+\+N\+O\+RM}},
+    \mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7a7de7d85f4d939d5eb9ea87b3aacf5a33}{N\+O\+R\+M\+\_\+\+A\+V\+E\+R\+A\+GE}},
+    \mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7a1a7a7aca642b4b5d1c612011723164f6}{N\+O\+R\+M\+\_\+\+N\+B\+\_\+\+P\+TS}},
+    \mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7aae6081f1cffa68b04dceb28338b3ec1e}{N\+O\+R\+M\+\_\+\+A\+V\+G\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}},
+    \newline
+    \mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7ac76980114e6ef692d209332f25898345}{N\+O\+R\+M\+\_\+\+M\+AX}},
+    \mbox{\hyperlink{group___cost_eval_ggadf764cbdea00d65edcd07bb9953ad2b7adb21e3dca57fc0a79eec5420ba5e226b}{N\+O\+R\+M\+\_\+\+M\+A\+X\+\_\+\+A\+N\+D\+\_\+\+N\+B\+\_\+\+P\+TS}}
+    \}
+    \begin{DoxyCompactList}
+        \small\item\em Different types of normalizations.
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
-\item 
-void \mbox{\hyperlink{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}{set\+Type\+Cost}} (int \+\_\+type\+Cost)
-\begin{DoxyCompactList}\small\item\em Change the type of Cost. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}{set\+Type\+Norm}} (int \+\_\+type\+Norm)
-\begin{DoxyCompactList}\small\item\em Change the type of Normalization. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function}} (double measured, double expected, double Std\+Dev\+\_\+or\+\_\+zero)
-\begin{DoxyCompactList}\small\item\em Main function to calculate the cost for one data-\/point. This function can calculate the different possible costs defined inside the costconfig. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}{test\+Fitness\+Function}} ()
+    \item
+    void \mbox{\hyperlink{group___cost_eval_ga10d6c20e00f3f4a41fa945e4c0a9944e}{set\+Type\+Cost}} (int \+\_\+type\+Cost)
+    \begin{DoxyCompactList}
+        \small\item\em Change the type of Cost.
+    \end{DoxyCompactList}\item
+    void \mbox{\hyperlink{group___cost_eval_gab1b271577bf465de7ff6c852050e5a07}{set\+Type\+Norm}} (int \+\_\+type\+Norm)
+    \begin{DoxyCompactList}
+        \small\item\em Change the type of Normalization.
+    \end{DoxyCompactList}\item
+    double \mbox{\hyperlink{group___cost_eval_gaffe339ef407021ab4948fdd1f9aead90}{fitness\+Function}} (double measured, double expected, double Std\+Dev\+\_\+or\+\_\+zero)
+    \begin{DoxyCompactList}
+        \small\item\em Main function to calculate the cost for one data-\/point. This function can calculate the different possible costs defined inside the costconfig.
+    \end{DoxyCompactList}\item
+    void \mbox{\hyperlink{group___cost_eval_ga54f18fc1e2d0e6fb72708417fe9b3a8d}{test\+Fitness\+Function}} ()
 \end{DoxyCompactItemize}

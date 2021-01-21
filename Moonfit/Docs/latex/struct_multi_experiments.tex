@@ -2,111 +2,116 @@
 \label{struct_multi_experiments}\index{MultiExperiments@{MultiExperiments}}
 
 
-A \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} is made from multiple used-\/defined Experiments, and allows to simulate them together and get a multi-\/experiment cost between simulations and data. The same model is used for each experiment, therefore the same model parameters. Each experiment can be given a coefficient for the total cost calculation.  
+A \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} is made from multiple used-\/defined Experiments, and allows to simulate them together and get a multi-\/experiment cost between simulations and data. The same model is used for each experiment, therefore the same model parameters. Each experiment can be given a coefficient for the total cost calculation.
 
 
 
 
-{\ttfamily \#include $<$experiment.\+h$>$}
+    {\ttfamily \#include $<$experiment.\+h$>$}
 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a1d46930679b1cb2ad79480252d3dff0e}\label{struct_multi_experiments_a1d46930679b1cb2ad79480252d3dff0e}} 
-{\bfseries Multi\+Experiments} (\mbox{\hyperlink{struct_model}{Model}} $\ast$\+\_\+m)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a233ba47e96cd960881566b0b6052a5e2}\label{struct_multi_experiments_a233ba47e96cd960881566b0b6052a5e2}} 
-void {\bfseries Add\+Experiment} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$Ex)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a12a76b613e12f9df04421395860f65fc}\label{struct_multi_experiments_a12a76b613e12f9df04421395860f65fc}} 
-\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries get\+Experiment} (int Big\+Exp\+ID)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a40bcbe79e26c09b921b4b2a1f2b88ed1}\label{struct_multi_experiments_a40bcbe79e26c09b921b4b2a1f2b88ed1}} 
-virtual void {\bfseries politics} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a75528e4cca27927e365e43363eb90f34}\label{struct_multi_experiments_a75528e4cca27927e365e43363eb90f34}} 
-virtual void {\bfseries post\+Politics} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a9eac20a073668f98b977a6ef47ba33cc}\label{struct_multi_experiments_a9eac20a073668f98b977a6ef47ba33cc}} 
-virtual void \mbox{\hyperlink{struct_multi_experiments_a9eac20a073668f98b977a6ef47ba33cc}{simulate}} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL, bool force=false)
-\begin{DoxyCompactList}\small\item\em T\+O\+DO \+: remove evaluator from here. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_multi_experiments_a0d2f650b1f4df4bac840289e30ff84a4}\label{struct_multi_experiments_a0d2f650b1f4df4bac840289e30ff84a4}} 
-void {\bfseries init} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a7429a2c97f73e673f9ce969d65b909ef}\label{struct_multi_experiments_a7429a2c97f73e673f9ce969d65b909ef}} 
-virtual double {\bfseries cost\+Variable\+In\+Model} (int species\+Global\+ID=-\/1)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_acee06c8decdc966365527ebfc468532d}\label{struct_multi_experiments_acee06c8decdc966365527ebfc468532d}} 
-virtual double {\bfseries cost\+External\+Variable} (string ext\+Name=string(\char`\"{}\char`\"{}))
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_aa568e3e4bb6485b9fce8cf50d29e0d2c}\label{struct_multi_experiments_aa568e3e4bb6485b9fce8cf50d29e0d2c}} 
-virtual double {\bfseries cost\+Big\+Exp} (int Big\+Exp\+ID=-\/1)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_adef1ccd18ee1903ff5cad043377cb9ef}\label{struct_multi_experiments_adef1ccd18ee1903ff5cad043377cb9ef}} 
-void {\bfseries reset} ()
-\item 
-void \mbox{\hyperlink{struct_multi_experiments_a3adda73c7718942ca9aeb4f50a538646}{simulate\+All}} (bool force=false)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a11e158ba86895f394e8e73dad98efbc4}\label{struct_multi_experiments_a11e158ba86895f394e8e73dad98efbc4}} 
-int {\bfseries nb\+Big\+Exp} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_af232ce3e104d2946b1f1e56a6ae60207}\label{struct_multi_experiments_af232ce3e104d2946b1f1e56a6ae60207}} 
-string {\bfseries Big\+Exp\+Name} (int i)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_ab1483233bab77e4c2528997186a94aed}\label{struct_multi_experiments_ab1483233bab77e4c2528997186a94aed}} 
-string {\bfseries print} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a799107a8693e063d60b531fff6d6522a}\label{struct_multi_experiments_a799107a8693e063d60b531fff6d6522a}} 
-double {\bfseries get\+Coefficient} (int Big\+Exp\+ID)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_ade154efd8f7913541d970596e0d48b88}\label{struct_multi_experiments_ade154efd8f7913541d970596e0d48b88}} 
-void {\bfseries set\+Coefficient} (int Big\+Exp\+ID, double new\+Value)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a716a55fa0f5262a02851ed8c7a31579f}\label{struct_multi_experiments_a716a55fa0f5262a02851ed8c7a31579f}} 
-double {\bfseries get\+Penalities} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a7317299880b4b85da65c4950232b76dc}\label{struct_multi_experiments_a7317299880b4b85da65c4950232b76dc}} 
-void {\bfseries load\+Evaluators} ()
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_afcbbc349c0d41799d708c6a89798eb23}\label{struct_multi_experiments_afcbbc349c0d41799d708c6a89798eb23}} 
-void {\bfseries override\+Variable} (string ext\+Name\+Var, bool override)
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a8c514da37c388af4ea5bf69c6903d422}\label{struct_multi_experiments_a8c514da37c388af4ea5bf69c6903d422}} 
-string {\bfseries cost\+Report} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a1d46930679b1cb2ad79480252d3dff0e}\label{struct_multi_experiments_a1d46930679b1cb2ad79480252d3dff0e}}
+    {\bfseries Multi\+Experiments} (\mbox{\hyperlink{struct_model}{Model}} $\ast$\+\_\+m)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a233ba47e96cd960881566b0b6052a5e2}\label{struct_multi_experiments_a233ba47e96cd960881566b0b6052a5e2}}
+    void {\bfseries Add\+Experiment} (\mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$Ex)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a12a76b613e12f9df04421395860f65fc}\label{struct_multi_experiments_a12a76b613e12f9df04421395860f65fc}}
+    \mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ {\bfseries get\+Experiment} (int Big\+Exp\+ID)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a40bcbe79e26c09b921b4b2a1f2b88ed1}\label{struct_multi_experiments_a40bcbe79e26c09b921b4b2a1f2b88ed1}}
+    virtual void {\bfseries politics} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a75528e4cca27927e365e43363eb90f34}\label{struct_multi_experiments_a75528e4cca27927e365e43363eb90f34}}
+    virtual void {\bfseries post\+Politics} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a9eac20a073668f98b977a6ef47ba33cc}\label{struct_multi_experiments_a9eac20a073668f98b977a6ef47ba33cc}}
+    virtual void \mbox{\hyperlink{struct_multi_experiments_a9eac20a073668f98b977a6ef47ba33cc}{simulate}} (int Id\+Exp, \mbox{\hyperlink{struct_evaluator}{Evaluator}} $\ast$E=N\+U\+LL, bool force=false)
+    \begin{DoxyCompactList}
+        \small\item\em T\+O\+DO \+: remove evaluator from here.
+    \end{DoxyCompactList}\item
+    \mbox{\Hypertarget{struct_multi_experiments_a0d2f650b1f4df4bac840289e30ff84a4}\label{struct_multi_experiments_a0d2f650b1f4df4bac840289e30ff84a4}}
+    void {\bfseries init} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a7429a2c97f73e673f9ce969d65b909ef}\label{struct_multi_experiments_a7429a2c97f73e673f9ce969d65b909ef}}
+    virtual double {\bfseries cost\+Variable\+In\+Model} (int species\+Global\+ID=-\/1)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_acee06c8decdc966365527ebfc468532d}\label{struct_multi_experiments_acee06c8decdc966365527ebfc468532d}}
+    virtual double {\bfseries cost\+External\+Variable} (string ext\+Name=string(\char`\"{}\char`\"{}))
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_aa568e3e4bb6485b9fce8cf50d29e0d2c}\label{struct_multi_experiments_aa568e3e4bb6485b9fce8cf50d29e0d2c}}
+    virtual double {\bfseries cost\+Big\+Exp} (int Big\+Exp\+ID=-\/1)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_adef1ccd18ee1903ff5cad043377cb9ef}\label{struct_multi_experiments_adef1ccd18ee1903ff5cad043377cb9ef}}
+    void {\bfseries reset} ()
+    \item
+    void \mbox{\hyperlink{struct_multi_experiments_a3adda73c7718942ca9aeb4f50a538646}{simulate\+All}} (bool force=false)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a11e158ba86895f394e8e73dad98efbc4}\label{struct_multi_experiments_a11e158ba86895f394e8e73dad98efbc4}}
+    int {\bfseries nb\+Big\+Exp} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_af232ce3e104d2946b1f1e56a6ae60207}\label{struct_multi_experiments_af232ce3e104d2946b1f1e56a6ae60207}}
+    string {\bfseries Big\+Exp\+Name} (int i)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_ab1483233bab77e4c2528997186a94aed}\label{struct_multi_experiments_ab1483233bab77e4c2528997186a94aed}}
+    string {\bfseries print} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a799107a8693e063d60b531fff6d6522a}\label{struct_multi_experiments_a799107a8693e063d60b531fff6d6522a}}
+    double {\bfseries get\+Coefficient} (int Big\+Exp\+ID)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_ade154efd8f7913541d970596e0d48b88}\label{struct_multi_experiments_ade154efd8f7913541d970596e0d48b88}}
+    void {\bfseries set\+Coefficient} (int Big\+Exp\+ID, double new\+Value)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a716a55fa0f5262a02851ed8c7a31579f}\label{struct_multi_experiments_a716a55fa0f5262a02851ed8c7a31579f}}
+    double {\bfseries get\+Penalities} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a7317299880b4b85da65c4950232b76dc}\label{struct_multi_experiments_a7317299880b4b85da65c4950232b76dc}}
+    void {\bfseries load\+Evaluators} ()
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_afcbbc349c0d41799d708c6a89798eb23}\label{struct_multi_experiments_afcbbc349c0d41799d708c6a89798eb23}}
+    void {\bfseries override\+Variable} (string ext\+Name\+Var, bool override)
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a8c514da37c388af4ea5bf69c6903d422}\label{struct_multi_experiments_a8c514da37c388af4ea5bf69c6903d422}}
+    string {\bfseries cost\+Report} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a42c2dc68a1f89ce31cf256e855d18b5e}\label{struct_multi_experiments_a42c2dc68a1f89ce31cf256e855d18b5e}} 
-\mbox{\hyperlink{struct_model}{Model}} $\ast$ {\bfseries m}
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_aae9272add24c497c7404e9ef192c3a47}\label{struct_multi_experiments_aae9272add24c497c7404e9ef192c3a47}} 
-int {\bfseries Nb\+Big\+Exps}
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_ad7ff370becbbf47f3bcceae277f0e610}\label{struct_multi_experiments_ad7ff370becbbf47f3bcceae277f0e610}} 
-vector$<$ \mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ $>$ {\bfseries List\+Big\+Experiments}
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a99acdf8cda836837969a46928beb52ff}\label{struct_multi_experiments_a99acdf8cda836837969a46928beb52ff}} 
-vector$<$ double $>$ {\bfseries coefficients}
-\item 
-\mbox{\Hypertarget{struct_multi_experiments_a3eaa321056492ff8bf9bfce1a4fb6633}\label{struct_multi_experiments_a3eaa321056492ff8bf9bfce1a4fb6633}} 
-int {\bfseries cpt\+Nb\+Simus}
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a42c2dc68a1f89ce31cf256e855d18b5e}\label{struct_multi_experiments_a42c2dc68a1f89ce31cf256e855d18b5e}}
+    \mbox{\hyperlink{struct_model}{Model}} $\ast$ {\bfseries m}
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_aae9272add24c497c7404e9ef192c3a47}\label{struct_multi_experiments_aae9272add24c497c7404e9ef192c3a47}}
+    int {\bfseries Nb\+Big\+Exps}
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_ad7ff370becbbf47f3bcceae277f0e610}\label{struct_multi_experiments_ad7ff370becbbf47f3bcceae277f0e610}}
+    vector$<$ \mbox{\hyperlink{struct_experiment}{Experiment}} $\ast$ $>$ {\bfseries List\+Big\+Experiments}
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a99acdf8cda836837969a46928beb52ff}\label{struct_multi_experiments_a99acdf8cda836837969a46928beb52ff}}
+    vector$<$ double $>$ {\bfseries coefficients}
+    \item
+    \mbox{\Hypertarget{struct_multi_experiments_a3eaa321056492ff8bf9bfce1a4fb6633}\label{struct_multi_experiments_a3eaa321056492ff8bf9bfce1a4fb6633}}
+    int {\bfseries cpt\+Nb\+Simus}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-A \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} is made from multiple used-\/defined Experiments, and allows to simulate them together and get a multi-\/experiment cost between simulations and data. The same model is used for each experiment, therefore the same model parameters. Each experiment can be given a coefficient for the total cost calculation. 
+A \mbox{\hyperlink{struct_multi_experiments}{Multi\+Experiments}} is made from multiple used-\/defined Experiments, and allows to simulate them together and get a multi-\/experiment cost between simulations and data. The same model is used for each experiment, therefore the same model parameters. Each experiment can be given a coefficient for the total cost calculation.
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{struct_multi_experiments_a3adda73c7718942ca9aeb4f50a538646}\label{struct_multi_experiments_a3adda73c7718942ca9aeb4f50a538646}} 
+\mbox{\Hypertarget{struct_multi_experiments_a3adda73c7718942ca9aeb4f50a538646}\label{struct_multi_experiments_a3adda73c7718942ca9aeb4f50a538646}}
 \index{MultiExperiments@{MultiExperiments}!simulateAll@{simulateAll}}
 \index{simulateAll@{simulateAll}!MultiExperiments@{MultiExperiments}}
 \doxysubsubsection{\texorpdfstring{simulateAll()}{simulateAll()}}
-{\footnotesize\ttfamily void Multi\+Experiments\+::simulate\+All (\begin{DoxyParamCaption}\item[{bool}]{force = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Multi\+Experiments\+::simulate\+All (\begin{DoxyParamCaption}
+                                                                      \item[{bool}]{force = {\ttfamily false} }
+\end{DoxyParamCaption})}
 
 §§§ Danger ! be sure that the cost from previous experiment does not appear anywhere then
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
-\item 
-Framework/experiment.\+h\item 
-Framework/experiment.\+cpp\end{DoxyCompactItemize}
+                                                                               \item
+                                                                               Framework/experiment.\+h\item
+                                                                               Framework/experiment.\+cpp
+\end{DoxyCompactItemize}

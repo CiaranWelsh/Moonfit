@@ -42,33 +42,36 @@
 \endverbatim
 
   \sa QwtPlotMarker
-*/  
+*/
 
-class QWT_EXPORT QwtPlotTextLabel: public QwtPlotItem
-{
+class QWT_EXPORT QwtPlotTextLabel : public QwtPlotItem {
 public:
     QwtPlotTextLabel();
+
     virtual ~QwtPlotTextLabel();
 
     virtual int rtti() const;
 
-    void setText( const QwtText & );
+    void setText(const QwtText &);
+
     QwtText text() const;
 
-    void setMargin( int margin );
+    void setMargin(int margin);
+
     int margin() const;
 
-    virtual QRectF textRect( const QRectF &, const QSizeF & ) const;
+    virtual QRectF textRect(const QRectF &, const QSizeF &) const;
 
 protected:
-    virtual void draw( QPainter *,
-        const QwtScaleMap &, const QwtScaleMap &,
-        const QRectF &) const;
+    virtual void draw(QPainter *,
+                      const QwtScaleMap &, const QwtScaleMap &,
+                      const QRectF &) const;
 
     void invalidateCache();
 
 private:
     class PrivateData;
+
     PrivateData *d_data;
 };
 
