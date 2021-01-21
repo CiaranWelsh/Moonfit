@@ -137,8 +137,7 @@ public:
 
 /// 3 - functions for simulating (automatically calling the sub-class derivatives function, using the solver)
 
-    virtual void simulate(double _sec_max,
-                          Evaluator *E = NULL);    /// @brief Simulates from t (not changed), to t + _sec_max, by calling one_step
+    virtual void simulate(double _sec_max, Evaluator *E = NULL);    /// @brief Simulates from t (not changed), to t + _sec_max, by calling one_step
     /// the evaluator, if given, is a structure that says when to store data from the simulation, and avoids to store everything.
     /// if the simulation diverges, it is stopped and a penalty is computed in the field penalities (of the mother class)
 

@@ -11,10 +11,30 @@
 
 #ifndef modele6Combined_H
 #define modele6Combined_H
+
 #include "../Moonfit/moonfit.h"
 
 namespace Back {
-    enum : long long {WT= 1, B_ReducedInflow = 2, B_MoreDeath = 4, B_MoreOutputThymus = 8, B_FasterDifferentiation = 16, B_SpaceDependentOutput = 32, B_DivisionReduced = 64, B_AllCombined = 127, B_LogisticTotalProlif = 256, B_InitThiault = 512, B_StartSteadyState = 1024, B_BRDU = 2048, B_Reconstitution = 4096, B_ProlifBlocked = 8192, B_UseC0 = 16384, B_UseHighC = 32768, B_UseStep = 65536, B_UseSquare = 131072};
+    enum : long long {
+        WT = 1,
+        B_ReducedInflow = 2,
+        B_MoreDeath = 4,
+        B_MoreOutputThymus = 8,
+        B_FasterDifferentiation = 16,
+        B_SpaceDependentOutput = 32,
+        B_DivisionReduced = 64,
+        B_AllCombined = 127,
+        B_LogisticTotalProlif = 256,
+        B_InitThiault = 512,
+        B_StartSteadyState = 1024,
+        B_BRDU = 2048,
+        B_Reconstitution = 4096,
+        B_ProlifBlocked = 8192,
+        B_UseC0 = 16384,
+        B_UseHighC = 32768,
+        B_UseStep = 65536,
+        B_UseSquare = 131072
+    };
 }
 
 //1: choose model structure, A, B or C
@@ -46,9 +66,6 @@ namespace Back {
 #endif
 
 
-
-
-
 struct modele6GenericTVaslin : public Model {
     modele6GenericTVaslin();
 
@@ -61,39 +78,39 @@ struct modele6GenericTVaslin : public Model {
 
     void calculateParameters(double xFlu = 0.0);
 
-    double          InflowCoeffETP;
-    double          DeathCoeffDN;
-    double          DeathCoeffDP;
-    double          DeathCoeffTconv;
-    double          DeathCoeffProFp3;
-    double          DeathCoeffPro25;
-    double          DeathCoeffDPTregs;
-    double          DeathCoeffSP8;
-    double          DeathCoeffEarlyDP = 0; // attention !
-    double          OutputCoeffOutDP;
-    double          OutputCoeffOutTconv;
-    double          OutputCoeffOutDPTregs;
-    double          OutputCoeffOutProFP3;
-    double          OutputCoeffOutPro25;
-    double          OutputCoeffOutSP8;
-    double          LessDivisionsDN;
-    double          LessDivisionsDP;
-    double          FasterCoeffProFP3;
-    double          FasterCoeffPro25;
-    double          FasterCoeffTconv;
-    double          FasterCoeffSP8;
-    double          OutputCoeffDNtoDP;
-    double          SpaceOutputCoeffAll;
-    double          LessProlifSpeedDN;
-    double          LessProlifSpeedDP;
-    double          LessProlifSpeedTregPro25;
-    double          LessProlifSpeedTregProFP3;
-    double          LessProlifSpeedDPTreg;
-    double          LessProlifSpeedTconv;
-    double          LessProlifSpeedCD8;
-    double          OutputCoeffOutDN; // not used yet
+    double InflowCoeffETP;
+    double DeathCoeffDN;
+    double DeathCoeffDP;
+    double DeathCoeffTconv;
+    double DeathCoeffProFp3;
+    double DeathCoeffPro25;
+    double DeathCoeffDPTregs;
+    double DeathCoeffSP8;
+    double DeathCoeffEarlyDP = 0; // attention !
+    double OutputCoeffOutDP;
+    double OutputCoeffOutTconv;
+    double OutputCoeffOutDPTregs;
+    double OutputCoeffOutProFP3;
+    double OutputCoeffOutPro25;
+    double OutputCoeffOutSP8;
+    double LessDivisionsDN;
+    double LessDivisionsDP;
+    double FasterCoeffProFP3;
+    double FasterCoeffPro25;
+    double FasterCoeffTconv;
+    double FasterCoeffSP8;
+    double OutputCoeffDNtoDP;
+    double SpaceOutputCoeffAll;
+    double LessProlifSpeedDN;
+    double LessProlifSpeedDP;
+    double LessProlifSpeedTregPro25;
+    double LessProlifSpeedTregProFP3;
+    double LessProlifSpeedDPTreg;
+    double LessProlifSpeedTconv;
+    double LessProlifSpeedCD8;
+    double OutputCoeffOutDN; // not used yet
 
-    enum{
+    enum {
         flu,
         DNtot,
         eDPtot,
@@ -153,8 +170,12 @@ struct modele6GenericTVaslin : public Model {
         // Thomas-Vaslin for SP4 and SP8
         SP4totTV,
         SP8totTV,
-        divSP4g0, divSP4g1, divSP4g2,
-        divSP8g0, divSP8g1, divSP8g2,
+        divSP4g0,
+        divSP4g1,
+        divSP4g2,
+        divSP8g0,
+        divSP8g1,
+        divSP8g2,
 
         SP4stage69hi,
         SP4stage69lo,
@@ -184,11 +205,52 @@ struct modele6GenericTVaslin : public Model {
         flowTregP2toDead,
         flowTregtoDead,
 
-        divDNg0, divDNg1, divDNg2, divDNg3, divDNg4, divDNg5, divDNg6, divDNg7, divDNg8, divDNg9, divDNg10, divDNg11, divDNg12, divDNg13, divDNg14, divDNg15, divDNg16, divDNg17, divDNg18, divDNg19, divDNg20, divDNg21, divDNg22, divDNg23, divDNg24, divDNg25, divDNg26, divDNg27, divDNg28, divDNg29, divDNg30LastDiv,
-        eDPg0, eDPg1, eDPg2, eDPg3, eDPg4, eDPg5, eDPg6,eDPg7, eDPg8,eDPg9, eDPg10,
+        divDNg0,
+        divDNg1,
+        divDNg2,
+        divDNg3,
+        divDNg4,
+        divDNg5,
+        divDNg6,
+        divDNg7,
+        divDNg8,
+        divDNg9,
+        divDNg10,
+        divDNg11,
+        divDNg12,
+        divDNg13,
+        divDNg14,
+        divDNg15,
+        divDNg16,
+        divDNg17,
+        divDNg18,
+        divDNg19,
+        divDNg20,
+        divDNg21,
+        divDNg22,
+        divDNg23,
+        divDNg24,
+        divDNg25,
+        divDNg26,
+        divDNg27,
+        divDNg28,
+        divDNg29,
+        divDNg30LastDiv,
+        eDPg0,
+        eDPg1,
+        eDPg2,
+        eDPg3,
+        eDPg4,
+        eDPg5,
+        eDPg6,
+        eDPg7,
+        eDPg8,
+        eDPg9,
+        eDPg10,
 
-        NbVariables};
-    enum{
+        NbVariables
+    };
+    enum {
         flu_peak,
         flu_std,
         fETP_tDN, // inflow
@@ -238,7 +300,6 @@ struct modele6GenericTVaslin : public Model {
         out_tDPTregs,
 
 
-
         // Parameters T-Vaslin
         NdivSP4,
         pSP4,
@@ -254,7 +315,10 @@ struct modele6GenericTVaslin : public Model {
         out_tTregFP3,
 
         fracTtoS,
-        dsTconv, dsTreg, dsCD8, dsBcells,
+        dsTconv,
+        dsTreg,
+        dsCD8,
+        dsBcells,
         decayRag,
 
         // Hypotheses parameters
@@ -302,23 +366,30 @@ struct modele6GenericTVaslin : public Model {
         logisticThymus,
         logisticStrength,
 
-        NbParameters};
+        NbParameters
+    };
 
     long long background; // for different models
     virtual void derivatives(const vector<double> &x, vector<double> &dxdt, const double t);
+
     void initialise(long long _background = Back::WT);
-	void setBaseParameters();
+
+    void setBaseParameters();
+
     void updateDerivedVariables(double _t);
 
-    void action(string name, double parameter){
-        if(!name.compare("wash")){
-            if((parameter > 1.0) || (parameter < 0)) {cerr << "ERR: ModeleMinLatent::action(" << name << ", " << parameter << "), wrong parameter value\n"; return;}
+    void action(string name, double parameter) {
+        if (!name.compare("wash")) {
+            if ((parameter > 1.0) || (parameter < 0)) {
+                cerr << "ERR: ModeleMinLatent::action(" << name << ", " << parameter << "), wrong parameter value\n";
+                return;
+            }
             // val[xxx] =   xxx; // example of how the hell it works
             return;
         }
     }
 
-    virtual ~modele6GenericTVaslin(){}
+    virtual ~modele6GenericTVaslin() {}
 };
 
 #endif
