@@ -101,7 +101,7 @@ void compileLatex(string folderRes,
 void mergePDFs(vector<string> &listFiles, string outputFile,
                string compilingFolder = "");  /// @brief merges PDF files into one with a new name
 
-bool dirExists(string dirName);
+bool dirExists(const string& dirName);
 
 string currentDir();
 

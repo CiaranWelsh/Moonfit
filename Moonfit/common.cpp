@@ -63,7 +63,7 @@ namespace fs = std::filesystem;
 #endif // __cplusplus >= 201703L
 
 
-bool dirExists(string dirName) {
+bool dirExists(const string& dirName) {
 
 #if defined(UNIX) || defined(MAC)
     struct stat info;

@@ -10,6 +10,9 @@ target_link_libraries(${target} PUBLIC
         Framework
         linux2win
         )
+if (UNIX)
+    target_link_libraries(${target} PUBLIC stdc++fs)
+endif ()
 
 
 

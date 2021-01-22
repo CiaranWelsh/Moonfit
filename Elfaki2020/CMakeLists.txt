@@ -7,15 +7,17 @@ add_executable(${target} expThymus mainThymus modelsStructABC
         )
 
 target_link_libraries(${target} PRIVATE
-        SRES-static
-        optimizers
-        Framework
         myCommon
+        optimizers
+        SRES-static
+        Framework
+        linux2win
+        Moonfit
         )
 
 target_compile_definitions(${target} PRIVATE ModelStructureA)
 target_include_directories(${target} PRIVATE ../Moonfit/Extreminator/common)
-
+add_dependencies(${target} Moonfit)
 
 
 
