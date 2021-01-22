@@ -7,7 +7,7 @@ add_executable(${target} expThymus mainThymus modelsStructABC
         )
 
 target_link_libraries(${target} PRIVATE
-        ESES
+        SRES-static
         optimizers
         Framework
         myCommon

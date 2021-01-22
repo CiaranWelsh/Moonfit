@@ -15,14 +15,15 @@ add_library(
         population
         scalingFunctions
         simulatedAnnealing
-        SRES SRES.cc
+        SRES.h
+        SRES.cc
 )
 
 
 target_include_directories(${target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ../include ../common ../../../Moonfit)
-target_link_libraries(${target} PUBLIC ESES)
+target_link_libraries(${target} PUBLIC SRES-static)
 
 target_compile_definitions(${target} PUBLIC WITHOUT_QT)
 

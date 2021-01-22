@@ -35,6 +35,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 # export all on windows. Ignored on other.
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 # setup some paths that will be used for the INSTALL_RPATH paths on systems that
 # support it. Adapt the "ORIGIN" to the APPLE use case
 if (APPLE)
