@@ -23,6 +23,46 @@ using namespace std;
 
 #endif
 
+
+/**
+ * (cw) macros for including the filesystem on c++17 in cross platform way.
+ * This way I don't have to figure out how to fix old code in cross platform way
+ * Usage: fs namespace to replace both filesystem and experimental::filestsyem
+ */
+#if __cplusplus >= 201703L // c++17 or above
+
+// if using gcc 8.0 or greater we can use <filesystem>
+// otherwise we need experimental/filesystem
+//#pragma message( "Compiling " __FILE__ )
+//#define CPLUSPLUS(X) #X
+//#define SCPLUSPLUS(X) CPLUSPLUS(X)
+//#pragma message( "The value of __cplusplus is: " SCPLUSPLUS(__cplusplus) )
+#   if __GNU__
+/*
+ *      For gcc 4.0.1
+ *      #define __GNUC__ 4
+ *      #define __GNUC_MINOR__ 0
+ *      #define __GNUC_PATCHLEVEL__ 1
+ *
+ */
+#       if __GNUC__ >= 8
+#          include <filesystem>
+namespace fs = std::filesystem;
+#        else
+#       include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#       endif
+#   else
+/**
+ * we assume microsoft and apple have their shit together
+ */
+#   include <filesystem>
+namespace fs = std::filesystem;
+
+#   endif //__GNU__
+#endif // __cplusplus >= 201703L
+
+
 bool dirExists(string dirName) {
 
 #if defined(UNIX) || defined(MAC)
@@ -48,30 +88,13 @@ bool dirExists(string dirName) {
 #endif
 }
 
-#if __cplusplus >= 201703L // c++17 or above
 
-// if using gcc 8.0 or greater we can use <filesystem>
-// otherwise we need experimental/filesystem
-/*
- * For gcc 4.0.1
- * #define __GNUC__ 4
- * #define __GNUC_MINOR__ 0
- * #define __GNUC_PATCHLEVEL__ 1
- *
- */
-#if __GNUC__ >= 8
-#   include <filesystem>
-#   define FILESYSTEM std::filesystem
-# else
-#include <experimental/filesystem>
-#   define FILESYSTEM std::experimental::filesystem
-#endif
-
+#if __cplusplus >= 201703L
 void createFolder(const string &folderName) {
-    if (FILESYSTEM::is_directory(folderName)) {
+    if (fs::is_directory(folderName)) {
         return;
     } else {
-        FILESYSTEM::create_directory(folderName);
+        fs::create_directory(folderName);
     }
 }
 
@@ -115,6 +138,16 @@ string removeFolderFromFile(string file) {
 
 
 using namespace std;
+#if __cplusplus >= 201703L
+std::vector<std::string> listSubDirectories(const std::string& dir){
+    std::vector<std::string> r;
+    for(auto& p : std::filesystem::recursive_directory_iterator(dir))
+        if (p.is_directory())
+            r.push_back(p.path().string());
+    return r;
+}
+
+#else
 
 #ifdef WINDOWS
 // here, keep the whole path
@@ -158,7 +191,11 @@ vector<string> listSubDirectories(string dir)
     chdir(originalDirectory);
     return res;
 }
-#endif
+#endif // ifdef WINDOWS
+#endif // #if __cplusplus >= 201703L
+
+
+
 #if defined(UNIX) || defined(MAC)
 
 // here, keep the whole path
@@ -182,6 +219,11 @@ vector<string> listSubDirectories(string namedir) {
 
 #endif
 
+#if __cplusplus >= 201703L
+string currentDir() {
+    return fs::current_path().string();
+}
+#else
 
 #ifdef WINDOWS
 string currentDir(){
@@ -192,6 +234,7 @@ string currentDir(){
     return res;
 }
 #endif
+
 
 #if defined(UNIX) || defined(MAC)
 
@@ -204,6 +247,7 @@ string currentDir() {
 }
 
 #endif
+#endif // #if __cplusplus >= 201703L
 
 
 // from http://www.cplusplus.com/reference/string/string/find_last_of/
@@ -250,6 +294,17 @@ vector<string> getAllResultSubFolders(string dir) {
     return res;
 }
 
+#if __cplusplus >= 201703L
+
+vector<string> listFilesInDir(string dir, string containing) {
+    std::string path = "/path/to/directory";
+    vector<string> x;
+    for (const auto &entry : fs::directory_iterator(path))
+        x.push_back(entry.path().string());
+    return x;
+}
+
+#else
 #ifdef WINDOWS
 vector<string> listFilesInDir(string dir, string containing)
 {
@@ -330,6 +385,7 @@ vector<string> listFilesInDir(string namedir, string containing)
     return res;
 }
 #endif
+#endif //#if __cplusplus >= 201703L
 
 
 // I don't use qtcreator/qt routines here because it should be able to work in a Qt free computer as well.

@@ -90,7 +90,7 @@ using namespace std;
 
 void createFolder(const string& folderName);       // because this sh** is OS dependent, better in a function
 
-vector<string> listSubDirectories(string dir);
+vector<string> listSubDirectories(const string& dir);
 
 string removeFolderFromFile(string file);
 

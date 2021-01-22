@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "myRandom.h"
+#include "linux2win/linux2win_time.h"
 
 namespace myRandom {
 

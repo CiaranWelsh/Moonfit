@@ -58,6 +58,14 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
 
+# Wierd bug on windows:
+# the __cplusplus macro always defaults to 199711L regardless of which version of
+# c++ you are using. This is fixed: https://devblogs.microsoft.com/cppblog/msvc-now-correctly-reports-__cplusplus/
+# but requires that we define the Zc:__cplusplus switch for the duration of MSVC version 19 compilers.
+if (WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+endif ()
+
 ############################################################################
 #       Options
 #
