@@ -71,7 +71,7 @@ void freeIndividual(ESIndividual *individual) {
 
 ESPopulation *makePopulation() {
     auto *population = (ESPopulation *) malloc(sizeof(ESPopulation));
-
+    return population;
 }
 
 void freePopulation(ESPopulation *population) {

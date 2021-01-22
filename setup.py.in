@@ -1,7 +1,7 @@
-# This setup.py uses cmake to pass some variables like version
-# to the python setup script. Before use, cmake must configure this
-# file.
-# you may run python setup.py from the binary tree after you have ran cmake
+# this configuration file is copied into build tree by cmake.
+# you should install the package then you can run setup.py from there
+
+
 from setuptools import setup
 import os, glob
 

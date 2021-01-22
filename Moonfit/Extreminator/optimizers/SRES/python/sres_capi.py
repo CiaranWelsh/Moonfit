@@ -224,7 +224,7 @@ class _SRES:
      */
     """
     # double do_nothing_transform(double x);
-    do_nothing_transform = Util.load_func(
+    do_nothing_transform = util.load_func(
         funcname="do_nothing_transform",
         argtypes=[
             ct.c_double
@@ -242,7 +242,7 @@ class _SRES:
      */
     """
     # void rss_cost(double *x, double *f, double *g); // (CW) still to implement, but how/
-    rss_cost = Util.load_func(
+    rss_cost = util.load_func(
         funcname="rss_cost",
         argtypes=[
             ct.c_uint64,  # double*
