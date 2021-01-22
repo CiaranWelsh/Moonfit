@@ -15,7 +15,7 @@ void TableCourse::reset() {
 void TableCourse::setHeader(int i, string title) {
     // Header (0) = titre des attributs !!, commence à 1 !!
     if ((i < 0) || (i > nbVar)) {
-        cerr << "ERR:setHeades, out of bounds " << i << endl;
+        std::cerr << "ERR:setHeades, out of bounds " << i << std::endl;
         return;
     }
     headers[i] = title;
@@ -28,7 +28,7 @@ TableCourse::TableCourse(string fileToRead) {
 }
 
 TableCourse::~TableCourse() {
-    //cerr << "DeleteKin" << print() << endl;
+    //std::cerr << "DeleteKin" << print() << std::endl;
     int S = storage.size();
     for (int i = 0; i < S; ++i) {
         if (storage[i]) delete storage[i];
@@ -40,10 +40,10 @@ TableCourse::TableCourse(TableCourse *toCopy) {
     nbVar = toCopy->nbVar;
     reset();
     nbLignes = toCopy->nbLignes;
-    //if((int) toCopy->attribut.size() !=  nbLignes) {cerr << "ERR TableCourse::TableCourse(other TableCourse), attribut[] has wrong size" << endl; return;}
-    //if((int) toCopy->storage.size() !=  nbLignes) {cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[] has wrong size" << endl; return;}
+    //if((int) toCopy->attribut.size() !=  nbLignes) {std::cerr << "ERR TableCourse::TableCourse(other TableCourse), attribut[] has wrong size" << std::endl; return;}
+    //if((int) toCopy->storage.size() !=  nbLignes) {std::cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[] has wrong size" << std::endl; return;}
     if ((int) toCopy->headers.size() != nbVar + 1) {
-        cerr << "ERR TableCourse::TableCourse(other TableCourse), headers[] has wrong size" << endl;
+        std::cerr << "ERR TableCourse::TableCourse(other TableCourse), headers[] has wrong size" << std::endl;
         return;
     }
     attribut.resize(nbLignes, 0);
@@ -52,7 +52,7 @@ TableCourse::TableCourse(TableCourse *toCopy) {
         storage[i] = new vector<double>(nbVar, 0.0);
         attribut[i] = toCopy->attribut[i];
         if ((int) toCopy->storage[i]->size() != nbVar) {
-            cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[" << i << "] has wrong size" << endl;
+            std::cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[" << i << "] has wrong size" << std::endl;
             return;
         }
         for (int j = 0; j < nbVar; ++j) {
@@ -65,31 +65,31 @@ TableCourse::TableCourse(TableCourse *toCopy) {
 }
 
 TableCourse::TableCourse(const TableCourse &toCopy) {
-    // cerr << "ERR: implicit copy !!!" << endl;
+    // std::cerr << "ERR: implicit copy !!!" << std::endl;
     // sadly this function is called implicitely when resizing currentData which is a vector of tablecourse...
     nbVar = toCopy.nbVar;
     reset();
     nbLignes = toCopy.nbLignes;
     if ((int) toCopy.headers.size() != nbVar + 1) {
-        cerr << "ERR TableCourse::TableCourse(other TableCourse), headers[] has wrong size" << endl;
+        std::cerr << "ERR TableCourse::TableCourse(other TableCourse), headers[] has wrong size" << std::endl;
         return;
     }
     attribut.resize(nbLignes, 0);
     storage.resize(nbLignes, NULL);
     for (int i = 0; i < nbLignes; ++i) {
         if ((int) toCopy.attribut.size() != nbLignes) {
-            cerr << "ERR TableCourse::TableCourse(other TableCourse), attribut[] has wrong size" << endl;
+            std::cerr << "ERR TableCourse::TableCourse(other TableCourse), attribut[] has wrong size" << std::endl;
             return;
         }
         if ((int) toCopy.storage.size() != nbLignes) {
-            cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[] has wrong size" << endl;
+            std::cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[] has wrong size" << std::endl;
             return;
         }
 
         storage[i] = new vector<double>(nbVar, 0.0);
         attribut[i] = toCopy.attribut[i];
         if ((int) toCopy.storage[i]->size() != nbVar) {
-            cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[" << i << "] has wrong size" << endl;
+            std::cerr << "ERR TableCourse::TableCourse(other TableCourse), storage[" << i << "] has wrong size" << std::endl;
             return;
         }
         for (int j = 0; j < nbVar; ++j) {
@@ -109,10 +109,10 @@ double TableCourse::operator()(int vari, typeTime timej) {
 }
 
 void TableCourse::addSet(double attr, vector<double> &toCopy) {
-    //if(!toCopy) {cerr << "ERR: TableCourse, given table doesn't exist (NULL)" << endl; return;}
+    //if(!toCopy) {std::cerr << "ERR: TableCourse, given table doesn't exist (NULL)" << std::endl; return;}
     if ((int) toCopy.size() != nbVar) {
-        cerr << "ERR: TableCourse, given table has wrong size (" << toCopy.size() << ") instead of NbVar = " << nbVar
-             << endl;
+        std::cerr << "ERR: TableCourse, given table has wrong size (" << toCopy.size() << ") instead of NbVar = " << nbVar
+             << std::endl;
         return;
     }
     attribut.push_back(attr);
@@ -125,18 +125,18 @@ void TableCourse::addSet(double attr, vector<double> &toCopy) {
 }
 
 string TableCourse::print(bool fileExportVersion) {
-    stringstream res;
+    std::stringstream res;
     if (fileExportVersion) res << attribut.size() << "\t" << headers.size() - 1 << "\n";
     else
         res << "sizes : header " << headers.size() << " Attr" << attribut.size() << " storage" << storage.size()
-            << " & nbLignes = " << nbLignes << endl;
+            << " & nbLignes = " << nbLignes << std::endl;
 
     res << headers[0];
     for (int i = 1; i <= nbVar; ++i) {
         //if(fileExportVersion) if(headers[i-1].size() < 8) res << "\t"; // to align the headers whti the following data (when >= 8, the tab is shifted)
         res << "\t" << headers[i];
     }
-    res << "\n"; // << std::fixed << setprecision(6);
+    res << "\n"; // << std::fixed << std::setprecision(6);
     for (int i = 0; i < nbLignes; ++i) {
         res << attribut[i];
         for (int j = 0; j < nbVar; ++j) {
@@ -148,7 +148,7 @@ string TableCourse::print(bool fileExportVersion) {
 }
 
 void TableCourse::save(string fileName, string title) {
-    ofstream fichier(fileName.c_str(), ios::out);
+    std::ofstream fichier(fileName.c_str(), std::ios::out);
     if (fichier) {
         //fichier << "#   Time course for " << title << "\n";
         fichier << storage.size() << "\t" << headers.size() - 1 << "\n";
@@ -180,11 +180,11 @@ void TableCourse::read(string fileName) {
     nbLignes = 0;
     nbVar = 0;
     reset();
-    ifstream fichier(fileName.c_str(), ios::out);
+    std::ifstream fichier(fileName.c_str(), std::ios::out);
     if (fichier) {
         fichier >> nbLignes >> nbVar;
-        cout << "      Reading kinetics from file " << fileName << ", got NbLignes : " << nbLignes << ", nbVar :"
-             << nbVar << endl;
+        std::cout << "      Reading kinetics from file " << fileName << ", got NbLignes : " << nbLignes << ", nbVar :"
+             << nbVar << std::endl;
         int nbLignesToRemember = nbLignes;//because of reset
         reset();    // to put everything to the good size
         string push;
@@ -194,13 +194,13 @@ void TableCourse::read(string fileName) {
             fichier >> push;
             setHeader(i, push);
         }
-        stringstream tempBuffer;
+        std::stringstream tempBuffer;
         for (int i = 0; i < nbLignesToRemember; ++i) {
             double attr;
             fichier >> attr;
             vector<double> values;
 
-            // Shit happens with iostream : NaN and inf are not recognized by iostream => read string, and then converts to number via a stringstream
+            // Shit happens with iostream : NaN and inf are not recognized by iostream => read string, and then converts to number via a std::stringstream
             double db;
             string trash;
             for (int j = 0; j < nbVar; ++j) {
@@ -209,13 +209,13 @@ void TableCourse::read(string fileName) {
                     (!trash.compare("+inf")) || (!trash.compare("-inf")) || (!trash.compare("inf"))) {
                     trash.clear();
                     values.push_back(NAN);
-                    //cout << "NaN" << "\t";
+                    //std::cout << "NaN" << "\t";
                 } else {
                     tempBuffer << trash;
                     tempBuffer >> db;
                     tempBuffer.clear();
                     values.push_back(db);
-                    //cout << db << "\t";
+                    //std::cout << db << "\t";
                 }
                 /*
                 if(fichier >> db){
@@ -225,20 +225,20 @@ void TableCourse::read(string fileName) {
                     string potentialNaN;
                     fichier >> potentialNaN;
                     fichier.unget();
-                    //cout << "Success " << potentialNaN;
+                    //std::cout << "Success " << potentialNaN;
                 }
-                cout << db << "\t"; */
+                std::cout << db << "\t"; */
             }
-            //cout << endl;
+            //std::cout << std::endl;
             addSet(attr, values);
         }
         fichier.close();
-    } else cerr << "ERR:TableCourse::read(" << fileName << ", file not found - note that the tablecourse was cleared\n";
+    } else std::cerr << "ERR:TableCourse::read(" << fileName << ", file not found - note that the tablecourse was cleared\n";
 }
 
 
 int TableCourse::findPosition(string nameVariable) {
-    //cout << "look for " << sname;
+    //std::cout << "look for " << sname;
     int n = nbVar;
     for (int i = 1; i < n + 1; ++i) {
         if (!(headers[i]).compare(nameVariable)) return i - 1;
@@ -250,7 +250,7 @@ int TableCourse::findPosition(string nameVariable) {
 vector<double> TableCourse::getTimeCourse(int var) {
     vector<double> res = vector<double>();
     if ((var < 0) || (var > nbVar)) {
-        cerr << "ERR::TableCourse, getTimeCourse(" << var << "), out of bounds. nbVars = " << nbVar << endl;
+        std::cerr << "ERR::TableCourse, getTimeCourse(" << var << "), out of bounds. nbVars = " << nbVar << std::endl;
         return res;
     }
     //res.resize(nbLignes);
@@ -270,14 +270,14 @@ vector<double> TableCourse::getTimePoints(int var) {
     }
     vector<double> res = vector<double>();
     if (var > nbVar) {
-        cerr << "ERR::TableCourse, getTimePoints(" << var << "), out of bounds. nbVars = " << nbVar << endl;
+        std::cerr << "ERR::TableCourse, getTimePoints(" << var << "), out of bounds. nbVars = " << nbVar << std::endl;
         return res;
     }
     for (int i = 0; i < nbLignes; ++i) {
         double currentVal = (*(storage[i]))[var];
         if (!(std::isnan(currentVal) || std::isinf(currentVal))) {
             res.push_back(attribut[i]);
-        } //else cout << "!";
+        } //else std::cout << "!";
     }
     return res;
 }
@@ -286,12 +286,12 @@ vector<double> TableCourse::getTimePoints(int var) {
 // timePoints should be ordered !!!
 TableCourse TableCourse::subKinetics(vector<int> timePoints,
                                      vector<string> namesVariables /* same names than in the tablecourse */) {
-    cout << "  --> Extracting subKinetics ..." << endl;
+    std::cout << "  --> Extracting subKinetics ..." << std::endl;
 
     int nbTP = timePoints.size();
     int nbWantedVars = namesVariables.size();
     if (nbTP == 0) {
-        cerr << "ERR: TableCourse::subKinetics, no time point given " << endl;
+        std::cerr << "ERR: TableCourse::subKinetics, no time point given " << std::endl;
         return TableCourse(0);
     }
     sort(timePoints.begin(), timePoints.end());     // the time points should be sorted !!
@@ -307,17 +307,17 @@ TableCourse TableCourse::subKinetics(vector<int> timePoints,
             listeNamesNewTable.push_back(headers[i]);
         }
     } else {
-        stringstream errs;
+        std::stringstream errs;
         for (int i = 0; i < nbWantedVars; ++i) {
             string wantedVar = namesVariables[i];
             bool done = false;
             for (int j = 1; j < (int) headers.size(); ++j) {
                 if (!headers[j].compare(wantedVar)) {   // if the jth variable
-                    //cout << " compare " << headers[j] << " and " << wantedVar << endl;
+                    //std::cout << " compare " << headers[j] << " and " << wantedVar << std::endl;
                     if (!done) {
                         listeNamesNewTable.push_back(wantedVar);
                         if (placeHeaderInNewKin[j] >= 0)
-                            cerr << "ERR : TableCourse::subKinetics, you're asking twice the same variable !!\n";
+                            std::cerr << "ERR : TableCourse::subKinetics, you're asking twice the same variable !!\n";
                         placeHeaderInNewKin[j] = listeNamesNewTable.size() - 1;
                     } // i.e. the last position
                     done = true;
@@ -326,8 +326,8 @@ TableCourse TableCourse::subKinetics(vector<int> timePoints,
             if (!done) errs << "\t" << namesVariables[i];
         }
         if (errs.str().size() > 0)
-            cerr << "WRN : TableCourse::subKinetics, variables not found (probably not simulated) in kinetics"
-                 << errs.str() << endl;
+            std::cerr << "WRN : TableCourse::subKinetics, variables not found (probably not simulated) in kinetics"
+                 << errs.str() << std::endl;
     }
 
     int nbVarReduced = listeNamesNewTable.size();
@@ -349,13 +349,13 @@ TableCourse TableCourse::subKinetics(vector<int> timePoints,
                     data[placeHeaderInNewKin[j + 1]] = (*(storage[i]))[j];
             }
             if ((int) data.size() != nbVarReduced)
-                cerr << "ERR : TableCourse::subKinetics, for time point " << attribut[i]
+                std::cerr << "ERR : TableCourse::subKinetics, for time point " << attribut[i]
                      << " , some variables where not found. Should not happen !!\n";
             Tbres.addSet(attribut[i], data);
         }
     }
     if (pointerTimePoint < nbTP)
-        cerr << "WRN :  TableCourse::subKinetics, some time points were not found (first not found is : "
+        std::cerr << "WRN :  TableCourse::subKinetics, some time points were not found (first not found is : "
              << timePoints[pointerTimePoint] << ")\n";
 
     return Tbres;

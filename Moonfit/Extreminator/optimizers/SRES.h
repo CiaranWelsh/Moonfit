@@ -18,7 +18,9 @@
 #include "SRES/ESES.h"
 #include "SRES/ESSRSort.h"
 #include "SRES/sharefunc.h"
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 using namespace OrganismLib;
 
 #define DBG 0

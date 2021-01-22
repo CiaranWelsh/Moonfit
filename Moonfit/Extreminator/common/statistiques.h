@@ -13,12 +13,25 @@
 /// @brief A general class implementing simple genetic algorithm with cross-over ans mutation
 ///
 
+// for windows to prevent minwindef.h including min or max macros
+#define NOMINMAX
+#ifdef min
+# undef min
+#endif
+#ifdef max
+# undef max
+#endif
+
+
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include "myFiles.h"
 #include "myRandom.h"
 #include <vector>
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 
 struct statistique{
@@ -45,8 +58,8 @@ struct statistique{
 	void add(double d){
 		sum += d;
 		nb++;
-		best = min(best, d);
-		worse = max(worse, d);
+		best = std::min(best, d);
+		worse = std::max(worse, d);
 		
 		if(stock_used >= (stock_size-1)){
 			stock_size *= 2;

@@ -17,7 +17,9 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 enum EXP{PBS, MoreDeath, MoreOutputThymus, FasterDifferentiation, DivisionReduced, LogisticTotalProlif, ReducedInflow, LogisticTotalProlifMoreOut, LogisticTotalProlifFasterDiff, NB_EXP}; // AllCombined, , Infection, ReducedInflow, SpaceDependentOutput, NB_EXP};// experiments
 

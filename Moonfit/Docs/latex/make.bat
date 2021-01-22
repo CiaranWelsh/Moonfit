@@ -24,7 +24,7 @@ echo ----
 %LATEX_CMD% refman
 goto :repeat
 :skip
-endlocal
+std::endlocal
 makeindex refman.idx
 %LATEX_CMD% refman
 cd /D %Dir_Old%

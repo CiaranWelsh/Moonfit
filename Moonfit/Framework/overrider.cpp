@@ -7,7 +7,7 @@ overrider::overrider() : nbIndices(0) { nbIDsGiven = 0; }
 overrider::overrider(TableCourse *kinetics, bool useSplines) : nbIndices(0) {
     nbIDsGiven = 0;
     if (!kinetics) {
-        cerr << "ERR: Overrider created from an empty pointer to TableCourse" << endl;
+        std::cerr << "ERR: Overrider created from an empty pointer to TableCourse" << std::endl;
         return;
     }
     for (int i = 0; i < kinetics->nbVar; ++i) {
@@ -45,7 +45,7 @@ void overrider::reset() {
 
 void overrider::extend(int newNbIndices) {
     if (newNbIndices > nbIndices) {
-        //cout << "Extend Overrider, new size " << newNbIndices << endl;
+        //std::cout << "Extend Overrider, new size " << newNbIndices << std::endl;
         typeStorage.resize(newNbIndices, NODATA);
         dataSpl.resize(newNbIndices, NULL);
         dataFunct.resize(newNbIndices);
@@ -57,7 +57,7 @@ void overrider::extend(int newNbIndices) {
 bool overrider::hasData(key nameVar) {
     int index = getID(nameVar);
     if ((index < 0) || (index >= nbIndices)) return false;
-    //cout << "HasData(index=" << index << "), max = " << nbIndices << endl;
+    //std::cout << "HasData(index=" << index << "), max = " << nbIndices << std::endl;
     switch (typeStorage[index]) {
         case NODATA: {
             return false;
@@ -103,23 +103,23 @@ bool overrider::operator()(key nameVar) {
 
 void overrider::learnSpl(key nameVar, vector<double> xs, vector<double> ys, bool yesSplnoLinearInterpol) {
     if (hasData(nameVar)) {
-        cerr << "WRN : overrider::learnSpl, data was already saved for  " << nameVar << "; data overrided.\n";
+        std::cerr << "WRN : overrider::learnSpl, data was already saved for  " << nameVar << "; data overrided.\n";
     }
     int index = getID(nameVar);
     if (xs.size() != ys.size()) {
-        cerr << "ERR: overrider::learnSpl, the vectors xs and ys should have the same size\n";
+        std::cerr << "ERR: overrider::learnSpl, the vectors xs and ys should have the same size\n";
         return;
     }
     spline *SP = new spline();
 
-    /*cout << "learning, ID=" << index << " " << CodingName(index) << endl;
+    /*std::cout << "learning, ID=" << index << " " << CodingName(index) << std::endl;
     for(int i = 0; i < xs.size(); ++i){
-        cout << xs[i] << "\t";
-    } cout << endl;
+        std::cout << xs[i] << "\t";
+    } std::cout << std::endl;
     for(int i = 0; i < ys.size(); ++i){
-        cout << ys[i] << "\t";
-    } cout << endl;
-    cout << endl;*/
+        std::cout << ys[i] << "\t";
+    } std::cout << std::endl;
+    std::cout << std::endl;*/
 
     SP->set_points(xs, ys, yesSplnoLinearInterpol);
     extend(index + 1);    /// extend the data structure if required
@@ -138,13 +138,13 @@ void overrider::setOver(key nameVar, bool value) { // put string("") to mean all
     if ((index < 0) || (index >= nbIndices)) {
         if (!value) return;
         else {
-            cerr << "ERR : overrider::setOver(index=" << index << ", value = " << (value ? "true" : "false")
+            std::cerr << "ERR : overrider::setOver(index=" << index << ", value = " << (value ? "true" : "false")
                  << "), this index does not refer to any stored data (index out of bounds)\n";
             return;
         }
     }
     if ((!hasData(nameVar)) && (value)) {
-        cerr << "ERR : overrider::setOver(" << nameVar << ", value = " << (value ? "true" : "false")
+        std::cerr << "ERR : overrider::setOver(" << nameVar << ", value = " << (value ? "true" : "false")
              << "), this index does not refer to any stored data (no data for this index)\n";
         return;
     }
@@ -154,7 +154,7 @@ void overrider::setOver(key nameVar, bool value) { // put string("") to mean all
 
 void overrider::learnFunct(key nameVar, double (*f)(double)) {
     if (hasData(nameVar)) {
-        cerr << "WRN : overrider::learnFunct, data was already saved for " << nameVar << "; data overrided.\n";
+        std::cerr << "WRN : overrider::learnFunct, data was already saved for " << nameVar << "; data overrided.\n";
     }
     int index = getID(nameVar);
     //extend(index+1); no more necessary because the getID will do it
@@ -167,10 +167,10 @@ double ff(double x) {
 }
 
 string overrider::print() {
-    stringstream res;
+    std::stringstream res;
     res << "Overrider with " << nbIndices << " curves\n";
-    if (nbIndices != (int) typeStorage.size()) res << "ERR : typeStorage has size " << typeStorage.size() << endl;
-    if (nbIndices != (int) override.size()) res << "ERR : typeStorage has size " << override.size() << endl;
+    if (nbIndices != (int) typeStorage.size()) res << "ERR : typeStorage has size " << typeStorage.size() << std::endl;
+    if (nbIndices != (int) override.size()) res << "ERR : typeStorage has size " << override.size() << std::endl;
 
 
     for (std::map<key, int>::iterator it = name2ID.begin(); it != name2ID.end(); ++it) {
@@ -193,7 +193,7 @@ string overrider::print() {
                 res << "ERR: Non Identified type";
             }
         }
-        res << "\t" << (override[i] ? "YES:override" : "NO:dont override") << endl;
+        res << "\t" << (override[i] ? "YES:override" : "NO:dont override") << std::endl;
     }
 
     return res.str();
@@ -232,12 +232,12 @@ void testOverrider() {
     ov.learnSpl(Na[4], px, py, false);
 
     for (int i = 0; i < 10; ++i) {
-        if (ov.hasData(Na[i])) cout << "Ov has data at index " << Na[i] << endl;
+        if (ov.hasData(Na[i])) std::cout << "Ov has data at index " << Na[i] << std::endl;
     }
     for (double dd = 0; dd < 30; dd += 0.5) {
-        cout << "\n" << dd;
+        std::cout << "\n" << dd;
         for (int i = 1; i <= 4; ++i) {
-            cout << "\t" << ov(Na[i], dd);
+            std::cout << "\t" << ov(Na[i], dd);
         }
     }
 

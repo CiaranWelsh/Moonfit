@@ -108,7 +108,7 @@ typedef struct {
  ** sp[dim]: strategy parameters                                    **
  ** f: fitness                                                      **
  ** g[constraint]: constraint value                                 **
- ** phi: phi = sum( max(0,g)^2 )                                    **
+ ** phi: phi = sum( max_(0,g)^2 )                                    **
  *********************************************************************/
 typedef struct {
     double *op;

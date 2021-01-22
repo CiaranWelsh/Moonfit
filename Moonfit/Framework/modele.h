@@ -37,7 +37,6 @@
 
 #endif
 #define DEFAULT_BACKGROUND_VALUE    1
-using namespace std;
 
 
 /// @defgroup Model Dynamical Model
@@ -52,7 +51,7 @@ using namespace std;
 /// It pre-defines all basic functions for simulations and data management, including calling ODE solver.
 /// Agent-based models needs to use the derived modelAgentBased class as mother (see below).
 struct Model {
-    string name;                                            /// @brief Name of this model
+    std::string name;                                            /// @brief Name of this model
 
     /// The general constraints your Model subclass should follow are here :
 
@@ -66,18 +65,18 @@ struct Model {
 public:
     int nbVars;
     int nbParams;
-    vector<double> init;                                    /// @brief initial values of variables (size bVars)
-    vector<double> params;                                  /// @brief parameter values (size nbParams)
-    vector<string> names;                                   /// @brief names of the variables
-    vector<string> paramNames;                              /// @brief names of the parameters
-    vector<string> extNames;                                /// @brief the 'official/global/external' name of each variable, when reading data / kinetics
+    std::vector<double> init;                                    /// @brief initial values of variables (size bVars)
+    std::vector<double> params;                                  /// @brief parameter values (size nbParams)
+    std::vector<std::string> names;                                   /// @brief names of the variables
+    std::vector<std::string> paramNames;                              /// @brief names of the parameters
+    std::vector<std::string> extNames;                                /// @brief the 'official/global/external' name of each variable, when reading data / kinetics
 
 
 public:
     /// 2 - The functions the sub-model HAS TO implement : time evolution for dt at time t, initialise and base parameter values
 
     /// @brief computes the derivatives (at t) from position x
-    virtual void derivatives(const vector<double> &x, vector<double> &dxdt, double t);
+    virtual void derivatives(const std::vector<double> &x, std::vector<double> &dxdt, double t);
 
     /// @brief gives a correct set of parameters, if you don't load other set.
     virtual void setBaseParameters();
@@ -93,16 +92,16 @@ public:
 
     /// 2b - This function is already implemented in the mother class, but as an option you can override it in the subclass
     /// @brief reads parameters from a text file with format : "NB_PARAMS\tparam1\tparam2\tparam3 ..."
-    virtual void loadParameters(string file_name);
+    virtual void loadParameters(std::string file_name);
 
     /// @brief writes parameters from a text file with format : "NB_PARAMS\tparam1\tparam2\tparam3 ..."
-    virtual void saveParameters(string file_name);
+    virtual void saveParameters(std::string file_name);
 
     /// 2c - A function to perform personnalized actions by the model, without a specific function, but by a name of action, (ex : adding a cytokine at day 2)
     /// @brief function to perform personnalized actions by the model by a name of action,
-    virtual void action(string name,double parameter);
+    virtual void action(std::string name,double parameter);
 
-    virtual void action(string name, vector<double> parameters);
+    virtual void action(std::string name, std::vector<double> parameters);
 
     /// 2d - An additional function that can be designed by the user to simulate variable depending on other ones. Exemple: percents, ratios, etc ...
     /// @brief  Will be called when the solver stops at each point -> use it to calculate variables that depend on other ones
@@ -123,8 +122,8 @@ public:
 
     ///     During a simulation, these variables will be used by the solver.
     double t;                                               /// @brief advised to do 't=0;' in the initialize function
-    vector<double> val;                                     /// @brief variables at time t
-    vector<double> deriv;                                   /// @brief derivatives at time , updated each time the solver stops for output
+    std::vector<double> val;                                     /// @brief variables at time t
+    std::vector<double> deriv;                                   /// @brief derivatives at time , updated each time the solver stops for output
 
 public:
     /// @brief In case the parameters are modified (like by optimization), it's a way to forbid to run simulations with this parameter set. (need to reload/restore a good one)
@@ -171,7 +170,7 @@ public:
                       double _print_every_dt);      /// @brief to set the 'recording mode' to ON/OFF, and the frequency of recording
     TableCourse
     getCinetique();                             /// @brief then, each time initialiseDone() is called, the kinetics is cleared, and
-    vector<double> getInit();
+    std::vector<double> getInit();
 
     double getT();
 
@@ -182,15 +181,15 @@ public:
 
 /// 4d to print most informations about the model
 
-    string print();
+    std::string print();
 
-    string printVarNames(double _t);
+    std::string printVarNames(double _t);
 
-    string printVarValues(double _t);
+    std::string printVarValues(double _t);
 
-    string printParNames();
+    std::string printParNames();
 
-    string printParValues();
+    std::string printParValues();
 
 /// 5 - Accessing variables from an external name, and defining backgrounds
 ///     even if the model has its internal variable names, you might want to say that this vairable represents this cytokine,
@@ -198,9 +197,9 @@ public:
 ///     additionally, a model can declare the list of backgrounds it is able to simulate.
 ///     in that way, it is possible to interrogate what a model is able to simulate (variables, background).
 
-///     vectors that can be filled by the subclass :
+///     std::vectors that can be filled by the subclass :
 
-    vector<string> getListExternalNames() const {
+    std::vector<std::string> getListExternalNames() const {
         return extNames;
     }
 
@@ -208,22 +207,22 @@ public:
 ///     these already implemented functions can be overrided if wanted (for instance if changing the value of a variable needs to be done in a particular way)
 public:
     /// @brief to modify the value of a variable from the global ID of it
-    virtual void setValue(string nameExternalVariable,double val);
+    virtual void setValue(std::string nameExternalVariable,double val);
 
     /// @brief to modify the value of a variable from the global ID of it
-    virtual void addValue(string nameExternalVariable,double val);
+    virtual void addValue(std::string nameExternalVariable,double val);
 
     /// @brief to get the value of a variable from its global ID
-    virtual double getValue(string nameExternalVariable);
+    virtual double getValue(std::string nameExternalVariable);
 
     /// @brief to know if a variable can be simulated by the model (from its global ID)
-    virtual bool isVarKnown(string externalNameVariable);
+    virtual bool isVarKnown(std::string externalNameVariable);
 
     /// @brief index of variables for this external name
-    virtual vector<int> internValName(string externalNameVariable);
+    virtual std::vector<int> internValName(std::string externalNameVariable);
 
     /// @brief index of variables for this external name; raises an error if there are multiple...
-    virtual int uniqueInternValName(string externalNameVariable);
+    virtual int uniqueInternValName(std::string externalNameVariable);
 
 /// 7 - Working directly with the parameters of a model (important for managing the interface with the optimizer (fitting class))
 
@@ -233,17 +232,17 @@ public:
 
     double getParam(int i);
 
-    vector<double> getParameters();
+    std::vector<double> getParameters();
 
-    void setParameters(vector<double> &newParamSet);
+    void setParameters(std::vector<double> &newParamSet);
 
 /// 8 - to get information on the (internal) variables.
 
     int getNbVars();
 
-    string getName(int internalID);
+    std::string getName(int internalID);
 
-    string getExternalName(int internalID);
+    std::string getExternalName(int internalID);
 
 /// 9 - Overriding certain variables with data,
 
@@ -260,9 +259,9 @@ public :
 protected:
     overrider *currentOverrider;
 public:
-    void applyOverride(vector<double> &x, double t);
+    void applyOverride(std::vector<double> &x, double t);
 
-    void clearOverride(vector<double> &x, vector<double> &dxdt);
+    void clearOverride(std::vector<double> &x, std::vector<double> &dxdt);
 
 #endif
 
@@ -274,10 +273,10 @@ public:
 /// 10 - names and boundaries for parameters
 
 protected:
-    vector<double> paramUpBounds;
-    vector<double> paramLowBounds;
+    std::vector<double> paramUpBounds;
+    std::vector<double> paramLowBounds;
 public:
-    string getParamName(int i);
+    std::string getParamName(int i);
 
     double getLowerBound(int i);
 
@@ -285,12 +284,12 @@ public:
 
     void setBounds(int i, double vLow, double vHi);
 
-    void setBounds(vector<double> upVals, vector<double> lowVals);
+    void setBounds(std::vector<double> upVals, std::vector<double> lowVals);
 
 /// 11 - Internal functions
 
     /// Checking for errors: a model should never be copied, in which cases destroying one copy creates a segfault on the other one
-    Model(const Model &) { cerr << "Checking for errors - you are copy a Model, why ?" << endl; }
+    Model(const Model &) { std::cerr << "Checking for errors - you are copy a Model, why ?" << std::endl; }
 
     virtual ~Model() {}
 
@@ -305,8 +304,7 @@ protected: // for modelAgentBased
     void save_state(
             double _t);                                     /// the simule function call this to record data of a time point into the Cinetique.
 protected:
-    double
-    max(double, double);                                     // Auxiliary functions, not available by default (??) ...
+    double max_(double a, double b);                                     // Auxiliary functions, not available by default (??) ...
     bool parametersLoaded;                                          // to make sure setparameters is done before initialize
     bool checkDivergence();
 
@@ -354,9 +352,9 @@ struct modelAgentBased : public Model {
 /// };
 ///
 /// ModelA1::ModelA1() : Model(NBVAR, NBPARAM), background(WT) {
-///     names[A] = string("PopA");
-///     names[B] = string("PopB");
-///     names[C] = string("PopC");
+///     names[A] = std::string("PopA");
+///     names[B] = std::string("PopB");
+///     names[C] = std::string("PopC");
 /// }
 ///
 /// void ModelA1::setBaseParameters(){
@@ -394,7 +392,7 @@ struct modelAgentBased : public Model {
 ///
 /// ModelA1 A();
 /// A.setBaseParameters();
-/// // or : A.loadParameters(string("Params.txt"));, where Params.txt contains "8\t1e-3\t1e-4\t1e-6\t1e-6\t1e-6\t1e-5\t0.1\t1e-4\n"
+/// // or : A.loadParameters(std::string("Params.txt"));, where Params.txt contains "8\t1e-3\t1e-4\t1e-6\t1e-6\t1e-6\t1e-5\t0.1\t1e-4\n"
 /// A.initialise(A::WT);
 /// A.simulate(100);
 /// A.initialise(A::MUT);
@@ -422,9 +420,9 @@ Model110L::Model110L() : Model(NBVAR, NBPARAM), background(Back::WT) {
     dt = 0.2;
     print_every_dt = 1200;
 
-    names[IL12] = string("IL12");
-    names[STAT4P] = string("STAT4P");
-    names[TBET] = string("TBET");
+    names[IL12] = std::string("IL12");
+    names[STAT4P] = std::string("STAT4P");
+    names[TBET] = std::string("TBET");
 
     extNames[IL12] = GlobalName(N::IL12);
     extNames[STAT4P] = GlobalName(N::STAT4P);
@@ -433,7 +431,7 @@ Model110L::Model110L() : Model(NBVAR, NBPARAM), background(Back::WT) {
 
 
     #ifdef PRINT_KIN
-    cerr << "Model for Th1 differentiation (M110L) Nb of parameters : " << NBPARAM << ", variables :" << NBVAR << endl;
+    std::cerr << "Model for Th1 differentiation (M110L) Nb of parameters : " << NBPARAM << ", variables :" << NBVAR << std::endl;
     #endif
 }
 

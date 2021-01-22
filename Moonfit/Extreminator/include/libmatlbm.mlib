@@ -3272,7 +3272,7 @@ matlabroot {        /* m function name */
   reqout  = 1;      /* minimum number of outputs */
 }
 
-max {               /* m function name */
+max_ {               /* m function name */
   nin     = 3;      /* number of M inputs */
   nout    = 2;      /* number of M outputs */
   scope   = global;

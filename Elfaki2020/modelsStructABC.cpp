@@ -75,12 +75,12 @@ modele6GenericTVaslin::modele6GenericTVaslin() : Model(NbVariables, NbParameters
     names[tTregtot] = "tTregtot";
     names[ttotal] = "ttotal";
     for (int i = divDNg0; i <= divDNg30LastDiv; ++i) {
-        stringstream res;
+        std::stringstream res;
         res << "divDNg" << i - divDNg0;
         names[i] = res.str();
     }
     for (int i = eDPg0; i <= eDPg10; ++i) {
-        stringstream res;
+        std::stringstream res;
         res << "eDPg" << i - eDPg0;
         names[i] = res.str();
     }
@@ -615,20 +615,20 @@ void modele6GenericTVaslin::calculateParameters(double xFlu) {
     double coeff = params[logisticStrength] * (1 - val[ttotal] / (params[logisticThymus] + 1e-9));
     LessDivisionsDP *= coeff;
 
-    params[T_DN] = 1 / (max(params[pDN] + params[dDN], 1e-12));
+    params[T_DN] = 1 / (std::max(params[pDN] + params[dDN], 1e-12));
 
-    double dynamicNDivDN = min((double) NmaxDN + 0.9999999, LessDivisionsDN * params[NdivDN]);
+    double dynamicNDivDN = std::min((double) NmaxDN + 0.9999999, LessDivisionsDN * params[NdivDN]);
     int N_DN = (int) dynamicNDivDN;
     divFloatDN = dynamicNDivDN - (double) N_DN;
-    if (divFloatDN < 1e-12) { N_DN = max(0, N_DN - 1); }
+    if (divFloatDN < 1e-12) { N_DN = std::max(0, N_DN - 1); }
     for (int i = 0; i <= N_DN - 1; ++i) { DoProlifDN[i] = 1.0; }
     for (int i = N_DN; i < NmaxDN; ++i) { DoProlifDN[i] = 0; }
     if (N_DN > 0) DoProlifDN[N_DN - 1] = divFloatDN;
 
-    double dynamicNDivDP = min((double) NmaxDP + 0.9999999, LessDivisionsDP * params[NdivDP]);
+    double dynamicNDivDP = std::min((double) NmaxDP + 0.9999999, LessDivisionsDP * params[NdivDP]);
     int NeDP = (int) dynamicNDivDP;
     divFloatDP = dynamicNDivDP - (double) NeDP;
-    if (divFloatDP < 1e-12) { NeDP = max(0, NeDP - 1); }
+    if (divFloatDP < 1e-12) { NeDP = std::max(0, NeDP - 1); }
     for (int i = 0; i <= NeDP - 1; ++i) { DoProlifDP[i] = 1.0; }
     for (int i = NeDP; i < NmaxDP; ++i) { DoProlifDP[i] = 0; }
     if (NeDP > 0) DoProlifDP[NeDP - 1] = divFloatDP;
@@ -679,22 +679,22 @@ void modele6GenericTVaslin::initialise(long long _background) { // don't touch t
     if (background & Back::B_StartSteadyState) {
 
         if (params[NdivDN] < 1e-12)
-            cout << "ERR: you use a multi-generation model for DNs and chose NdivDN =0. Cannot simulate that ... \n"
-                 << endl;
+            std::cout << "ERR: you use a multi-generation model for DNs and chose NdivDN =0. Cannot simulate that ... \n"
+                 << std::endl;
         if (params[NdivDP] < 1e-12)
-            cout << "ERR: you use a multi-generation model for DPs and chose NdivDP =0. Cannot simulate that ... \n"
-                 << endl;
+            std::cout << "ERR: you use a multi-generation model for DPs and chose NdivDP =0. Cannot simulate that ... \n"
+                 << std::endl;
 
         double InflowToDN = params[fETP_tDN];
-        init[divDNg0] = InflowToDN / (max((params[pDN] /*+ params[dDN]*/), 1e-12));
-        for (int i = 1; i < min(12, NmaxDN); ++i) {
+        init[divDNg0] = InflowToDN / (std::max((params[pDN] /*+ params[dDN]*/), 1e-12));
+        for (int i = 1; i < std::min(12, NmaxDN); ++i) {
             // here, no death, so p = 1/T
             init[divDNg0 + i] = 2 * init[divDNg0 + i - 1] * DoProlifDN[i -
                                                                        1];// /* * (params[pDN])*/ / (max(1e-12, /*params[pDN] +*/ params[T_DN] * params[dDN]));
         }
         for (int i = 12; i < NmaxDN; ++i) {
             init[divDNg0 + i] = 2 * init[divDNg0 + i - 1] * DoProlifDN[i - 1] * (params[pDN]) /
-                                (max(1e-12, params[pDN] + params[dDN]));
+                                (std::max(1e-12, params[pDN] + params[dDN]));
         }
 
         double outflowToDP = 0;
@@ -703,10 +703,10 @@ void modele6GenericTVaslin::initialise(long long _background) { // don't touch t
                     2 * (1 - DoProlifDN[i]) * params[pDN] * init[divDNg0 + i]; // No 2 here, they do not divide ??
         }
 
-        init[eDPg0] = outflowToDP / (max((params[peDP] + params[deDP]), 1e-12));
+        init[eDPg0] = outflowToDP / (std::max((params[peDP] + params[deDP]), 1e-12));
         for (int i = 1; i < NmaxDP; ++i) {
             init[eDPg0 + i] = 2 * init[eDPg0 + i - 1] * DoProlifDP[i - 1] * (params[peDP]) /
-                              (max(1e-12, params[peDP] + params[deDP]));
+                              (std::max(1e-12, params[peDP] + params[deDP]));
         }
 
         double outflowTolateDP = 0;
@@ -722,7 +722,7 @@ void modele6GenericTVaslin::initialise(long long _background) { // don't touch t
 #ifdef DPto25Prec
         denominator += params[ftDP_tTregP25];
 #endif
-        init[lDP] = outflowTolateDP / (max(1e-12, denominator));
+        init[lDP] = outflowTolateDP / (std::max(1e-12, denominator));
 
         //init[ lDP] = outflowTolateDP / (max(1e-12, params[prestDP] + params[drestDP] + params[diffDPtoSP4] + params[diffDPtoSP8] + params[ftDP_tTregP25] + params[ftDP_tTregFP3]));
         //init[ lDP] = outflowTolateDP / (max(1e-12, params[prestDP] + params[drestDP] + params[diffDPtoSP4] + params[diffDPtoSP8])); //  40.29;
@@ -822,25 +822,25 @@ void modele6GenericTVaslin::initialise(long long _background) { // don't touch t
     //if(background == Back::M2){}
 
     if (params[ptTconv] < 0) {
-        //cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptTconv] to be positive / allow steady state" << endl;
-        //cerr << "     Please, put params[ftDP_tTConv]) < " << (- params[in_tTconv] + init[tTconv] * params[out_tTconv] + params[dtTconv]) / init[tDP] << " instead of " << params[ftDP_tTConv] << endl;
+        //std::cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptTconv] to be positive / allow steady state" << std::endl;
+        //std::cerr << "     Please, put params[ftDP_tTConv]) < " << (- params[in_tTconv] + init[tTconv] * params[out_tTconv] + params[dtTconv]) / init[tDP] << " instead of " << params[ftDP_tTConv] << std::endl;
         params[ptTconv] = 0;
     }
 
     if (params[ptTregP25] < 0) {
-        //cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptTregP25] to be positive / allow steady state" << endl;
-        //cerr << "     Please, put params[ftDP_tTregP25] < " << init[tTRegP25] * (params[out_tTregP25] + params[ftTregP25_tDPTreg] + params[dtTregP25]) / init[tDP] << endl;
+        //std::cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptTregP25] to be positive / allow steady state" << std::endl;
+        //std::cerr << "     Please, put params[ftDP_tTregP25] < " << init[tTRegP25] * (params[out_tTregP25] + params[ftTregP25_tDPTreg] + params[dtTregP25]) / init[tDP] << std::endl;
         params[ptTregP25] = 0;
     }
 
     if (params[ptTregFP3] < 0) {
-        //cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptTregP25] to be positive / allow steady state" << endl;
-        //cerr << "     Please, put params[ftDP_tTregFP3] < " << init[tTRegPFp3] * (params[out_tTregFP3] + params[ftTregFP3_tDPTreg] + params[dtTregFP3]) /  init[tDP] << endl;
+        //std::cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptTregP25] to be positive / allow steady state" << std::endl;
+        //std::cerr << "     Please, put params[ftDP_tTregFP3] < " << init[tTRegPFp3] * (params[out_tTregFP3] + params[ftTregFP3_tDPTreg] + params[dtTregFP3]) /  init[tDP] << std::endl;
         params[ptTregFP3] = 0;
     }
 
     if (params[ptDPTregs] < 0) {
-        //cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptDPTregs] to be positive / allow steady state" << endl;
+        //std::cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptDPTregs] to be positive / allow steady state" << std::endl;
         /*params[ptDPTregs] = (- params[in_tDPTregs] - init[tTRegP25] * params[ftTregP25_tDPTreg] - init[tTRegPFp3] * params[ftTregFP3_tDPTreg]) / init[tDPTreg] +
                 params[out_tDPTregs] + params[dtDPTregs];
         params[ptSP8] = (- params[in_SP8] -  init[tDP] * params[ftDP_tSP8]) / init[tSP8] +
@@ -849,7 +849,7 @@ void modele6GenericTVaslin::initialise(long long _background) { // don't touch t
     }
 
     if (params[ptSP8] < 0) {
-        //cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptSP8] to be positive / allow steady state" << endl;
+        //std::cerr << "ERR: the initial conditions + parameters don't allow the parameter [ptSP8] to be positive / allow steady state" << std::endl;
         params[ptSP8] = 0;
     }
 
@@ -892,29 +892,29 @@ void modele6GenericTVaslin::updateDerivedVariables(double _t) {
     if (!over(tTregtot)) val[tTregtot] = val[tTregP] + val[tTregRagN];
     if (!over(ttotal)) val[ttotal] = val[DNtot] + val[DPtot] + val[tSP4tot] + val[tSP8tot];
 
-    //val[pctSP8RagN] = 100 * min(1.0, val[] / max(1e-8, val[]));
-    if (!over(pctDN)) val[pctDN] = 100 * min(1.0, val[DNtot] / max(1e-8, val[ttotal]));
-    if (!over(pctDP)) val[pctDP] = 100 * min(1.0, val[DPtot] / max(1e-8, val[ttotal]));
-    if (!over(pctSP8)) val[pctSP8] = 100 * min(1.0, val[tSP8tot] / max(1e-8, val[ttotal]));
-    if (!over(pctSP4)) val[pctSP4] = 100 * min(1.0, val[tSP4tot] / max(1e-8, val[ttotal]));
+    //val[pctSP8RagN] = 100 * std::min(1.0, val[] / max(1e-8, val[]));
+    if (!over(pctDN)) val[pctDN] = 100 * std::min(1.0, val[DNtot] / std::max(1e-8, val[ttotal]));
+    if (!over(pctDP)) val[pctDP] = 100 * std::min(1.0, val[DPtot] / std::max(1e-8, val[ttotal]));
+    if (!over(pctSP8)) val[pctSP8] = 100 * std::min(1.0, val[tSP8tot] / std::max(1e-8, val[ttotal]));
+    if (!over(pctSP4)) val[pctSP4] = 100 * std::min(1.0, val[tSP4tot] / std::max(1e-8, val[ttotal]));
 
     //val[tSP4tot] = val[SP4stage69hi] + val[SP4stage69lo]; /// CAREADAOIFHQNSNJKCJQLJ§§§§
-    if (!over(pctTconvtot)) val[pctTconvtot] = 100 * min(1.0, val[tTconvtot] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTRegP1tot)) val[pctTRegP1tot] = 100 * min(1.0, val[tTregP1tot] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTRegP2tot)) val[pctTRegP2tot] = 100 * min(1.0, val[tTregP2tot] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTregtot)) val[pctTregtot] = 100 * min(1.0, val[tTregtot] / max(1e-8, val[tSP4tot]));
+    if (!over(pctTconvtot)) val[pctTconvtot] = 100 * std::min(1.0, val[tTconvtot] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTRegP1tot)) val[pctTRegP1tot] = 100 * std::min(1.0, val[tTregP1tot] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTRegP2tot)) val[pctTRegP2tot] = 100 * std::min(1.0, val[tTregP2tot] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTregtot)) val[pctTregtot] = 100 * std::min(1.0, val[tTregtot] / std::max(1e-8, val[tSP4tot]));
 
-    if (!over(pctTconvP)) val[pctTconvP] = 100 * min(1.0, val[tTconvP] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTRegP1P)) val[pctTRegP1P] = 100 * min(1.0, val[tTRegP25P] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTRegP2P)) val[pctTRegP2P] = 100 * min(1.0, val[tTRegPFp3P] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTregP)) val[pctTregP] = 100 * min(1.0, val[tTregP] / max(1e-8, val[tSP4tot]));
+    if (!over(pctTconvP)) val[pctTconvP] = 100 * std::min(1.0, val[tTconvP] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTRegP1P)) val[pctTRegP1P] = 100 * std::min(1.0, val[tTRegP25P] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTRegP2P)) val[pctTRegP2P] = 100 * std::min(1.0, val[tTRegPFp3P] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTregP)) val[pctTregP] = 100 * std::min(1.0, val[tTregP] / std::max(1e-8, val[tSP4tot]));
 
-    if (!over(pctSP8RagN)) val[pctSP8RagN] = 100 * min(1.0, val[tSP8RagN] / max(1e-8, val[tSP8tot]));
-    if (!over(pctSP4RagN)) val[pctSP4RagN] = 100 * min(1.0, val[tSP4RagN] / max(1e-8, val[tSP4tot]));
-    if (!over(pctTconvRagN)) val[pctTconvRagN] = 100 * min(1.0, val[tTconvRagN] / max(1e-8, val[tTconvtot]));
-    if (!over(pctTRegP1RagN))val[pctTRegP1RagN] = 100 * min(1.0, val[tTregP1RagN] / max(1e-8, val[tTregP1tot]));
-    if (!over(pctTRegP2RagN))val[pctTRegP2RagN] = 100 * min(1.0, val[tTregP2RagN] / max(1e-8, val[tTregP2tot]));
-    if (!over(pctTregRagN)) val[pctTregRagN] = 100 * min(1.0, val[tTregRagN] / max(1e-8, val[tTregtot]));
+    if (!over(pctSP8RagN)) val[pctSP8RagN] = 100 * std::min(1.0, val[tSP8RagN] / std::max(1e-8, val[tSP8tot]));
+    if (!over(pctSP4RagN)) val[pctSP4RagN] = 100 * std::min(1.0, val[tSP4RagN] / std::max(1e-8, val[tSP4tot]));
+    if (!over(pctTconvRagN)) val[pctTconvRagN] = 100 * std::min(1.0, val[tTconvRagN] / std::max(1e-8, val[tTconvtot]));
+    if (!over(pctTRegP1RagN))val[pctTRegP1RagN] = 100 * std::min(1.0, val[tTregP1RagN] / std::max(1e-8, val[tTregP1tot]));
+    if (!over(pctTRegP2RagN))val[pctTRegP2RagN] = 100 * std::min(1.0, val[tTregP2RagN] / std::max(1e-8, val[tTregP2tot]));
+    if (!over(pctTregRagN)) val[pctTregRagN] = 100 * std::min(1.0, val[tTregRagN] / std::max(1e-8, val[tTregtot]));
 
     // Thomas-Vaslin
     if (!over(SP4totTV)) val[SP4totTV] = val[divSP4g0] + val[divSP4g1] + val[divSP4g2]; //+ val[restSP4];
@@ -972,13 +972,13 @@ void modele6GenericTVaslin::updateDerivedVariables(double _t) {
         val[flowSP4toDead] = val[flowTconvtoDead] + val[flowTregP1toDead] + val[flowTregP2toDead] + val[flowTregtoDead];
 
     //    val[stotal] = val[sTconv] + val[sTreg] + val[sCD8] + val[sBcells];
-    //    val[pcsTconv] = 100 * min(1.0, val[sTconv] / max(1e-8, val[stotal]));
-    //    val[pcsTreg] = 100 * min(1.0, val[sTreg] / max(1e-8, val[stotal]));
-    //    val[pcsCD8] = 100 * min(1.0, val[sCD8] / max(1e-8, val[stotal]));
-    //    val[pcsBcells] = 100 * min(1.0, val[sBcells] / max(1e-8, val[stotal]));
-    //    val[pcsCD8RagN] = 100 * min(1.0, val[sCD8RagN] / max(1e-8, val[sCD8]));
-    //    val[pcsTregRagN] = 100 * min(1.0, val[sTregRagN] / max(1e-8, val[sTreg]));
-    //    val[pcsTconvRagN] = 100 * min(1.0, val[sTconvRagN] / max(1e-8, val[sTconv]));
+    //    val[pcsTconv] = 100 * std::min(1.0, val[sTconv] / max(1e-8, val[stotal]));
+    //    val[pcsTreg] = 100 * std::min(1.0, val[sTreg] / max(1e-8, val[stotal]));
+    //    val[pcsCD8] = 100 * std::min(1.0, val[sCD8] / max(1e-8, val[stotal]));
+    //    val[pcsBcells] = 100 * std::min(1.0, val[sBcells] / max(1e-8, val[stotal]));
+    //    val[pcsCD8RagN] = 100 * std::min(1.0, val[sCD8RagN] / max(1e-8, val[sCD8]));
+    //    val[pcsTregRagN] = 100 * std::min(1.0, val[sTregRagN] / max(1e-8, val[sTreg]));
+    //    val[pcsTconvRagN] = 100 * std::min(1.0, val[sTconvRagN] / max(1e-8, val[sTconv]));
 }
 
 void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> &dxdt, const double t) {
@@ -990,7 +990,7 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
 
     //double coeff = (1/(1 - init[ttotal] / (params[logisticStrength]+1e-9)))*(1 - ((1/(params[logisticStrength] + 1e-9))*x[ttotal] / (params[logisticThymus] + 1e-9)));
     //double coeff = (1/(1 - 1 / (params[logisticStrength]+1e-9)))*(1 - ((1/(params[logisticStrength] + 1e-9)) * (1 - x[ttotal] / (params[logisticThymus] + 1e-9)) / (1 - init[ttotal] / (params[logisticThymus] + 1e-9));
-    //cout << t << " coeff " << init[ttotal] << endl;
+    //std::cout << t << " coeff " << init[ttotal] << std::endl;
     //if(background & Back::B_LogisticTotalProlif){
     //DeathCoeffDP /= coeff; // be sure calculate params is always called before
     /*        LessDivCoeffDN *= coeff;
@@ -1001,7 +1001,7 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
     LessDivCoeffTconv *= coeff;
     LessDivCoeffCD8 *= coeff;*/
     //}
-    //cout << t << " " << x[ttotal] << "  " << coeff << "  " << DeathCoeffDP << "\n";
+    //std::cout << t << " " << x[ttotal] << "  " << coeff << "  " << DeathCoeffDP << "\n";
 
 
     // Note: even if a population is not proliferating, it should still be simulated. Indeed, Ndiv can be dynamic, and it might be cells remaining in that stage.
@@ -1015,7 +1015,7 @@ void modele6GenericTVaslin::derivatives(const vector<double> &x, vector<double> 
                         (-params[pDN] * LessProlifSpeedDN   /*- params[dDN] * DeathCoeffDN*/ - OutputCoeffDNtoDP -
                          increasedDeath) * x[divDNg0];
     }
-    for (int i = 1; i < min(12, NmaxDN); ++i) {
+    for (int i = 1; i < std::min(12, NmaxDN); ++i) {
         if (!over(divDNg0 + i)) {
             dxdt[divDNg0 + i] = 2 * DoProlifDN[i - 1] * (1. / params[T_DN]) /*params[pDN]*/ * LessProlifSpeedDN *
                                 x[divDNg0 + i - 1] + (-(1. / params[T_DN]) /*params[pDN]*/ *

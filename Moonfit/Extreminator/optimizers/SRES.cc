@@ -5,7 +5,7 @@ SRES::SRES(BaseOptimizationProblem *S, const std::string &file) :BaseOptimizer(S
 	num_tries = (int) argument(0);
 }
 
-SRES::SRES(BaseOptimizationProblem *S, ifstream &F_IN) : BaseOptimizer(S,F_IN) {
+SRES::SRES(BaseOptimizationProblem *S, std::ifstream &F_IN) : BaseOptimizer(S,F_IN) {
 	if (numArguments() !=  1) { std::cerr << "Bad argument number (" << numArguments() << ")\n"; exit(-1);};
 	num_tries = (int) argument(0);
 }
@@ -16,7 +16,7 @@ individual* CurrentIndividual = NULL;
 void cost(double *x, double *f, double *g){
 	for(size_t i = 0; i < CurrentClass->numIndex(); ++i){
 		CurrentIndividual->setGene(i, x[i]); 
-        //cerr << "SRES gave " << i << ", " << x[i] << endl;
+        //std::cerr << "SRES gave " << i << ", " << x[i] << std::endl;
 	}
 	CurrentClass->updateCost(CurrentIndividual);
 	*f = CurrentIndividual->cost();	
@@ -30,7 +30,7 @@ void SRES::optimize(){
 	CurrentClass = this;
 	CurrentIndividual = new individual();
 	CurrentIndividual->resize(numIndex());
-	//cerr << setiosflags(ios::fixed);	
+	//std::cerr << setiosflags(std::ios::fixed);
 	resetCostCalls();
 	
 	int i;

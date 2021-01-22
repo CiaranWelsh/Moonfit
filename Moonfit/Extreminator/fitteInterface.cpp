@@ -3,23 +3,23 @@
 Fitte::Fitte(Experiment* _Exp) : GeneralImplementation(_Exp->m->getNbParams()), ExpToOpt(_Exp) {
     #ifndef WITHOUT_QT
     window = new simuWin(_Exp);
-    cerr << " Is this called ?? " << endl;
+    std::cerr << " Is this called ?? " << std::endl;
     #endif
 }
 
 double Fitte::getCost(){
     int nbParamsModel = ExpToOpt->m->getNbParams();
-    cout << "\tParams:";
+    std::cout << "\tParams:";
     for(int i = 0; i < nbParamsModel; ++i){
         if(parameters[i] != 0.0) ExpToOpt->m->setParam(i, parameters[i]);
-        cout << "\t" << parameters[i];
+        std::cout << "\t" << parameters[i];
     }
     #ifndef WITHOUT_QT
     window->updateParmsFromModel();     /// to display on the screen the new values.
     #endif
     double v2 = ExpToOpt->costVariableInModel();
-    cout << "\nCost: " << v2 + ExpToOpt->m->penalities;
-    cout << "\tDont_Penalty:\t" << ExpToOpt->m->penalities << endl;
+    std::cout << "\nCost: " << v2 + ExpToOpt->m->penalities;
+    std::cout << "\tDont_Penalty:\t" << ExpToOpt->m->penalities << std::endl;
     return v2 + ExpToOpt->m->penalities;
 }
 
@@ -52,19 +52,19 @@ m2.setBaseParameters();
 vector<double> reconstitute(m2.NBPARAM, 0.0);
 for(int i = 0; i < m2.NBPARAM; ++i){
     reconstitute[i] = m2.params[i];
-    cerr << i << "\t" << m2.params[i]<< endl;
+    std::cerr << i << "\t" << m2.params[i]<< std::endl;
 }
-cerr << "--------------------------\n";
+std::cerr << "--------------------------\n";
 //sleep(1);
 for(int i = 0; i < Opt->bestGlobal.size(); ++i){
-    cerr << Opt->indexVector_[i] << "\t" << Opt->bestGlobal.gene(i) << endl;
+    std::cerr << Opt->indexVector_[i] << "\t" << Opt->bestGlobal.gene(i) << std::endl;
     reconstitute[Opt->indexVector_[i]] = Opt->bestGlobal.gene(i);
 }
-//cerr << "Fini1" << endl;
+//std::cerr << "Fini1" << std::endl;
 //sleep(2);
-cerr << "Best individual, initial problem scale\n";
+std::cerr << "Best individual, initial problem scale\n";
 for(int i =0; i < m2.NBPARAM; ++i){
-    cerr << reconstitute[i] << endl;
+    std::cerr << reconstitute[i] << std::endl;
     //sleep(1);
 }*/
 

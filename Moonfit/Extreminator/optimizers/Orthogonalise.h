@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <vector>
 #include <cmath>
-using namespace std; 
+// using namespace std;
+using std::string;
+using std::vector;
 
 #define EPSILON 1e-15
 
@@ -47,7 +49,7 @@ int main(void){
 	
 	//substract_projection(&p2, &p1);
 	//for(int i = 0; i < 6; ++i){
-	//	cout << p2[i] << " ";
+	//	std::cout << p2[i] << " ";
 	//}
 	
 	p3[0] = 1;
@@ -64,12 +66,12 @@ int main(void){
 	
 	for(int i = 0; i < 6; ++i){
 		for(int j = 0; j < 6; ++j){
-			cerr << (*(z[i]))[j] << "\t";
+			std::cerr << (*(z[i]))[j] << "\t";
 		}
-		cerr << "\n";
+		std::cerr << "\n";
 	}
 	
-	cerr << "Finished and delta = " << delta << "\n";
+	std::cerr << "Finished and delta = " << delta << "\n";
 	
 	
 	return 0;

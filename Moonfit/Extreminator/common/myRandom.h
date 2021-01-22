@@ -96,7 +96,9 @@ namespace myRandom {
 #include <stdlib.h>
 #include <vector>
 #include <ctime>            // std::time
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
    
 #ifdef USE_BOOST
 //#include  <boost/nondet_random.hpp>

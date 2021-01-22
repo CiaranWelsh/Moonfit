@@ -3,12 +3,14 @@
 #ifndef GENERATE_H
 #define GENERATE_H
 
-// cout << generateActivFunction(1, 3);
+// std::cout << generateActivFunction(1, 3);
 
 #include <vector>
 #include <string>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 //Value to use graphes (or I should do a template)
 typedef double valeur;

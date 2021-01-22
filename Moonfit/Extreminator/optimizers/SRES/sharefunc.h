@@ -39,14 +39,14 @@ extern "C" {
 
 /*********************************************************************
  ** uniform random                                                  **
- ** to output a random value between min and max                    **
- ** double ShareRand(min,max)                                       **
+ ** to output a random value between min and max_                    **
+ ** double ShareRand(min,max_)                                       **
  ** min: min value                                                  **
- ** max: max value                                                  **
+ ** max: max_ value                                                  **
  **                                                                 **
- ** return value = min + (max-min)*rand()/(RAND_MAX)                **
+ ** return value = min + (max_-min)*rand()/(RAND_MAX)                **
  **                                                                 **
- ** void ShareRandVec(s, n, min, max)                               **
+ ** void ShareRandVec(s, n, min, max_)                               **
  ** return s=vec(n)                                                 **
  *********************************************************************/
 double ShareRand(double , double );

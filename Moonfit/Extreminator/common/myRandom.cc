@@ -7,10 +7,11 @@
 // Revision     : $Id: myRandom.cc 474 2010-08-30 15:23:20Z henrik $
 //
 
+#include "linux2win/linux2win_time.h"
 #include <iostream>
+#include <chrono>
 
 #include "myRandom.h"
-#include "linux2win/linux2win_time.h"
 
 namespace myRandom {
 
@@ -104,16 +105,17 @@ namespace myRandom {
 	
 	long int ran3Randomize( void ) 
 	{
-		struct timeval tp; // { long tv_sec; long tv_usec; }
-		long int seed;
-		
-		gettimeofday(&tp, 0);
-		//seed = 1024 * tp.tv_sec + (int) (.001024 * tp.tv_usec)
-		seed = 1+tp.tv_usec%9999999;//Put seed in [1:10000000]
-		idum = -seed;
-        //std::cerr << "Init random numbers with seed : " << -seed << ")" << endl; //ran3Randomize()\n";
-		return -seed;
+	    return std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	}
+//		struct timeval tp{}; // { long tv_sec; long tv_usec; }
+//		long int seed;
+//
+//		gettimeofday(&tp, nullptr);
+//		//seed = 1024 * tp.tv_sec + (int) (.001024 * tp.tv_usec)
+//		seed = 1+tp.tv_usec%9999999;//Put seed in [1:10000000]
+//		idum = -seed;
+//        //std::cerr << "Init random numbers with seed : " << -seed << ")" << std::endl; //ran3Randomize()\n";
+//		return -seed;
 } //end namespace myRandom
 
 #define NB_POINTS_TEST_RANDOM 200
@@ -122,7 +124,7 @@ namespace myRandom {
 BoostRandoms::BoostRandoms(unsigned int init_seed){
     unsigned int seed = static_cast<unsigned int>(std::time(0));
     if(init_seed != 0) seed = init_seed;
-    cout << "Seed for optimization(Boost::mt19937) : \t" << seed << endl;
+    std::cout << "Seed for optimization(Boost::mt19937) : \t" << seed << std::endl;
     generator = new generator_type(seed);
     //uni_smi_created = false;
 	uni_i_created = false;
@@ -149,7 +151,7 @@ unsigned int BoostRandoms::Uniformui(){
 	if(uni_smi_created) 
 		return (*uni_smi)();
 	else {
-		cerr << "UniformSMI Distribution not created !\n";
+		std::cerr << "UniformSMI Distribution not created !\n";
 		CreateUniformui((unsigned int) 0, (unsigned int) 1);
 		return (*uni_smi)();
 	}
@@ -170,7 +172,7 @@ int BoostRandoms::Uniformi(){
 	if(uni_i_created) 
 		return (*uni_i)();
 	else {
-		cerr << "UniformI Distribution not created !\n";
+		std::cerr << "UniformI Distribution not created !\n";
 		CreateUniformi((int) 0, (int) 1);
 		return (*uni_i)();
 	}
@@ -201,7 +203,7 @@ double BoostRandoms::Uniformd(){
 	if(uni_d_created) 
 		return (*uni_d)();
 	else {
-		cerr << "UniformD Distribution not created !\n";
+		std::cerr << "UniformD Distribution not created !\n";
 		CreateUniformd((double) 0.0, (double) 1.0);
 		return (*uni_d)();
 	}
@@ -222,7 +224,7 @@ bool BoostRandoms::Bernoulli(){
 	if(bernoulli_created) 
 		return (*bernoulli)();
 	else {
-		cerr << "Bernouilli Distribution not created !\n";
+		std::cerr << "Bernouilli Distribution not created !\n";
 		CreateBernoulli((double) 0.5);
 		return (*bernoulli)();
 	}
@@ -243,7 +245,7 @@ int BoostRandoms::Binomial(){
 	if(binomial_created) 
 		return (*binomial)();
 	else {
-		cerr << "Binomial Distribution not created !\n";
+		std::cerr << "Binomial Distribution not created !\n";
 		CreateBinomial(100, (double) 0.5);
 		return (*binomial)();
 	}
@@ -264,7 +266,7 @@ double BoostRandoms::Cauchy(){
 	if(cauchy_created) 
 		return (*cauchy)();
 	else {
-		cerr << "Cauchy Distribution not created !\n";
+		std::cerr << "Cauchy Distribution not created !\n";
 		CreateCauchy((double)0, (double) 1);
 		return (*cauchy)();
 	}
@@ -285,7 +287,7 @@ double BoostRandoms::Gamma(){
 	if(gamma_created) 
 		return (*gamma)();
 	else {
-		cerr << "Gamma Distribution not created !\n";
+		std::cerr << "Gamma Distribution not created !\n";
         CreateGamma((double) 1, (double) 1);
 		return (*gamma)();
 	}
@@ -306,7 +308,7 @@ int BoostRandoms::Poisson(){
 	if(poisson_created) 
 		return (*poisson)();
 	else {
-		cerr << "Poisson Distribution not created !\n";
+		std::cerr << "Poisson Distribution not created !\n";
 		CreatePoisson((double) 1);
 		return (*poisson)();
 	}
@@ -327,7 +329,7 @@ int BoostRandoms::Geometric(){
 	if(geometric_created) 
 		return (*geometric)();
 	else {
-		cerr << "Geometric Distribution not created !\n";
+		std::cerr << "Geometric Distribution not created !\n";
 		CreateGeometric((double) 0.5);
 		return (*geometric)();
 	}
@@ -348,7 +350,7 @@ double BoostRandoms::Exponential(){
 	if(exponential_created) 
 		return (*exponential)();
 	else {
-		cerr << "Exponential Distribution not created !\n";
+		std::cerr << "Exponential Distribution not created !\n";
 		CreateExponential((double) 1);
 		return (*exponential)();
 	}
@@ -369,7 +371,7 @@ double BoostRandoms::Normal(){
 	if(normal_created) 
 		return (*normal)();
 	else {
-		cerr << "Normal Distribution not created !\n";
+		std::cerr << "Normal Distribution not created !\n";
 		CreateNormal((double) 0.0, (double) 1);
 		return (*normal)();
 	}
@@ -390,7 +392,7 @@ double BoostRandoms::Log_normal(){
 	if(log_normal_created) 
 		return (*log_normal)();
 	else {
-		cerr << "Log_Normal Distribution not created !\n";
+		std::cerr << "Log_Normal Distribution not created !\n";
 		CreateLog_normal((double) 0.0, (double) 1);
 		return (*log_normal)();
 	}
@@ -436,7 +438,7 @@ BoostRandoms::~BoostRandoms(){
 stdRandoms::stdRandoms(unsigned int init_seed){
     std::mt19937::result_type seed = time(0);
     if(init_seed != 0) seed = init_seed;
-    std::cout << "Seed for optimization(std::mt19937) : \t" << seed << endl;
+    std::cout << "Seed for optimization(std::mt19937) : \t" << seed << std::endl;
     generator = new std::mt19937(seed);
     //uni_smi_created = false;
     uni_i_created = false;
@@ -463,7 +465,7 @@ unsigned int stdRandoms::Uniformui(){
     if(uni_smi_created)
         return (*uni_smi)();
     else {
-        cerr << "UniformSMI Distribution not created !\n";
+        std::cerr << "UniformSMI Distribution not created !\n";
         CreateUniformui((unsigned int) 0, (unsigned int) 1);
         return (*uni_smi)();
     }
@@ -484,7 +486,7 @@ int stdRandoms::Uniformi(){
     if(uni_i_created)
         return (*uni_i)(*generator);
     else {
-        cerr << "UniformI Distribution not created !\n";
+        std::cerr << "UniformI Distribution not created !\n";
         CreateUniformi((int) 0, (int) 1);
         return (*uni_i)(*generator);
     }
@@ -515,7 +517,7 @@ double stdRandoms::Uniformd(){
     if(uni_d_created)
         return (*uni_d)(*generator);
     else {
-        cerr << "UniformD Distribution not created !\n";
+        std::cerr << "UniformD Distribution not created !\n";
         CreateUniformd((double) 0.0, (double) 1.0);
         return (*uni_d)(*generator);
     }
@@ -536,7 +538,7 @@ bool stdRandoms::Bernoulli(){
     if(bernoulli_created)
         return (*bernoulli)(*generator);
     else {
-        cerr << "Bernouilli Distribution not created !\n";
+        std::cerr << "Bernouilli Distribution not created !\n";
         CreateBernoulli((double) 0.5);
         return (*bernoulli)(*generator);
     }
@@ -557,7 +559,7 @@ int stdRandoms::Binomial(){
     if(binomial_created)
         return (*binomial)(*generator);
     else {
-        cerr << "Binomial Distribution not created !\n";
+        std::cerr << "Binomial Distribution not created !\n";
         CreateBinomial(100, (double) 0.5);
         return (*binomial)(*generator);
     }
@@ -578,7 +580,7 @@ double stdRandoms::Cauchy(){
     if(cauchy_created)
         return (*cauchy)(*generator);
     else {
-        cerr << "Cauchy Distribution not created !\n";
+        std::cerr << "Cauchy Distribution not created !\n";
         CreateCauchy((double)0, (double) 1);
         return (*cauchy)(*generator);
     }
@@ -599,7 +601,7 @@ double stdRandoms::Gamma(){
     if(gamma_created)
         return (*gamma)(*generator);
     else {
-        cerr << "Gamma Distribution not created !\n";
+        std::cerr << "Gamma Distribution not created !\n";
         CreateGamma((double) 1, (double) 1);
         return (*gamma)(*generator);
     }
@@ -620,7 +622,7 @@ int stdRandoms::Poisson(){
     if(poisson_created)
         return (*poisson)(*generator);
     else {
-        cerr << "Poisson Distribution not created !\n";
+        std::cerr << "Poisson Distribution not created !\n";
         CreatePoisson((double) 1);
         return (*poisson)(*generator);
     }
@@ -641,7 +643,7 @@ int stdRandoms::Geometric(){
     if(geometric_created)
         return (*geometric)(*generator);
     else {
-        cerr << "Geometric Distribution not created !\n";
+        std::cerr << "Geometric Distribution not created !\n";
         CreateGeometric((double) 0.5);
         return (*geometric)(*generator);
     }
@@ -662,7 +664,7 @@ double stdRandoms::Exponential(){
     if(exponential_created)
         return (*exponential)(*generator);
     else {
-        cerr << "Exponential Distribution not created !\n";
+        std::cerr << "Exponential Distribution not created !\n";
         CreateExponential((double) 1);
         return (*exponential)(*generator);
     }
@@ -683,7 +685,7 @@ double stdRandoms::Normal(){
     if(normal_created)
         return (*normal)(*generator);
     else {
-        cerr << "Normal Distribution not created !\n";
+        std::cerr << "Normal Distribution not created !\n";
         CreateNormal((double) 0.0, (double) 1);
         return (*normal)(*generator);
     }
@@ -704,7 +706,7 @@ double stdRandoms::Log_normal(){
     if(log_normal_created)
         return (*log_normal)(*generator);
     else {
-        cerr << "Log_Normal Distribution not created !\n";
+        std::cerr << "Log_Normal Distribution not created !\n";
         CreateLog_normal((double) 0.0, (double) 1);
         return (*log_normal)(*generator);
     }
@@ -748,101 +750,101 @@ void testRandomGenerator(){
     unsigned int z;
     for(int i = 0; i < 10; ++i){
         z = a.Uniformui();
-        cout << z << "\n";
+        std::cout << z << "\n";
     } */
 
-    cout << "UniformInt1-5" << endl;
+    std::cout << "UniformInt1-5" << std::endl;
     int z2;
     a.CreateUniformi(1,5);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z2 = a.Uniformi();
-        cout << z2 << "\n";
+        std::cout << z2 << "\n";
     }
-    cout << "Uniform01" << endl;
+    std::cout << "Uniform01" << std::endl;
     double z3;
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z3 = a.Uniform01();
-        cout << z3 << "\n";
+        std::cout << z3 << "\n";
     }
 
-    cout << "double Uniform 1-10\n";
+    std::cout << "double Uniform 1-10\n";
     double z4;
     a.CreateUniformd(1,10);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z4 = a.Uniformd();
-        cout << z4 << "\n";
+        std::cout << z4 << "\n";
     }
 
-    cout << "bool Bernouilli p=0.3\n";
+    std::cout << "bool Bernouilli p=0.3\n";
     bool z5;
     a.CreateBernoulli(0.3);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z5 = a.Bernoulli();
-        cout << z5 << "\n";
+        std::cout << z5 << "\n";
     }
 
-    cout << "int Binoöial 25 tries p = 0.6 \n";
+    std::cout << "int Binoöial 25 tries p = 0.6 \n";
     int z6;
     a.CreateBinomial(25,0.6);
     for(int i = 0; i <NB_POINTS_TEST_RANDOM; ++i){
         z6 = a.Binomial();
-        cout << z6 << "\n";
+        std::cout << z6 << "\n";
     }
 
-    cout << "double Cauchy mean 0 sig 1\n";
+    std::cout << "double Cauchy mean 0 sig 1\n";
     double z7;
     a.CreateCauchy(0,1);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z7 = a.Cauchy();
-        cout << z7 << "\n";
+        std::cout << z7 << "\n";
     }
 
-    cout << "double Gamma k=2, sc=1\n";
+    std::cout << "double Gamma k=2, sc=1\n";
     double z8;
     a.CreateGamma(2.0, 1.0);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z8 = a.Gamma();
-        cout << z8 << "\n";
+        std::cout << z8 << "\n";
     }
 
-    cout << "int Poisson mean 10\n";
+    std::cout << "int Poisson mean 10\n";
     int z9;
     a.CreatePoisson(10.0);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z9 = a.Poisson();
-        cout << z9 << "\n";
+        std::cout << z9 << "\n";
     }
 
-    cout << "int Geometric p=0.5\n";
+    std::cout << "int Geometric p=0.5\n";
     int z10;
     a.CreateGeometric(0.5);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z10 = a.Geometric();
-        cout << z10 << "\n";
+        std::cout << z10 << "\n";
     }
 
-    cout << "double Exponential lambda = 2\n";
+    std::cout << "double Exponential lambda = 2\n";
     double z11;
     a.CreateExponential(2.0);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z11 = a.Exponential();
-        cout << z11 << "\n";
+        std::cout << z11 << "\n";
     }
 
-    cout << "double Normal mean 0  sig 1\n";
+    std::cout << "double Normal mean 0  sig 1\n";
     double z12;
     a.CreateNormal(0.0, 1.0);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z12 = a.Normal();
-        cout << z12 << "\n";
+        std::cout << z12 << "\n";
     }
 
-    cout << "double lognormal mean 0 sig 1\n";
+    std::cout << "double lognormal mean 0 sig 1\n";
     double z13;
     a.CreateLog_normal(0.5, 1.0);
     for(int i = 0; i < NB_POINTS_TEST_RANDOM; ++i){
         z13 = a.Log_normal();
-        cout << z13 << "\n";
+        std::cout << z13 << "\n";
     }
 
 

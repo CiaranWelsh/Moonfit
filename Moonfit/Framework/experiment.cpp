@@ -5,7 +5,7 @@
 #include <sstream>
 
 void Experiment::simulate(int /*IdExp*/, Evaluator * /*E*/, bool force) {
-    cerr << "ERR: Experiment::simulate() should be reimplemented in daughter class\n";
+    std::cerr << "ERR: Experiment::simulate() should be reimplemented in daughter class\n";
 }
 
 int Experiment::getNbCond() { return names_exp.size(); }
@@ -13,7 +13,7 @@ int Experiment::getNbCond() { return names_exp.size(); }
 string Experiment::getConditionName(int i) {
     if ((i >= 0) && (i < getNbCond())) return names_exp[i];
     else {
-        cerr << "ERR: Experiment::expName(" << i << "), index out of scope\n";
+        std::cerr << "ERR: Experiment::expName(" << i << "), index out of scope\n";
         return string("");
     }
 }
@@ -22,11 +22,11 @@ Experiment::Experiment(Model *_m, int _nbConditions, string _Identification) : m
                                                                                Identification(_Identification),
                                                                                totalPenalities(0.0) {
     if ((_nbConditions < 0) || (_nbConditions > 100000)) {
-        cerr << "ERR : Experiment::Experiment(m, nbConditions=" << _nbConditions << "), invalid nb of Experiment\n";
+        std::cerr << "ERR : Experiment::Experiment(m, nbConditions=" << _nbConditions << "), invalid nb of Experiment\n";
         return;
     }
     names_exp.resize(nbConditions, string("NoName"));
-    if (!m) cerr << "ERR: creating an experiment from a NULL model" << endl;
+    if (!m) std::cerr << "ERR: creating an experiment from a NULL model" << std::endl;
     Overs.resize(nbConditions, nullptr);
     VTG.resize(nbConditions, nullptr);
     ExpData.resize(nbConditions);       // to avoid segfault at reset
@@ -79,8 +79,8 @@ void Experiment::motherSimulateAll(bool force) {
 
 double Experiment::motherCostExp(int IDcondition) {
     if (IDcondition >= nbConditions)
-        cerr << "Experiment::motherCostExp(" << IDcondition << "), exp ID incorrect (only " << nbConditions
-             << " Experiment)" << endl;
+        std::cerr << "Experiment::motherCostExp(" << IDcondition << "), exp ID incorrect (only " << nbConditions
+             << " Experiment)" << std::endl;
     int nbIntVars = this->m->getNbVars();
     double res = 0;
     if (IDcondition < 0) { // this case is to check that motherCostPart(-1) and mlotherCostExp(-1) give the same result.
@@ -109,9 +109,9 @@ double Experiment::motherCostVarInModel(int varID) {
         for (int i = 0; i < nbConditions; ++i) {
             double subFitness = VTG[i]->getTotalFitness();
             if (!std::isnan(subFitness)) res += subFitness;
-            ///else cerr << "Note : Exp " << i << " Has no data" << endl;
-            //cout << " =========0 Cost Report for exp " << expName(i) << " 0========\n";
-            //cout << VTG[i]->reportTotalFitness();
+            ///else std::cerr << "Note : Exp " << i << " Has no data" << std::endl;
+            //std::cout << " =========0 Cost Report for exp " << expName(i) << " 0========\n";
+            //std::cout << VTG[i]->reportTotalFitness();
         }
         return res;
     } else {
@@ -131,11 +131,11 @@ double Experiment::motherCostExternalVariable(string extName) {
     if (list.size() > 1) {
         static int errOnce = 0; // only displays the error once
         if (errOnce == 0)
-            cerr
+            std::cerr
                     << "Warning: you take the cost of an external variable that is simulated by more than one variable in parallel. (extName = "
                     << extName
                     << "). The cost will be the sum of all variables. Might make sense, might not make sense... Only showing this error once, maybe other external Names have the problem "
-                    << endl;
+                    << std::endl;
         errOnce++;
     }
     for (int k = 0; k < (int) list.size(); ++k) {
@@ -152,14 +152,14 @@ bool Experiment::motherPrepareSimulate(int IdExp, Evaluator *&E, bool force) {
     }     // do initialize to be sure there is no track of a previous simulation
     if (!E) { E = VTG[IdExp]; }
     if (!E) {
-        cerr << "ERR : ExpTHs::simulate(), internal VTG[] Evaluators are not defined, seg faults on approach ...\n";
+        std::cerr << "ERR : ExpTHs::simulate(), internal VTG[] Evaluators are not defined, seg faults on approach ...\n";
         return false;
     };
     if (E) E->recordingCompleted();                                  // in case it has not been done
     if ((force == false) && E && (E->size() == 0))                   // to avoid simulation if not required for cost
         return false;
     else {
-        //if(m->saveKinetics) cout << "   -> -------------- " << names_exp[IdExp].c_str() << " -----------\n";
+        //if(m->saveKinetics) std::cout << "   -> -------------- " << names_exp[IdExp].c_str() << " -----------\n";
         m->setOverrider(
                 Overs[IdExp]);                              // Caution, this erases the previous overrider from the model.
         return true;
@@ -172,7 +172,7 @@ double Experiment::getPenalities() { return totalPenalities; }
 
 void Experiment::giveData(TableCourse *kineticData, int IdExp, TableCourse *kineticStds) {
     if ((IdExp < 0) || (IdExp >= getNbCond())) {
-        cerr << "ERR: ExperimentThAll::giveData, out of bounds ExpID(" << IdExp << ")\n";
+        std::cerr << "ERR: ExperimentThAll::giveData, out of bounds ExpID(" << IdExp << ")\n";
         return;
     }
     ExpData[IdExp].push_back(new TableCourse(kineticData));
@@ -180,15 +180,15 @@ void Experiment::giveData(TableCourse *kineticData, int IdExp, TableCourse *kine
     else ExpStdDevs[IdExp].push_back(NULL);
 }
 //void Experiment::giveStdDevs(TableCourse* kineticStds, int IdExp){
-//    if((IdExp < 0) || (IdExp >= nbCond())) {cerr << "ERR: ExperimentThAll::giveData, out of bounds ExpID(" << IdExp << ")\n"; return;}
+//    if((IdExp < 0) || (IdExp >= nbCond())) {std::cerr << "ERR: ExperimentThAll::giveData, out of bounds ExpID(" << IdExp << ")\n"; return;}
 //    ExpStdDevs[IdExp].push_back(new TableCourse(kineticStds));
 //}
 
 
 void Experiment::loadEvaluators() {
     if (evaluatorLoaded)
-        cerr << "ERR: You are loading twice data for the same experiment(" << Identification
-             << ", make sure you don't call 'load Evaluators' twice for this experiment ..." << endl;
+        std::cerr << "ERR: You are loading twice data for the same experiment(" << Identification
+             << ", make sure you don't call 'load Evaluators' twice for this experiment ..." << std::endl;
     // the problem is that an evaluator should have the local indices of the model
     // but here the data is provided with global names, so use m->getListExternalNames() to give which variable is called how
     for (int i = 0; i < getNbCond(); ++i) {
@@ -196,11 +196,11 @@ void Experiment::loadEvaluators() {
             int S = ExpData[i].size();
             int S2 = ExpStdDevs[i].size();
             if (S != S2)
-                cerr << "ERR: the same number of exp data and standard deviation (even if empty) should be given. Exp. "
-                     << i << ", DataTables " << S << " and StdDevTables" << S2 << endl;
+                std::cerr << "ERR: the same number of exp data and standard deviation (even if empty) should be given. Exp. "
+                     << i << ", DataTables " << S << " and StdDevTables" << S2 << std::endl;
             if (S > 0) {
-                cout << "   -> Create evaluators for experiment " << i << " with " << S
-                     << " datasets with standard deviations for " << S2 << " of them " << endl;
+                std::cout << "   -> Create evaluators for experiment " << i << " with " << S
+                     << " datasets with standard deviations for " << S2 << " of them " << std::endl;
                 for (int j = 0; j < S; ++j) {
                     if (ExpData[i][j]) {
                         // then, pass ExpStdDev as well even if it's NULL
@@ -209,7 +209,7 @@ void Experiment::loadEvaluators() {
                 }
             }
             VTG[i]->recordingCompleted();
-            cout << "   -> Data recorded for condition " << getConditionName(i) << endl;
+            std::cout << "   -> Data recorded for condition " << getConditionName(i) << std::endl;
         }
     }
     if (!evaluatorLoaded) evaluatorLoaded = true;
@@ -218,7 +218,7 @@ void Experiment::loadEvaluators() {
 
 void Experiment::setOverrider(int IdExp, overrider *_ov) {
     if ((IdExp < 0) || (IdExp >= getNbCond())) {
-        cerr << "ERR: ExperimentThAll::setOverrider, out of bounds ExpID(" << IdExp << ")\n";
+        std::cerr << "ERR: ExperimentThAll::setOverrider, out of bounds ExpID(" << IdExp << ")\n";
         return;
     }
     Overs[IdExp] = _ov;
@@ -227,7 +227,7 @@ void Experiment::setOverrider(int IdExp, overrider *_ov) {
 /// CAREFULL, the overriders will erase those from the model ...
 void Experiment::overrideVariable(string extVarName, bool override, int IdExp) {
     if ((IdExp >= getNbCond())) {
-        cerr << "ERR: ExperimentThAll::overrideVariable, out of bounds ExpID(" << IdExp << ")\n";
+        std::cerr << "ERR: ExperimentThAll::overrideVariable, out of bounds ExpID(" << IdExp << ")\n";
         return;
     }
     if (IdExp >= 0) {
@@ -237,7 +237,7 @@ void Experiment::overrideVariable(string extVarName, bool override, int IdExp) {
     } else {
         for (int i = 0; i < getNbCond(); ++i) {
             if (Overs[i]) {
-                //cerr << "Override " << ((override) ? "TRUE" : "FALSE") << endl;
+                //std::cerr << "Override " << ((override) ? "TRUE" : "FALSE") << std::endl;
                 (*Overs[i]).setOver(extVarName, override);
             }
         }
@@ -253,10 +253,10 @@ bool Experiment::canOverride(string extVarName, int IdExp) {
             canDo = canDo && (Overs[i] != NULL) && (Overs[i]->hasData(extVarName));
         }
     } else canDo = canDo && (Overs[IdExp] != NULL) && (Overs[IdExp]->hasData(extVarName));
-    //cerr << "   ... asking if can override " << extVarName << ", exp= " << IdExp << " Answer:" << ((canDo)? "Yes" : "No") << endl;
-    //if(Overs[IdExp] != NULL) cerr << "Overrides defined ";
-    //if(( nbCond() > 0) && (Overs[0]->hasData(IdGlobalVariable))) cerr << "At least one condition ok";
-    //cerr << endl;*/
+    //std::cerr << "   ... asking if can override " << extVarName << ", exp= " << IdExp << " Answer:" << ((canDo)? "Yes" : "No") << std::endl;
+    //if(Overs[IdExp] != NULL) std::cerr << "Overrides defined ";
+    //if(( nbCond() > 0) && (Overs[0]->hasData(IdGlobalVariable))) std::cerr << "At least one condition ok";
+    //std::cerr << std::endl;*/
     return canDo;
 }
 
@@ -268,7 +268,7 @@ string Experiment::extractData(vector<int> timePoints, vector<string> extNamesTo
     int nbGlVars = extNamesToSelect.size();
 
     if ((nbGlVars == 0) || (nbTP == 0)) {
-        cerr << "ERR: Experiment::generateDataFile, no variable or time point given " << endl;
+        std::cerr << "ERR: Experiment::generateDataFile, no variable or time point given " << std::endl;
         return string("");
     }
     init();
@@ -295,7 +295,7 @@ string Experiment::extractData(vector<int> timePoints, vector<string> extNamesTo
                 // Here you can not fill it with two variables, does not make sense
                 locE->getVal(m->uniqueInternValName(extNamesToSelect[k]), timePoints[j]);
                 /*if(m->saveKinetics) {
-                    cout << "I want : " << m->getName(m->internValName(idGlobalVariables[k])) << ", t=" << timePoints[j] << endl;
+                    std::cout << "I want : " << m->getName(m->internValName(idGlobalVariables[k])) << ", t=" << timePoints[j] << std::endl;
                 }*/
             }
         }
@@ -313,7 +313,7 @@ string Experiment::extractData(vector<int> timePoints, vector<string> extNamesTo
     //
     //  ID_EXP  NameExp ...
 
-    stringstream fi;
+    std::stringstream fi;
     //fi << "# Automatically generated Data\n";
     fi << IDexps.size() << "\n";
     for (int i = 0; i < nbIdExps; ++i) {
@@ -322,7 +322,7 @@ string Experiment::extractData(vector<int> timePoints, vector<string> extNamesTo
         fi << "\t" << nbTP << "\t" << nbGlVars << "\t#" << getConditionName(IDexps[i]) << "\n";
 
         Evaluator *locE = EVs[i];
-        if (!locE) { cerr << "ERR: GenerateDataFile Part, Evaluators are not defined, seg faults on approach ...\n"; };
+        if (!locE) { std::cerr << "ERR: GenerateDataFile Part, Evaluators are not defined, seg faults on approach ...\n"; };
 
 
         fi << "time(s)";
@@ -351,7 +351,7 @@ string Experiment::extractData(vector<int> timePoints, vector<string> extNamesTo
 
 
 string Experiment::print() {
-    stringstream res;
+    std::stringstream res;
     res << "========== Sum up of experiment content ========\n";
     res << "Name: " << Identification << "\n";
     res << "\n---------- Model used \n\n";
@@ -368,8 +368,8 @@ string Experiment::print() {
         int S = ExpData[i].size();
         int S2 = ExpStdDevs[i].size();
         if (S != S2)
-            cerr << "ERR: ExpData and ExpStdDevs should have same size, exp " << i << ", DataTables " << S
-                 << " and Stddevtables " << S2 << endl;
+            std::cerr << "ERR: ExpData and ExpStdDevs should have same size, exp " << i << ", DataTables " << S
+                 << " and Stddevtables " << S2 << std::endl;
         if (S > 0) {
             res << "Experimental data :\n";
             for (int j = 0; j < S; ++j) {
@@ -377,7 +377,7 @@ string Experiment::print() {
                 else res << "Empty data";
                 if (ExpStdDevs[i][j]) res << ExpStdDevs[i][j]->print(false);
                 else res << "Empty Standard Deviations";
-                res << endl;
+                res << std::endl;
             }
         } else res << "No Experimental data\n";
     }
@@ -385,19 +385,19 @@ string Experiment::print() {
 }
 
 string Experiment::costReport() {
-    stringstream res;
+    std::stringstream res;
     for (int i = 0; i < nbConditions; ++i) {
         res << names_exp[i] << "\n";
         res << VTG[i]->reportTotalFitness();
     }
     res << "\n\nCost per condition : \nExpNr\tCost\tName\n";
     for (int i = 0; i < nbConditions; ++i) {
-        res << i << "\t" << this->costExp(i) << "\t" << names_exp[i] << endl;
+        res << i << "\t" << this->costExp(i) << "\t" << names_exp[i] << std::endl;
     }
     res << "\n\nCost per Variable : \nVarLocalNr\tVarGlobID\nCost\tName\n";
     for (int i = 0; i < m->getNbVars(); ++i) {
         res << i << "\t" << m->getExternalName(i) << "\t" << this->costVariableInModel(i) << "\t" << m->getName(i)
-            << endl;
+            << std::endl;
     }
     return res.str();
 }
@@ -405,7 +405,7 @@ string Experiment::costReport() {
 
 /// TODO : remove evaluator from here
 void MultiExperiments::simulate(int /*IdExp*/, Evaluator * /*E*/, bool force) {
-    cerr << "ERR: Experiments::simulate() should be reimplemented in daughter class, or call simulateAll !\n";
+    std::cerr << "ERR: Experiments::simulate() should be reimplemented in daughter class, or call simulateAll !\n";
 }
 
 int MultiExperiments::nbBigExp() { return NbBigExps; }
@@ -414,7 +414,7 @@ string MultiExperiments::BigExpName(int i) {
     if ((i >= 0) && (i < nbBigExp()))
         return ListBigExperiments[i]->Identification;
     else {
-        cerr << "ERR: Experiments::BigExpName(" << i << "), index out of scope\n";
+        std::cerr << "ERR: Experiments::BigExpName(" << i << "), index out of scope\n";
         return string("");
     }
 }
@@ -429,7 +429,7 @@ void MultiExperiments::AddExperiment(Experiment *Ex) {
 
 Experiment *MultiExperiments::getExperiment(int BigExpID) {
     if ((BigExpID < 0) || (BigExpID > NbBigExps)) {
-        cerr << "ERR: MultiExperiments::getExperiment(" << BigExpID << "), only " << NbBigExps << " experiments\n";
+        std::cerr << "ERR: MultiExperiments::getExperiment(" << BigExpID << "), only " << NbBigExps << " experiments\n";
         return NULL;
     }
     return ListBigExperiments[BigExpID];
@@ -464,7 +464,7 @@ void MultiExperiments::simulateAll(bool force) {
 
 double MultiExperiments::getCoefficient(int BigExpID) {
     if ((BigExpID < 0) || (BigExpID > NbBigExps)) {
-        cerr << "ERR: MultiExperiments::getCoefficient(" << BigExpID << "), only " << NbBigExps << " experiments\n";
+        std::cerr << "ERR: MultiExperiments::getCoefficient(" << BigExpID << "), only " << NbBigExps << " experiments\n";
         return 0.0;
     }
     return coefficients[BigExpID];
@@ -472,12 +472,12 @@ double MultiExperiments::getCoefficient(int BigExpID) {
 
 void MultiExperiments::setCoefficient(int BigExpID, double newValue) {
     if ((BigExpID < 0) || (BigExpID > NbBigExps)) {
-        cerr << "ERR: MultiExperiments::setCoefficient(" << BigExpID << "), only " << NbBigExps << " experiments\n";
+        std::cerr << "ERR: MultiExperiments::setCoefficient(" << BigExpID << "), only " << NbBigExps << " experiments\n";
         return;
     }
     if (newValue < -1e12)
-        cerr << "WRN!!! : MultiExperiments::setCoefficient, are you serious ? you are giving a negative coefficient ("
-             << newValue << ") to an experiment (" << getExperiment(BigExpID)->Identification << ")" << endl;
+        std::cerr << "WRN!!! : MultiExperiments::setCoefficient, are you serious ? you are giving a negative coefficient ("
+             << newValue << ") to an experiment (" << getExperiment(BigExpID)->Identification << ")" << std::endl;
     coefficients[BigExpID] = newValue;
 }
 
@@ -488,7 +488,7 @@ void MultiExperiments::setCoefficient(int BigExpID, double newValue) {
             res += ListBigExperiments[i]->costPart();
         }
     } else {
-        if(BigExpID >= NbBigExps) cerr << "MultiExperiments::motherCostExp(" << BigExpID << "), BigExp ID incorrect (only " << NbBigExps << " experiments)" << endl;
+        if(BigExpID >= NbBigExps) std::cerr << "MultiExperiments::motherCostExp(" << BigExpID << "), BigExp ID incorrect (only " << NbBigExps << " experiments)" << std::endl;
         res = ListBigExperiments[BigExpID]->costPart();
     }
     return res;
@@ -514,8 +514,8 @@ double MultiExperiments::costBigExp(int BigExpID) {
         }
     } else {
         if (BigExpID >= NbBigExps)
-            cerr << "MultiExperiments::motherCostExp(" << BigExpID << "), BigExp ID incorrect (only " << NbBigExps
-                 << " experiments)" << endl;
+            std::cerr << "MultiExperiments::motherCostExp(" << BigExpID << "), BigExp ID incorrect (only " << NbBigExps
+                 << " experiments)" << std::endl;
         res = coefficients[BigExpID] * ListBigExperiments[BigExpID]->costVariableInModel();
     }
     return res;
@@ -546,7 +546,7 @@ void MultiExperiments::loadEvaluators() {
 
 
 string MultiExperiments::print() {
-    stringstream res;
+    std::stringstream res;
     res << "********** Multi-Experiments sum up ********\n";
     for (int i = 0; i < NbBigExps; ++i) {
         res << ListBigExperiments[i]->print();
@@ -563,7 +563,7 @@ double MultiExperiments::getPenalities() {
 }
 
 string MultiExperiments::costReport() {
-    stringstream res;
+    std::stringstream res;
     for (int i = 0; i < NbBigExps; ++i) {
         res << ListBigExperiments[i]->costReport();
     }
@@ -581,33 +581,33 @@ expCompParameterSets::expCompParameterSets(Experiment *Exp, vector<vector<double
                                            int _IDconditionToUse) :
         Experiment((Exp) ? Exp->m : nullptr, _parameterSets.size()) {
     if (!Exp) {
-        cerr << "ERR: expCompParameterSetsm empty experiment given" << endl;
+        std::cerr << "ERR: expCompParameterSetsm empty experiment given" << std::endl;
         return;
     }
     if (!Exp->m) {
-        cerr << "ERR: expCompParameterSetsm empty model in given experiment" << endl;
+        std::cerr << "ERR: expCompParameterSetsm empty model in given experiment" << std::endl;
         return;
     }
     builtOnExperiment = Exp;
     Identification = Exp->Identification + string(" -> Parameter sets comparison");
     IDconditionToUse = _IDconditionToUse;
     if (Exp->getNbCond() == 0) {
-        cerr << "ERR: creating an expCompareParameterSets from an experiment without condition" << endl;
+        std::cerr << "ERR: creating an expCompareParameterSets from an experiment without condition" << std::endl;
         return;
     }
     if ((_IDconditionToUse < 0) || (_IDconditionToUse >= Exp->getNbCond())) {
-        cerr << "ERR: defining an expCompParameterSets with out of bound condition (ID=" << _IDconditionToUse << ")"
-             << endl;
+        std::cerr << "ERR: defining an expCompParameterSets with out of bound condition (ID=" << _IDconditionToUse << ")"
+             << std::endl;
         _IDconditionToUse = 0;
     }
     parameterSets = _parameterSets;
     for (size_t i = 0; i < parameterSets.size(); ++i) {
-//        cout << "Parameter set " << i << endl;
+//        std::cout << "Parameter set " << i << std::endl;
 //        for(size_t j = 0; j < parameterSets[i]->size(); ++j){
-//            cout << (parameterSets[i]->at(j)) << "\t";
+//            std::cout << (parameterSets[i]->at(j)) << "\t";
 //        }
-//        cout << endl;
-        stringstream nm;
+//        std::cout << std::endl;
+        std::stringstream nm;
         nm << "P" << i;
         names_exp[i] = nm.str();
     }
@@ -617,9 +617,9 @@ expCompParameterSets::expCompParameterSets(Experiment *Exp, vector<vector<double
 void expCompParameterSets::simulate(int IdExp, Evaluator *E, bool force) {
     if (motherPrepareSimulate(IdExp, E, force)) {
         if ((IdExp < 0) || (IdExp >= (int) parameterSets.size()))
-            cerr << "expCompParameterSets, Problem between Nb Exp and Nb of given parameter sets " << endl;
+            std::cerr << "expCompParameterSets, Problem between Nb Exp and Nb of given parameter sets " << std::endl;
         vector<double> *v = parameterSets[IdExp];
-        if (!v) cerr << "ERR: expCompParameterSets, non-existing parameter set" << endl;
+        if (!v) std::cerr << "ERR: expCompParameterSets, non-existing parameter set" << std::endl;
         m->setParameters(*v);
         builtOnExperiment->simulate(IDconditionToUse, E, force); // will do the init
     }
@@ -631,27 +631,27 @@ expChangeOneParameter::expChangeOneParameter(Experiment *Exp, vector<double> &_p
 
     // test input
     if (!Exp) {
-        cerr << "ERR: expChangeOneParameter empty experiment given" << endl;
+        std::cerr << "ERR: expChangeOneParameter empty experiment given" << std::endl;
         return;
     }
     if (!Exp->m) {
-        cerr << "ERR: expChangeOneParameter empty model in given experiment" << endl;
+        std::cerr << "ERR: expChangeOneParameter empty model in given experiment" << std::endl;
         return;
     }
     parameterSet = _parameterSet; //new vector<double>(_parameterSet);
     if ((int) parameterSet.size() != Exp->m->getNbParams()) {
-        cerr << "ERR: expChangeOneParameter, parameter set size " << parameterSet.size()
-             << " not compatible with model that has " << Exp->m->getNbParams() << " parameters " << endl;
+        std::cerr << "ERR: expChangeOneParameter, parameter set size " << parameterSet.size()
+             << " not compatible with model that has " << Exp->m->getNbParams() << " parameters " << std::endl;
         return;
     }
     if ((parameter < 0) || (parameter >= Exp->m->getNbParams())) {
-        cerr << "ERR: expChangeOneParameter, ID of parameter is out of bound (" << parameter << "), while model has "
-             << Exp->m->getNbParams() << endl;
+        std::cerr << "ERR: expChangeOneParameter, ID of parameter is out of bound (" << parameter << "), while model has "
+             << Exp->m->getNbParams() << std::endl;
         return;
     }
     if ((nbCurves < 0) || (nbCurves > NbVariantes)) {
-        cerr << "ERR: expChangeOneParameter, nb of curves should be [1.." << NbVariantes << "], and not " << nbCurves
-             << " -> take 10" << endl;
+        std::cerr << "ERR: expChangeOneParameter, nb of curves should be [1.." << NbVariantes << "], and not " << nbCurves
+             << " -> take 10" << std::endl;
         nbCurves = 10;
     }
     //valueAround = parameterSet->at(parameter);
@@ -663,7 +663,7 @@ expChangeOneParameter::expChangeOneParameter(Experiment *Exp, vector<double> &_p
 
 /// 2018-11-21 Should not use the parameter value from creation, but the current from the model
 void expChangeOneParameter::init() {
-    cout << "INIT called - victory" << endl;
+    std::cout << "INIT called - victory" << std::endl;
     valueAround = m->getParam(parameter);
     //if(parameterSet) delete parameterSet;
     //parameterSet = new vector<double>(m->getParameters());
@@ -671,7 +671,7 @@ void expChangeOneParameter::init() {
     motherInit();
 
     // give names to each curbe : value + '=x%'
-    stringstream valInString;
+    std::stringstream valInString;
     valInString << valueAround;
     string val = valInString.str();
     if (nbCurves > Param005) names_exp[Param005] = string("5%");
@@ -697,7 +697,7 @@ void expChangeOneParameter::simulate(int IdExp, Evaluator *E, bool force) {// if
             (IdExp == ParamDefault)) { // can not use nbCurves in the switch, too bad! so put it here
             // cheating: make sure to finish by the original parameter value to restore the good parameter set at the end
             m->setParam(parameter, valueAround);
-            cerr << " value for param " << m->getParamName(parameter) << " is " << valueAround << endl;
+            std::cerr << " value for param " << m->getParamName(parameter) << " is " << valueAround << std::endl;
             builtOnExperiment->simulate(IDconditionToUse, E, force);
         } else {
             switch (IdExp) {

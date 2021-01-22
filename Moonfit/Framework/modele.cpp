@@ -2,7 +2,9 @@
 #include <algorithm>
 #include <sstream>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 //#include "../Extreminator/common/myTimes.h"
 
@@ -41,7 +43,7 @@ public:
 double evalErr(vector<double> &v1ref, vector<double> &v2, int size) {
     double res = 0;
     for (int i = 0; i < size; ++i)
-        if (v1ref[i] != 0) res = max(res, fabs((v2[i] - v1ref[i]) / (v1ref[i])));
+        if (v1ref[i] != 0) res = std::max(res, fabs((v2[i] - v1ref[i]) / (v1ref[i])));
     return res / size;
 }
 
@@ -56,14 +58,14 @@ size_t myintegrate(mySim BS, vector<double> &start, double t, double nxt, double
     vector<double> halfdxdt = vector<double>(size, 0.0);
     size_t nbSteps = 0;
 
-    double dtlocal = min(dtmin * 10, (nxt - t) / 10);
+    double dtlocal = std::min(dtmin * 10, (nxt - t) / 10);
     if (dtlocal == 0) return 0;  // simulation finished
     while (t < nxt) {
         // if integrating one step of dtlocal
         BS(start, oneshotdxdt, t);
         for (int i = 0; i < size; ++i) {
             oneshotpoint[i] = start[i] + dtlocal * oneshotdxdt[i];
-            //if(isnan(oneshotpoint[i]) || (isinf(oneshotpoint[i])) || (fabs(oneshotpoint[i]) > 1e12)) {/*cerr << "Divergence ! " << endl; */ return 0; }
+            //if(isnan(oneshotpoint[i]) || (isinf(oneshotpoint[i])) || (fabs(oneshotpoint[i]) > 1e12)) {/*std::cerr << "Divergence ! " << std::endl; */ return 0; }
         }
 
         // versus if integrating two steps of dtlocal/2 (the result from this technique is the one kept (more accurate than one step), but the next dt will be chosen depending if one step is accurate enough (close to two steps) or not
@@ -103,7 +105,7 @@ size_t RK4integrate( mySim BS , vector<double> &start , double t , double nxt , 
     vector<double> halfdxdt     = vector<double>(size, 0.0);
     size_t nbSteps = 0;
 
-    double dtlocal = min(dtmin*10, (nxt-t) / 10);
+    double dtlocal = std::min(dtmin*10, (nxt-t) / 10);
     if(dtlocal == 0) return 0;  // simulation finished
     while(t < nxt){
         // if integrating one step of dtlocal
@@ -148,7 +150,7 @@ size_t RK4integrate( mySim BS , vector<double> &start , double t , double nxt , 
 
 /// function to simulate from t to t+sec_max. The value of Model::t is updated
 void Model::simulate(double sec_max, Evaluator *E) {
-    if (!E) cerr << "No Evaluator\n";
+    if (!E) std::cerr << "No Evaluator\n";
     if (saveKinetics) newCinetiqueIfRequired(); else deleteCinetique();
     auto BS = mySim(this);
 
@@ -163,12 +165,12 @@ void Model::simulate(double sec_max, Evaluator *E) {
         // finds the next wanted time point
         nxt = t_init + sec_max;
         if (saveKinetics) {
-            nxt = min(nxt, print_every_dt * (double) ((int) (t / print_every_dt + 1e-8) + 1));
+            nxt = std::min(nxt, print_every_dt * (double) ((int) (t / print_every_dt + 1e-8) + 1));
         } // the 1e-8 is due to compensate the errors. Indeed, (0.03 / 0.01) = 3 but (int) (0.03 / 0.01) was giving 2 ...
 #undef USE_EVALUATORS
 
 #ifdef USE_EVALUATORS
-        if (E) nxt = min(nxt, E->nextPoint());
+        if (E) nxt = std::min(nxt, E->nextPoint());
 #endif
 
         // integrates until this time point
@@ -219,10 +221,10 @@ void Model::simulate(double sec_max, Evaluator *E) {
             while (z >= 0) { // id of the next variable, -1 if finished
                 if (z < (int) val.size()) {
                     E->setValNow(z, val[z]);
-                    //cerr << "Set t= " << t << "\tV(" << z << ") = " << val[z] << endl;
+                    //std::cerr << "Set t= " << t << "\tV(" << z << ") = " << val[z] << std::endl;
                 } else {
                     E->setValNow(z, 0);
-                    //cerr << "OUT t= " << t << "\tV(" << z << ")\n";
+                    //std::cerr << "OUT t= " << t << "\tV(" << z << ")\n";
                 }
                 z = E->speciesToUpdate();
             }   // the next one
@@ -240,14 +242,14 @@ void Model::simulate(double sec_max, Evaluator *E) {
 }
 
 void Model::updateDerivedVariables(double _t) {
-    //cerr << "MotherFunction update derived variables " << endl;
+    //std::cerr << "MotherFunction update derived variables " << std::endl;
 }
 
 bool Model::checkDivergence() {
     if (stopCriterionReached) return true;
     for (int i = 0; i < nbVars; ++i) {
         if (std::isnan(val[i]) || std::isinf(val[i]) || (fabs(val[i]) > STOP_VAL)) {
-            //cerr << "Variable " << i << this->getName(i) << " exploded with value " << val[i] << endl;
+            //std::cerr << "Variable " << i << this->getName(i) << " exploded with value " << val[i] << std::endl;
             penalities += 100 * (1.0 / (0.01 + log(((double) t) / 100.0 + 1)));
             stopCriterionReached = true;
         }
@@ -258,7 +260,7 @@ bool Model::checkDivergence() {
 
 void modelAgentBased::simulate(double sec_max, Evaluator *E) {
 
-    if (!E) cerr << "WRN: ModelAgentBased::simulate(), No Evaluator given\n";
+    if (!E) std::cerr << "WRN: ModelAgentBased::simulate(), No Evaluator given\n";
     if (saveKinetics) newCinetiqueIfRequired(); else deleteCinetique();
 
     // This function need to find on which time-points to stop and plot an analysis of the state.
@@ -273,9 +275,9 @@ void modelAgentBased::simulate(double sec_max, Evaluator *E) {
         // finds the next wanted time point
         nxt = t_init + sec_max;         // latest possible point = at the end
         if (saveKinetics) {
-            nxt = min(nxt, print_every_dt * (double) ((int) (t / print_every_dt + 1e-8) + 1));
+            nxt = std::min(nxt, print_every_dt * (double) ((int) (t / print_every_dt + 1e-8) + 1));
         } // the 1e-8 is due to compensate the errors. Indeed, (0.03 / 0.01) = 3 but (int) (0.03 / 0.01) was giving 2 ...
-        if (E) nxt = min(nxt, E->nextPoint());    // asks the next datapoint from the data
+        if (E) nxt = std::min(nxt, E->nextPoint());    // asks the next datapoint from the data
 
         // does the simulation without analysis
         timeStep(t, nxt);
@@ -295,10 +297,10 @@ void modelAgentBased::simulate(double sec_max, Evaluator *E) {
             while (z >= 0) { // id of the next variable, -1 if finished
                 if (z < (int) val.size()) {
                     E->setValNow(z, val[z]);
-                    //cerr << "Set t= " << t << "\tV(" << z << ") = " << val[z] << endl;
+                    //std::cerr << "Set t= " << t << "\tV(" << z << ") = " << val[z] << std::endl;
                 } else {
                     E->setValNow(z, 0);
-                    //cerr << "OUT t= " << t << "\tV(" << z << ")\n";
+                    //std::cerr << "OUT t= " << t << "\tV(" << z << ")\n";
                 }
                 z = E->speciesToUpdate();
             }   // the next one
@@ -346,16 +348,16 @@ Model::Model(int _nbVars, int _nbParams) : nbVars(_nbVars), nbParams(_nbParams),
 }
 
 void Model::loadParameters(string file_name) {
-    cout << "      -> loading paramter set from " << file_name << endl;
-    ifstream fichier(file_name.c_str(), ios::in);
+    std::cout << "      -> loading paramter set from " << file_name << std::endl;
+    std::ifstream fichier(file_name.c_str(), std::ios::in);
     if (fichier) {
         int nb_p = 0;
         fichier >> nb_p;
-        for (int i = 0; i < min(nb_p, (int) nbParams); ++i) {
+        for (int i = 0; i < std::min(nb_p, (int) nbParams); ++i) {
             double tampon = 0.0;
             fichier >> tampon;
             if (tampon != 0) params[i] = tampon;
-            //cout << "Loading p" << i << " = " << params[i] << endl;
+            //std::cout << "Loading p" << i << " = " << params[i] << std::endl;
         }
     }
     loadParametersDone();
@@ -363,21 +365,21 @@ void Model::loadParameters(string file_name) {
 
 // Virtual functions that SHOULD be reimplanted
 void Model::saveParameters(string file_name) {
-    ofstream fichier(file_name.c_str(), ios::out);
+    std::ofstream fichier(file_name.c_str(), std::ios::out);
     if (fichier) {
-        fichier << nbParams << endl;
+        fichier << nbParams << std::endl;
         for (int i = 0; i < nbParams; ++i) {
             if (i > 0) fichier << "\t";
             fichier << getParam(i);
         }
-        fichier << endl;
+        fichier << std::endl;
         fichier.close();
-    } else { cerr << "Model::saveParameters(), file not found : " << file_name << endl; }
+    } else { std::cerr << "Model::saveParameters(), file not found : " << file_name << std::endl; }
 }
 
 // Virtual functions that SHOULD be reimplanted
 void Model::derivatives(const vector<double> &x, vector<double> &dxdt, const double t) {
-    cerr << "ERR : the function derivatives has not been implemented properly in the daughter class\n";
+    std::cerr << "ERR : the function derivatives has not been implemented properly in the daughter class\n";
 }
 
 // you can define the backgrounds as you like, but it is important that each time parameters are loaded, the background is reseted,
@@ -385,15 +387,15 @@ void Model::derivatives(const vector<double> &x, vector<double> &dxdt, const dou
 // time by using initialize. Better using 1 instead of 0 as default, for binary combinations of backgrounds.
 
 void Model::initialise(long long) {
-    cerr << "WRN : Nothing specified for initialization\n";
+    std::cerr << "WRN : Nothing specified for initialization\n";
 }
 
 void Model::setBaseParameters() {
-    cerr << "ERR : the function setBaseParameters has been called but not implemented in the daughter class\n";
+    std::cerr << "ERR : the function setBaseParameters has been called but not implemented in the daughter class\n";
 }                // gives a correct set of parameters, if you don't load other set.
 void Model::initialiseDone() {
     if (!parametersLoaded)
-        cerr
+        std::cerr
                 << "ERR : Please provide a full parameter set to the Model before simulating. Details : you called initialise() without loading/setting parameters before initializing ! - you can not perform simulation ! Solutions : call 'loadParameters(file)', 'setParameters(full set)' or 'setBaseParameters()\n";
     deleteCinetique();
     penalities = 0;
@@ -406,62 +408,62 @@ void Model::needNewParameterSet() { parametersLoaded = false; }
 
 void Model::loadParametersDone() { parametersLoaded = true; }
 
-double Model::max(double a, double b) { if (a > b) return a; else return b; }
+double Model::max_(double a, double b) { if (a > b) return a; else return b; }
 
 string Model::print() {
-    stringstream res;
-    res << "   Nb Params " << nbParams << endl;
-    res << "   Nb Vars   " << nbVars << endl;
-    res << "   Internal Variables : " << endl;
+    std::stringstream res;
+    res << "   Nb Params " << nbParams << std::endl;
+    res << "   Nb Vars   " << nbVars << std::endl;
+    res << "   Internal Variables : " << std::endl;
     if ((int) names.size() == nbVars) {
         for (int i = 0; i < nbVars; ++i) {
             res << "\t" << i << "\t" << names[i] << "\t";
             if (extNames[i].size() > 0) res << "Globally Known As Var ID=: (" << extNames[i] << ")";
             else res << "Internal only ";
-            res << endl;
+            res << std::endl;
         }
-    } else res << "ERR: Model::print, wrong size for names[] - there are not enough names found for species" << endl;
+    } else res << "ERR: Model::print, wrong size for names[] - there are not enough names found for species" << std::endl;
     res << "    Current parameter values\n";
-    for (int i = 0; i < nbParams; ++i) { res << "   " << i << "\t" << params[i] << endl; }
+    for (int i = 0; i < nbParams; ++i) { res << "   " << i << "\t" << params[i] << std::endl; }
     return res.str();
 }
 
 string Model::printVarNames(double _t) {
-    stringstream res;
+    std::stringstream res;
     res << "\n" << _t / 3600 << " h\t";
     for (int i = 0; i < nbVars; ++i) {
         res << names[i] << "\t";
     }
-    res << endl;
+    res << std::endl;
     return res.str();
 }
 
 string Model::printVarValues(double _t) {
-    stringstream res;
+    std::stringstream res;
     res << _t / 3600 << "h" << (_t - 3600 * (t / 3600)) / 60 << "'\t" << std::fixed;
     for (int i = 0; i < nbVars; ++i) {
-        res << setprecision(4) << val[i] << "\t";
+        res << std::setprecision(4) << val[i] << "\t";
     }
     res << "\n";
     return res.str();
 }
 
 string Model::printParValues() {
-    stringstream res;
+    std::stringstream res;
     res << "Parameter values (\t" << nbParams << " params)\n";
     for (int i = 0; i < nbParams; ++i) {
         res << i << "\t" << params[i] << "\t";
     }
-    res << endl;
+    res << std::endl;
     return res.str();
 }
 
 string Model::printParNames() {
-    stringstream res;
+    std::stringstream res;
     for (int i = 0; i < nbParams; ++i) {
         res << i << "\t" << getParamName(i) << "\t";
     }
-    res << endl;
+    res << std::endl;
     return res.str();
 }
 
@@ -477,10 +479,10 @@ void Model::setValue(string nameExternalVariable, double value) {
             val[idList[i]] = value;
     }
     if (idList.size() == 0)
-        cerr << "ERR: Model::setValue(" << nameExternalVariable << "," << value
+        std::cerr << "ERR: Model::setValue(" << nameExternalVariable << "," << value
              << "), this species ID is not implanted !! \n";
     if (idList.size() > 1)
-        cerr << "WRN: Model::setValue(" << nameExternalVariable << "," << value
+        std::cerr << "WRN: Model::setValue(" << nameExternalVariable << "," << value
              << "), this species ID is defined multiple times in the model. !! \n";
 }
 
@@ -491,22 +493,22 @@ void Model::addValue(string nameExternalVariable, double value) {
             val[idList[i]] += value;
     }
     if (idList.size() == 0)
-        cerr << "Model::addValue(" << nameExternalVariable << "," << value
+        std::cerr << "Model::addValue(" << nameExternalVariable << "," << value
              << "), this species ID is not implanted !! \n";
     if (idList.size() > 1)
-        cerr << "WRN: Model::setValue(" << nameExternalVariable << "," << value
+        std::cerr << "WRN: Model::setValue(" << nameExternalVariable << "," << value
              << "), this species ID is defined multiple times in the model. !! \n";
 }
 
 double Model::getValue(string nameExternalVariable) {
     vector<int> idList = internValName(nameExternalVariable);
     if (idList.size() > 1) {
-        cerr << "WRN: Model::getValue(" << nameExternalVariable
+        std::cerr << "WRN: Model::getValue(" << nameExternalVariable
              << "), this species ID is defined multiple times in the model. !! -> Can not decide which one to get \n";
         return NAN;
     }
     if (idList.size() == 0) {
-        cerr << "Model::getValue(" << nameExternalVariable << "), this species ID is not implanted !! \n";
+        std::cerr << "Model::getValue(" << nameExternalVariable << "), this species ID is not implanted !! \n";
         return NAN;
     }
     int id = idList[0];
@@ -525,11 +527,11 @@ vector<int> Model::internValName(string externalNameVariable) {
 int Model::uniqueInternValName(string externalNameVariable) { // just raises an error if there are multiple...
     vector<int> res = internValName(externalNameVariable);
     if (res.size() == 0) {
-        cerr << "ERR: uniqueInternValName(" << externalNameVariable << "), not found" << endl;
+        std::cerr << "ERR: uniqueInternValName(" << externalNameVariable << "), not found" << std::endl;
         return -1;
     }
     if (res.size() > 1) {
-        cerr << "ERR: uniqueInternValName(" << externalNameVariable << "), defined multiple times" << endl;
+        std::cerr << "ERR: uniqueInternValName(" << externalNameVariable << "), defined multiple times" << std::endl;
         return -1;
     }
     return res[0];
@@ -539,14 +541,14 @@ int Model::getNbParams() { return nbParams; }
 
 void Model::setParam(int i, double v) {
     if ((i < 0) || (i >= nbParams)) {
-        cerr << "Model::setParam(" << i << "," << v << "), index out of bounds. NbParams = " << nbParams << endl;
+        std::cerr << "Model::setParam(" << i << "," << v << "), index out of bounds. NbParams = " << nbParams << std::endl;
         return;
     }
     params[i] = (v > 0 ? v : -v);
 }   // fuck the system !!
 double Model::getParam(int i) {
     if ((i < 0) || (i >= nbParams)) {
-        cerr << "Model::getParam(" << i << "), index out of bounds. NbParams = " << nbParams << endl;
+        std::cerr << "Model::getParam(" << i << "), index out of bounds. NbParams = " << nbParams << std::endl;
         return 0.0;
     }
     return params[i];
@@ -577,7 +579,7 @@ vector<double> Model::getParameters() {
 
 void Model::setParameters(vector<double> &newParamSet) {
     if ((int) newParamSet.size() != nbParams) {
-        cerr << "ERR- Model::setParameters(vector), wrong size for the given vector (" << newParamSet.size()
+        std::cerr << "ERR- Model::setParameters(vector), wrong size for the given vector (" << newParamSet.size()
              << ") instead of " << nbParams << " parameters\n";
         return;
     }
@@ -587,28 +589,28 @@ void Model::setParameters(vector<double> &newParamSet) {
 
 string Model::getParamName(int i) {
     if ((i < 0) || (i >= nbParams)) {
-        cerr << "ERR- Model::getParamName(" << i << "), out of bounds (" << nbParams << " params)" << endl;
+        std::cerr << "ERR- Model::getParamName(" << i << "), out of bounds (" << nbParams << " params)" << std::endl;
         return "";
     } else return paramNames[i];
 }
 
 double Model::getLowerBound(int i) {
     if ((i < 0) || (i >= nbParams)) {
-        cerr << "ERR- Model::getLowerBound(" << i << "), out of bounds (" << nbParams << " params)" << endl;
+        std::cerr << "ERR- Model::getLowerBound(" << i << "), out of bounds (" << nbParams << " params)" << std::endl;
         return 0;
     } else return paramLowBounds[i];
 }
 
 double Model::getUpperBound(int i) {
     if ((i < 0) || (i >= nbParams)) {
-        cerr << "ERR- Model::getUpperBound(" << i << "), out of bounds (" << nbParams << " params)" << endl;
+        std::cerr << "ERR- Model::getUpperBound(" << i << "), out of bounds (" << nbParams << " params)" << std::endl;
         return 0;
     } else return paramUpBounds[i];
 }
 
 void Model::setBounds(int i, double vLow, double vHi) {
     if ((i < 0) || (i >= nbParams)) {
-        cerr << "ERR- Model::setBound(" << i << "), out of bounds (" << nbParams << " params)" << endl;
+        std::cerr << "ERR- Model::setBound(" << i << "), out of bounds (" << nbParams << " params)" << std::endl;
         return;
     } else {
         paramLowBounds[i] = vLow;
@@ -618,8 +620,8 @@ void Model::setBounds(int i, double vLow, double vHi) {
 
 void Model::setBounds(vector<double> lowVals, vector<double> upVals) {
     if (((int) upVals.size() != nbParams) || ((int) lowVals.size() != nbParams)) {
-        cerr << "ERR- Model::setBounds(vector1, vector2), the sizes of vectors don't match nbParams = " << nbParams
-             << endl;
+        std::cerr << "ERR- Model::setBounds(vector1, vector2), the sizes of vectors don't match nbParams = " << nbParams
+             << std::endl;
         return;
     }
     paramLowBounds = lowVals;
@@ -627,11 +629,11 @@ void Model::setBounds(vector<double> lowVals, vector<double> upVals) {
 }
 
 void Model::action(string name, double parameter) {
-    cerr << "ERR- Model::action(string, double), this function should and was not implemented in the Model subclass\n";
+    std::cerr << "ERR- Model::action(string, double), this function should and was not implemented in the Model subclass\n";
 }
 
 void Model::action(string name, vector<double> parameters) {
-    cerr
+    std::cerr
             << "ERR- Model::action(string, vector<double>), this function should and was not implemented in the Model subclass\n";
 }
 // ============================ 4 - Managing the kinetic mode : records every xx secs ==============================
@@ -673,13 +675,13 @@ void Model::save_state(double _t) {
 void Model::applyOverride(vector<double> &x, double t) {
     if (currentOverrider) {
         // to be further improved !!
-        //cout << "OverAtt=\t" << t;
+        //std::cout << "OverAtt=\t" << t;
         for (int i = 0; i < nbVars; ++i) {
             string z = extNames[i];
             if (z.size() > 0) if ((*currentOverrider)(z)) { x[i] = (*currentOverrider)(z, t); }
-            //cout << "\t" << x[i] << "=" << (*currentOverrider)(z, t);
+            //std::cout << "\t" << x[i] << "=" << (*currentOverrider)(z, t);
         }
-        //cout << endl;
+        //std::cout << std::endl;
     }
 }
 
@@ -699,7 +701,7 @@ void Model::clearOverride(vector<double> &x, vector<double> &dxdt) {
 
 void Model::setOverrider(overrider *newOverrider) {
     currentOverrider = newOverrider;
-    //cerr << "SET overrider " << (currentOverrider ? "EXISTS" : "NULL") << endl;
+    //std::cerr << "SET overrider " << (currentOverrider ? "EXISTS" : "NULL") << std::endl;
 }
 
 bool Model::over(int indexLocal) {

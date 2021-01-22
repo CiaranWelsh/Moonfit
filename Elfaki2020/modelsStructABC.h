@@ -381,7 +381,7 @@ struct modele6GenericTVaslin : public Model {
     void action(string name, double parameter) {
         if (!name.compare("wash")) {
             if ((parameter > 1.0) || (parameter < 0)) {
-                cerr << "ERR: ModeleMinLatent::action(" << name << ", " << parameter << "), wrong parameter value\n";
+                std::cerr << "ERR: ModeleMinLatent::action(" << name << ", " << parameter << "), wrong parameter value\n";
                 return;
             }
             // val[xxx] =   xxx; // example of how the hell it works

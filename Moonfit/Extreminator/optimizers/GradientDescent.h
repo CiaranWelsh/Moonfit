@@ -141,7 +141,7 @@ GradientDescent::GradientDescent(BaseOptimizationProblem *E, const std::string &
 	myEta = (double) argument(3);
 	std::cerr << "\tParameters :\n\t   Nb Generations : " << numGenMax << "\n";
 		
-	std::cerr << "Data we have from the optimizer :\n" << 
+	std::cerr << "Data we have from the optimizer :\n" <<
 			"We want to optimize " << numIndex() << " parameters\n";
 	//for(int i = 0; i < (int) numIndex() ; ++i){ std::cerr << " " << indexVector_[i];}
 	std::cerr << "\n";
@@ -173,11 +173,11 @@ void GradientDescent::optimize(){
 			//double Edep = current.energy();
 			double initialparam = E_->parameter(indexVector(j));
 			E_->setParameter(indexVector(j),  initialparam * (1 + mydX));
-			cerr << ":";
+			std::cerr << ":";
 			double E2 = E_->getCost();
 			E_->setParameter(indexVector(j),  initialparam * (1 - mydX));
 			double E3 = E_->getCost();
-			cerr << "|";
+			std::cerr << "|";
 			gradient[j] = (E2 - E3)/(2 * mydX * initialparam);
 			E_->setParameter(indexVector(j),  initialparam);
 		}
@@ -191,12 +191,12 @@ void GradientDescent::optimize(){
 		if(E < bestEver.energy()){
 			catchCurrentTo(E, &bestEver);
 			std::cerr << "Success" << "\n";
-		} else cerr << "\n";			
+		} else std::cerr << "\n";
 		std::cerr << "Etape " << i << "\t" << bestEver.energy() << "\tGrad:\t";
 		for(int j = 0; j < (int) numIndex(); ++j){
 			std::cerr << gradient[j] << "\t";
 		}
-		std::cerr << "\n";		
+		std::cerr << "\n";
 		print_total_parameters();
 	}
 }*/

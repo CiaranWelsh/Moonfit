@@ -40,7 +40,7 @@ void GeneticGeneral::Initialize(){
 // =========================== II The (virtual) function called for optimizing =========================
 
 void GeneticGeneral::optimize(){
-	//cerr << setiosflags(ios::fixed);	
+	//std::cerr << setiosflags(std::ios::fixed);
 	resetCostCalls();
 	int num_tries = (int) argument(9);
 	int maxCalls = (int) argument(10);
@@ -85,16 +85,16 @@ void GeneticGeneral::optimize(){
 }
 
 void GeneticGeneral::testOperators(int popSize, double propCross, double forkCoeff, int num_tries, int maxCalls){
-    cout << "\t|========= Teste les combinaisons Mutations / Cross-over avec : ================| \n";
-    if(type_of_algo == 0) cout << "\t     - CEP\n";
-    if(type_of_algo == 1) cout << "\t     - SSGA\n";
-    if(type_of_algo == 2) cout << "\t     - GGA\n";
-    cout << "\t     - popSize   = " << popSize << "\n";
-    cout << "\t     - propCross = " << propCross << "\n";
-    cout << "\t     - num_tries = " << num_tries << "\n";
-    cout << "\t     - maxCalls  = " << maxCalls << "\n";
-    if(type_of_algo == 0) cout << "\t     - forkCoeff = " << forkCoeff << "\n";
-    cout << "\t|===============================================================================|\n";
+    std::cout << "\t|========= Teste les combinaisons Mutations / Cross-over avec : ================| \n";
+    if(type_of_algo == 0) std::cout << "\t     - CEP\n";
+    if(type_of_algo == 1) std::cout << "\t     - SSGA\n";
+    if(type_of_algo == 2) std::cout << "\t     - GGA\n";
+    std::cout << "\t     - popSize   = " << popSize << "\n";
+    std::cout << "\t     - propCross = " << propCross << "\n";
+    std::cout << "\t     - num_tries = " << num_tries << "\n";
+    std::cout << "\t     - maxCalls  = " << maxCalls << "\n";
+    if(type_of_algo == 0) std::cout << "\t     - forkCoeff = " << forkCoeff << "\n";
+    std::cout << "\t|===============================================================================|\n";
 
 	BR.CreateCauchy(0,0.0155);
 	double TotalResBest[12][13];
@@ -132,36 +132,36 @@ void GeneticGeneral::testOperators(int popSize, double propCross, double forkCoe
 		}
 	}
 	
-	cout << "SUM UP Best Element. Ligne = cross-over; colonne = mutation\n";
+	std::cout << "SUM UP Best Element. Ligne = cross-over; colonne = mutation\n";
     for(int co = 0; co < 11; ++co){
 		for(int muttyp = 0; muttyp < 12; ++muttyp){
-			cout << TotalResBest[co][muttyp] << "\t";
+			std::cout << TotalResBest[co][muttyp] << "\t";
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
 
-	cout << "SUM UP Mean. Ligne = cross-over; colonne = mutation\n";
+	std::cout << "SUM UP Mean. Ligne = cross-over; colonne = mutation\n";
     for(int co = 0; co < 11; ++co){
 		for(int muttyp = 0; muttyp < 12; ++muttyp){
-			cout << TotalResMean[co][muttyp] << "\t";
+			std::cout << TotalResMean[co][muttyp] << "\t";
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
 
-	cout << "SUM UP Worst Element. Ligne = cross-over; colonne = mutation\n";
+	std::cout << "SUM UP Worst Element. Ligne = cross-over; colonne = mutation\n";
     for(int co = 0; co < 11; ++co){
 		for(int muttyp = 0; muttyp < 12; ++muttyp){
-			cout << TotalResWorst[co][muttyp] << "\t";
+			std::cout << TotalResWorst[co][muttyp] << "\t";
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
 
-	cout << "SUM UP Variance. Ligne = cross-over; colonne = mutation\n";
+	std::cout << "SUM UP Variance. Ligne = cross-over; colonne = mutation\n";
     for(int co = 0; co < 11; ++co){
 		for(int muttyp = 0; muttyp < 12; ++muttyp){
-			cout << TotalResVariances[co][muttyp] << "\t";
+			std::cout << TotalResVariances[co][muttyp] << "\t";
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
 	return;
 }
@@ -224,16 +224,16 @@ double GeneticGeneral::SSGA(int popSize, int maxCalls, double prcOffspring, int 
 		}
         if(speak>=1){ //if((generation% ((int) (max((int) (maxCalls / ((int) popSize*prcOffspring)),50)) / 50)) == 0){
             population.doStatistics();
-            cout << generation +1<< "\t" << bestGlobal.cost() << "  \t" << population.bestLocalCost << "  \t" <<  population.meanCost << "  \t" << population.worstLocalCost << "    \t" << nbCostCalls() << "\n";
+            std::cout << generation +1<< "\t" << bestGlobal.cost() << "  \t" << population.bestLocalCost << "  \t" <<  population.meanCost << "  \t" << population.worstLocalCost << "    \t" << nbCostCalls() << "\n";
         }
 	}
 
     if(speak>=1){
         population.doStatistics();  //population.print();
-        cout << "\t\tCalls= " << nbCostCalls() << "\tBest= " << bestGlobal.cost() << "  \tPopBest= " << population.bestLocalCost << "\tPopMean= " <<  population.meanCost << "\tPopWorst" << population.worstLocalCost << "\tgen= " << generation << "\n";
-        cout << "\t\tSuccessfull Mutations   : " << mutationSuccess << " / " << mutationSuccess + mutationFail << endl;
-        cout << "\t\tSuccessfull cross-Overs : " << crossOverSuccess << " / " << crossOverSuccess + crossOverFail << endl;
-    } else cout << bestGlobal.cost() << endl;
+        std::cout << "\t\tCalls= " << nbCostCalls() << "\tBest= " << bestGlobal.cost() << "  \tPopBest= " << population.bestLocalCost << "\tPopMean= " <<  population.meanCost << "\tPopWorst" << population.worstLocalCost << "\tgen= " << generation << "\n";
+        std::cout << "\t\tSuccessfull Mutations   : " << mutationSuccess << " / " << mutationSuccess + mutationFail << std::endl;
+        std::cout << "\t\tSuccessfull cross-Overs : " << crossOverSuccess << " / " << crossOverSuccess + crossOverFail << std::endl;
+    } else std::cout << bestGlobal.cost() << std::endl;
     return bestGlobal.cost();
 }
 
@@ -274,7 +274,7 @@ double GeneticGeneral::GGA(int popSize, int maxCalls, double prcOffspring, int s
     mutationSuccess = 0;
     mutationFail = 0;
 
-	if(prcOffspring < 1.0) cerr << "Warning ! You call a GGA with a cross-over rate that doesn't allow to create stable population size. Random elements will be added instead !!!\n";
+	if(prcOffspring < 1.0) std::cerr << "Warning ! You call a GGA with a cross-over rate that doesn't allow to create stable population size. Random elements will be added instead !!!\n";
 	double numOffspring = prcOffspring * (double) popSize;
 	initializeRandomPop(popSize);
 	resetCostCalls();
@@ -298,16 +298,16 @@ double GeneticGeneral::GGA(int popSize, int maxCalls, double prcOffspring, int s
 		}
         if(speak>=1){ //if((generation% ((int) (max((int) (maxCalls / ((int) popSize*prcOffspring)),50)) / 50)) == 0){
             population.doStatistics();
-            cout << generation+1 << "\t" << bestGlobal.cost() << "  \t" << population.bestLocalCost << "  \t" <<  population.meanCost << "  \t" << population.worstLocalCost << "    \t" << nbCostCalls() << "\n";
+            std::cout << generation+1 << "\t" << bestGlobal.cost() << "  \t" << population.bestLocalCost << "  \t" <<  population.meanCost << "  \t" << population.worstLocalCost << "    \t" << nbCostCalls() << "\n";
         }
 	}
 
     if(speak>=1){
         population.doStatistics();  //population.print();
-        cout << "\t\tCalls= " << nbCostCalls() << "\tBest= " << bestGlobal.cost() << "  \tPopBest= " << population.bestLocalCost << "\tPopMean= " <<  population.meanCost << "\tPopWorst" << population.worstLocalCost << "\tgen= " << generation << "\n";
-        cout << "\t\tSuccessfull Mutations   : " << mutationSuccess << " / " << mutationSuccess + mutationFail << endl;
-        cout << "\t\tSuccessfull cross-Overs : " << crossOverSuccess << " / " << crossOverSuccess + crossOverFail << endl;
-    } else cout << bestGlobal.cost() << endl;
+        std::cout << "\t\tCalls= " << nbCostCalls() << "\tBest= " << bestGlobal.cost() << "  \tPopBest= " << population.bestLocalCost << "\tPopMean= " <<  population.meanCost << "\tPopWorst" << population.worstLocalCost << "\tgen= " << generation << "\n";
+        std::cout << "\t\tSuccessfull Mutations   : " << mutationSuccess << " / " << mutationSuccess + mutationFail << std::endl;
+        std::cout << "\t\tSuccessfull cross-Overs : " << crossOverSuccess << " / " << crossOverSuccess + crossOverFail << std::endl;
+    } else std::cout << bestGlobal.cost() << std::endl;
     return bestGlobal.cost();
 }
 
@@ -373,16 +373,16 @@ double GeneticGeneral::CEP(int popSize, int maxCalls, double prcOffspring, doubl
 		selection(popSize);
         if(speak>=1){ // if((generation% ((int) (max(maxCalls / popSize,50)) /50)) == 0){
             population.doStatistics();
-            cout << generation+1 << "\t" << bestGlobal.cost() << "  \t" << population.bestLocalCost << "  \t" <<  population.meanCost << "  \t" << population.worstLocalCost << "    \t" << nbCostCalls() << "\n";
+            std::cout << generation+1 << "\t" << bestGlobal.cost() << "  \t" << population.bestLocalCost << "  \t" <<  population.meanCost << "  \t" << population.worstLocalCost << "    \t" << nbCostCalls() << "\n";
         }
 	}
 
     if(speak>=1){
         population.doStatistics();  //population.print();
-        cout << "\t\tCalls= " << nbCostCalls() << "\tBest= " << bestGlobal.cost() << "  \tPopBest= " << population.bestLocalCost << "\tPopMean= " <<  population.meanCost << "\tPopWorst" << population.worstLocalCost << "\tgen= " << generation << "\n";
-        cout << "\t\tSuccessfull Mutations   : " << mutationSuccess << " / " << mutationSuccess + mutationFail << endl;
-        cout << "\t\tSuccessfull cross-Overs : " << crossOverSuccess << " / " << crossOverSuccess + crossOverFail << endl;
-    } //else cout << bestGlobal.cost() << endl;
+        std::cout << "\t\tCalls= " << nbCostCalls() << "\tBest= " << bestGlobal.cost() << "  \tPopBest= " << population.bestLocalCost << "\tPopMean= " <<  population.meanCost << "\tPopWorst" << population.worstLocalCost << "\tgen= " << generation << "\n";
+        std::cout << "\t\tSuccessfull Mutations   : " << mutationSuccess << " / " << mutationSuccess + mutationFail << std::endl;
+        std::cout << "\t\tSuccessfull cross-Overs : " << crossOverSuccess << " / " << crossOverSuccess + crossOverFail << std::endl;
+    } //else std::cout << bestGlobal.cost() << std::endl;
     return bestGlobal.cost();
 }
 
@@ -469,7 +469,7 @@ void GeneticGeneral::AddMutants(int n_to_add){
             mutate_all_points(population(n+i), Config.mutation_distribution);
             updateCost(population(n+i));
         }
-    } else cerr << "AddMutants : Undefined Mutation Policy\n";
+    } else std::cerr << "AddMutants : Undefined Mutation Policy\n";
 }
 
 
@@ -522,7 +522,7 @@ void GeneticGeneral::AddMutatedOffspringAndReplace(int n_to_add){
 	int n = population.size();
 	int remains = n_to_add;
 	while(remains > 0){
-		int nadd = min(Config.nb_offsprings_of_cross_over(), remains);
+		int nadd = std::min(Config.nb_offsprings_of_cross_over(), remains);
 		remains = remains - Config.nb_offsprings_of_cross_over();
 		switch (Config.replacement_policy) {
 			case REPLACE_WORST_PARENT:{ //(only if better)
@@ -588,7 +588,7 @@ void GeneticGeneral::AddMutatedOffspringAndReplace(int n_to_add){
 				
 				break;}
 			case NO_NEED_REPLACEMENT:{
-				cerr << "You didn't specified a replacement policy ('No Need'), so you're not allowed to call 'AddMutatedOffspringAndReplace'\n";
+				std::cerr << "You didn't specified a replacement policy ('No Need'), so you're not allowed to call 'AddMutatedOffspringAndReplace'\n";
 				break;}
 				
 			default:{
@@ -646,14 +646,14 @@ void GeneticGeneral::mutate_one_point(individual* ind, int type_distrib, int pos
             teste_val = paraLowVector(position) + BR.Uniform01() * (paraHighVector(position) - paraLowVector(position));
             break;}
         case LEVY:{
-            cerr << "Levy distribution is not implemented yet.\n";
+            std::cerr << "Levy distribution is not implemented yet.\n";
             break;}
         case EXPONENTIAL:{
-            BR.CreateExponential(sqrt(1/(max(0.0001,sig))));
+            BR.CreateExponential(sqrt(1/(std::max(0.0001,sig))));
             teste_val = gene + MEXPONENTIAL;
             break;}
         case GAMMA:{
-            cerr << "Gamma distribution for mutation is not implemented yet.\n";
+            std::cerr << "Gamma distribution for mutation is not implemented yet.\n";
             break;}
             //BR.CreateGamma(sig);
             //ind->setGene(position, gene + (BR.Gamma()));
@@ -662,7 +662,7 @@ void GeneticGeneral::mutate_one_point(individual* ind, int type_distrib, int pos
             teste_val = gene + MCOMBINED; // *17sqrt(2) to retablish square deviation of 1
             break;}
         default:{
-            cerr << "Undefined type of mutation distribution\n";
+            std::cerr << "Undefined type of mutation distribution\n";
         }
         }
         k--;
@@ -711,9 +711,9 @@ void GeneticGeneral::AddOffspring(int nb, Population* pop_destination, bool dont
 
 	vector<int> parents;
 	// WARNING : DON'T RESIZE BEFORE selection aprents because it takes in the all population
-	if(debug_live) cerr << ".";
+	if(debug_live) std::cerr << ".";
 	selectionParents(&parents, n_to_add);
-	if(debug_live) cerr << ":";
+	if(debug_live) std::cerr << ":";
 	pop->resize(n + n_to_add);
 ///////wtf ???	assert(indices_parents_selected.size() >= (Config.nb_parents_of_cross_over *(n_to_add / Config.nb_offsprings_of_crossover)));
 	int pos_p1 = 0;// Position of the first parent of the group
@@ -724,7 +724,7 @@ void GeneticGeneral::AddOffspring(int nb, Population* pop_destination, bool dont
         while(k > 0){
 
 
-		if(debug_live) cerr << "_";
+		if(debug_live) std::cerr << "_";
 		switch(Config.type_cross_over){		
 			case ONE_POINT_CROSSOVER:{
 				cross_over_one_point((*pop)(n+i), (*pop)(parents[pos_p1]), (*pop)(parents[pos_p1+1]));
@@ -874,7 +874,7 @@ void GeneticGeneral::AddOffspring(int nb, Population* pop_destination, bool dont
 				simple_random((*pop)(n+i));
 				break;}
 			default:{
-				cerr << "No defined cross-over operator 'No Need' -> Add comlpetely random instead\n";
+				std::cerr << "No defined cross-over operator 'No Need' -> Add comlpetely random instead\n";
 				randomize((*pop)(n+i));
 				break;
 				};
@@ -924,7 +924,7 @@ void GeneticGeneral::AddOffspring(int nb, Population* pop_destination, bool dont
 	if(n_to_add != nb){
 		pop->resize(n + nb);
 	}
-	if(debug_live) cerr << "-";
+	if(debug_live) std::cerr << "-";
 }
 	
 
@@ -971,7 +971,7 @@ void GeneticGeneral::updateSigmas(int generation, int genMax){
                     population(i)->setStepSize(j, newVal);
                 }
             }
-            //cerr << "S" << newVal << "\t";
+            //std::cerr << "S" << newVal << "\t";
             break;
         }
         case DISTANCE_BEST:{
@@ -1020,7 +1020,7 @@ void GeneticGeneral::updateSigmas(int generation, int genMax){
                     probability[i] = 1.0 / n;
                 else probability[i] /= sum_corr_energies;
             }
-            //cerr << "!" << sum_corr_energies << "\n";
+            //std::cerr << "!" << sum_corr_energies << "\n";
             statistique a;
             for(int i = 0; i < n; ++i){
                 a.add(val*n*probability[i]);
@@ -1132,7 +1132,7 @@ void GeneticGeneral::updateSigmas(int generation, int genMax){
 void GeneticGeneral::selectionParents(vector<int>* indices_selected, int nb_offspring){
 	switch(Config.selection_for_parents){
 		case BEST_SELECTION:{
-            //cerr << "For now, the selection of the best is made for the selection step, not for choosing parents\n";
+            //std::cerr << "For now, the selection of the best is made for the selection step, not for choosing parents\n";
 			break;
 		}
 		case RANDOM_SELECTION:{
@@ -1161,11 +1161,11 @@ void GeneticGeneral::selectionParents(vector<int>* indices_selected, int nb_offs
 			rank_based_selection(indices_selected, 1 + nb_offspring / Config.nb_offsprings_of_cross_over() , Config.nb_parents_of_cross_over(), Config.retake_for_parents, false);
 			break;}
 		case NO_NEED_SELECTION:{
-			cerr << "You didn't define a selection policy for parents ('NO_NEED'), so you shouldn't call the selectionParents function.\n";
+			std::cerr << "You didn't define a selection policy for parents ('NO_NEED'), so you shouldn't call the selectionParents function.\n";
 			break;
 		}
 		default:{
-			cerr << "Undefined selection policy for parents\n";
+			std::cerr << "Undefined selection policy for parents\n";
 		}
 	}
 }
@@ -1177,7 +1177,7 @@ void GeneticGeneral::selection(int finalPopSize){
 	switch(Config.selection_for_selec){
 		case BEST_SELECTION:{
 			int n = population.size();
-			if(n < finalPopSize) { cerr << "You can not select the " << finalPopSize << " best ones out of a population of " << n << " !!!\n"; return;}
+			if(n < finalPopSize) { std::cerr << "You can not select the " << finalPopSize << " best ones out of a population of " << n << " !!!\n"; return;}
 			population.sort();
 			population.resize(finalPopSize);
 		}
@@ -1207,11 +1207,11 @@ void GeneticGeneral::selection(int finalPopSize){
 			rank_based_selection(&indices_survivors, finalPopSize, 1, Config.retake_for_selec, false);
 			break;}
 		case NO_NEED_SELECTION:{
-			cerr << "You didn't define a selection policy for selection ('NO_NEED'), so you shouldn't call the selection function.\n";
+			std::cerr << "You didn't define a selection policy for selection ('NO_NEED'), so you shouldn't call the selection function.\n";
 			break;
 		}
 		default:{
-			cerr << "Undefined selection policy for selection\n";
+			std::cerr << "Undefined selection policy for selection\n";
 		}
 	}	
 	
@@ -1246,14 +1246,14 @@ void GeneticGeneral::selection_keeping_indices(vector<int>* indices_selected){
 
 	Population population2(final_size);
 
-	/*cerr << "List of selected : (" << final_size << ")\n";
+	/*std::cerr << "List of selected : (" << final_size << ")\n";
 	for(int i = 0; i < final_size; ++i){
-		cerr << (*indices_selected)[i] << " ";
+		std::cerr << (*indices_selected)[i] << " ";
 	}
-	cerr << "\n";*/
+	std::cerr << "\n";*/
 	
 	for(int i = 0; i < final_size; ++i){
-		//cerr << "Exchange " << i << "\t" << (*indices_selected)[i] << "\n";
+		//std::cerr << "Exchange " << i << "\t" << (*indices_selected)[i] << "\n";
 		population2(i)->copy(population((*indices_selected)[i]));		
 		//if((*indices_selected)[i] != i) population.replace(i, (*indices_selected)[i]); 
 	}
@@ -1268,8 +1268,8 @@ void GeneticGeneral::random_selection(vector<int>* indices_selected, int num_gro
 					bool retake_allowed_between_groups,	bool same_parent_allowed_in_one_group)
 {				      
 	int currentSize = population.size();
-	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}	
-	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}	
+	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {std::cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}
+	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {std::cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}
 
 	indices_selected->resize(num_groups_to_select * num_parents_by_group, -1);
 	vector<bool> chosen(currentSize, false);
@@ -1284,7 +1284,7 @@ void GeneticGeneral::random_selection(vector<int>* indices_selected, int num_gro
 				int position = currentSize * myRandom::Rnd();
 				if((!retake_allowed_between_groups) && (chosen[position])) found = false;
 				if((!same_parent_allowed_in_one_group) && (chosen_in_group[position])) found = false;
-				if(cpt > 10000) found = true; //endl
+				if(cpt > 10000) found = true; //std::endl
 				chosen[position] = true;	
 				chosen_in_group[position] = true;
 				(*indices_selected)[i*(num_parents_by_group)+j] = position;
@@ -1298,8 +1298,8 @@ void GeneticGeneral::proportional_selection (vector<int>* indices_selected, int 
 					     bool retake_allowed_between_groups, bool same_parent_allowed_in_one_group, double temperature)
 {
 	int currentSize = population.size();
-	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}	
-	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}	
+	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {std::cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}
+	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {std::cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}
 
 	// Computes probabilities of each individual with the correction_type
 	vector<double> probability(currentSize, 0);
@@ -1326,11 +1326,11 @@ void GeneticGeneral::proportional_selection (vector<int>* indices_selected, int 
 	}
 	
 	if(DBG){
-		cerr << "Probabilities : (" << num_groups_to_select * num_parents_by_group << ")\n";
+		std::cerr << "Probabilities : (" << num_groups_to_select * num_parents_by_group << ")\n";
 		for(int i = 0; i < currentSize; ++i){
-			cerr << probability[i] << "\t";
+			std::cerr << probability[i] << "\t";
 		}
-		cerr << "\n";
+		std::cerr << "\n";
 	}
 
 	indices_selected->resize(num_groups_to_select * num_parents_by_group, -1);
@@ -1349,7 +1349,7 @@ void GeneticGeneral::proportional_selection (vector<int>* indices_selected, int 
 						found = true;
 						if((!retake_allowed_between_groups) && (chosen[position])) found = false;
 						if((!same_parent_allowed_in_one_group) && (chosen_in_group[position])) found = false;
-						if(cpt > 10000) found = true; //endl
+						if(cpt > 10000) found = true; //std::endl
 						chosen[position] = true;	
 						chosen_in_group[position] = true;
 						if(found) (*indices_selected)[i*num_parents_by_group+j] = position;
@@ -1380,7 +1380,7 @@ void GeneticGeneral::proportional_selection (vector<int>* indices_selected, int 
 					found = true;
 					if((!retake_allowed_between_groups) && (chosen[position])) found = false;
 					if((!same_parent_allowed_in_one_group) && (chosen_in_group[position])) found = false;
-					if(cpt > 10000) found = true; //endl
+					if(cpt > 10000) found = true; //std::endl
 					chosen[position] = true;	
 					chosen_in_group[position] = true;
 					if(found) (*indices_selected)[i*num_parents_by_group+j] = position;
@@ -1390,7 +1390,7 @@ void GeneticGeneral::proportional_selection (vector<int>* indices_selected, int 
 	}
 
 	if(sampling_method == SAMPLING_STOCHASTIC_UNIVERSAL_SAMPLING){
-		if((num_parents_by_group != 1) || (retake_allowed_between_groups == false)){cerr << "Stochastic Sampling can only be used with parameters :\n    - One parent by group\n    - Retake Allowed Between groupe\n"; return; }
+		if((num_parents_by_group != 1) || (retake_allowed_between_groups == false)){std::cerr << "Stochastic Sampling can only be used with parameters :\n    - One parent by group\n    - Retake Allowed Between groupe\n"; return; }
 		
 		double step = 1.0/ (double) num_groups_to_select;
 		double unif = myRandom::Rnd() * step;
@@ -1412,7 +1412,7 @@ void GeneticGeneral::proportional_selection (vector<int>* indices_selected, int 
 				nb_taken++;
 			}			
 		}
-		if(nb_taken !=  num_groups_to_select) cerr << "Prop.selection with sampling stochastic universal failed to select\n";
+		if(nb_taken !=  num_groups_to_select) std::cerr << "Prop.selection with sampling stochastic universal failed to select\n";
 	}
 }
 
@@ -1420,8 +1420,8 @@ void GeneticGeneral::tournament_selection(vector<int>* indices_selected, int num
 					  bool retake_allowed_between_groups,	bool same_parent_allowed_in_one_group)
 {	
 	int currentSize = population.size();
-	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}	
-	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}	
+	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {std::cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}
+	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {std::cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}
 
 	indices_selected->resize(num_groups_to_select * num_parents_by_group, -1);
 
@@ -1447,7 +1447,7 @@ void GeneticGeneral::tournament_selection(vector<int>* indices_selected, int num
 				found = true;
 				if((!retake_allowed_between_groups) && (chosen[position])) found = false;
 				if((!same_parent_allowed_in_one_group) && (chosen_in_group[position])) found = false;
-				if(cpt > 10000) found = true; //endl
+				if(cpt > 10000) found = true; //std::endl
 				chosen[position] = true;	
 				chosen_in_group[position] = true;
 				if(found) (*indices_selected)[i*num_parents_by_group+j] = position;
@@ -1461,8 +1461,8 @@ void GeneticGeneral::rank_based_selection(vector<int>* indices_selected, int num
 					  bool retake_allowed_between_groups,	bool same_parent_allowed_in_one_group)
 {
 	int currentSize = population.size();
-	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}	
-	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}	
+	if((!same_parent_allowed_in_one_group) && (currentSize < num_parents_by_group)) {std::cerr << "CanNot chose " << num_parents_by_group << " different parents in a population of " << currentSize << " individuals\n"; return;}
+	if((!retake_allowed_between_groups) && (currentSize < num_groups_to_select*num_parents_by_group)) {std::cerr << "CanNot chose " << num_groups_to_select << " groups of " << num_parents_by_group << " totally different individuals in a population of " << currentSize << " individuals\n"; return;}
 
 	population.sort();
 
@@ -1482,7 +1482,7 @@ void GeneticGeneral::rank_based_selection(vector<int>* indices_selected, int num
 				found = true;
 				if((!retake_allowed_between_groups) && (chosen[position])) found = false;
 				if((!same_parent_allowed_in_one_group) && (chosen_in_group[position])) found = false;
-				if(cpt > 10000) found = true; //endl;
+				if(cpt > 10000) found = true; //std::endl;
 				chosen[position] = true;
 				chosen_in_group[position] = true;
 				if(found) (*indices_selected)[i*num_parents_by_group+j] = position;
@@ -1517,7 +1517,7 @@ void GeneticGeneral::rank_based_selection(vector<int>* indices_selected, int num
 
 void GeneticGeneral::cross_over_one_point(individual* fils, individual* parent1, individual* parent2){
 	int position = 1 + (int) (((double) numIndex() - 2) * myRandom::Rnd()); // position to cross
-	//if ((position == 0) || (position == (int) numIndex()-1)) cout << "oh\n";
+	//if ((position == 0) || (position == (int) numIndex()-1)) std::cout << "oh\n";
 	if(myRandom::Rnd() <= 0.5){
 		fils->copy(parent2);
 		for(int i = 0; i < position; ++i){
@@ -1533,13 +1533,13 @@ void GeneticGeneral::cross_over_one_point(individual* fils, individual* parent1,
 
 void GeneticGeneral::cross_over_two_point(individual* fils, individual* parent1, individual* parent2){
 	int position1 = 0, position2 = 0;
-	if(numIndex() < 1){cerr << "NimIndex < 2\n"; return;}		
+	if(numIndex() < 1){std::cerr << "NimIndex < 2\n"; return;}
 	while(position1 == position2){
 		position1 = 0 + (int) (((double) numIndex() - 1) * myRandom::Rnd()); // position to cross
 		position2 = 1 + (int) (((double) numIndex() - 1) * myRandom::Rnd()); // position to cross
 	}
 	if(position1 > position2){int tp = position1; position1 = position2; position2 = tp;};
-	//if(DBG) cout << "Pos1 " << position1 << "\tPos2 " << position2 << "\n";
+	//if(DBG) std::cout << "Pos1 " << position1 << "\tPos2 " << position2 << "\n";
 	if(myRandom::Rnd() <= 0.5){
 		fils->copy(parent2);
 		for(int i = position1; i < position2; ++i){
@@ -1596,7 +1596,7 @@ void GeneticGeneral::cross_over_arithmetic(individual* fils, vector<individual*>
 	bool think_to_delete = false;
 
 	if((!gamma) || ((int) gamma->size() != numParents)){
-		if(gamma) cerr << "Warn : Cross_over_arithmetic : gamma[] not given or gamma should have the same size as parents. Take arithmetic mean as default:\n";
+		if(gamma) std::cerr << "Warn : Cross_over_arithmetic : gamma[] not given or gamma should have the same size as parents. Take arithmetic mean as default:\n";
 		gamma = new vector<double>(numParents, 1.0 / (double) numParents);
 		think_to_delete = true;
 	} else {
@@ -1604,7 +1604,7 @@ void GeneticGeneral::cross_over_arithmetic(individual* fils, vector<individual*>
 		for(int i = 0; i < numParents; ++i){
 			sum += (*gamma)[i];
 		}
-		if (abs(sum-1.0) > 1e-10) cerr << "cross_arithmetic : gamma (" << sum << ") should have sum = 1\n";
+		if (abs(sum-1.0) > 1e-10) std::cerr << "cross_arithmetic : gamma (" << sum << ") should have sum = 1\n";
 	}
 	for(size_t i = 0; i < numIndex(); ++i){
 		double accum = 0;
@@ -1646,7 +1646,7 @@ void GeneticGeneral::cross_over_geometric(individual* fils, vector<individual*>*
 	bool think_to_delete = false;
 
 	if((!gamma) || ((int) gamma->size() != numParents)){
-		if(gamma) cerr << "Warn : Cross_over_arithmetic : gamma[] not given or gamma should have the same size as parents. Take arithmetic mean as default:\n";
+		if(gamma) std::cerr << "Warn : Cross_over_arithmetic : gamma[] not given or gamma should have the same size as parents. Take arithmetic mean as default:\n";
 		gamma = new vector<double>(numParents, 1.0 / (double) numParents);
 		think_to_delete = true;
 	} else {
@@ -1654,7 +1654,7 @@ void GeneticGeneral::cross_over_geometric(individual* fils, vector<individual*>*
 		for(int i = 0; i < numParents; ++i){
 			sum += (*gamma)[i];
 		}
-		if (abs(sum-1) < 1e-10) cerr << "cross_arithmetic : gamma should have sum = 1\n";
+		if (abs(sum-1) < 1e-10) std::cerr << "cross_arithmetic : gamma should have sum = 1\n";
 	}
 	for(size_t i = 0; i < numIndex(); ++i){
 		double accum = 1;
@@ -1680,14 +1680,14 @@ void GeneticGeneral::cross_over_SBX(individual* fils1, individual* fils2, indivi
 }
 
 void GeneticGeneral::simple_random(individual* fils){
-	if(fils->size() != (int) numIndex()) {cerr << "You call simple random crossover to a child that has no initial values\n"; return;}; 
+	if(fils->size() != (int) numIndex()) {std::cerr << "You call simple random crossover to a child that has no initial values\n"; return;};
 	int i = numIndex() * myRandom::Rnd();
 	double rndValue = paraLowVector(i) + ((paraHighVector(i) - paraLowVector(i)) * myRandom::Rnd());
 	fils->setGene(i,rndValue);
 }
 
 void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, individual* parent2, individual* parent3){
-	if (numIndex() < 5) cerr << "Can not do a UNDX if less than 5 dimensions\n"; 
+	if (numIndex() < 5) std::cerr << "Can not do a UNDX if less than 5 dimensions\n";
 	
 	fils1->resize(numIndex());
 	
@@ -1720,18 +1720,18 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 
 	/*if(!instanciated){
 		for(int i = 0; i < 3; ++i){
-			cout << "Parents after  " << i << ":\t";
+			std::cout << "Parents after  " << i << ":\t";
 			for(int j = 0; j < (int) numIndex(); ++j){
-				cout << (*Parents[i])[j] << "\t";
+				std::cout << (*Parents[i])[j] << "\t";
 			}
-			cout << "\n";
+			std::cout << "\n";
 		}
 	
-			cout << "Middle:\t";
+			std::cout << "Middle:\t";
 			for(int j = 0; j < (int) numIndex(); ++j){
-				cout << middle.gene(j) << "\t";
+				std::cout << middle.gene(j) << "\t";
 			}
-			cout << "\n";
+			std::cout << "\n";
 		
 	}*/
 
@@ -1749,10 +1749,10 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 		res = Ortho::orthogonalise(&support, &Parents, numIndex(), &delta);
 	}
 	
-	//if((!instanciated) && (!res)) cerr << "Pb during orthogonalisation\n";
-	//if(!res) cerr << "PB of orthogonalisation \n!";
+	//if((!instanciated) && (!res)) std::cerr << "Pb during orthogonalisation\n";
+	//if(!res) std::cerr << "PB of orthogonalisation \n!";
 	double sigma1 = 1;
-	double sigma2 = 0.35 / sqrt(max(1,(int) numIndex() - 5));
+	double sigma2 = 0.35 / sqrt(std::max(1,(int) numIndex() - 5));
 	
 	for(size_t j = 0; j < numIndex(); ++j){
 		fils1->setGene(j, middle.gene(j));
@@ -1773,7 +1773,7 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 			}	
 		}
 	} else {
-        //cerr << "Orthog problem\n";
+        //std::cerr << "Orthog problem\n";
 		for(size_t j = 0; j < numIndex(); ++j){
 			fils1->setGene(j, middle.gene(j)*(1+0.1*myRandom::Rnd()));
 		}	
@@ -1781,11 +1781,11 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 		
 	/*if(!instanciated){
 		for(size_t i = 0; i < numIndex(); ++i){
-			cout << "Vector " << i << ":\t";
+			std::cout << "Vector " << i << ":\t";
 			for(int j = 0; j < (int) numIndex(); ++j){
-				cout << (*support[i])[j] << "\t";
+				std::cout << (*support[i])[j] << "\t";
 			}
-			cout << "\n";
+			std::cout << "\n";
 		}
 	}*/
 
@@ -1797,7 +1797,7 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 }
 
 void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, individual* parent2, individual* parent3, individual* parent4){
-	if (numIndex() < 6) cerr << "Can not do a UNDX 4parents if less than 6 dimensions\n"; 
+	if (numIndex() < 6) std::cerr << "Can not do a UNDX 4parents if less than 6 dimensions\n";
 	fils1->resize(numIndex());
 	
 	static vector<vector<double>* > support;
@@ -1843,10 +1843,10 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 		res = Ortho::orthogonalise(&support, &Parents, numIndex(), &delta);
 	}
 	
-	//if((!instanciated) && (!res)) cerr << "Pb during orthogonalisation\n";
-	//if(!res) cerr << "PB of orthogonalisation \n!";
+	//if((!instanciated) && (!res)) std::cerr << "Pb during orthogonalisation\n";
+	//if(!res) std::cerr << "PB of orthogonalisation \n!";
 	double sigma1 = 1;
-	double sigma2 = 0.35 / sqrt(max(1,(int) numIndex() - 6));
+	double sigma2 = 0.35 / sqrt(std::max(1,(int) numIndex() - 6));
 	
 	for(int j = 0; j < (int) numIndex(); ++j){
 		fils1->setGene(j, middle.gene(j));
@@ -1867,18 +1867,18 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 			}	
 		}
 	} else {
-        //cerr << "Orthog problem\n";
+        //std::cerr << "Orthog problem\n";
 		for(int j = 0; j < (int) numIndex(); ++j){
 			fils1->setGene(j, middle.gene(j)*(1+0.1*myRandom::Rnd()));
 		}	
 	}
 	/*if(!instanciated){
 		for(size_t i = 0; i < numIndex(); ++i){
-			cout << "Vector " << i << ":\t";
+			std::cout << "Vector " << i << ":\t";
 			for(int j = 0; j < (int) numIndex(); ++j){
-				cout << (*support[i])[j] << "\t";
+				std::cout << (*support[i])[j] << "\t";
 			}
-			cout << "\n";
+			std::cout << "\n";
 		}
 	}*/
 
@@ -1889,7 +1889,7 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 	/*for(size_t i = 0; i < numIndex(); ++i){
 		delete support[i];
 	};
-	cout << "FIN\n";*/
+	std::cout << "FIN\n";*/
 }
 
 
@@ -1909,11 +1909,11 @@ void GeneticGeneral::cross_over_UNDX(individual* fils1, individual* parent1, ind
 
 void print(vector<int>* v){
 	int n = v->size();
-	cerr << n << " IND : ";
+	std::cerr << n << " IND : ";
 	for(int i = 0; i < n; ++i){
-		cerr << ",   " << (*v)[i];
+		std::cerr << ",   " << (*v)[i];
 	}
-	cerr << "\n";
+	std::cerr << "\n";
 }
 
 void GeneticGeneral::initRandoms(){
@@ -1946,7 +1946,7 @@ void GeneticGeneral::initRandoms(){
             BR.CreateCauchy(0,1);
             break;}
         default:{
-            cerr << "Config : undefined Mutation Policy (" << Config.mutation_distribution << "\n";
+            std::cerr << "Config : undefined Mutation Policy (" << Config.mutation_distribution << "\n";
         }
     }
 }
@@ -1957,7 +1957,7 @@ bool GeneticGeneral::metropolis(double E1, double E2){
 }
 
 void GeneticGeneral::MegaTest(){
-	cerr << setiosflags(ios::fixed);
+	std::cerr << setiosflags(std::ios::fixed);
     resetCostCalls();
 	int numMutations;
 	int popSize;
@@ -1965,25 +1965,25 @@ void GeneticGeneral::MegaTest(){
 	if(false){
 		// Test the functions one by one :
 		// Configuration :
-		cerr << " - Config : - \n";
-		cerr << "Sel : " << Config.type_of_selection_selec() << "\n";
-		cerr << "C-O : " << Config.type_of_cross_over() << "\n";
-		cerr << "Off : " << Config.nb_offsprings_of_cross_over() << "\n";
-		cerr << "Par : " << Config.nb_parents_of_cross_over() << "\n";
+		std::cerr << " - Config : - \n";
+		std::cerr << "Sel : " << Config.type_of_selection_selec() << "\n";
+		std::cerr << "C-O : " << Config.type_of_cross_over() << "\n";
+		std::cerr << "Off : " << Config.nb_offsprings_of_cross_over() << "\n";
+		std::cerr << "Par : " << Config.nb_parents_of_cross_over() << "\n";
 
 		initializeRandomPop(popSize);
 		population.print();
-		cerr << "Ageing\n";
+		std::cerr << "Ageing\n";
 		AgePopulation();
-		cerr << "Add " << numMutations << " Mutants\n";
+		std::cerr << "Add " << numMutations << " Mutants\n";
 		AddMutants(numMutations);
 		population.print();
-		cerr << "Ageing\n";
+		std::cerr << "Ageing\n";
 		AgePopulation();
-		cerr << "Add 5 Random individuals\n";
+		std::cerr << "Add 5 Random individuals\n";
 		addRandom(5);
 		population.print();
-		cerr << "Kill older than 1\n";
+		std::cerr << "Kill older than 1\n";
 		killAgeing(1);	
 		population.print();
 		return;
@@ -2003,72 +2003,72 @@ void GeneticGeneral::MegaTest(){
 		
 		vector<int> selected;
 		
-		cerr << "Random : 4 groupes de 3 parents Avec reprise pour les diff groupes\n";
+		std::cerr << "Random : 4 groupes de 3 parents Avec reprise pour les diff groupes\n";
 		random_selection(&selected, 10, 3,true, false);
 		print(&selected);
 
-		cerr << "Random : 2 groupes de 3 parents SANS reprise pour les diff groupes\n";
+		std::cerr << "Random : 2 groupes de 3 parents SANS reprise pour les diff groupes\n";
 		random_selection(&selected, 2, 3, false, false);
 		print(&selected);
 
-		cerr << "Proportional : 4 groupes de 3 parents Avec reprise pour les diff groupes\n";
-		cerr << "\nBasic Sampling - NO CORREC (inv prop cost (1/(1+x)))\n";
+		std::cerr << "Proportional : 4 groupes de 3 parents Avec reprise pour les diff groupes\n";
+		std::cerr << "\nBasic Sampling - NO CORREC (inv prop cost (1/(1+x)))\n";
 		proportional_selection (&selected, 30, 1, NO_CORRECTION, BASIC_SAMPLING, true, false);
 		print(&selected);
-		cerr << "\nBasic Sampling - CORREC FROM WORST (fworst - f))\n";
+		std::cerr << "\nBasic Sampling - CORREC FROM WORST (fworst - f))\n";
 		proportional_selection (&selected, 30, 1, CORRECTION_FROM_WORST, BASIC_SAMPLING, true, false);
 		print(&selected);
-		cerr << "\nBasic Sampling - CORREC FROM BEST (1/(1 + f - fmin)))\n";
+		std::cerr << "\nBasic Sampling - CORREC FROM BEST (1/(1 + f - fmin)))\n";
 		proportional_selection (&selected, 30, 1, CORRECTION_FROM_BEST, BASIC_SAMPLING, true, false);
 		print(&selected);
-		cerr << "\nBasic Sampling - CORREC BOLZMANN \n";
+		std::cerr << "\nBasic Sampling - CORREC BOLZMANN \n";
 		proportional_selection (&selected, 30, 1, CORRECTION_BOLTZMANN, BASIC_SAMPLING, true, false, 10);
 		print(&selected);
 
-		cerr << "\nRoulette - NO CORREC (inv prop cost (1/(1+x)))\n";
+		std::cerr << "\nRoulette - NO CORREC (inv prop cost (1/(1+x)))\n";
 		proportional_selection (&selected, 30, 1, NO_CORRECTION, SAMPLING_ROULETTE_WHEEL, true, false);
 		print(&selected);
-		cerr << "\nRoulette - CORREC FROM WORST (fworst - f))\n";
+		std::cerr << "\nRoulette - CORREC FROM WORST (fworst - f))\n";
 		proportional_selection (&selected, 30, 1, CORRECTION_FROM_WORST, SAMPLING_ROULETTE_WHEEL, true, false);
 		print(&selected);
-		cerr << "\nRoulette - CORREC FROM BEST (1/(1 + f - fmin)))\n";
+		std::cerr << "\nRoulette - CORREC FROM BEST (1/(1 + f - fmin)))\n";
 		proportional_selection (&selected, 30, 1, CORRECTION_FROM_BEST, SAMPLING_ROULETTE_WHEEL, true, false);
 		print(&selected);
-		cerr << "\nRoulette - CORREC BOLZMANN \n";
+		std::cerr << "\nRoulette - CORREC BOLZMANN \n";
 		proportional_selection (&selected, 30, 1, CORRECTION_BOLTZMANN, SAMPLING_ROULETTE_WHEEL, true, false, 10);
 		print(&selected);
 
-		cerr << "\nUniversal - NO CORREC (inv prop cost (1/(1+x)))\n";
+		std::cerr << "\nUniversal - NO CORREC (inv prop cost (1/(1+x)))\n";
 		proportional_selection (&selected, 30, 1, NO_CORRECTION, SAMPLING_STOCHASTIC_UNIVERSAL_SAMPLING, true, false);
 		print(&selected);
-		cerr << "\nUniversal - CORREC FROM WORST (fworst - f))\n";
+		std::cerr << "\nUniversal - CORREC FROM WORST (fworst - f))\n";
 		proportional_selection (&selected, 30, 1, CORRECTION_FROM_WORST, SAMPLING_STOCHASTIC_UNIVERSAL_SAMPLING, true, false);
 		print(&selected);
-		cerr << "\nUniversal - CORREC FROM BEST (1/(1 + f - fmin)))\n";
+		std::cerr << "\nUniversal - CORREC FROM BEST (1/(1 + f - fmin)))\n";
 		proportional_selection (&selected, 30, 1, CORRECTION_FROM_BEST, SAMPLING_STOCHASTIC_UNIVERSAL_SAMPLING, true, false);
 		print(&selected);
-		cerr << "\nUniversal - CORREC BOLZMANN \n";
+		std::cerr << "\nUniversal - CORREC BOLZMANN \n";
 		proportional_selection (&selected, 30, 1, CORRECTION_BOLTZMANN, SAMPLING_STOCHASTIC_UNIVERSAL_SAMPLING, true, false, 10);
 		print(&selected);
 		
-		cerr << "tournament selection 4 groups of 3, subpop 1, retake allowed\n";
+		std::cerr << "tournament selection 4 groups of 3, subpop 1, retake allowed\n";
 		tournament_selection     (&selected, 4, 3, 1, true, false);
 		print(&selected);
-		cerr << "tournament selection 4 groups of 3, subpop 2, retake allowed\n";
+		std::cerr << "tournament selection 4 groups of 3, subpop 2, retake allowed\n";
 		tournament_selection     (&selected, 4, 3, 2, true, false);
 		print(&selected);
-		cerr << "tournament selection 4 groups of 3, subpop 4, retake allowed\n";
+		std::cerr << "tournament selection 4 groups of 3, subpop 4, retake allowed\n";
 		tournament_selection     (&selected, 4, 3, 4, true, false);
 		print(&selected);
-		cerr << "tournament selection 4 groups of 3, subpop 10, retake allowed\n";
+		std::cerr << "tournament selection 4 groups of 3, subpop 10, retake allowed\n";
 		tournament_selection     (&selected, 4, 3, 10, true, false);
 		print(&selected);
-		cerr << "tournament selection 4 groups of 3, subpop 20, retake allowed\n";
+		std::cerr << "tournament selection 4 groups of 3, subpop 20, retake allowed\n";
 		tournament_selection     (&selected, 4, 3, 20, true, false);
 		print(&selected);
 
 		// Warning : the rank selection do a sorting of the population, so indices are new ones !
-		cerr << "rank selection 4 groups of 3, retake allowed\n";
+		std::cerr << "rank selection 4 groups of 3, retake allowed\n";
 		rank_based_selection     (&selected, 4, 3,    true, false);		
 		print(&selected);
 	
@@ -2101,7 +2101,7 @@ void GeneticGeneral::MegaTest(){
 			a.reset();
 		}
 		b.sumUp();
-		cout << "VARIANCE : " << b.mean() << "\n";
+		std::cout << "VARIANCE : " << b.mean() << "\n";
 		return;
 		
 		//0.001 --->0,2
@@ -2125,7 +2125,7 @@ void GeneticGeneral::MegaTest(){
 		individual* f2 = new individual(); 
 		individual* f3 = new individual(); 
 
-		if(numIndex() != 10) cerr << "PPPBBB\n";
+		if(numIndex() != 10) std::cerr << "PPPBBB\n";
 		p1->resize(10);
 		for(int i = 0; i < 3; ++i){
 			p1->setGene(i,i+3);

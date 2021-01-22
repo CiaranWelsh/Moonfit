@@ -3,7 +3,9 @@
 
 #include <cmath>        // for NAN
 #include <vector>
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 class BaseOptimizationProblem{
 	public:
@@ -28,7 +30,7 @@ public:
         parameters.resize(dim, NAN);
     }
     virtual double getCost(){
-        cerr << "Implementation of getCost not done (if you see this message)" << endl;
+        std::cerr << "Implementation of getCost not done (if you see this message)" << std::endl;
         return 0;
     }
     inline void setParameter(size_t i, double value){

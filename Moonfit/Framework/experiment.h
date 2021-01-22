@@ -7,7 +7,9 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 /// @defgroup Experiment Experiment
 /// @brief An experiment is the design of simulations to be performed on a model.

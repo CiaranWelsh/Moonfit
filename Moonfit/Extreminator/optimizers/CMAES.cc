@@ -24,17 +24,17 @@ individual* CMAESCurrentIndividual = NULL;
 
 // Static function of cost
 double interncost(double *x){
-	//cerr << "Called :\n";
+	//std::cerr << "Called :\n";
 	for(int i = 0; i < min((int) CMAESCurrentClass->numIndex(), 42); ++i){
-		//cerr << x[i];
+		//std::cerr << x[i];
 		CMAESCurrentIndividual->setGene(i, x[i]); 
-		//cerr << " ";
+		//std::cerr << " ";
 	}
 	
 	CMAESCurrentClass->updateCost(CMAESCurrentIndividual);
-	//cerr << "Updated\n";
+	//std::cerr << "Updated\n";
 	return CMAESCurrentIndividual->cost();
-	//cerr << "End\n";
+	//std::cerr << "End\n";
 }
 
 class myCost : public ObjectiveFunctionVS<double> {
@@ -61,7 +61,7 @@ void CMAES::optimize(){
   /*	CMAESCurrentClass = this;
 	CMAESCurrentIndividual = new individual();
 	CMAESCurrentIndividual->resize(numIndex());
-	//cerr << setiosflags(ios::fixed);	
+	//std::cerr << setiosflags(std::ios::fixed);
 	resetCostCalls();
 	
 	Rng::seed(time(NULL));
@@ -86,11 +86,11 @@ void CMAES::optimize(){
 		for (i=0; i<Iterations; i++)
 		{
 			cma.run();
-			cout << f.timesCalled() << "\t"  << cma.bestSolutionFitness() << "\tPscaled=\t";
+			std::cout << f.timesCalled() << "\t"  << cma.bestSolutionFitness() << "\tPscaled=\t";
 			for(int i = 0; i < dimension; ++i){
-				cout << "\t" << ((cma.bestSolution())[i]);
+				std::cout << "\t" << ((cma.bestSolution())[i]);
 			}
-			cout << "\n";
+			std::cout << "\n";
 		}
 	}
   */

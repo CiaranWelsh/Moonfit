@@ -27,7 +27,7 @@ void normalize(vector<double>* v){
 			if(abs((*v)[i]) < EPSILON)  (*v)[i] = 0;
 		}
 	}
-	else cerr << "Inverse of zero vector\n";
+	else std::cerr << "Inverse of zero vector\n";
 }
 
 void substract_projection(vector<double>* v1, vector<double>* vbase){
@@ -47,16 +47,16 @@ double length(vector<double>* v1){
 
 bool orthogonalise(vector<vector<double>* >* OrthVects, vector<vector<double>* >* Parents, int dimension, double* delta){
 	int n_parents = Parents->size();	
-	if(DBG2) cout << n_parents << " Parents given as argument\n";
+	if(DBG2) std::cout << n_parents << " Parents given as argument\n";
 	if(n_parents > dimension){
-		cerr << "More parents than dimension\n";
+		std::cerr << "More parents than dimension\n";
 		return false;
 	}
 
 	// Check that all parents have the good dimension
 	for(int i = 0; i < n_parents; ++i){
 		if((int) (*Parents)[i]->size() != dimension) {
-			cerr << " Parent " << i << "Has wrong dimension : " << (*Parents)[i]->size() << "\n";
+			std::cerr << " Parent " << i << "Has wrong dimension : " << (*Parents)[i]->size() << "\n";
 			return false;
 		}
 	}
@@ -64,12 +64,12 @@ bool orthogonalise(vector<vector<double>* >* OrthVects, vector<vector<double>* >
 	// Size the output matrix; no necessary in principle
 	// (*OrthVects).resize(dimension);
 	if((int) OrthVects->size() != dimension) {
-		cerr << "OrthVects has wrong Total dimension" << OrthVects->size() << "\n";
+		std::cerr << "OrthVects has wrong Total dimension" << OrthVects->size() << "\n";
 		return false;
 	}
 	for(int i = 0; i < dimension; ++i){
 		if((int) ((*OrthVects)[i])->size() != dimension) {
-			cerr << "OrthVects has wrong line " << i << "dimension : " << ((*OrthVects)[i])->size() << "\n";
+			std::cerr << "OrthVects has wrong line " << i << "dimension : " << ((*OrthVects)[i])->size() << "\n";
 			return false;
 		}
 	}
@@ -80,13 +80,13 @@ bool orthogonalise(vector<vector<double>* >* OrthVects, vector<vector<double>* >
 		for(int j = 0; j < i; ++j){
 			substract_projection(&pi,  (*OrthVects)[j]); 
 		}
-/*		cout << "P " << i+1 << " Before accepted : \n";
+/*		std::cout << "P " << i+1 << " Before accepted : \n";
 		for(int j = 0; j < dimension; ++j){
-			cout << pi[j] << "\t";
+			std::cout << pi[j] << "\t";
 		}
-		cout << "\n";*/
+		std::cout << "\n";*/
 		if(is_zero(&pi)) {
-			if(DBG2)  cerr << "Cannot even normalize the parents\n"; // this can occur in normal conditions
+			if(DBG2)  std::cerr << "Cannot even normalize the parents\n"; // this can occur in normal conditions
 			return false;
 		}
 		if(i == (n_parents - 1)) (*delta) = length(&pi);
@@ -118,7 +118,7 @@ bool orthogonalise(vector<vector<double>* >* OrthVects, vector<vector<double>* >
 	}
 	
 	if(n_added < dimension){
-		cerr << "Unable to make an orthogonal base ???\n";
+		std::cerr << "Unable to make an orthogonal base ???\n";
 		return false;
 	}
 		
@@ -126,12 +126,12 @@ bool orthogonalise(vector<vector<double>* >* OrthVects, vector<vector<double>* >
 	// Checking the orthogonality
 	/*bool correct = true;
 	for(int i = 0; i < dimension; ++i){
-		cout << "p" << i+1 << "vs :\t";
+		std::cout << "p" << i+1 << "vs :\t";
 		for(int j = 0; j < dimension; ++j){
-			if(j >= i) cout << "\tp" << j+1 << ":" << inner_prod((*OrthVects)[i], (*OrthVects)[j]);
-			else cout << "\t    ";
+			if(j >= i) std::cout << "\tp" << j+1 << ":" << inner_prod((*OrthVects)[i], (*OrthVects)[j]);
+			else std::cout << "\t    ";
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}*/
 	return true;	
 }

@@ -45,7 +45,7 @@ void GeneticAlgo::print_total_parameters(){
 }
 
 void GeneticAlgo::print_evolution(){
-	std::cerr << "Evolution : " << 
+	std::cerr << "Evolution : " <<
 		generation << "\t" << bestLocalCost << "\t" << worstLocalCost << "\t" <<
 		globalOptima() << "\t" <<  meanCost << "\n";
 }
@@ -75,10 +75,10 @@ void GeneticAlgo::construct(){
 		coeff_fork = (double) argument(2);
 		num_tries =  (int) argument(3);
 		// popSize, numGen max, numMutations and numOffspring will variate
-		std::cerr << "Old Genetic Algo - Teste different Population size and Mutation rates.\n" << 
+		std::cerr << "Old Genetic Algo - Teste different Population size and Mutation rates.\n" <<
 			"\tParameters :\n" << 
 			"\t   Coefficient of reproduction (nb Off + Mut = coeff * popSize) " << coeff_fork << "\n" <<
-			"\t   Number of cost calls max                                     " << maxCalls << "\n" <<
+			"\t   Number of cost calls max_                                     " << maxCalls << "\n" <<
 			"\t   Number of replicates by set                                  " << num_tries << "\n";
 	}
 	else{
@@ -87,15 +87,15 @@ void GeneticAlgo::construct(){
 		numMutations = (int) argument(2);
 		numOffspring = (int) argument(3);
 		numGenMax = 1 + maxCalls / (numMutations + numOffspring);
-		std::cerr << "Old Genetic Algo - 1 simulation \n" << 
+		std::cerr << "Old Genetic Algo - 1 simulation \n" <<
 			"\tParameters :\n" << 
 			"\t   popSize = " << popSize << "\n" <<
-			"\t   Number of cost calls max        " << maxCalls << "\t" << "equivalent to " << numGenMax << " gen.\n" <<
+			"\t   Number of cost calls max_        " << maxCalls << "\t" << "equivalent to " << numGenMax << " gen.\n" <<
 			"\t   Number of mutants / gen         " << numMutations << "\n" <<
 			"\t   Number of cross-over / gen      " << numOffspring << "\n";
 	}
 		
-	std::cerr << "Data we have from the optimizer :\n" << 
+	std::cerr << "Data we have from the optimizer :\n" <<
 			"We want to optimize " << numIndex() << " parameters, of indices :\n";
 	//for(size_t i = 0; i < numIndex() ; ++i){ std::cerr << " " << indexVector_[i];}
 	std::cerr << "\n";
@@ -209,7 +209,7 @@ void GeneticAlgo::optimize(){
 						
 				numTotalStep++;
 				myTimes::getDiffTime();
-				std::cerr << popSize << "\t" << pourcent << "\t" << numGenMax << "\t" << n_mutations_f << "\t" << n_offspring_f << "\t";		
+				std::cerr << popSize << "\t" << pourcent << "\t" << numGenMax << "\t" << n_mutations_f << "\t" << n_offspring_f << "\t";
 				struct statistique a;
 				
 				vector<statistique> intermediaires;
@@ -226,13 +226,13 @@ void GeneticAlgo::optimize(){
 						int plusOne = (myRandom::Rnd() <= (n_mutations_f - (float) ((int) n_mutations_f)) ? 1 : 0);
 						numMutations = plusOne + (int) n_mutations_f; 
 						numOffspring = 1 - plusOne + (int) n_offspring_f;
-						// cerr << "M " << numMutations << "   O " << numOffspring << "\n";
+						// std::cerr << "M " << numMutations << "   O " << numOffspring << "\n";
 		
 						Mutate();
 						Fork();
 						selection();
 						update();
-						if((generation% ((int) (max(numGenMax,20)) / 20)) == 0){
+						if((generation% ((int) (std::max(numGenMax,20)) / 20)) == 0){
 							int indice = (20*generation)/numGenMax;
 							liste_generations[indice] = generation;
 							liste_calls[indice] = nbCostCalls();
@@ -247,17 +247,17 @@ void GeneticAlgo::optimize(){
 						MegaSuperBest.copy(&bestGlobalIndividual);}
 					//std::cerr << "Best Individual for this iteration : E = " << bestGlobalIndividual.energy() << "\t";
 					/*for(int k = 0; k < (int) numIndex(); k++){
-						cerr << bestGlobalIndividual.myParam(k) << "\t";
+						std::cerr << bestGlobalIndividual.myParam(k) << "\t";
 					}
-					cerr << "\n";*/
+					std::cerr << "\n";*/
 					//std::cerr << "TimeEnd :" << myTimes::getDiffTime() << "\tnbCostCalls:" << nbCostCalls() << "\tBest:\t" << bestGlobal.cost() << "\n";
 				}
 				double elapsed = myTimes::getDiffTime();
-				cerr << "TimeSet= " << elapsed << "\t";
+				std::cerr << "TimeSet= " << elapsed << "\t";
 				TimeTotal += elapsed;
 				a.sumUp();
 				for(int i = 0; i < 20; ++i){
-					cerr << "\t\t" << liste_calls[i] << "\t" << liste_generations[i] << "\t";
+					std::cerr << "\t\t" << liste_calls[i] << "\t" << liste_generations[i] << "\t";
 						intermediaires[i].sumUp();
 				}
 			}
@@ -265,8 +265,8 @@ void GeneticAlgo::optimize(){
 		
 		std::cerr << "Best Individual at all : E = " << MegaSuperBest.energy() << "\t";
 		for(int k = 0; k < (int) numIndex(); k++){
-			cerr << MegaSuperBest.myParam(k) << "\t";}
-		std::cerr << "\n";		
+			std::cerr << MegaSuperBest.myParam(k) << "\t";}
+		std::cerr << "\n";
 	}
 }
 

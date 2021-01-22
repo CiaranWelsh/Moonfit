@@ -1,6 +1,8 @@
 #include "Config.h"
 #include <iostream>
-using namespace std;
+
+// using namespace std;
+
 
 
 const char* Configuration::type_of_cross_over(){
@@ -464,7 +466,7 @@ const char* Configuration::type_of_mutation(){
 }
 
 void Configuration::setParentsPolicy(int v){
-	//cerr << "Change parents Sel to " << v << "\n";
+	//std::cerr << "Change parents Sel to " << v << "\n";
 	switch(v){
 		case 0:{
 		break;}
@@ -543,7 +545,7 @@ void Configuration::setParentsPolicy(int v){
 	}
 }
 void Configuration::setCrossOverPolicy(int v, double p){
-	//cerr << "Change Cross-Over " << v << "\n";
+	//std::cerr << "Change Cross-Over " << v << "\n";
 	switch(v){
 		case 0:{
 			type_cross_over =	ONE_POINT_CROSSOVER;
@@ -593,7 +595,7 @@ void Configuration::setCrossOverPolicy(int v, double p){
 }
 
 void Configuration::setMutationPolicy(int v){
-	//cerr << "Change Mutation Distrib to " << v << "\n";
+	//std::cerr << "Change Mutation Distrib to " << v << "\n";
 	switch(v){
 	case 0:{
 		mutation_distribution =		NORMAL;
@@ -722,7 +724,7 @@ const char* Configuration::type_of_replacement(){
 }
 
 void Configuration::setSelectPolicy(int v){
-	//cerr << "Change Selection Method to " << v << "\n";
+	//std::cerr << "Change Selection Method to " << v << "\n";
 	switch(v){
 		case 0:{
 			selection_for_selec =		BEST_SELECTION;
@@ -846,7 +848,7 @@ void Configuration::setStrategyPolicy(int v, double d){
 			if (d <= 0) strategy_parameter = 1./1000.;
 			break;}
 		default:{
-			cerr << "Unknown strategy policy :"<< v << "\n"; 
+			std::cerr << "Unknown strategy policy :"<< v << "\n";
 		}
 	}
 }

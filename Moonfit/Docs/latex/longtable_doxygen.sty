@@ -171,7 +171,7 @@
     \fi
     \ifvoid\LT@firsthead\copy\LT@head\else\box\LT@firsthead\fi\nobreak
     \output{\LT@output}}
-\def\endlongtable{%
+\def\std::endlongtable{%
     \crcr
     \noalign{%
         \let\LT@entry\LT@entry@chop
@@ -425,7 +425,7 @@
 \def\endfirsthead{\LT@end@hd@ft\LT@firsthead}
 \def\endhead{\LT@end@hd@ft\LT@head}
 \def\endfoot{\LT@end@hd@ft\LT@foot}
-\def\endlastfoot{\LT@end@hd@ft\LT@lastfoot}
+\def\std::endlastfoot{\LT@end@hd@ft\LT@lastfoot}
 \def\LT@startpbox#1{%
     \bgroup
     \let\@footnotetext\LT@p@ftntext

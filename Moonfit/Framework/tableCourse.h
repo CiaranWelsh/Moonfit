@@ -10,7 +10,10 @@
 #include <cmath>
 #include <fstream>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
+
 
 /// @defgroup TableCourse Table Course
 /// @brief Storing dynamical time-courses of variables (kinetics), as table, either experimental or simulated
@@ -23,9 +26,9 @@ using namespace std;
 ///            - for storing only some variables from some time-points, use the *evaluator* class instead
 ///
 struct TableCourse {
-    vector<double> attribut;            /// @brief List of time points (left column)
-    vector<vector<double> *> storage; /// @brief data (2D) storage[i][j] = value at time point i (t = attribut[i]) of variable j (whose name is headers[j])
-    vector<string> headers;             /// @brief Names of the variables (columns), size = nbVars + 1. The first header is the name of the table (or title of the left column (ex: time))
+    std::vector<double> attribut;            /// @brief List of time points (left column)
+    std::vector<std::vector<double> *> storage; /// @brief data (2D) storage[i][j] = value at time point i (t = attribut[i]) of variable j (whose name is headers[j])
+    std::vector<std::string> headers;             /// @brief Names of the variables (columns), size = nbVars + 1. The first header is the name of the table (or title of the left column (ex: time))
     int nbVar;                          /// @brief nb of variables
     int nbLignes;                       /// @brief nb of time points
 
@@ -33,7 +36,7 @@ struct TableCourse {
     TableCourse(TableCourse *toCopy);   /// @brief copy from another one
     TableCourse(const TableCourse &tc);
 
-    TableCourse(string fileToRead);     /// @brief reads from a file.
+    TableCourse(std::string fileToRead);     /// @brief reads from a file.
     /// @code
     /// SYNTAX of a TableCourse file (read or exported):
     ///
@@ -49,29 +52,29 @@ struct TableCourse {
     ~TableCourse();
 
     void setHeader(int i,
-                   string title);                    /// Danger : starts at index 1 for variables. Header[0] = titre of the table
+                   std::string title);                    /// Danger : starts at index 1 for variables. Header[0] = titre of the table
     void addSet(double attr,
-                vector<double> &toCopy);       /// @brief Add a line (i.e. the value of each variable at the new time (attr)
+                std::vector<double> &toCopy);       /// @brief Add a line (i.e. the value of each variable at the new time (attr)
     void reset();
 
     /// Additional I/O :
-    void read(string fileName);
+    void read(std::string fileName);
 
-    void save(string fileName, string title = string(""));
+    void save(std::string fileName, std::string title = std::string(""));
 
-    vector<double> getTimeCourse(int var);
+    std::vector<double> getTimeCourse(int var);
 
-    vector<double> getTimePoints(int var = -1);
+    std::vector<double> getTimePoints(int var = -1);
 
     double operator()(int vari, typeTime timej);
 
-    TableCourse subKinetics(vector<int> timePoints,
-                            vector<string> namesVariables = vector<string>()/* same names than are in the tablecourse headers */);
+    TableCourse subKinetics(std::vector<int> timePoints,
+                            std::vector<std::string> namesVariables = std::vector<std::string>()/* same names than are in the tablecourse headers */);
 
-    int findPosition(string nameVariable);
+    int findPosition(std::string nameVariable);
 
     //void print();
-    string print(bool fileExportVersion = true);
+    std::string print(bool fileExportVersion = true);
 };
 /// @}
 

@@ -8,7 +8,9 @@
 #include <iostream>
 #include <stdio.h>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 #ifdef WINDOWS
 #include <windows.h>
@@ -113,7 +115,7 @@ void createFolder(string folderName){
 
 #if defined(UNIX) || defined(MAC)
 const int dir_err = mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-if ((-1 == dir_err) && (errno != EEXIST)){cerr << "Error creating directory : " << folderName << endl;}
+if ((-1 == dir_err) && (errno != EEXIST)){std::cerr << "Error creating directory : " << folderName << std::endl;}
 #endif
 }
 #endif
@@ -137,7 +139,9 @@ string removeFolderFromFile(string file) {
 
 
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 #if __cplusplus >= 201703L
 std::vector<std::string> listSubDirectories(const std::string& dir){
     std::vector<std::string> r;
@@ -178,11 +182,11 @@ vector<string> listSubDirectories(string dir)
         if(strcmp(fileinfo.name, ".") == 0 || strcmp(fileinfo.name, "..") == 0)
             continue;
         if(fileinfo.attrib & _A_SUBDIR){ // Use bitmask to see if this is a directory
-            //cout << "This is a directory : " << fileinfo.name << endl;
+            //std::cout << "This is a directory : " << fileinfo.name << std::endl;
             res.push_back(dir + string(fileinfo.name) + string("/"));
         }
         else
-        {//cout << "This is a file : " << fileinfo.name << endl;
+        {//std::cout << "This is a file : " << fileinfo.name << std::endl;
         }
     } while(_findnext(handle, &fileinfo) == 0);
 
@@ -209,7 +213,7 @@ vector<string> listSubDirectories(string namedir) {
             continue;
         if (entry->d_type == DT_DIR) {
             res.push_back(namedir + string(entry->d_name) + string("/"));
-        } else {//cout << "This is a file : " << fileinfo.name << endl;
+        } else {//std::cout << "This is a file : " << fileinfo.name << std::endl;
         }
     } while ((entry = readdir(dir)) != NULL);
     closedir(dir);
@@ -255,10 +259,10 @@ string currentDir() {
 /*void SplitFilename (string& str)
 {
   size_t found;
-  cout << "Splitting: " << str << endl;
+  std::cout << "Splitting: " << str << std::endl;
   found=str.find_last_of("/\\");
-  cout << " folder: " << str.substr(0,found) << endl;
-  cout << " file: " << str.substr(found+1) << endl;
+  std::cout << " folder: " << str.substr(0,found) << std::endl;
+  std::cout << " file: " << str.substr(found+1) << std::endl;
   return
 }*/
 
@@ -291,7 +295,7 @@ vector<string> getAllResultSubFolders(string dir) {
         cpt++;
     }
     if (cpt == 1000)
-        cerr << "ERR:  getAllResultSubFolders(" << dir << "), too many subfolder, or infinite loop." << endl;
+        std::cerr << "ERR:  getAllResultSubFolders(" << dir << "), too many subfolder, or infinite loop." << std::endl;
     return res;
 }
 
@@ -310,7 +314,7 @@ vector<string> listFilesInDir(string dir, string containing) {
 vector<string> listFilesInDir(string dir, string containing)
 {
     vector<string> res;
-    //cerr << "Check Folder :" << dir << endl;
+    //std::cerr << "Check Folder :" << dir << std::endl;
     char originalDirectory[_MAX_PATH];
 
     // Get the current directory so we can return to it
@@ -333,16 +337,16 @@ vector<string> listFilesInDir(string dir, string containing)
         if(strcmp(fileinfo.name, ".") == 0 || strcmp(fileinfo.name, "..") == 0)
             continue;
         if(fileinfo.attrib & _A_SUBDIR){ // Use bitmask to see if this is a directory
-            //cout << "This is a directory : " << fileinfo.name << endl;
+            //std::cout << "This is a directory : " << fileinfo.name << std::endl;
             //res.push_back(string(fileinfo.name));
         }
         else {
             string tp = string(fileinfo.name);
             if(((containing.size() > 0) && (tp.find(containing) != std::string::npos)) || (containing.size() == 0)){
                 res.push_back(tp);
-                //cerr << "GOT IT !" << endl;
+                //std::cerr << "GOT IT !" << std::endl;
             }
-            //cout << "This is a file : " << fileinfo.name << endl;
+            //std::cout << "This is a file : " << fileinfo.name << std::endl;
         }
     } while(_findnext(handle, &fileinfo) == 0);
     _findclose(handle); // Close the stream
@@ -368,7 +372,7 @@ vector<string> listFilesInDir(string namedir, string containing) {
             if (((containing.size() > 0) && (tp.find(containing) != std::string::npos)) || (containing.size() == 0)) {
                 res.push_back(tp);
             }
-        } else {//cout << "This is a file : " << fileinfo.name << endl;
+        } else {//std::cout << "This is a file : " << fileinfo.name << std::endl;
         }
     } while ((entry = readdir(dir)) != NULL);
     closedir(dir);
@@ -382,7 +386,7 @@ vector<string> listFilesInDir(string namedir, string containing) {
 vector<string> listFilesInDir(string namedir, string containing)
 {
     vector<string> res;
-    cerr << "Sorry, couldn't male ListFilesInDir run on MAC yet (see common.h/cpp)" << endl;
+    std::cerr << "Sorry, couldn't male ListFilesInDir run on MAC yet (see common.h/cpp)" << std::endl;
     return res;
 }
 #endif
@@ -408,18 +412,18 @@ string locateProjectDirectory(string projectFileToFind) {
     return string("NotFound!!!");
 
     /* for info, different ways to access folders:
-     *  cout << "0 (noQt) - " << getParentFolder(currentDir()) + string("Sources/") << endl;
-    cout << "1 (noQt) - " << getParentFolder(getParentFolder( getParentFolder(  getParentFolder(currentDir()) ))) << endl;
+     *  std::cout << "0 (noQt) - " << getParentFolder(currentDir()) + string("Sources/") << std::endl;
+    std::cout << "1 (noQt) - " << getParentFolder(getParentFolder( getParentFolder(  getParentFolder(currentDir()) ))) << std::endl;
     #ifndef WITHOUT_QT
-    QFileInfo fi("temp"); cout << "2 - " << fi.absolutePath().toStdString() << endl;
-    QDir dir("."); cout << "3 - " << dir.absolutePath().toStdString() << endl;
+    QFileInfo fi("temp"); std::cout << "2 - " << fi.absolutePath().toStdString() << std::endl;
+    QDir dir("."); std::cout << "3 - " << dir.absolutePath().toStdString() << std::endl;
     QApplication b(argc, argv);     // Starts the Qt application
-    cout << "4 - " <<  QCoreApplication::applicationDirPath().toStdString() << endl;
-    cout << "5 - " <<  QCoreApplication::applicationFilePath().toStdString() << endl;
+    std::cout << "4 - " <<  QCoreApplication::applicationDirPath().toStdString() << std::endl;
+    std::cout << "5 - " <<  QCoreApplication::applicationFilePath().toStdString() << std::endl;
     // for MAC
-    cout << "6 - " << getParentFolder(getParentFolder( getParentFolder(  getParentFolder(  QCoreApplication::applicationDirPath().toStdString())))) << endl;
+    std::cout << "6 - " << getParentFolder(getParentFolder( getParentFolder(  getParentFolder(  QCoreApplication::applicationDirPath().toStdString())))) << std::endl;
     #ifndef MAC
-    cout << "7 - " << locateProjectDirectory(string("*.pro")) + string("Examples/");
+    std::cout << "7 - " << locateProjectDirectory(string("*.pro")) + string("Examples/");
     #endif
     #endif
     */
@@ -437,28 +441,28 @@ vector<string> findAllResultFolders(string dir) {
 }
 
 void printVector(vector<string> l) {
-    cout << "[" << l.size() << "] ";
+    std::cout << "[" << l.size() << "] ";
     for (int i = 0; i < (int) l.size(); ++i) {
-        cout << l[i] << ((i < (int) l.size()) ? "\n" : "");
+        std::cout << l[i] << ((i < (int) l.size()) ? "\n" : "");
     }
 }
 
 void testDirectoryFunctions() {
     string exeFolder = currentDir();
     printVector(getAllResultSubFolders(exeFolder));
-    cout << getParentFolder(exeFolder) << endl;
+    std::cout << getParentFolder(exeFolder) << std::endl;
     printVector(listFilesInDir(exeFolder));
 }
 
 
 /*void printVector(vector<string> v){
     for(int i = 0; i < (int) v.size(); ++i){
-        cout << v[i] << endl;
+        std::cout << v[i] << std::endl;
     }
 }*/
 
 string printVector(vector<double> &v) {
-    stringstream ss;
+    std::stringstream ss;
     int s = v.size();
     ss << "V(" << s << ") :";
     for (int i = 0; i < s; ++i) {
@@ -468,7 +472,7 @@ string printVector(vector<double> &v) {
 }
 
 void compileLatex(string folderRes, string texFile) {
-    ofstream action(folderRes + string("doPDF.bat"), ios::out);
+    std::ofstream action(folderRes + string("doPDF.bat"), std::ios::out);
     action << string("cd ") + folderRes + string("\npdflatex -interaction=nonstopmode ") + texFile +
               string(" > resLatexCompil.txt\n");
     action.close();
@@ -483,7 +487,7 @@ void compileLatex(string folderRes, string texFile) {
 
 string codeTime() {
     time_t now = time(0);
-    stringstream code;
+    std::stringstream code;
     tm *ltm = localtime(&now);
     code << ltm->tm_mday;
     code << "-" << 1 + ltm->tm_mon;
@@ -496,8 +500,8 @@ string codeTime() {
 
 
 void mergePDFs(vector<string> &listFiles, string outputFile, string compilingFolder) {
-    cout << "=> Merging files into one PDF ...\n";
-    ofstream st(outputFile, ios::out);
+    std::cout << "=> Merging files into one PDF ...\n";
+    std::ofstream st(outputFile, std::ios::out);
     st << "\\documentclass{article}% or something else\n";
     st << "\\usepackage{pdfpages}\n";
     st << "\\begin{document}\n";
@@ -593,7 +597,7 @@ string optName(typeOptimizer toUse) {
 
 string optFileHeader(typeOptimizer toUse) {
 
-    stringstream headerOptimizer;
+    std::stringstream headerOptimizer;
     switch (toUse) {
         case SRESFast: {
             headerOptimizer << "SRES	1   \n50\n";

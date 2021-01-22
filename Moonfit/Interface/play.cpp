@@ -46,7 +46,7 @@ void Play::simulate() {
 }
 
 void Play::varChanged(int i) {
-    cerr << "var changed " << endl;
+    std::cerr << "var changed " << std::endl;
     /*if(currentExperiment && currentExperiment->m->cinetique){
         currentGraphe->Plot(currentExperiment->m->cinetique->getTimeCourse(i), currentExperiment->m->cinetique->getTimePoints(), QString(""));
     }*/
@@ -63,16 +63,16 @@ void Play::loadOptim(QString _name) {
     QTextStream ReadFile(&file);
     ui->textEditOptimizerFile->setText(ReadFile.readAll());
 
-    cerr << "Reading file " << _name.toStdString() << endl;
-    ifstream fichier(_name.toStdString().c_str(), ios::in);
-    if (!fichier) cerr << "file not found\n" << endl;
+    std::cerr << "Reading file " << _name.toStdString() << std::endl;
+    std::ifstream fichier(_name.toStdString().c_str(), std::ios::in);
+    if (!fichier) std::cerr << "file not found\n" << std::endl;
     fichier.close();
 }
 
 void Play::fitte() {
-    ofstream fichier(
+    std::ofstream fichier(
             "C:/Users/parobert/Desktop/Optimisation/build-ThModeles-Desktop_Qt_5_3_0_MinGW_32bit-Release/RunningModel.txt",
-            ios::out);
+            std::ios::out);
     fichier << ui->textEditOptimizerFile->toPlainText().toStdString();
     fichier.close();
     if (currentExperiment) {

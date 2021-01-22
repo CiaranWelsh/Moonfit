@@ -19,7 +19,7 @@ SimulatedAnnealing::SimulatedAnnealing(BaseOptimizationProblem *E, const std::st
   //S_ = S;
   //readOptimizer(file);
   if(numArguments() !=5) {
-    std::cerr << "\nSimulated annealing takes four arguments" 
+    std::cerr << "\nSimulated annealing takes four arguments"
 	      << "TInit, TFinal, TUpdate, parameterStepFactor and numMetropolisStep\n";
     exit(-1);
   }
@@ -31,7 +31,7 @@ SimulatedAnnealing::SimulatedAnnealing(BaseOptimizationProblem *E, std::ifstream
   //S_ = S;
   //readOptimizer(file); already done by the constructor-
   if(numArguments() !=5) {
-    std::cerr << "\nSimulated annealing takes four arguments" 
+    std::cerr << "\nSimulated annealing takes four arguments"
 	      << "TInit, TFinal, TUpdate, parameterStepFactor and numMetropolisStep\n";
     exit(-1);
   }
@@ -48,7 +48,7 @@ void SimulatedAnnealing::optimize()
 		randomizeParameter();
 	double E = computeCost();
 	setGlobal(E);
-	std::cerr << "Starting SimulatedAnnealing::optimize()\n"; 
+	std::cerr << "Starting SimulatedAnnealing::optimize()\n";
 	
 	//Starting Simulated Annealing
 	int numSuccess = 0,numUphill=0;
@@ -57,7 +57,7 @@ void SimulatedAnnealing::optimize()
 	for(double T=TInit; T>TFinal; T *= TStep) {
 		numSuccess = metropolis(E, 1/T, stepSize, numMetropolisStep,numUphill);
 		std::cerr << T << "\t" << numMetropolisStep << "\t" << numSuccess << "\t" << numUphill << "\t"
-			<< E << "\t" << globalOptima() << "\t" << myTimes::getDiffTime() << std::endl; 
+			<< E << "\t" << globalOptima() << "\t" << myTimes::getDiffTime() << std::endl;
         if(PRINT){
             std::cerr << "Best cost value so far: " << globalOptima() << "\n";
             std::cerr << "Temporary cost value: " << E << "\n";
@@ -85,7 +85,7 @@ SimulatedTempering::SimulatedTempering(BaseOptimizationProblem *E, const std::st
 	//S_ = S;
 	//readOptimizer(file);
 	if(numArguments() !=5) {
-		std::cerr << "\nSimulated annealing takes four arguments" 
+		std::cerr << "\nSimulated annealing takes four arguments"
 			<< "TMax, TMin, numT, parameterStepFactor and numMetropolisStep\n";
 		exit(-1);
 	}
@@ -96,7 +96,7 @@ SimulatedTempering::SimulatedTempering(BaseOptimizationProblem *E, std::ifstream
 	//S_ = S;
 	//readOptimizer(file);
 	if(numArguments() !=5) {
-		std::cerr << "\nSimulated annealing takes four arguments" 
+		std::cerr << "\nSimulated annealing takes four arguments"
 			<< "TMax, TMin, numT, parameterStepFactor and numMetropolisStep\n";
 		exit(-1);
 	}
@@ -180,7 +180,7 @@ void SimulatedTempering::initializeTemp(std::vector<double> &T_r, const double T
 		T *= step;
 	}
 	for (size_t r=0; r<T_r.size() ; r++ )
-		std::cerr << T_r[r] <<"\n"; 
+		std::cerr << T_r[r] <<"\n";
 }
 
 //Sets initial values gor the Gr.parameters
@@ -219,7 +219,7 @@ void SimulatedTempering::GrAdjust(const std::vector<double> &T_r, const int SERI
 		metropolis(E, 1/T, stepSize,serie,numUphill); 
 		metropolisT(E, r, T_r);
 		Pr[r]++;
-		std::cerr << count << " " << SERIE << " " << T_r[r] << " " << Pr[r] 
+		std::cerr << count << " " << SERIE << " " << T_r[r] << " " << Pr[r]
 				<< " " << E << " " << globalOptima() << "\n";
 	}
 	for(r=0 ; r<Gr_.size() ; r++ )

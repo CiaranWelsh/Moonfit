@@ -11,7 +11,9 @@
 #include <vector>
 #include <string>
 #include <iostream>
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 
 
@@ -58,22 +60,22 @@ static string folderBaseResults = "/Users/ciaranwelsh/Documents/Balthyse/Elfaki2
 /// @brief Main : to get help, launch without any argument. Graphical window will open, and after quitting, all options will be displayed.
 int main(int argc, char *argv[]){
 
-    cout << "Thymic atrophy simulations, initializing: \n   -> Data files will be searched in " << folder << "\n   -> Results will be put in " << folderBaseResults << endl;
+    std::cout << "Thymic atrophy simulations, initializing: \n   -> Data files will be searched in " << folder << "\n   -> Results will be put in " << folderBaseResults << std::endl;
     #ifdef ModelStructureA
-    cout << " ************ Simulations with MODEL STRUCTURE A ************* " << endl;
+    std::cout << " ************ Simulations with MODEL STRUCTURE A ************* " << std::endl;
     #else
         #ifdef ModelStructureB
-        cout << " ************ Simulations with MODEL STRUCTURE B ************* " << endl;
+        std::cout << " ************ Simulations with MODEL STRUCTURE B ************* " << std::endl;
         #else
             #ifdef ModelStructureB
-            cout << " ************ Simulations with MODEL STRUCTURE C ************* " << endl;
+            std::cout << " ************ Simulations with MODEL STRUCTURE C ************* " << std::endl;
             #else
-            cout << " Problem: No Model structure defined! Please use #define ModelStructureA or B or C inside modelsStructABC.h" << endl;
+            std::cout << " Problem: No Model structure defined! Please use #define ModelStructureA or B or C inside modelsStructABC.h" << std::endl;
             return 0;
             #endif
         #endif
     #endif
-    if(!dirExists(folder)) cerr << "! Problem: Could not find the fodler (does not exist?): " << folder << "\n => Please change inside scriptsThymus.cpp" << endl;
+    if(!dirExists(folder)) std::cerr << "! Problem: Could not find the fodler (does not exist?): " << folder << "\n => Please change inside scriptsThymus.cpp" << std::endl;
     if(!dirExists(folderBaseResults.c_str())) createFolder(folderBaseResults);
 
     // ---------- Step 4: Initializing Qt if necessary
@@ -87,15 +89,15 @@ int main(int argc, char *argv[]){
     Model* currentModel = new modele6GenericTVaslin();
     Experiment* currentExperiment = new expCombinedHyp(currentModel);
     string configFile = folder + string("ConfigAllHypStructuresABC.txt");
-    cout << "   -> Using model : " << currentModel->name << " with experiment " << currentExperiment->Identification << "\n   -> Will use config file " << configFile << endl;
+    std::cout << "   -> Using model : " << currentModel->name << " with experiment " << currentExperiment->Identification << "\n   -> Will use config file " << configFile << std::endl;
 
     // ----------- Step 6: Give experimental data to the experiment.
 
-    cout << " -> The loaded data is:" << endl;
+    std::cout << " -> The loaded data is:" << std::endl;
     TableCourse* Data_all = new TableCourse(folder + string("CellNrMillions.txt"));
-    cout << Data_all->print() << endl;
+    std::cout << Data_all->print() << std::endl;
     TableCourse* Data_all_Std = new TableCourse(folder + string("CellNrMillionsStd.txt"));
-    cout << Data_all_Std->print() << endl;
+    std::cout << Data_all_Std->print() << std::endl;
 
     currentExperiment->giveData(Data_all, 0, Data_all_Std);
 
@@ -117,7 +119,7 @@ int main(int argc, char *argv[]){
 
 
     #ifndef WITHOUT_QT
-    cout << "Launching Graphical Interface ..." << endl;
+    std::cout << "Launching Graphical Interface ..." << std::endl;
 
     // Step 7a: Launch the graphical interface from an experiment (containing the model inside)
     simuWin* p = new simuWin(currentExperiment);
@@ -134,7 +136,7 @@ int main(int argc, char *argv[]){
     // That's it !
 
     #else
-    cout << "WITHOUT_QT was defined => Continue without graphical interface.\n";
+    std::cout << "WITHOUT_QT was defined => Continue without graphical interface.\n";
 
     #define TESTINGMODE false
 
@@ -149,8 +151,8 @@ int main(int argc, char *argv[]){
 
     // =============== Optimization options ... ================
 
-    // deciding between different optimizer options, will be stored in the following stringstream
-    stringstream headerOptimizer;
+    // deciding between different optimizer options, will be stored in the following std::stringstream
+    std::stringstream headerOptimizer;
     // for testing, will just perform a few steps of optimization to check everything is working.
     if(TESTINGMODE) headerOptimizer << optFileHeader(GeneticFast);
     else headerOptimizer << optFileHeader(Genetic50k);
@@ -164,11 +166,11 @@ int main(int argc, char *argv[]){
     // ----------------- Part 1 : for each combination (parameters-variables in the config file), do a fitting -----------------------
 
     for(int i = 0; i < msi->nbCombs; ++i){
-        stringstream codeSimu;      codeSimu << "CombNr" << i << "-" << codeTime();               // generates a text code for this particular optimization, in case parallel optimizations are running
-        stringstream folderComb;    folderComb << folderRes << codeSimu.str() << "/";        // creates a folder for this particular optimization, to create figures etc ...
+        std::stringstream codeSimu;      codeSimu << "CombNr" << i << "-" << codeTime();               // generates a text code for this particular optimization, in case parallel optimizations are running
+        std::stringstream folderComb;    folderComb << folderRes << codeSimu.str() << "/";        // creates a folder for this particular optimization, to create figures etc ...
         createFolder(folderComb.str());
 
-        cout << "   -> Optimizing combination (" << i << ") with ID: " << codeSimu.str() << "\n";
+        std::cout << "   -> Optimizing combination (" << i << ") with ID: " << codeSimu.str() << "\n";
 
         // re-takes the initial parameter set because parameters were probably changed by previous optimization for parameters that will not necessarily be optimized/modified in the next combinations
         msi->resetParamSetFromConfig(folder + configFile);
@@ -179,7 +181,7 @@ int main(int argc, char *argv[]){
 
         // creates the optimizer file for the combination of parameters to optimize, using boundaries from the configuration file, and the header from headeroptimizer
         string optOptions = msi->motherCreateOptimizerFile(i, headerOptimizer.str());       // for each combination, will need to re-create an optimizer file
-        ofstream f1((folderComb.str() + string("Optimizer.txt")).c_str(), ios::out); if(f1) {f1 << optOptions << "\n"; f1.close();}
+        std::ofstream f1((folderComb.str() + string("Optimizer.txt")).c_str(), std::ios::out); if(f1) {f1 << optOptions << "\n"; f1.close();}
 
         // chose the variables to simulate and the ones to be replaced by data interpolated according to this combination
         msi->motherOverrideUsingComb(i);
@@ -200,13 +202,13 @@ int main(int argc, char *argv[]){
         tempWindow.useParamSetFromHistory(0);                                                     // takes the first set of parameters (the best), also possible to use msi->useParamSetFromHistory(0, i); for overriding only parameters from this combination,
         tempWindow.simulate();
         tempWindow.makeFigReportParamSet(folderComb.str());
-        ofstream f2((folderComb.str() + string("FitnessBestSetOf") + codeSimu.str() + string(".txt")).c_str(), ios::out); if(f2) {f2 << currentExperiment->costReport() << "\n"; f2.close();}
-        ofstream f3((folderComb.str() + string("CostEvolutionDuringOptimization") + codeSimu.str() + string(".txt")).c_str(), ios::out); if(f3) {f3 << tempWindow.costRecords.print() << "\n"; f3.close();}
+        std::ofstream f2((folderComb.str() + string("FitnessBestSetOf") + codeSimu.str() + string(".txt")).c_str(), std::ios::out); if(f2) {f2 << currentExperiment->costReport() << "\n"; f2.close();}
+        std::ofstream f3((folderComb.str() + string("CostEvolutionDuringOptimization") + codeSimu.str() + string(".txt")).c_str(), std::ios::out); if(f3) {f3 << tempWindow.costRecords.print() << "\n"; f3.close();}
         #else
         msi->useParamSetFromHistory(0);                                                     // takes the first set of parameters (the best), also possible to use msi->useParamSetFromHistory(0, i); for overriding only parameters from this combination,
         msi->simulate();
-        ofstream f2((folderComb.str() + string("FitnessBestSetOf") + codeSimu.str() + string(".txt")).c_str(), ios::out); if(f2) {f2 << currentExperiment->costReport() << "\n"; f2.close();}
-        ofstream f3((folderComb.str() + string("CostEvolutionDuringOptimization.txt") + codeSimu.str()).c_str(), ios::out); if(f3) {f3 << msi->costRecords.print() << "\n"; f3.close();}
+        std::ofstream f2((folderComb.str() + string("FitnessBestSetOf") + codeSimu.str() + string(".txt")).c_str(), std::ios::out); if(f2) {f2 << currentExperiment->costReport() << "\n"; f2.close();}
+        std::ofstream f3((folderComb.str() + string("CostEvolutionDuringOptimization.txt") + codeSimu.str()).c_str(), std::ios::out); if(f3) {f3 << msi->costRecords.print() << "\n"; f3.close();}
         #endif
     }
     #endif

@@ -54,7 +54,9 @@ int anOldMain(int argc, char *argv[])
 #include <sstream>
 #include <stdlib.h>     // for atof
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 #include "common.h"
 
@@ -95,7 +97,7 @@ using namespace std;
 
 /// @brief Tool data structure to track the evolution of a variable with time, such as the cost during the optimization.
 /// In order to avoid reallocating a bigger table every time, it records by blocs (of size 'SizeGroups'),
-/// and everytime a block is finished, computes min, max, mean and stddev of this block and starts a new block
+/// and everytime a block is finished, computes min, max_, mean and stddev of this block and starts a new block
 struct evolution {
     evolution(int _sizeGroups);
 
@@ -165,7 +167,7 @@ public:
             currentMode(MULTI_EXPERIMENT), listExperiments(_Exp), currentExperiment(nullptr), currentModel(_Exp->m),
             history(1000, _Exp->m->getNbParams()), costRecords(50), recording(false) {
         if (_Exp->nbBigExp() < 1) {
-            cerr << "ERR: manageSims constructor can not be called with an empty multiExperiments\n";
+            std::cerr << "ERR: manageSims constructor can not be called with an empty multiExperiments\n";
             return;
         }
         currentExperiment = _Exp->getExperiment(0);
@@ -237,7 +239,7 @@ public:
     string getMacro();
 
     bool recording;
-    stringstream currentMacro;
+    std::stringstream currentMacro;
     int macroID;
 
     void startMacro(string experimentName = string("MyExperiment"));

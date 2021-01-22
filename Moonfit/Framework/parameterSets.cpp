@@ -27,7 +27,7 @@ oneSet::oneSet(const oneSet &toCopy) {
 }
 
 string oneSet::print() {
-    stringstream res;
+    std::stringstream res;
     res << "Cost:\t" << cost;
     int s = v.size();
     for (int i = 0; i < s; ++i) {
@@ -45,7 +45,7 @@ bool pSets::addSet(vector<double> *v, double _cost) {
         // then, add it to the list
         oneSet *s = new oneSet(v, _cost);
         store.push(s);
-        if ((int) s->v.size() != nbParams) cerr << "Err : giving not properly sized vectors to pSets !!!" << endl;
+        if ((int) s->v.size() != nbParams) std::cerr << "Err : giving not properly sized vectors to pSets !!!" << std::endl;
         // Now, remove if necessary
         if ((int) store.size() > MaxNb) {
             oneSet *o = store.top();
@@ -78,25 +78,25 @@ oneSet pSets::bestOneSet() {
 
 void pSets::saveBestSet(string _name) {
     vector<double> bset = bestSet();
-    ofstream f(_name.c_str(), ios::out);
+    std::ofstream f(_name.c_str(), std::ios::out);
     if (!f) {
-        cerr << "File not Found" << _name << endl;
+        std::cerr << "File not Found" << _name << std::endl;
         return;
     }
-    f << bset.size() << endl;
+    f << bset.size() << std::endl;
     for (int i = 0; i < (int) bset.size(); ++i) {
         if (i > 0) f << "\t";
         f << bset[i];
     }
-    f << endl;
+    f << std::endl;
     f.close();
 }
 
 
 vector<oneSet *> pSets::toVector() {
-//    cout << "before sort 0= " << store.top()->cost;
+//    std::cout << "before sort 0= " << store.top()->cost;
 //    store.pop();
-//    cout << " 1=" << store.top()->cost << endl;
+//    std::cout << " 1=" << store.top()->cost << std::endl;
 
     vector<oneSet *> local;
     int cpt = 0;
@@ -107,18 +107,18 @@ vector<oneSet *> pSets::toVector() {
         local.push_back(best);
         cpt++;
     }
-    store = priority_queue<oneSet *, vector<oneSet *>, CompareSets>(local.begin(), local.end());
+    store = std::priority_queue<oneSet *, vector<oneSet *>, CompareSets>(local.begin(), local.end());
 
-//    cout << "before sort 0= " << store.top()->cost;
+//    std::cout << "before sort 0= " << store.top()->cost;
 //    store.pop();
-//    cout << " 1=" << store.top()->cost << endl;
+//    std::cout << " 1=" << store.top()->cost << std::endl;
 
     return local;
 }
 
 oneSet *pSets::getSetNumber(int i) {
     if ((i < 0) || (i >= (int) store.size())) {
-        cerr << "ERR: pSets::getSetNumber(" << i << "), wrong index, only " << store.size() << " elements\n";
+        std::cerr << "ERR: pSets::getSetNumber(" << i << "), wrong index, only " << store.size() << " elements\n";
         return NULL;
     }
     //return toVector()[store.size() - i - 1]; // returns in opposite order because the worst is in first position
@@ -153,7 +153,7 @@ void pSets::resize(int newMaxNb) {
 }
 
 string pSets::print() {
-    stringstream res;
+    std::stringstream res;
     vector<oneSet *> v = toVector();
     int s = v.size();
     for (int i = 0; i < s; ++i) {
@@ -170,17 +170,17 @@ void testeSets() {
     vector<double> v4 = {0, 1};
     pSets ps = pSets(2, 2);
     ps.addSet(&v1, 1);
-    cout << ps.print();
-    cout << "\n";
+    std::cout << ps.print();
+    std::cout << "\n";
     ps.addSet(&v2, 3);
-    cout << ps.print();
-    cout << "\n";
+    std::cout << ps.print();
+    std::cout << "\n";
     ps.addSet(&v3, 5);
-    cout << ps.print();
-    cout << "\n";
+    std::cout << ps.print();
+    std::cout << "\n";
     ps.addSet(&v4, 0);
-    cout << ps.print();
-    cout << "\n";
+    std::cout << ps.print();
+    std::cout << "\n";
 }
 
 
@@ -196,31 +196,31 @@ void testeSets() {
 pointVariation::pointVariation(int _indexParameter, double _val, double _cost, vector<double> _costPerVariable,
                                vector<double> _costPerExperiment, vector<double> &_paramSet) :
         indexParameter(_indexParameter), val(_val), cost(_cost), paramSet(_paramSet, cost) {
-    if (indexParameter < 0) cerr << "ERR : pointVariation(...) negative indexParameter" << endl;
+    if (indexParameter < 0) std::cerr << "ERR : pointVariation(...) negative indexParameter" << std::endl;
     // copying costPervariable in a new vector*
     int cpvs = _costPerVariable.size();
-    if (cpvs == 0) cerr << "ERR: pointVariation::pointVariation, NO COST PER VARIABLE" << endl;
+    if (cpvs == 0) std::cerr << "ERR: pointVariation::pointVariation, NO COST PER VARIABLE" << std::endl;
     costPerVariable = new vector<double>(cpvs,
                                          0.0);                    // I got an error if using costPerVariable = new vector<double>(_costPerVariable); Why ???
     for (int i = 0; i < cpvs; ++i) {
         (*costPerVariable)[i] = _costPerVariable[i];
     }
-    if (costPerVariable == NULL) cerr << "ERR: !!!!! copy of costPerVariable Failed!" << endl;
+    if (costPerVariable == NULL) std::cerr << "ERR: !!!!! copy of costPerVariable Failed!" << std::endl;
 
     // copying costPerExperiment in a new vector*
     int cpes = _costPerExperiment.size();
-    if (cpes == 0) cerr << "ERR: pointVariation::pointVariation, NO COST PER EXPERIMENT" << endl;
+    if (cpes == 0) std::cerr << "ERR: pointVariation::pointVariation, NO COST PER EXPERIMENT" << std::endl;
     costPerExperiment = new vector<double>(cpes,
                                            0.0);                    // I got an error if using costPerVariable = new vector<double>(_costPerVariable); Why ???
     for (int i = 0; i < cpes; ++i) {
         (*costPerExperiment)[i] = _costPerExperiment[i];
     }
-    if (costPerExperiment == NULL) cerr << "ERR: !!!!! copy of costPerExperiment Failed!" << endl;
+    if (costPerExperiment == NULL) std::cerr << "ERR: !!!!! copy of costPerExperiment Failed!" << std::endl;
 }
 
 string pointVariation::print() {
-    stringstream ss;
-    if (costPerVariable == NULL) cerr << "ERR: pointVariation, costPerVariable not instanciated !" << endl;
+    std::stringstream ss;
+    if (costPerVariable == NULL) std::cerr << "ERR: pointVariation, costPerVariable not instanciated !" << std::endl;
     int NV = costPerVariable->size(); // can not be NULL because of the constructor
     int NP = paramSet.v.size();
     int NE = costPerExperiment->size(); // can not be NULL because of the constructor
@@ -253,7 +253,7 @@ pointVariation::~pointVariation() {
 bool ComparePointVars(pointVariation t1, pointVariation t2) { return (t1.val < t2.val); }
 
 /*string printVector(vector<double> &v){
-    stringstream ss;
+    std::stringstream ss;
     int s = v.size();
     ss << "V(" << s << ") :";
     for(int i = 0; i < s; ++i){
@@ -285,18 +285,18 @@ void oneParameterAnalysis::sort() {
 
 string oneParameterAnalysis::print() {
     if (nbPoints < 1) {
-        cerr << "ERR: oneParameterAnalysis::print(), empty analysis, can not print anything\n";
+        std::cerr << "ERR: oneParameterAnalysis::print(), empty analysis, can not print anything\n";
         return string("");
     }
-    stringstream cumul;
-    /*cumul << "#------ OneParameterAnalysis: ------\nnbPoints=\t" << nbPoints << "\tnbParams=\t" << nbParams << endl;
-    cumul << "#Initial Parameter Set : " << printVector(initialParameterSet) << endl;
-    cumul << "#Variations around this parameter set, with associated costs " << endl;
+    std::stringstream cumul;
+    /*cumul << "#------ OneParameterAnalysis: ------\nnbPoints=\t" << nbPoints << "\tnbParams=\t" << nbParams << std::endl;
+    cumul << "#Initial Parameter Set : " << printVector(initialParameterSet) << std::endl;
+    cumul << "#Variations around this parameter set, with associated costs " << std::endl;
     cumul << "#PointNr\tParamChanged\tval\tcost\tNbExps\t\n";*/
     for (int i = 0; i < nbPoints; ++i) {
         cumul << "point(" << i + 1 << ")\t" << points[i].print();
     }
-    //cumul << "------ _____________________ ------" << endl;
+    //cumul << "------ _____________________ ------" << std::endl;
     return cumul.str();
 }
 
@@ -318,19 +318,19 @@ void testPointVariations() {
     vector<double> paramSet2 = {1.0, 3.0, 3.0, 4.0, 5.0};
 
     pointVariation a = pointVariation(2, 2.0, 102.5, costPerVar1, costPerExp1, paramSet1);
-    cout << "Test with printing a pointVariation:\n" << a.print() << endl;
-    cout << "adress costPerVar1 : " << &costPerVar1 << endl;
-    cout << "adress costPerVar inside a : " << a.costPerVariable << endl;
+    std::cout << "Test with printing a pointVariation:\n" << a.print() << std::endl;
+    std::cout << "adress costPerVar1 : " << &costPerVar1 << std::endl;
+    std::cout << "adress costPerVar inside a : " << a.costPerVariable << std::endl;
 
 
     oneParameterAnalysis b = oneParameterAnalysis(initialParamSet);
-    cout << "Printing pointAnalysis before adding:\n" << b.print() << endl;
+    std::cout << "Printing pointAnalysis before adding:\n" << b.print() << std::endl;
     b.add(2, 3.0, 105.5, costPerVar2, costPerExp2, paramSet2);
     b.add(a);
-    cout << "After adding:\n" << b.print() << endl;
-    cout << "still, first set = " << a.print() << endl;
-    cout << "adress costPerVar inside a : " << a.costPerVariable << endl;
+    std::cout << "After adding:\n" << b.print() << std::endl;
+    std::cout << "still, first set = " << a.print() << std::endl;
+    std::cout << "adress costPerVar inside a : " << a.costPerVariable << std::endl;
 
     b.sort();
-    cout << "... and sorting:\n" << b.print() << endl;
+    std::cout << "... and sorting:\n" << b.print() << std::endl;
 }

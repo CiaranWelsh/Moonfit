@@ -11,7 +11,7 @@
 
 
 void grapheCustom::setColorScale(int ID){
-    //cerr << "SET COLOR SCALE " << ID << endl;
+    //std::cerr << "SET COLOR SCALE " << ID << std::endl;
     currentColorScale = ID;
 }
 
@@ -198,7 +198,7 @@ void grapheCustom::setTitle(QString _titre){
 
 void grapheCustom::logarithmic(bool newState){
 
-    //cout <<" Put to log ?" << ((newState) ? "Yes" : "No") << endl;
+    //std::cout <<" Put to log ?" << ((newState) ? "Yes" : "No") << std::endl;
 
     if(newState) {
         PLOT->yAxis->setScaleType(QCPAxis::stLogarithmic);
@@ -212,7 +212,7 @@ void grapheCustom::logarithmic(bool newState){
 
 
 void grapheCustom::setNbCurves(int _nbCurves){
-    if((_nbCurves < 1) || (_nbCurves > MAXCURVES)) {cerr << "ERR: Graphe::setNbCurves(" << _nbCurves << ", not an authorized value\n"; return;}
+    if((_nbCurves < 1) || (_nbCurves > MAXCURVES)) {std::cerr << "ERR: Graphe::setNbCurves(" << _nbCurves << ", not an authorized value\n"; return;}
 
     nbCurves = PLOT->graphCount();
     /*for(int i = 0; i < nbCurves ; ++i){
@@ -253,7 +253,7 @@ void grapheCustom::setNbCurves(int _nbCurves){
 
     static int cptNew = 0;
     cptNew++;
-    if(cptNew > 10000) cerr << "WRN: Would need to free memory inside evolution::newValue" << endl;
+    if(cptNew > 10000) std::cerr << "WRN: Would need to free memory inside evolution::newValue" << std::endl;
 
     for(int i = 0; i < nbCurves; ++i){
         Data[i] = new QVector<double>();
@@ -280,14 +280,14 @@ void grapheCustom::Plot(int IDCurve, vector<double> y_to_plot, vector<double> x_
 }
 
 void grapheCustom::Plot(int IDCurve, vector<double> y_to_plot, vector<double> yerr_to_plot, vector<double> x_to_plot, QString _titre, QColor _color, Qt::PenStyle ps, QCPScatterStyle scsty){
-    if((IDCurve < 0) || (IDCurve >= nbCurves)) {cerr << "ERR Graphe::Plot(IDCurve=" << IDCurve <<",...), curve ID not valid (only " << nbCurves << " curves defined. Indices start at 0.\n"; return;}
+    if((IDCurve < 0) || (IDCurve >= nbCurves)) {std::cerr << "ERR Graphe::Plot(IDCurve=" << IDCurve <<",...), curve ID not valid (only " << nbCurves << " curves defined. Indices start at 0.\n"; return;}
     int size = y_to_plot.size();
-    if((int) x_to_plot.size() < size) {cerr << "ERR: Graphe1::Plot , error, the vector of x points is smaller than the vector of y points\n "; return;}
+    if((int) x_to_plot.size() < size) {std::cerr << "ERR: Graphe1::Plot , error, the vector of x points is smaller than the vector of y points\n "; return;}
     x_to_plot.resize(size);
 
-    // cerr << "Size of data plotted : " << size << endl;
+    // std::cerr << "Size of data plotted : " << size << std::endl;
     /*for(int i = 0; i < size; ++i){
-        cerr << i << "\t" << x_to_plot[i] << "\t" << y_to_plot[i] << endl;
+        std::cerr << i << "\t" << x_to_plot[i] << "\t" << y_to_plot[i] << std::endl;
     }*/
     int i = IDCurve;
     Data[i]->clear();
@@ -303,11 +303,11 @@ void grapheCustom::Plot(int IDCurve, vector<double> y_to_plot, vector<double> ye
     else PLOT->graph(i)->addToLegend();
 
 
-//cout << "Hehe" << endl;
-//cout << "Plot curve " << i << " out of " << PLOT->graphCount() << " total curves" << endl;
+//std::cout << "Hehe" << std::endl;
+//std::cout << "Plot curve " << i << " out of " << PLOT->graphCount() << " total curves" << std::endl;
     PLOT->graph(i)->setName(_titre);
     PLOT->graph(i)->setData(QVector<double>::fromStdVector(x_to_plot), QVector<double>::fromStdVector(y_to_plot));
-//cout << "Hehe2" << endl;
+//std::cout << "Hehe2" << std::endl;
     if(_titre.size() == 0){
         QCPPlottableLegendItem* lgd = PLOT->legend->itemWithPlottable(PLOT->graph(i));
         if(lgd) PLOT->legend->removeItem(lgd);
@@ -338,10 +338,10 @@ void grapheCustom::Plot(int IDCurve, vector<double> y_to_plot, vector<double> ye
     }
     PLOT->yAxis->setRange(newLower, newUpper);
 
-    if((int) Errbars.size() <= i) cerr << "ERR: not as many ERRbars as curves defined inside grapheCustom" << endl;
+    if((int) Errbars.size() <= i) std::cerr << "ERR: not as many ERRbars as curves defined inside grapheCustom" << std::endl;
     if(yerr_to_plot.size() > 0){
         QVector<double> dataErr = QVector<double>::fromStdVector(yerr_to_plot);
-        //cerr << "Attempt to plot " << yerr_to_plot.size() << " error bars for curve " << IDCurve << endl;
+        //std::cerr << "Attempt to plot " << yerr_to_plot.size() << " error bars for curve " << IDCurve << std::endl;
         Errbars[i]->setPen(graphPen);//QPen(QColor(180,180,180)));
         Errbars[i]->setData(dataErr);
         Errbars[i]->setVisible(true);
@@ -422,7 +422,7 @@ grapheCustom::~grapheCustom()
 
 void grapheCustom::titleDoubleClick(QMouseEvent* event, QCPTextElement *title)
 {
-    cerr << "title doubleclicked" << endl;
+    std::cerr << "title doubleclicked" << std::endl;
 
   Q_UNUSED(event)
   // Set the plot title by double clicking on it
@@ -437,7 +437,7 @@ void grapheCustom::titleDoubleClick(QMouseEvent* event, QCPTextElement *title)
 
 void grapheCustom::axisLabelDoubleClick(QCPAxis *axis, QCPAxis::SelectablePart part)
 {
-    cerr << "axislabel doubleclicked" << endl;
+    std::cerr << "axislabel doubleclicked" << std::endl;
 
   // Set an axis label by double clicking on it
   if (part == QCPAxis::spAxisLabel) // only react when the actual axis label is clicked, not tick label or axis backbone
@@ -454,7 +454,7 @@ void grapheCustom::axisLabelDoubleClick(QCPAxis *axis, QCPAxis::SelectablePart p
 
 void grapheCustom::legendDoubleClick(QCPLegend *legend, QCPAbstractLegendItem *item)
 {
-    cerr << "selection double click" << endl;
+    std::cerr << "selection double click" << std::endl;
 
   // Rename a graph by double clicking on its legend item
   Q_UNUSED(legend)
@@ -473,7 +473,7 @@ void grapheCustom::legendDoubleClick(QCPLegend *legend, QCPAbstractLegendItem *i
 
 void grapheCustom::selectionChanged()
 {
-    cerr << "selection Changed" << endl;
+    std::cerr << "selection Changed" << std::endl;
 
   /*
    normally, axis base line, axis tick labels and axis labels are selectable separately, but we want
@@ -503,7 +503,7 @@ void grapheCustom::selectionChanged()
     PLOT->yAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
   }
   
-  //cerr << "Middle" << endl;
+  //std::cerr << "Middle" << std::endl;
   // synchronize selection of graphs with selection of corresponding legend items:
   for (int i=0; i<PLOT->graphCount(); ++i)
   {
@@ -515,12 +515,12 @@ void grapheCustom::selectionChanged()
       //graph->setSelected(true); // not true in QCP2.0??
     }
   }
-  cerr << "end selection changed" << endl;
+  std::cerr << "end selection changed" << std::endl;
 }
 
 void grapheCustom::mousePress()
 {
-    //cerr << "Mouse Press" << endl;
+    //std::cerr << "Mouse Press" << std::endl;
 
   // if an axis is selected, only allow the direction of that axis to be dragged
   // if no axis is selected, both directions may be dragged
@@ -535,7 +535,7 @@ void grapheCustom::mousePress()
 
 void grapheCustom::mouseWheel()
 {
-    //cerr << "MouseWheel" << endl;
+    //std::cerr << "MouseWheel" << std::endl;
 
   // if an axis is selected, only allow the direction of that axis to be zoomed
   // if no axis is selected, both directions may be zoomed
@@ -550,7 +550,7 @@ void grapheCustom::mouseWheel()
 
 void grapheCustom::addRandomGraph()
 {
-    cerr << "add random graph" << endl;
+    std::cerr << "add random graph" << std::endl;
 
   int n = 50; // number of points in graph
   double xScale = (rand()/(double)RAND_MAX + 0.5)*2;
@@ -585,7 +585,7 @@ void grapheCustom::removeSelectedGraph()
 {
   if (PLOT->selectedGraphs().size() > 0)
   {
-      cerr << "remove One Graph" << endl;
+      std::cerr << "remove One Graph" << std::endl;
 
     PLOT->removeGraph(PLOT->selectedGraphs().first());
     PLOT->replot();
@@ -594,7 +594,7 @@ void grapheCustom::removeSelectedGraph()
 
 void grapheCustom::removeAllGraphs()
 {
-    cerr << "removeAll" << endl;
+    std::cerr << "removeAll" << std::endl;
 
   PLOT->clearGraphs();
   PLOT->replot();
@@ -607,7 +607,7 @@ void grapheCustom::contextMenuRequest(QPoint pos)
 
   static int cptNew = 0;
   cptNew++;
-  if(cptNew > 10000) cerr << "WRN: Would need to free memory inside grapheCustom::contextmenurequest" << endl;
+  if(cptNew > 10000) std::cerr << "WRN: Would need to free memory inside grapheCustom::contextmenurequest" << std::endl;
 
 
   menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -643,13 +643,13 @@ void grapheCustom::moveLegend()
       PLOT->replot();
     }
   }
-  cerr << "moveLegend" << endl;
+  std::cerr << "moveLegend" << std::endl;
 
 }
 
 void grapheCustom::graphClicked(QCPAbstractPlottable *plottable)
 {
-    cerr << "GraphCLicked" << endl;
+    std::cerr << "GraphCLicked" << std::endl;
   //ui->statusBar->showMessage(QString("Clicked on graph '%1'.").arg(plottable->name()), 1000);
 }
 

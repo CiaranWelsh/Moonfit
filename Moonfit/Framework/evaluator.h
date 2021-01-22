@@ -10,7 +10,9 @@
 #include <utility>      // for std::pair
 #include <sstream>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 #include "tableCourse.h"
 
@@ -49,7 +51,7 @@ double fitnessFunction(double measured, double expected, double StdDev_or_zero);
 ///
 /// - PROPORTION_COST returns the ratio between experimental to experimental.
 ///     Denominator values less than 1e-3 stay 1e-3 (see minimumBoundaryProportionCost below)
-///     abs(Xi / max(1e-3, Ei))
+///     abs(Xi / max_(1e-3, Ei))
 ///
 /// Note that it will be possible to give an artificial penalty when a simulation crashed and a data-point
 /// has not been computed (see 'penaltyNotRecorded' below. By default it is 0).
@@ -96,7 +98,7 @@ struct costConfig {
     static int typeNorm;
 
     /// @brief Outputs the current type of cost and normalization \ingroup CostEval
-    static string CurrentCost();
+    static std::string CurrentCost();
 };
 
 /// @brief Change the type of Cost
@@ -171,13 +173,13 @@ void testFitnessFunction();
              //E.printState();
          }
      }
-     cerr << "\n";
+     std::cerr << "\n";
      // retrieves the simulated values
-     cerr << E.getVal(1,15) << "\t";
-     cerr << E.getVal(3,20) << "\t";
-     cerr << E.getVal(1,20) << "\t";
-     cerr << E.getVal(5,50) << "\n";
-     cerr << E.printState();
+     std::cerr << E.getVal(1,15) << "\t";
+     std::cerr << E.getVal(3,20) << "\t";
+     std::cerr << E.getVal(1,20) << "\t";
+     std::cerr << E.getVal(5,50) << "\n";
+     std::cerr << E.printState();
  }
  @endcode **/
 ///     - before the simulation,
@@ -186,8 +188,8 @@ void testFitnessFunction();
 ///
 ///             OR
 ///
-///         => call bool getValsFromKinetics(TableCourse* _expectedValues, vector<string> listExtNamesVarsInModel, TableCourse* _StdDevs = nullptr)
-///         where vector<string> listExtNamesVarsInModel gives the name to be read in the TableCourse for each
+///         => call bool getValsFromKinetics(TableCourse* _expectedValues, std::vector<std::string> listExtNamesVarsInModel, TableCourse* _StdDevs = nullptr)
+///         where std::vector<std::string> listExtNamesVarsInModel gives the name to be read in the TableCourse for each
 ///         variable in the model in the same order.
 ///     - to complete the wish list, call   'void recordingCompleted();'
 ///     - during the simulation, call       'bool takeDataAtThisTame(int t_sec)' to see if
@@ -212,15 +214,15 @@ private:
     /// @brief Storage: list of pairs<species, time> wanted. Note. species = variable.
     /// nbPoints = nb couples (Species[i], Times[i])
     int nbPoints;
-    vector<int> Species;
-    vector<typeTime> Times;
+    std::vector<int> Species;
+    std::vector<typeTime> Times;
     /// @brief additionally, the experimental (expected) and their standard deviation can be given & stored,
-    vector<double> ExpectedValues;
-    vector<double> StdDeviations;
+    std::vector<double> ExpectedValues;
+    std::vector<double> StdDeviations;
     /// @brief table for simulated values that have to be filled with data using setValNow, then recorded[i] = true.
     /// note: initially, recorded[..] = false.
-    vector<double> simuData;
-    vector<bool> recorded;
+    std::vector<double> simuData;
+    std::vector<bool> recorded;
 
 public:
     /// @brief: means : 'I want the value of this species(=variable) at this time point'
@@ -232,7 +234,7 @@ public:
     /// stored in a Table (TableCourse class)
     /// Note: the data points with NAN or inf are not taken into the list of "wish list to record" points.
     /// Possible to add multiple TableCourse one by one, and when experimental values are missing, write 'nan'
-    bool getValsFromKinetics(TableCourse *_expectedValues, vector<string> listExtNamesVarsInModel,
+    bool getValsFromKinetics(TableCourse *_expectedValues, std::vector<std::string> listExtNamesVarsInModel,
                              TableCourse *_StdDevs = NULL);
 
     /// @brief means : the wish list is complete, now I can use 'takeDataAtThisTime?' and 'setValNow'
@@ -291,10 +293,10 @@ public:
     double getTotalFitness();
 
     /// @brief Gives a written report of the individual cost of each variable and data-point.
-    string reportTotalFitness();
+    std::string reportTotalFitness();
 
     /// @brief Outputs all the information stored in the evaluator so far.
-    string printState();
+    std::string printState();
 
     /// @brief Clears the simulated data but keeps the experimental values.
     void resetDataKeepingExpected();
@@ -305,7 +307,7 @@ public:
 
     iteratorForEvaluator end() { return nbPoints; }
 
-    pair<int, typeTime> operator()(iteratorForEvaluator i) { return pair<int, typeTime>(Species[i], Times[i]); }
+    std::pair<int, typeTime> operator()(iteratorForEvaluator i) { return std::pair<int, typeTime>(Species[i], Times[i]); }
 };
 
 /// @brief Here, you can define a penalty in the cost when the simulation stopped before this point, so no data was recorded for that point.

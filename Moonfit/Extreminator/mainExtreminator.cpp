@@ -3,7 +3,9 @@
 
 #include "generate.h"
 #include "fstream"
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 #include <QMainWindow>
 #include "graphe2.h"
@@ -56,15 +58,15 @@ int main(int argc, char *argv[])
     //    string generateEquations();
     //    string generateLatex();
 
-    //  cerr << a.generateCodeHeader();
-    //  cerr << a.generateCodeSource();
-    //  ofstream fichier("C:\Users\parobert\Desktop\Optimisation\ThModeles\Modeles", ios::out);
+    //  std::cerr << a.generateCodeHeader();
+    //  std::cerr << a.generateCodeSource();
+    //  std::ofstream fichier("C:\Users\parobert\Desktop\Optimisation\ThModeles\Modeles", std::ios::out);
 
-    ofstream fichier("C:/Users/parobert/Desktop/Optimisation/ThModeles/Modeles/modeleEssai.h", ios::out);
+    std::ofstream fichier("C:/Users/parobert/Desktop/Optimisation/ThModeles/Modeles/modeleEssai.h", std::ios::out);
     fichier << a.generateCodeHeader();
     fichier.close();
 
-    ofstream fichier2("C:/Users/parobert/Desktop/Optimisation/ThModeles/Modeles/modeleEssai.cpp", ios::out);
+    std::ofstream fichier2("C:/Users/parobert/Desktop/Optimisation/ThModeles/Modeles/modeleEssai.cpp", std::ios::out);
     fichier2 << a.generateCodeSource();
     fichier2.close();
 

@@ -21,12 +21,12 @@ Graphe2::~Graphe2()
 
 void Graphe2::Plot(vector<double> y_to_plot, vector<double> x_to_plot, QString _titre){
     int size = y_to_plot.size();
-    if((int) x_to_plot.size() < size) {cerr << "Graphe1::Plot , error, the vector of x points is smaller than the vector of y points\n "; return;}
+    if((int) x_to_plot.size() < size) {std::cerr << "Graphe1::Plot , error, the vector of x points is smaller than the vector of y points\n "; return;}
     x_to_plot.resize(size);
 
-    cerr << "Size of data plotted : " << size << endl;
+    std::cerr << "Size of data plotted : " << size << std::endl;
     /*for(int i = 0; i < size; ++i){
-        cerr << i << "\t" << x_to_plot[i] << "\t" << y_to_plot[i] << endl;
+        std::cerr << i << "\t" << x_to_plot[i] << "\t" << y_to_plot[i] << std::endl;
     }*/
 
     Data.clear();

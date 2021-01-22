@@ -14,11 +14,11 @@ using namespace OrganismLib;
 /* This funciton is called from outside (and the first calls the second) */
 BaseOptimizer* BaseOptimizer::createOptimizer(BaseOptimizationProblem* E, const std::string &file)
 {
-    //if(VERB) cerr << "CreateOptimizer summoned with opt file " << file << endl;
+    //if(VERB) std::cerr << "CreateOptimizer summoned with opt file " << file << std::endl;
     std::istream *F_IN = myFiles::openFile(file);
     if (!F_IN) {std::cerr << "BaseOptimizer::createOptimizer() - " << "Cannot open file " << file << std::endl;
         exit(-1);}
-    //if(VERB) cerr << "   File opened as a stream\n";
+    //if(VERB) std::cerr << "   File opened as a stream\n";
     BaseOptimizer* z = createOptimizer(E, (std::ifstream &) *F_IN);
     delete F_IN;
     return z;   //OK : returns the value, so, even if the lovation of z is destroyed,
@@ -50,7 +50,7 @@ BaseOptimizer::BaseOptimizer(BaseOptimizationProblem* E, const std::string &file
   worstGlobal = 0;
   updateCost(&bestGlobal);
   worstGlobal = bestGlobal.cost();
-  //cerr << "random individual as first 'best global'" << endl;
+  //std::cerr << "random individual as first 'best global'" << std::endl;
 }
 
 BaseOptimizer::BaseOptimizer(BaseOptimizationProblem *E, std::ifstream &F_IN) : E_(E)
@@ -61,7 +61,7 @@ BaseOptimizer::BaseOptimizer(BaseOptimizationProblem *E, std::ifstream &F_IN) : 
   worstGlobal = 0;
   updateCost(&bestGlobal);
   worstGlobal = bestGlobal.cost();
-  //if(VERB) cerr << "random individual as first 'best global'" << endl;
+  //if(VERB) std::cerr << "random individual as first 'best global'" << std::endl;
 }
 
 BaseOptimizer::~BaseOptimizer(){}
@@ -138,18 +138,18 @@ void BaseOptimizer::readOptimizer(std::ifstream &F_IN)
         if(SPEAK) std::cout << "\n\tReading " << numParaSet_ << " parameter sets from the file...";
         NotScaledParameters_.resize(numParaSet_);
         for (size_t j=0; j<numParaSet_; ++j) {
-            if(VERB) cout << "\tInitial parameter set nr. " << j << " :" << endl;
+            if(VERB) std::cout << "\tInitial parameter set nr. " << j << " :" << std::endl;
             NotScaledParameters_[j].resize(numIndex_);
             for (size_t i=0; i<numIndex_; ++i){
                 F_IN >> NotScaledParameters_[j][i];
                 if((NotScaledParameters_[j][i] < paraNotScaledLowVector_[i]) || (NotScaledParameters_[j][i] > paraNotScaledHighVector_[i])){
                     out_bounds = true;
                 }
-                if(VERB) cout << "\tread p" << i << " = " << NotScaledParameters_[j][i] << "\n";
+                if(VERB) std::cout << "\tread p" << i << " = " << NotScaledParameters_[j][i] << "\n";
             }
         }
         if(SPEAK) std::cout  << "\tDone\n";
-        if(out_bounds) cerr << "Warning : Among set of parameters, low/high boundaries are exceeded." << endl;
+        if(out_bounds) std::cerr << "Warning : Among set of parameters, low/high boundaries are exceeded." << std::endl;
         // std::cerr << "Note: by reading parameters, initial parameter boundaries overruled." << std::endl;
     }
     else {
@@ -161,23 +161,23 @@ void BaseOptimizer::readOptimizer(std::ifstream &F_IN)
     if(scalingMethod == "NoScaling"){
         scaling_function_intern_to_solver = &Scaling::identity;
         scaling_function_solver_to_intern = &Scaling::identity;
-        if(SPEAK) cout << "\tScaling = identity";
+        if(SPEAK) std::cout << "\tScaling = identity";
     } else if (scalingMethod == "ExponentialBounded"){
         scaling_function_intern_to_solver = &Scaling::exponential;
         scaling_function_solver_to_intern = &Scaling::logarithmic;
-        if(SPEAK) cout << "\tScaling put to (real solver parameter) -> logarithmic -> (intern exploration space) - Bounded version";
+        if(SPEAK) std::cout << "\tScaling put to (real solver parameter) -> logarithmic -> (intern exploration space) - Bounded version";
     } else if (scalingMethod == "Exponential"){
         scaling_function_intern_to_solver = &Scaling::simple_exponential;
         scaling_function_solver_to_intern = &Scaling::simple_logarithmic;
-        if(SPEAK) cout << "\tScaling put to (real solver parameter) -> logarithmic -> (intern exploration space)";
+        if(SPEAK) std::cout << "\tScaling put to (real solver parameter) -> logarithmic -> (intern exploration space)";
     } else if (scalingMethod == "LinearAndInverse"){
         scaling_function_intern_to_solver = &Scaling::linear_symmetric;
         scaling_function_solver_to_intern = &Scaling::linear_symmetric_rev;
-        if(SPEAK) cout << "\tScaling put to (real solver parameter) -> [ x|->1/x if is x < 1,   and x if x > 1 ] -> (intern exploration space)";
+        if(SPEAK) std::cout << "\tScaling put to (real solver parameter) -> [ x|->1/x if is x < 1,   and x if x > 1 ] -> (intern exploration space)";
     } else {
         scaling_function_intern_to_solver = &Scaling::identity;
         scaling_function_solver_to_intern = &Scaling::identity;
-        if(SPEAK) cout << "\tScaling put to identity by default";
+        if(SPEAK) std::cout << "\tScaling put to identity by default";
     }
   
   int num_scaling_parameters;
@@ -186,27 +186,27 @@ void BaseOptimizer::readOptimizer(std::ifstream &F_IN)
   if(num_scaling_parameters > 0){
     scaling_parameters = new vector<double>(5,0);
     if(num_scaling_parameters > 5) 
-      cerr << "Max 5 arguments for the scaling : xmin xmax, "
+      std::cerr << "Max 5 arguments for the scaling : xmin xmax, "
 	   << "ymin_forced, ymax_forced, coefficient -> Takes only the five first ones\n";
     for(int i = 0; i < num_scaling_parameters; ++i){
       double res;
       F_IN >> res;
       if(i < 5) (*scaling_parameters)[i] = res;
-      if(SPEAK) if(i == 0) cout << "\txmin = " << res << "\n";
-      if(SPEAK) if(i == 1) cout << "\txmax = " << res << "\n";
-      if(SPEAK) if(i == 2) cout << "\tymin_force = " << res << "\n";
-      if(SPEAK) if(i == 3) cout << "\txmax_force = " << res << "\n";
-      if(SPEAK) if(i == 4) cout << "\tcoefficient = " << res << "\n";
-      //if(i > 4) cerr << "Ignroe\n";
+      if(SPEAK) if(i == 0) std::cout << "\txmin = " << res << "\n";
+      if(SPEAK) if(i == 1) std::cout << "\txmax = " << res << "\n";
+      if(SPEAK) if(i == 2) std::cout << "\tymin_force = " << res << "\n";
+      if(SPEAK) if(i == 3) std::cout << "\txmax_force = " << res << "\n";
+      if(SPEAK) if(i == 4) std::cout << "\tcoefficient = " << res << "\n";
+      //if(i > 4) std::cerr << "Ignroe\n";
     }
   } else 	
     scaling_parameters = NULL;
 
-  //if(VERB) cout << "Intern boundaries values, after scaling :" << endl;
+  //if(VERB) std::cout << "Intern boundaries values, after scaling :" << std::endl;
     for (size_t i=0; i < numIndex_; ++i) {
         paraLowVector_[i] = scaling_function_solver_to_intern(paraNotScaledLowVector_[i], scaling_parameters);
         paraHighVector_[i] = scaling_function_solver_to_intern(paraNotScaledHighVector_[i], scaling_parameters);
-        //if(VERB) cout << "\t" << i << "\t" << paraLowVector_[i] << "\t" << paraHighVector_[i] << endl;
+        //if(VERB) std::cout << "\t" << i << "\t" << paraLowVector_[i] << "\t" << paraHighVector_[i] << std::endl;
     }
   
   if (numParaSet_) {
@@ -543,7 +543,7 @@ double BaseOptimizer::computeCost(individual* ind){
     ind->ComputeEquivParamsFromGenes(scaling_function_intern_to_solver, scaling_parameters);
     for(int i = 0; i < (int) numIndex_; ++i){
         E_->setParameter(indexVector_[i], (ind->equivparam(i)));
-        //cerr << "P" << i << " = " << E_->parameter(indexVector_[i]) << "\tintern = " << ind->gene(i) << endl;
+        //std::cerr << "P" << i << " = " << E_->parameter(indexVector_[i]) << "\tintern = " << ind->gene(i) << std::endl;
     }
     double E = E_->getCost();
     CostCalls++;
@@ -553,7 +553,7 @@ double BaseOptimizer::computeCost(individual* ind){
 double BaseOptimizer::computeCost(vector<double>* intern_parameters){
     for(int i = 0; i < (int) numIndex_; ++i){
         E_->setParameter(indexVector_[i], scaling_function_intern_to_solver((*intern_parameters)[i], scaling_parameters));
-        //cerr << "given p " << i << "= " << scaling_function_intern_to_solver((*intern_parameters)[i], scaling_parameters) << "\n";
+        //std::cerr << "given p " << i << "= " << scaling_function_intern_to_solver((*intern_parameters)[i], scaling_parameters) << "\n";
     }
     double E = E_->getCost();
     CostCalls++;
@@ -562,7 +562,7 @@ double BaseOptimizer::computeCost(vector<double>* intern_parameters){
 double BaseOptimizer::computeCostNotScaled(vector<double>* parameters){
     for(int i = 0; i < (int) numIndex_; ++i){
         E_->setParameter(indexVector_[i], (*parameters)[i]);
-        //cerr << "given p " << i << "= " << (*parameters)[i] << "\n";
+        //std::cerr << "given p " << i << "= " << (*parameters)[i] << "\n";
     }
     double E = E_->getCost();
     CostCalls++;

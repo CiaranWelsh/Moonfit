@@ -18,7 +18,9 @@
 
 #include <iostream>
 #include <vector>
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 namespace Ui {
 class Graphe2;

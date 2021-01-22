@@ -62,66 +62,66 @@ Starter::Starter(string workingFolder, QWidget *parent) :
     QStringList DiffFrom;   DiffFrom << QString("Th1") << QString("Th2") << QString("iTreg") << QString("Th17") << QString("Th0");
     ui->comboBoxConditionToSwitchFrom->addItems(DiffFrom);
     ui->doubleSpinBoxTimeSwitch->setValue(20);
-    /*cerr << "A).   Changing differentiation condition in the middle (default p = 20 hrs) : " << endl;
-    cerr << "- 1 :         From Th1,   change to other ones at t = p hrs   " << endl;
-    cerr << "- 2 :         From Th2,   change to other ones at t = p hrs   " << endl;
-    cerr << "- 3 :         From iTreg, change to other ones at t = p hrs   " << endl;
-    cerr << "- 4 :         From Th17,  change to other ones at t = p hrs   " << endl;
-    cerr << "- 5 :         From Th0,   change to other ones at t = p hrs   " << endl;*/
+    /*std::cerr << "A).   Changing differentiation condition in the middle (default p = 20 hrs) : " << std::endl;
+    std::cerr << "- 1 :         From Th1,   change to other ones at t = p hrs   " << std::endl;
+    std::cerr << "- 2 :         From Th2,   change to other ones at t = p hrs   " << std::endl;
+    std::cerr << "- 3 :         From iTreg, change to other ones at t = p hrs   " << std::endl;
+    std::cerr << "- 4 :         From Th17,  change to other ones at t = p hrs   " << std::endl;
+    std::cerr << "- 5 :         From Th0,   change to other ones at t = p hrs   " << std::endl;*/
 
     ui->comboBoxConditionForCellDensity->addItems(DiffFrom);
-    /*cerr << "B).   Titrations of cell density in the well : " << endl;
-    cerr << "- 10 :        Th1   diff, Different Densities of cells               " << endl;
-    cerr << "- 11 :        Th2   diff, Different Densities of cells               " << endl;
-    cerr << "- 12 :        iTreg diff, Different Densities of cells               " << endl;
-    cerr << "- 13 :        Th17  diff, Different Densities of cells               " << endl;
-    cerr << "- 14 :        Th10  diff, Different Densities of cells               " << endl;*/
+    /*std::cerr << "B).   Titrations of cell density in the well : " << std::endl;
+    std::cerr << "- 10 :        Th1   diff, Different Densities of cells               " << std::endl;
+    std::cerr << "- 11 :        Th2   diff, Different Densities of cells               " << std::endl;
+    std::cerr << "- 12 :        iTreg diff, Different Densities of cells               " << std::endl;
+    std::cerr << "- 13 :        Th17  diff, Different Densities of cells               " << std::endl;
+    std::cerr << "- 14 :        Th10  diff, Different Densities of cells               " << std::endl;*/
 
     ui->comboBoxConditionForCytokTitration->addItems(DiffFrom);
     QStringList Cytoks;   Cytoks << QString("IL2") << QString("IL4") << QString("IL6") << QString("IL12") << QString("IL17")  << QString("IL21")  << QString("IFNg");
     ui->comboBoxCytokToTitrate->addItems(Cytoks);
-    /*cerr << "C).   Titrations of cytokines : " << endl;
-    cerr << "- 20 :        Th1,  Doses of IL2                         " << endl;
-    cerr << "- 21 :        Th1,  Doses of IL4                         " << endl;
-    cerr << "- 22 :        Th1,  Doses of IL6                         " << endl;
-    cerr << "- 23 :        Th1,  Doses of IL12                        " << endl;
-    cerr << "- 24 :        Th1,  Doses of IL17                        " << endl;
-    cerr << "- 25 :        Th1,  Doses of IL21                        " << endl;
-    cerr << "- 26 :        Th1,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 30 :        Th2,  Doses of IL2                         " << endl;
-    cerr << "- 31 :        Th2,  Doses of IL4                         " << endl;
-    cerr << "- 32 :        Th2,  Doses of IL6                         " << endl;
-    cerr << "- 33 :        Th2,  Doses of IL12                        " << endl;
-    cerr << "- 34 :        Th2,  Doses of IL17                        " << endl;
-    cerr << "- 35 :        Th2,  Doses of IL21                        " << endl;
-    cerr << "- 36 :        Th2,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 40 :        iTreg,  Doses of IL2                         " << endl;
-    cerr << "- 41 :        iTreg,  Doses of IL4                         " << endl;
-    cerr << "- 42 :        iTreg,  Doses of IL6                         " << endl;
-    cerr << "- 43 :        iTreg,  Doses of IL12                        " << endl;
-    cerr << "- 44 :        iTreg,  Doses of IL17                        " << endl;
-    cerr << "- 45 :        iTreg,  Doses of IL21                        " << endl;
-    cerr << "- 46 :        iTreg,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 50 :        Th17,  Doses of IL2                         " << endl;
-    cerr << "- 51 :        Th17,  Doses of IL4                         " << endl;
-    cerr << "- 52 :        Th17,  Doses of IL6                         " << endl;
-    cerr << "- 53 :        Th17,  Doses of IL12                        " << endl;
-    cerr << "- 54 :        Th17,  Doses of IL17                        " << endl;
-    cerr << "- 55 :        Th17,  Doses of IL21                        " << endl;
-    cerr << "- 56 :        Th17,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 60 :        Th0,  Doses of IL2                         " << endl;
-    cerr << "- 61 :        Th0,  Doses of IL4                         " << endl;
-    cerr << "- 62 :        Th0,  Doses of IL6                         " << endl;
-    cerr << "- 63 :        Th0,  Doses of IL12                        " << endl;
-    cerr << "- 64 :        Th0,  Doses of IL17                        " << endl;
-    cerr << "- 65 :        Th0,  Doses of IL21                        " << endl;
-    cerr << "- 66 :        Th0,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 100 :       Perform all with various parameters and saves all simulations       " << endl;*/
+    /*std::cerr << "C).   Titrations of cytokines : " << std::endl;
+    std::cerr << "- 20 :        Th1,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 21 :        Th1,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 22 :        Th1,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 23 :        Th1,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 24 :        Th1,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 25 :        Th1,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 26 :        Th1,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 30 :        Th2,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 31 :        Th2,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 32 :        Th2,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 33 :        Th2,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 34 :        Th2,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 35 :        Th2,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 36 :        Th2,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 40 :        iTreg,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 41 :        iTreg,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 42 :        iTreg,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 43 :        iTreg,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 44 :        iTreg,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 45 :        iTreg,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 46 :        iTreg,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 50 :        Th17,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 51 :        Th17,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 52 :        Th17,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 53 :        Th17,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 54 :        Th17,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 55 :        Th17,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 56 :        Th17,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 60 :        Th0,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 61 :        Th0,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 62 :        Th0,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 63 :        Th0,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 64 :        Th0,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 65 :        Th0,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 66 :        Th0,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 100 :       Perform all with various parameters and saves all simulations       " << std::endl;*/
 }
 
 Starter::~Starter()
@@ -130,14 +130,14 @@ Starter::~Starter()
 }
 
 void Starter::addModel(string nameInCombo, Model *pointerOfCreatedModel, string configFile){
-    if(!pointerOfCreatedModel) {cerr << "ERR: Starter::addModel, NULL model given. Should be created before.\n"; return;}
+    if(!pointerOfCreatedModel) {std::cerr << "ERR: Starter::addModel, NULL model given. Should be created before.\n"; return;}
     ui->comboBoxModel->addItem(QString(nameInCombo.c_str()));
     modelList.push_back(pointerOfCreatedModel);
     configFilesList.push_back(configFile);
     //if(!ready) {
         QObject::disconnect(ui->comboBoxModel,                         SIGNAL(currentIndexChanged(int)),   this, SLOT(modelChanged(int)));
         ready = true;
-        cout << "   -> Checking the config file given for model " << nameInCombo << endl;
+        std::cout << "   -> Checking the config file given for model " << nameInCombo << std::endl;
         modelChanged(modelList.size() -1);
         ui->comboBoxModel->setCurrentIndex(modelList.size() -1);
         QObject::connect(ui->comboBoxModel,                         SIGNAL(currentIndexChanged(int)),   this, SLOT(modelChanged(int)));
@@ -145,7 +145,7 @@ void Starter::addModel(string nameInCombo, Model *pointerOfCreatedModel, string 
 }
 
 void Starter::setDefaultModel(string nameInCombo){
-    cout << "\n   Default model set to " << nameInCombo << endl;
+    std::cout << "\n   Default model set to " << nameInCombo << std::endl;
     for(int i = 0; i < (int) modelList.size(); ++i){
         if(!(ui->comboBoxModel->itemText(i).toStdString().compare(nameInCombo))) {
             modelChanged(i);
@@ -170,74 +170,74 @@ pair<int, float> Starter::getFinalChoice(){
     /* QStringList DiffFrom;   DiffFrom << QString("Th1") << QString("Th2") << QString("iTreg") << QString("Th17") << QString("Th0");
     ui->comboBoxConditionToSwitchFrom->addItems(DiffFrom);
     ui->doubleSpinBoxTimeSwitch->setValue(20);
-    cout << "A).   Changing differentiation condition in the middle (default p = 20 hrs) : " << endl;
-    cout << "- 1 :         From Th1,   change to other ones at t = p hrs   " << endl;
-    cout << "- 2 :         From Th2,   change to other ones at t = p hrs   " << endl;
-    cout << "- 3 :         From iTreg, change to other ones at t = p hrs   " << endl;
-    cout << "- 4 :         From Th17,  change to other ones at t = p hrs   " << endl;
-    cout << "- 5 :         From Th0,   change to other ones at t = p hrs   " << endl;
-    cout << "- 6 :         To Th1,   change to other ones at t = p hrs   " << endl;
-    cout << "- 7 :         To Th2,   change to other ones at t = p hrs   " << endl;
-    cout << "- 8 :         To iTreg, change to other ones at t = p hrs   " << endl;
-    cout << "- 9 :         To Th17,  change to other ones at t = p hrs   " << endl;
-    cout << "- 10 :        To Th0,   change to other ones at t = p hrs   " << endl;*/
+    std::cout << "A).   Changing differentiation condition in the middle (default p = 20 hrs) : " << std::endl;
+    std::cout << "- 1 :         From Th1,   change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 2 :         From Th2,   change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 3 :         From iTreg, change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 4 :         From Th17,  change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 5 :         From Th0,   change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 6 :         To Th1,   change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 7 :         To Th2,   change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 8 :         To iTreg, change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 9 :         To Th17,  change to other ones at t = p hrs   " << std::endl;
+    std::cout << "- 10 :        To Th0,   change to other ones at t = p hrs   " << std::endl;*/
 
 
     if(ui->radioButton9TitrCellDensity->isChecked())
         return pair<int, float>(11 +ui->comboBoxConditionForCellDensity->currentIndex(), (float)  0.0 );
     /* ui->comboBoxConditionForCellDensity->addItems(DiffFrom);
-    cerr << "B).   Titrations of cell density in the well : " << endl;
-    cout << "- 11 :        Th1   diff, Different Densities of cells               " << endl;
-    cout << "- 12 :        Th2   diff, Different Densities of cells               " << endl;
-    cout << "- 13 :        iTreg diff, Different Densities of cells               " << endl;
-    cout << "- 14 :        Th17  diff, Different Densities of cells               " << endl;
-    cout << "- 15 :        Th10  diff, Different Densities of cells               " << endl;*/
+    std::cerr << "B).   Titrations of cell density in the well : " << std::endl;
+    std::cout << "- 11 :        Th1   diff, Different Densities of cells               " << std::endl;
+    std::cout << "- 12 :        Th2   diff, Different Densities of cells               " << std::endl;
+    std::cout << "- 13 :        iTreg diff, Different Densities of cells               " << std::endl;
+    std::cout << "- 14 :        Th17  diff, Different Densities of cells               " << std::endl;
+    std::cout << "- 15 :        Th10  diff, Different Densities of cells               " << std::endl;*/
 
     if(ui->radioButton8TitrCytok->isChecked())
         return pair<int, float>(20 + 10*ui->comboBoxConditionForCytokTitration->currentIndex()+ui->comboBoxCytokToTitrate->currentIndex(), (float) 0.0);
     /* ui->comboBoxConditionForCytokTitration->addItems(DiffFrom);
-    cerr << "C).   Titrations of cytokines : " << endl;
-    cerr << "- 20 :        Th1,  Doses of IL2                         " << endl;
-    cerr << "- 21 :        Th1,  Doses of IL4                         " << endl;
-    cerr << "- 22 :        Th1,  Doses of IL6                         " << endl;
-    cerr << "- 23 :        Th1,  Doses of IL12                        " << endl;
-    cerr << "- 24 :        Th1,  Doses of IL17                        " << endl;
-    cerr << "- 25 :        Th1,  Doses of IL21                        " << endl;
-    cerr << "- 26 :        Th1,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 30 :        Th2,  Doses of IL2                         " << endl;
-    cerr << "- 31 :        Th2,  Doses of IL4                         " << endl;
-    cerr << "- 32 :        Th2,  Doses of IL6                         " << endl;
-    cerr << "- 33 :        Th2,  Doses of IL12                        " << endl;
-    cerr << "- 34 :        Th2,  Doses of IL17                        " << endl;
-    cerr << "- 35 :        Th2,  Doses of IL21                        " << endl;
-    cerr << "- 36 :        Th2,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 40 :        iTreg,  Doses of IL2                         " << endl;
-    cerr << "- 41 :        iTreg,  Doses of IL4                         " << endl;
-    cerr << "- 42 :        iTreg,  Doses of IL6                         " << endl;
-    cerr << "- 43 :        iTreg,  Doses of IL12                        " << endl;
-    cerr << "- 44 :        iTreg,  Doses of IL17                        " << endl;
-    cerr << "- 45 :        iTreg,  Doses of IL21                        " << endl;
-    cerr << "- 46 :        iTreg,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 50 :        Th17,  Doses of IL2                         " << endl;
-    cerr << "- 51 :        Th17,  Doses of IL4                         " << endl;
-    cerr << "- 52 :        Th17,  Doses of IL6                         " << endl;
-    cerr << "- 53 :        Th17,  Doses of IL12                        " << endl;
-    cerr << "- 54 :        Th17,  Doses of IL17                        " << endl;
-    cerr << "- 55 :        Th17,  Doses of IL21                        " << endl;
-    cerr << "- 56 :        Th17,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 60 :        Th0,  Doses of IL2                         " << endl;
-    cerr << "- 61 :        Th0,  Doses of IL4                         " << endl;
-    cerr << "- 62 :        Th0,  Doses of IL6                         " << endl;
-    cerr << "- 63 :        Th0,  Doses of IL12                        " << endl;
-    cerr << "- 64 :        Th0,  Doses of IL17                        " << endl;
-    cerr << "- 65 :        Th0,  Doses of IL21                        " << endl;
-    cerr << "- 66 :        Th0,  Doses of IFNG                        " << endl;
-    cerr << "" << endl;
-    cerr << "- 100 :       Perform all with various parameters and saves all simulations       " << endl;*/
+    std::cerr << "C).   Titrations of cytokines : " << std::endl;
+    std::cerr << "- 20 :        Th1,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 21 :        Th1,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 22 :        Th1,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 23 :        Th1,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 24 :        Th1,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 25 :        Th1,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 26 :        Th1,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 30 :        Th2,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 31 :        Th2,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 32 :        Th2,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 33 :        Th2,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 34 :        Th2,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 35 :        Th2,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 36 :        Th2,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 40 :        iTreg,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 41 :        iTreg,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 42 :        iTreg,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 43 :        iTreg,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 44 :        iTreg,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 45 :        iTreg,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 46 :        iTreg,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 50 :        Th17,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 51 :        Th17,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 52 :        Th17,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 53 :        Th17,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 54 :        Th17,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 55 :        Th17,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 56 :        Th17,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 60 :        Th0,  Doses of IL2                         " << std::endl;
+    std::cerr << "- 61 :        Th0,  Doses of IL4                         " << std::endl;
+    std::cerr << "- 62 :        Th0,  Doses of IL6                         " << std::endl;
+    std::cerr << "- 63 :        Th0,  Doses of IL12                        " << std::endl;
+    std::cerr << "- 64 :        Th0,  Doses of IL17                        " << std::endl;
+    std::cerr << "- 65 :        Th0,  Doses of IL21                        " << std::endl;
+    std::cerr << "- 66 :        Th0,  Doses of IFNG                        " << std::endl;
+    std::cerr << "" << std::endl;
+    std::cerr << "- 100 :       Perform all with various parameters and saves all simulations       " << std::endl;*/
 
     if(ui->radioButton10MultiObjective->isChecked())
         return pair<int, float>(-2, -1.0);
@@ -247,17 +247,17 @@ pair<int, float> Starter::getFinalChoice(){
 
 void Starter::modelChanged(int newComboIndex){
     if(!ready) return;  // don't know why but this function is called at first run
-    if((newComboIndex < 0) || (newComboIndex >= (int) modelList.size())){cerr << "Err: starter::modelChanged(" << newComboIndex << "), the combo index is out of bounds of modelList" << endl; return;}
-    if(modelList.size() != configFilesList.size()) cerr << "Err : different sizes between modelList and configFilesList" << endl;
+    if((newComboIndex < 0) || (newComboIndex >= (int) modelList.size())){std::cerr << "Err: starter::modelChanged(" << newComboIndex << "), the combo index is out of bounds of modelList" << std::endl; return;}
+    if(modelList.size() != configFilesList.size()) std::cerr << "Err : different sizes between modelList and configFilesList" << std::endl;
     currentModel = modelList[newComboIndex];
-    //cout << "\n   -> Model changed for " << ui->comboBoxModel->itemText(newComboIndex).toStdString() << endl;
-    if(!currentModel) cerr << "Err: Starter::modelChanged, NULL model after selection" << endl;
+    //std::cout << "\n   -> Model changed for " << ui->comboBoxModel->itemText(newComboIndex).toStdString() << std::endl;
+    if(!currentModel) std::cerr << "Err: Starter::modelChanged, NULL model after selection" << std::endl;
     ui->plainTextEditConfiguration->setPlainText(QString(configFilesList[newComboIndex].c_str()));
     delete manS;
     delete currentExperiment;
     currentExperiment = new Experiment(currentModel, 0);
     manS = new manageSims(currentExperiment);
-    cerr << manS->loadConfig(ui->plainTextEditWorkingFolder->toPlainText().toStdString() + ui->plainTextEditConfiguration->toPlainText().toStdString());
+    std::cerr << manS->loadConfig(ui->plainTextEditWorkingFolder->toPlainText().toStdString() + ui->plainTextEditConfiguration->toPlainText().toStdString());
     nbCombs = manS->nbCombs;
     if(nbCombs > 0) ui->spinBoxCombToIdentif->setMaximum(nbCombs-1);
     else ui->spinBoxCombToIdentif->setMaximum(0);
@@ -273,7 +273,7 @@ void Starter::modelChanged(int newComboIndex){
     if(nbCombs > 0) combToIdentifChanged(0);
     ui->checkBoxFitOnlyComb->setEnabled(nbCombs>0);
     //ui->radioButton1CanoFitPerComb->setChecked(true);
-    //cerr << "   Modele loaded" << endl;
+    //std::cerr << "   Modele loaded" << std::endl;
 }
 
 void Starter::radioButtonsChanged(){
@@ -327,7 +327,7 @@ void Starter::checkIdentifOnlyParam(int newState){
 }
 
 void Starter::combToIdentifChanged(int newCombinationValue){
-    if((newCombinationValue < 0) || (newCombinationValue >= nbCombs)) {cerr << "ERR: Starter::combToIdentifChanged(" << newCombinationValue << "), out of bounds index of combination to change\n"; return;}
+    if((newCombinationValue < 0) || (newCombinationValue >= nbCombs)) {std::cerr << "ERR: Starter::combToIdentifChanged(" << newCombinationValue << "), out of bounds index of combination to change\n"; return;}
     ui->comboBoxParamToIdentif->clear();
     parametersInConfig = manS->parametersInConfig(newCombinationValue);
     for(int i = 0; i < (int) parametersInConfig.size(); ++i){

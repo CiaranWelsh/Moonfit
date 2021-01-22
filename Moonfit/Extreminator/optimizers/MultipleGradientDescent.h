@@ -13,7 +13,9 @@
 #include "../optimizers/baseOptimizer.h"
 #include "../solvers/baseSolver.h"
 #include "../common/myRandom.h"
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 using namespace OrganismLib;
 
 
@@ -141,7 +143,7 @@ MultipleGradientDescent::MultipleGradientDescent(BaseSolver *S, const std::strin
 	myCoeffEta = (double) argument_[5];
 	std::cerr << "\tParameters :\n\t   Nb Generations : " << numGenMax << "\n";
 		
-	std::cerr << "Data we have from the optimizer :\n" << 
+	std::cerr << "Data we have from the optimizer :\n" <<
 			"We want to optimize " << numIndex_ << " parameters, of indices :\n";
 	for(int i = 0; i < (int) numIndex_ ; ++i){ std::cerr << " " << indexVector_[i];}
 	std::cerr << "\n";
@@ -225,7 +227,7 @@ void MultipleGradientDescent::optimize(){
 			if(E < bestPrevious){
 				if(E < (0.99 * bestPrevious)){ageGradient--;} else {myEta *= myCoeffEta;}
 				bestPrevious = E;
-				//std::cerr << "Success" << "\n"; 
+				//std::cerr << "Success" << "\n";
 			}
 			else {
 				// if it doesn't move so much, then go 
@@ -238,7 +240,7 @@ void MultipleGradientDescent::optimize(){
 		for(int j = 0; j < (int) numIndex_; ++j){
 			std::cerr << gradient[j] << "\t";
 		}
-		std::cerr << "\n";		
+		std::cerr << "\n";
 		print_total_parameters();
 		ageGradient++;
 	}

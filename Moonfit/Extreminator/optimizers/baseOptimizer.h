@@ -285,7 +285,7 @@ class BaseOptimizer {
 
 		///	subfunction that calls Estimator::getCost() and returns the cost of an individual, but
 		///	doesn't update the field cost of individual.
-		///	Obs : Constraint handling done by adding max(1e5, -1 + t * exp(distance to boundaries in scaled space))
+		///	Obs : Constraint handling done by adding max_(1e5, -1 + t * exp(distance to boundaries in scaled space))
 		double computeCost(individual* ind);
 
 		
@@ -300,7 +300,7 @@ class BaseOptimizer {
 		void improveGlobal(double cost, vector<double>* new_parameters);
 
 		/// 	To be used by subclasses : Returns the cost of a list of parameters.
-		///	Obs : Constraint handling done by adding max(1e5, -1 + t * exp(distance to boundaries in scaled space))
+		///	Obs : Constraint handling done by adding max_(1e5, -1 + t * exp(distance to boundaries in scaled space))
 		double computeCost(vector<double>* parameters);
 		
 		/// 	To be used by subclasses : Returns a new vector of randomized values for each parameter, according

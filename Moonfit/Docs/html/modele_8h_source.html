@@ -489,8 +489,8 @@
         <div class="line"><a name="l00239"></a><span class="lineno"><a class="line"
                                                                        href="struct_model.html#a0386968ae522e868e3b6028c8b154837">  239</a></span>&#160;
             <a class="code" href="struct_model.html#a0386968ae522e868e3b6028c8b154837">Model</a>(<span class="keyword">const</span>
-            <a class="code" href="struct_model.html">Model</a> &amp;){cerr &lt;&lt; <span class="stringliteral">&quot;Checking for errors - you are copy a Model, why ?&quot;</span>
-            &lt;&lt; endl;}
+            <a class="code" href="struct_model.html">Model</a> &amp;){std::cerr &lt;&lt; <span class="stringliteral">&quot;Checking for errors - you are copy a Model, why ?&quot;</span>
+            &lt;&lt; std::endl;}
         </div>
         <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; <span
                 class="keyword">virtual</span> ~<a class="code" href="struct_model.html">Model</a>(){}
@@ -516,7 +516,7 @@
                 class="keyword">protected</span>:
         </div>
         <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; <span
-                class="keywordtype">double</span> max(<span class="keywordtype">double</span>, <span
+                class="keywordtype">double</span> max_(<span class="keywordtype">double</span>, <span
                 class="keywordtype">double</span>); <span class="comment">// Auxiliary functions, not available by default (??) ...</span>
         </div>
         <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; <span
@@ -630,7 +630,7 @@
         </div>
         <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">    #ifdef PRINT_KIN</span>
         </div>
-        <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">    cerr &lt;&lt; &quot;Model for Th1 differentiation (M110L) Nb of parameters : &quot; &lt;&lt; NBPARAM &lt;&lt; &quot;, variables :&quot; &lt;&lt; NBVAR &lt;&lt; endl;</span>
+        <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">    std::cerr &lt;&lt; &quot;Model for Th1 differentiation (M110L) Nb of parameters : &quot; &lt;&lt; NBPARAM &lt;&lt; &quot;, variables :&quot; &lt;&lt; NBVAR &lt;&lt; std::endl;</span>
         </div>
         <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span
                 class="comment">    #endif</span></div>

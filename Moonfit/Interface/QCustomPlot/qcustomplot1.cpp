@@ -8943,7 +8943,7 @@ QCP::Interaction QCPAbstractItem::selectionCategory() const
   QCustomPlot offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
   yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
   axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  layout system\std::endlink to add multiple axis rects or multiple axes to one side, use the \ref
   QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
   default legend is removed due to manipulation of the layout system (e.g. by removing the main
   axis rect), the corresponding pointers become 0.
@@ -8956,7 +8956,7 @@ QCP::Interaction QCPAbstractItem::selectionCategory() const
   QCustomPlot offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
   yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
   axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  layout system\std::endlink to add multiple axis rects or multiple axes to one side, use the \ref
   QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
   default legend is removed due to manipulation of the layout system (e.g. by removing the main
   axis rect), the corresponding pointers become 0.
@@ -8971,7 +8971,7 @@ QCP::Interaction QCPAbstractItem::selectionCategory() const
   QCustomPlot offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
   yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
   axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  layout system\std::endlink to add multiple axis rects or multiple axes to one side, use the \ref
   QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
   default legend is removed due to manipulation of the layout system (e.g. by removing the main
   axis rect), the corresponding pointers become 0.
@@ -8986,7 +8986,7 @@ QCP::Interaction QCPAbstractItem::selectionCategory() const
   QCustomPlot offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
   yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
   axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  layout system\std::endlink to add multiple axis rects or multiple axes to one side, use the \ref
   QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
   default legend is removed due to manipulation of the layout system (e.g. by removing the main
   axis rect), the corresponding pointers become 0.
@@ -9000,7 +9000,7 @@ QCP::Interaction QCPAbstractItem::selectionCategory() const
   QCustomPlot offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
   yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
   axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple legends to the plot, use the layout system interface to
+  layout system\std::endlink to add multiple legends to the plot, use the layout system interface to
   access the new legend. For example, legends can be placed inside an axis rect's \ref
   QCPAxisRect::insetLayout "inset layout", and must then also be accessed via the inset layout. If
   the default legend is removed due to manipulation of the layout system (e.g. by removing the main

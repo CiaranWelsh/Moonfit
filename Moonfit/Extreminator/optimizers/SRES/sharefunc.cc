@@ -30,22 +30,26 @@
 
 #include <time.h>
 #include <math.h>
-#include <string.h>
+#include <string>
+#include <vector>
 #include "sharefunc.h"
 #include <cstdio>
+#include <cstring>
 
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 /*********************************************************************
  ** uniform random                                                  **
- ** double ShareRand(min,max)                                       **
+ ** double ShareRand(min,max_)                                       **
  ** min: min value                                                  **
- ** max: max value                                                  **
+ ** max: max_ value                                                  **
  **                                                                 **
- ** return value = min + (max-min)*rand()/(RAND_MAX)                **
+ ** return value = min + (max_-min)*rand()/(RAND_MAX)                **
  **                                                                 **
- ** double ShareRandVec(n, min, max)                                **
+ ** double ShareRandVec(n, min, max_)                                **
  ** return s=vec(n)                                                 **
  *********************************************************************/
 double ShareRand(double min, double max) {

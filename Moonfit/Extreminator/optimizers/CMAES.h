@@ -16,7 +16,9 @@
 #include "population.h"
 #include "individual.h"
 using namespace OrganismLib;
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 //#include "shark/EALib/CMA.h"
 //#include "shark/EALib/ObjectiveFunctions.h"

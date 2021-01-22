@@ -1,7 +1,9 @@
 #include "optselect.h"
 #include <sstream>
 #include <iostream>
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 #ifndef WITHOUT_QT
 #include "ui_optselect.h"
@@ -172,22 +174,22 @@ optSelect::optSelect(QWidget *parent) :
 }
 
 std::string optSelect::generate(){
-    stringstream ss;
+    std::stringstream ss;
     ss << ui->comboBoxOptimizer->currentText().toStdString() << "\t" << 14 << "\n";
     int algo = ui->comboBox1Algo->currentIndex();
     if(algo > 2) algo += 7;
-    ss << algo << "\t#" << ui->comboBox1Algo->currentText().toStdString() << endl;
-    ss << ui->comboBox2Parents->currentIndex() << "\t#" << ui->comboBox2Parents->currentText().toStdString() << endl;
-    ss << ui->comboBox3CrossOver->currentIndex() << "\t" << ui->doubleSpinBoxParamCrossOver->value() << "\t#" << ui->comboBox3CrossOver->currentText().toStdString() << endl;
-    ss << ui->comboBox4Mutation->currentIndex() << "\t#" << ui->comboBox4Mutation->currentText().toStdString() << endl;
-    ss << ui->comboBox5Replace->currentIndex() << "\t#" << ui->comboBox5Replace->currentText().toStdString() << endl;
-    ss << ui->comboBox6Selection->currentIndex() << "\t#" << ui->comboBox6Selection->currentText().toStdString() << endl;
-    ss << ui->comboBox7Strategy->currentIndex() << "\t" << ui->doubleSpinBoxParamStrategy->value() <<"\t#" << ui->comboBox7Strategy->currentText().toStdString() <<  endl;
-    ss << ui->spinBoxNbRepeats->value() << "\t#Nb Repeats" << endl;
-    ss << ui->spinBoxMaxCosts->value() << "\t#Max nb of simulations-costs" << endl;
-    ss << ui->spinBoxPopSize->value() << "\t#Population Size" << endl;
-    ss << ui->doubleSpinBoxPropCrossOver->value() << "\t#Proportion of CrossOver (vs offspring) in new individuals" << endl;
-    ss << ui->doubleSpinBoxForkCoeff->value() << "\t#Fork coeff (%renewed each generation)" << endl;
+    ss << algo << "\t#" << ui->comboBox1Algo->currentText().toStdString() << std::endl;
+    ss << ui->comboBox2Parents->currentIndex() << "\t#" << ui->comboBox2Parents->currentText().toStdString() << std::endl;
+    ss << ui->comboBox3CrossOver->currentIndex() << "\t" << ui->doubleSpinBoxParamCrossOver->value() << "\t#" << ui->comboBox3CrossOver->currentText().toStdString() << std::endl;
+    ss << ui->comboBox4Mutation->currentIndex() << "\t#" << ui->comboBox4Mutation->currentText().toStdString() << std::endl;
+    ss << ui->comboBox5Replace->currentIndex() << "\t#" << ui->comboBox5Replace->currentText().toStdString() << std::endl;
+    ss << ui->comboBox6Selection->currentIndex() << "\t#" << ui->comboBox6Selection->currentText().toStdString() << std::endl;
+    ss << ui->comboBox7Strategy->currentIndex() << "\t" << ui->doubleSpinBoxParamStrategy->value() <<"\t#" << ui->comboBox7Strategy->currentText().toStdString() <<  std::endl;
+    ss << ui->spinBoxNbRepeats->value() << "\t#Nb Repeats" << std::endl;
+    ss << ui->spinBoxMaxCosts->value() << "\t#Max nb of simulations-costs" << std::endl;
+    ss << ui->spinBoxPopSize->value() << "\t#Population Size" << std::endl;
+    ss << ui->doubleSpinBoxPropCrossOver->value() << "\t#Proportion of CrossOver (vs offspring) in new individuals" << std::endl;
+    ss << ui->doubleSpinBoxForkCoeff->value() << "\t#Fork coeff (%renewed each generation)" << std::endl;
 
     ui->plainTextEdit->clear();
     ui->plainTextEdit->appendPlainText(QString(ss.str().c_str()));

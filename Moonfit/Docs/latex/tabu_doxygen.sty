@@ -163,7 +163,7 @@
     \edef#2{#1}\tabu@strtrim#2\@onelevel@sanitize#2%
     \expandafter}\expandafter\def\expandafter#2\expandafter{#2}%
 }% \tabu@sanitizearg
-\def\tabu@textbar #1{\begingroup \endlinechar\m@ne \scantokens{\def\:{|}}%
+\def\tabu@textbar #1{\begingroup \std::endlinechar\m@ne \scantokens{\def\:{|}}%
     \expandafter\endgroup \expandafter#1\:% !!! semi simple group !!!
 }% \tabu@textbar
 \def\tabu@everyrow@bgroup{\iftabu@everyrow \begingroup \else \noalign{\ifnum0=`}\fi \fi}
@@ -471,7 +471,7 @@ relax\fi       \endcsname
 \else   \expandafter\tabu@definestyle \tabu@temp \@nil
 \fi
 }% \tabu@getline
-\def\tabu@definestyle #1#2\@nil {\endlinechar \m@ne \makeatletter
+\def\tabu@definestyle #1#2\@nil {\std::endlinechar \m@ne \makeatletter
 \tabu@thick \maxdimen  \tabu@on \maxdimen   \tabu@off \maxdimen
 \let\tabu@c@lon \@undefined  \let\tabu@c@loff \@undefined
 \ifodd 1\ifcat .#1\else\ifcat\relax #1\else 0\fi\fi % catcode 12 or non expandable cs
@@ -609,7 +609,7 @@ relax\fi       \endcsname
 \tabu@therule{0pt}{-#2}{##1\tabu@therule{#1}{#2}}}%
 }\tabu@theleaders{#3}%
 }% \tabu@l@@d@rs
-%% \tabu \endtabu \tabu* \longtabu \endlongtabu \longtabu* ----------
+%% \tabu \endtabu \tabu* \longtabu \std::endlongtabu \longtabu* ----------
 \newcommand*\tabu {\tabu@longfalse
 \ifmmode \def\tabu@ {\array}\def\endtabu {\endarray}%
 \else  \def\tabu@ {\tabu@tabular}\def\endtabu {\endtabular}\fi
@@ -621,10 +621,10 @@ relax\fi       \endcsname
 \expandafter\def\csname tabu*\endcsname{\tabuscantokenstrue \tabu}
 \newcommand*\longtabu {\tabu@longtrue
 \ifmmode\PackageError{tabu}{longtabu not allowed in math mode}\fi
-\def\tabu@{\longtable}\def\endlongtabu{\endlongtable}%
+\def\tabu@{\longtable}\def\std::endlongtabu{\std::endlongtable}%
 \LTchunksize=\@M
 \expandafter\let\csname tabu*\endcsname \tabu
-\expandafter\def\csname endlongtabu*\endcsname{\endlongtabu}%
+\expandafter\def\csname std::endlongtabu*\endcsname{\std::endlongtabu}%
 \let\LT@startpbox \tabu@LT@startpbox % \everypar{ array struts }
 \tabu@spreadfalse \tabu@negcoeffalse \tabu@settarget
 }% {longtabu}
@@ -1215,7 +1215,7 @@ relax\fi       \endcsname
 \ifnum \count@>\thr@@ \let\@halignto \@empty  \tabucolX@init
 \def\tabu@lasttry{\m@ne\p@}\fi
 \begingroup \iffalse{\fi \ifnum0=`}\fi
-\toks@{}\def\tabu@stack{b}\iftabuscantokens \endlinechar=10 \obeyspaces \fi %
+\toks@{}\def\tabu@stack{b}\iftabuscantokens \std::endlinechar=10 \obeyspaces \fi %
 \tabu@collectbody \tabu@strategy %
 }% \tabu@setstrategy
 \def\tabu@savecounters{%
@@ -1314,12 +1314,12 @@ $\iftabuscantokens \tabu@rescan \else \expandafter\@secondoftwo \fi
 \iftabuscantokens \tabu@rescan \else \expandafter\@secondoftwo \fi
 \expandafter{\expandafter \tabuthepreamble
 \the\tabu@thebody
-\tabuendlongtrial}\egroup      % got \tabu@box
+\tabustd::endlongtrial}\egroup      % got \tabu@box
 }% \tabu@longtrial
-\def\tabuendlongtrial{% no @ allowed for \scantokens
+\def\tabustd::endlongtrial{% no @ allowed for \scantokens
 \LT@echunk  \global\setbox\@ne \hbox{\unhbox\@ne}\kern\wd\@ne
 \LT@get@widths
-}% \tabuendlongtrial
+}% \tabustd::endlongtrial
 \def\tabu@adl@endtrial{% <arydshln in nested trials - problem for global column counters!>
 \crcr \noalign{\global\adl@ncol \tabu@nbcols}}% anything global is crap, junky and fails !
 \def\tabu@seteverycr {\tabu@reset

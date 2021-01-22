@@ -8,7 +8,9 @@
 #include <queue>
 #include <cmath> // for NAN
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 /*string printVector(vector<double> &v);*/
 
@@ -51,7 +53,7 @@ struct pSets {
     int size() { return store.size(); }
 
     /// 3b : Data storage
-    priority_queue<oneSet *, vector<oneSet *>, CompareSets> store;
+    std::priority_queue<oneSet *, vector<oneSet *>, CompareSets> store;
 
     bool addSet(vector<double> *v,
                 double _cost);   /// Adds the param set if there is still space (MaxNb), or if it is better than an existing set in the list (that will be wasted)

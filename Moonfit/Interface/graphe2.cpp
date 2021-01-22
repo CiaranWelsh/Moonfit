@@ -54,7 +54,7 @@ void Graphe2::logarithmic(bool newState){
 }
 
 void Graphe2::setNbCurves(int _nbCurves){
-    if((_nbCurves < 1) || (_nbCurves > MAXCURVES)) {cerr << "ERR: Graphe::setNbCurves(" << _nbCurves << ", not an authorized value\n"; return;}
+    if((_nbCurves < 1) || (_nbCurves > MAXCURVES)) {std::cerr << "ERR: Graphe::setNbCurves(" << _nbCurves << ", not an authorized value\n"; return;}
     for(int i = 0; i < (int) curveData.size(); ++i){
         if(curveData[i]){
             curveData[i]->detach();
@@ -81,14 +81,14 @@ void Graphe2::setNbCurves(int _nbCurves){
 }
 
 void Graphe2::Plot(int IDCurve, vector<double> y_to_plot, vector<double> x_to_plot, QString _titre, QColor _color, Qt::PenStyle ps){
-    if((IDCurve < 0) || (IDCurve >= nbCurves)) {cerr << "ERR Graphe::Plot(IDCurve=" << IDCurve <<",...), curve ID not valid (only " << nbCurves << " curves defined. Indices start at 0.\n"; return;}
+    if((IDCurve < 0) || (IDCurve >= nbCurves)) {std::cerr << "ERR Graphe::Plot(IDCurve=" << IDCurve <<",...), curve ID not valid (only " << nbCurves << " curves defined. Indices start at 0.\n"; return;}
     int size = y_to_plot.size();
-    if((int) x_to_plot.size() < size) {cerr << "ERR: Graphe1::Plot , error, the vector of x points is smaller than the vector of y points\n "; return;}
+    if((int) x_to_plot.size() < size) {std::cerr << "ERR: Graphe1::Plot , error, the vector of x points is smaller than the vector of y points\n "; return;}
     x_to_plot.resize(size);
 
-    // cerr << "Size of data plotted : " << size << endl;
+    // std::cerr << "Size of data plotted : " << size << std::endl;
     /*for(int i = 0; i < size; ++i){
-        cerr << i << "\t" << x_to_plot[i] << "\t" << y_to_plot[i] << endl;
+        std::cerr << i << "\t" << x_to_plot[i] << "\t" << y_to_plot[i] << std::endl;
     }*/
     int i = IDCurve;
     Data[i]->clear();
@@ -125,7 +125,7 @@ void Graphe2::setTitle(QString _titre){
 }
 
 void Graphe2::exportToPng(QString _file){
-    cerr << "ERR : export to PNG is not implanted in Graphe2. Please use QCustom plot by using #define USE_QCP in common.h" << endl;
+    std::cerr << "ERR : export to PNG is not implanted in Graphe2. Please use QCustom plot by using #define USE_QCP in common.h" << std::endl;
 }
 
 void Graphe2::Example(){

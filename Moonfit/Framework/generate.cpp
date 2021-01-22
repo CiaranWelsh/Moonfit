@@ -40,11 +40,11 @@ void testeGraphManip() {
     Graphe b(5);
     b.add(A, B, +1);
     b.add(A, D, -1);
-    cerr << "---------- Starting Graph ------------\n";
+    std::cerr << "---------- Starting Graph ------------\n";
     a.print();
-    cerr << "---------- Subgraphes with size 4 ------------\n";
+    std::cerr << "---------- Subgraphes with size 4 ------------\n";
     printGrVect(between(&a, &b, 4));
-    cerr << "---------- Subgraphes with all sizes ------------\n";
+    std::cerr << "---------- Subgraphes with all sizes ------------\n";
     printGrVect(between(&a, &b));
 }
 
@@ -81,13 +81,13 @@ void Graphe::resize(int newNbNodes) {
 
 void Graphe::add(int i, int j, valeur value) {
     if ((i < 0) || (j < 0) || (i >= nbNodes) || (j >= nbNodes)) {
-        cerr << "add : wrong indices";
+        std::cerr << "add : wrong indices";
         return;
     }
     if ((table[i][j] == 0) && (value != 0)) nbVertices++;
     if ((table[i][j] != 0) && (value == 0)) nbVertices--;
     if (nbVertices < 0)
-        cerr << "ERR: graphe::add, problem counting the number of non-zero vertices, get negative number" << endl;
+        std::cerr << "ERR: graphe::add, problem counting the number of non-zero vertices, get negative number" << std::endl;
     table[i][j] = value;
 }
 
@@ -123,12 +123,12 @@ vector<int> Graphe::pred(int i) {    // predecessors
 
 //string generateGraph();
 void Graphe::print() {
-    cerr << "--------- Graphe, size= " << nbNodes << " ; nbInteractions= " << nbVertices << " --------" << endl;
+    std::cerr << "--------- Graphe, size= " << nbNodes << " ; nbInteractions= " << nbVertices << " --------" << std::endl;
     for (int i = 0; i < nbNodes; ++i) {
         for (int j = 0; j < nbNodes; ++j) {
-            cerr << table[i][j] << "\t";
+            std::cerr << table[i][j] << "\t";
         }
-        cerr << endl;
+        std::cerr << std::endl;
     }
 }
 
@@ -147,7 +147,7 @@ vector<Graphe *> between(Graphe Gbig, Graphe Gsmall,
     int s = Gbig.size();
     int sS = Gsmall.size();
     if (s != sS) {
-        cerr << "ERR:Graphe::between(), the two graphs don't share the same size ! " << s << " != " << sS << endl;
+        std::cerr << "ERR:Graphe::between(), the two graphs don't share the same size ! " << s << " != " << sS << std::endl;
         return vres;
     }
     /*if(new_size < 0) return vres;
@@ -161,7 +161,7 @@ vector<Graphe *> between(Graphe Gbig, Graphe Gsmall,
         for (int j = 0; j < s; ++j) {
             if ((Gsmall(i, j) != 0) && (Gbig(i, j) != 0)) {
                 if (Gsmall(i, j) != Gbig(i, j))
-                    cerr
+                    std::cerr
                             << "WRN:Graphe::between, the small graph has vertices in common with the big one and they don't have the same value !! Gsmall value is taking over.";
                 Gbig.add(i, j, 0);
             }
@@ -304,8 +304,8 @@ vector<string> Generate::generateParameters() {
     }
     // for each receiving node, Cst translation * big formula
     if (g.size() != nbVar)
-        cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar
-             << endl;
+        std::cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar
+             << std::endl;
     for (int i = 0; i < nbVar; ++i) {
         vector<int> vpred = g.pred(i);
         int nbAct = vpred.size();
@@ -363,7 +363,7 @@ T fr(vector<T> v, int index) {
 }
 
 string Generate::generateParamBorders() {
-    stringstream f;
+    std::stringstream f;
 
     // Degradation parameters;
     for (int i = 0; i < nbVar; ++i) {
@@ -393,8 +393,8 @@ string Generate::generateParamBorders() {
 
     // for each receiving node, Cst translation * big formula
     if (g.size() != nbVar)
-        cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar
-             << endl;
+        std::cerr << "ERR::GenerateParameters, Graph size is incorrect (" << g.size() << ") instead of nbVars = " << nbVar
+             << std::endl;
     for (int i = 0; i < nbVar; ++i) {
         vector<int> vpred = g.pred(i);
         int nbAct = vpred.size();
@@ -449,7 +449,7 @@ string Generate::generateParamBorders() {
 string Generate::generateActivFunction(int nbAct, int nbInh){
         std::stringstream ss;
         if((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
-            cerr << "ERR: generateActiv, Out of bounds" << endl;
+            std::cerr << "ERR: generateActiv, Out of bounds" << std::endl;
             return ss.str();
         }
         if(nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
@@ -499,7 +499,7 @@ string Generate::generateActivFunction(int nbAct, int nbInh){
 string Generate::generateActivFunction(int nbAct, int nbInh) {
     std::stringstream ss;
     if ((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
-        cerr << "ERR: generateActiv, Out of bounds" << endl;
+        std::cerr << "ERR: generateActiv, Out of bounds" << std::endl;
         return ss.str();
     }
     if (nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
@@ -537,7 +537,7 @@ string Generate::generateActivFunction(int nbAct, int nbInh) {
 string generateActivFunction(int nbAct, int nbInh) {
     std::stringstream ss;
     if ((nbAct < 0) || (nbInh < 0) || (nbAct > 100) || (nbInh > 100)) {
-        cerr << "ERR: generateActiv, Out of bounds" << endl;
+        std::cerr << "ERR: generateActiv, Out of bounds" << std::endl;
         return ss.str();
     }
     if (nbAct + nbInh == 0) return ss.str(); // no point in Activ0Inhib0 ...
@@ -573,13 +573,13 @@ string generateActivFunction(int nbAct, int nbInh) {
 
 #ifdef OLD
 string latexHillAct(string X, string K, string N){
-    stringstream ss;
+    std::stringstream ss;
     ss << "\\left(\\frac{" << X << "^{" << N << "}}{" << K << "^{" << N << "} + " << X << "^{" << N << "}} \\right)";
     return ss.str();
 }
 
 string latexHillInh(string X, string K, string N){
-    stringstream ss;
+    std::stringstream ss;
     ss << "\\left(\\frac{" << K << "^{" << N << "}}{" << K << "^{" << N << "} + " << X << "^{" << N << "}} \\right)";
     return ss.str();
 }
@@ -588,14 +588,14 @@ string latexHillInh(string X, string K, string N){
 #ifdef NEW
 
 string latexHillAct(string X, string K, string N, string S) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "\\left(1 + (1 - " << S << ").\\frac{" << X << "^{" << N << "} }{" << K << "^{" << N << "} + " << X << "^{"
        << N << "} } \\right)";
     return ss.str();
 }
 
 string latexHillInh(string X, string K, string N, string S) {
-    stringstream ss;
+    std::stringstream ss;
     ss << "\\left(" << S << " + (1 - " << S << "). \\frac{" << K << "^{" << N << "} }{" << K << "^{" << N << "} + " << X
        << "^{" << N << "} } \\right)";
     return ss.str();
@@ -624,10 +624,10 @@ string latexHillInh(string X, string K, string N, string S) {
 string Generate::generateCodeHeader() {
 
     if ((int) filesToInclude.size() == 0) {
-        cerr
+        std::cerr
                 << "WRN: Generate::generateCodeHeader(), you didn't give any files to include. You might probably want to provide a file with namespaces ... \n";
     }
-    stringstream f;
+    std::stringstream f;
     f << "// ------- Automatically generated model -------- //\n";
     f << "#ifndef Model" << MName << "_H\n";
     f << "#define Model" << MName << "_H\n";
@@ -647,7 +647,7 @@ string Generate::generateCodeHeader() {
     f << "struct Model" << MName << " : public Model {\n";
     f << "\tModel" << MName << "();\n";
     f << "\tenum {";
-    if (nbVar < 1) cerr << "ErR:Generate::nVar should be >= 1\n";
+    if (nbVar < 1) std::cerr << "ErR:Generate::nVar should be >= 1\n";
     for (int i = 0; i < nbVar - 1; ++i) {
         f << VarEnum[i] << ", ";
     }
@@ -679,9 +679,9 @@ string Generate::generateCodeHeader() {
             if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
         }
         if ((nbAct > MAX_DEGREE) || (nbInh > MAX_DEGREE)) {
-            cerr
+            std::cerr
                     << "ERR : GenerateHeader, The number of Activators (or Inhibitors) of a node are exceeding MAX_DEGREE = "
-                    << MAX_DEGREE << endl;
+                    << MAX_DEGREE << std::endl;
         } else needed[nbAct][nbInh] = true;
     }
 
@@ -700,7 +700,7 @@ string Generate::generateCodeHeader() {
 
 
 string Generate::generateCodeSource() {
-    stringstream f;
+    std::stringstream f;
     f << "// ------- Automatically generated model -------- //\n";
     f << "#include \"../common.h\"\n\n";
     f << "#include \"Model" << MName << ".h\"\n\n";
@@ -744,7 +744,7 @@ string Generate::generateCodeSource() {
     f << "}\n\n";
 
     f << "void Model" << MName << "::initialise(long long _background){ // don't touch to parameters ! \n";
-    //f << "\tif(! parametersLoaded) cerr << \"ERR : M110, you need to load/set parameters before initializing !\\n\";\n";
+    //f << "\tif(! parametersLoaded) std::cerr << \"ERR : M110, you need to load/set parameters before initializing !\\n\";\n";
     //f << "\tdeleteCinetique();\n";
     f << "\tbackground = _background;\n";
     f << "\tval.clear();\n";
@@ -789,14 +789,14 @@ string Generate::generateCodeSource() {
     f << "}\n";
     f << "#endif\n";
 
-    cerr << "Source Code Generated" << endl;
+    std::cerr << "Source Code Generated" << std::endl;
     return f.str();
 
 }
 
 
 string Generate::generateLatex() {
-    stringstream f;
+    std::stringstream f;
     vector<string> listPar = generateParameters();
     int nbPar = listPar.size();
     f << "\\documentclass[a3paper]{article}\n";
@@ -856,7 +856,7 @@ string Generate::generateLatex() {
         for (int m = 0; m < nbPred; ++m) {
             if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
         }
-        //if(VERBOSE) cerr << "" << endl;
+        //if(VERBOSE) std::cerr << "" << std::endl;
         if (nbAct + nbInh > 0) {
             f << " + C_{" << VarEnum[i] << "} . ("; //\\left(";
             // activators
@@ -864,7 +864,7 @@ string Generate::generateLatex() {
             for (int m = 0; m < nbPred; ++m) {
                 if (g(vpred[m], i) > 0) {
                     f << " \\nonumber \\\\\n & &";
-                    stringstream X, K, N, S;
+                    std::stringstream X, K, N, S;
                     X << "[" << VarEnum[vpred[m]] << "]";
                     K << "K_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
                     N << "N_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
@@ -882,7 +882,7 @@ string Generate::generateLatex() {
             for (int m = 0; m < nbPred; ++m) {
                 if (g(vpred[m], i) < 0) {
                     f << " \\nonumber \\\\\n & &";
-                    stringstream X, K, N, S;
+                    std::stringstream X, K, N, S;
                     X << "[" << VarEnum[vpred[m]] << "]";
                     K << "K_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
                     N << "N_{" << VarEnum[vpred[m]] << " \\rightarrow " << VarEnum[i] << "}";
@@ -908,7 +908,7 @@ string Generate::generateLatex() {
     }
     f << "\\end{document}\n";
 
-    cerr << "Latex Code Generated" << endl;
+    std::cerr << "Latex Code Generated" << std::endl;
     return f.str();
 
 }
@@ -916,7 +916,7 @@ string Generate::generateLatex() {
 
 #ifdef OLD
 string Generate::generateBasalParameters(){
-    stringstream f;
+    std::stringstream f;
 
     for(int i = 0; i < nbVar; ++i){
         if(Basal[i] == CST_FROM_EQ){
@@ -931,7 +931,7 @@ string Generate::generateBasalParameters(){
                 if(g(vpred[m],i) > 0) nbAct++; else nbInh++;
             }
 
-            //if(VERBOSE) cerr << "" << endl;
+            //if(VERBOSE) std::cerr << "" << std::endl;
             if(nbAct + nbInh > 0){
                 f << " - params[C" << VarEnum[i] << "] * Activ" << nbAct << "Inhib" << nbInh << "(";
                 // activators
@@ -941,7 +941,7 @@ string Generate::generateBasalParameters(){
                         if(Basal[vpred[m]] == CST_FROM_EQ){
                             f << "params[" << VarEnum[vpred[m]] + string("EQ") << "],";
                         } else {
-                            cerr << "WRN: Generate::generateBasalParameters : You ask a (" << VarEnum[i] << ") to have a basal production term (params[B" << VarEnum[i] << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables (" << VarEnum[vpred[m]] << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params[" << VarEnum[vpred[m]] + string("EQ") << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n\n";
+                            std::cerr << "WRN: Generate::generateBasalParameters : You ask a (" << VarEnum[i] << ") to have a basal production term (params[B" << VarEnum[i] << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables (" << VarEnum[vpred[m]] << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params[" << VarEnum[vpred[m]] + string("EQ") << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n\n";
                             f << "init[" << VarEnum[vpred[m]] << "], /* ERR : no equilibrium parameter for it */ ";
                         }
                         f << "params[K" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
@@ -955,7 +955,7 @@ string Generate::generateBasalParameters(){
                         if(Basal[vpred[m]] == CST_FROM_EQ){
                             f << "params[" << VarEnum[vpred[m]] + string("EQ") << "],";
                         } else {
-                            cerr << "generate::generateBasalParameters : You ask a variable (" << VarEnum[i] << ") to have a basal production term (params[B" << VarEnum[i] << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables (" << VarEnum[vpred[m]] << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params[" << VarEnum[vpred[m]] + string("EQ") << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n";
+                            std::cerr << "generate::generateBasalParameters : You ask a variable (" << VarEnum[i] << ") to have a basal production term (params[B" << VarEnum[i] << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables (" << VarEnum[vpred[m]] << ", for which the option 'Degradation = CST_FROM_EQ' should be chosen, in order to create the parameter : params[" << VarEnum[vpred[m]] + string("EQ") << "]. The initial value is chosen instead as equilibrium **potential** value. Bref, it is advised to choose this option for every variable. Note that, if the equilibrium is known, then this option will give a basal rate of zero, which you can check later.\n";
                             f << "init[" << VarEnum[vpred[m]] << "], /* ERR : no equilibrium parameter for it */ ";
                         }
                         f << "params[K" << VarEnum[vpred[m]] << "_TO_" << VarEnum[i] << "],";
@@ -976,7 +976,7 @@ string Generate::generateBasalParameters(){
 #ifdef NEW
 
 string Generate::generateBasalParameters() {
-    stringstream f;
+    std::stringstream f;
 
     for (int i = 0; i < nbVar; ++i) {
         if (Basal[i] == CST_FROM_EQ) {
@@ -1003,7 +1003,7 @@ string Generate::generateBasalParameters() {
 
 
 
-            //if(VERBOSE) cerr << "" << endl;
+            //if(VERBOSE) std::cerr << "" << std::endl;
             if (nbAct + nbInh > 0) {
 #ifdef OLD
                 f << "params[C" << VarEnum[i] << "] * Activ" << nbAct << "Inhib" << nbInh << "(";
@@ -1018,7 +1018,7 @@ string Generate::generateBasalParameters() {
                         if (Basal[vpred[m]] == CST_FROM_EQ) {
                             f << "params[" << VarEnum[vpred[m]] + string("EQ") << "],";
                         } else {
-                            cerr << "WRN: Generate::generateBasalParameters : You ask a (" << VarEnum[i]
+                            std::cerr << "WRN: Generate::generateBasalParameters : You ask a (" << VarEnum[i]
                                  << ") to have a basal production term (params[B" << VarEnum[i]
                                  << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables ("
                                  << VarEnum[vpred[m]]
@@ -1039,7 +1039,7 @@ string Generate::generateBasalParameters() {
                         if (Basal[vpred[m]] == CST_FROM_EQ) {
                             f << "params[" << VarEnum[vpred[m]] + string("EQ") << "],";
                         } else {
-                            cerr << "generate::generateBasalParameters : You ask a variable (" << VarEnum[i]
+                            std::cerr << "generate::generateBasalParameters : You ask a variable (" << VarEnum[i]
                                  << ") to have a basal production term (params[B" << VarEnum[i]
                                  << "]) from equilibrium desired values (params[...EQ]). However, it requires the equilibrium values of other variables ("
                                  << VarEnum[vpred[m]]
@@ -1071,7 +1071,7 @@ string Generate::generateBasalParameters() {
 
 string Generate::generateEquations() {
 
-    stringstream f;
+    std::stringstream f;
 
     for (int i = 0; i < nbVar; ++i) {
         f << "\tif(!over(" << VarEnum[i] << "))"; /// NEW trick !!
@@ -1088,7 +1088,7 @@ string Generate::generateEquations() {
         for (int m = 0; m < nbPred; ++m) {
             if (g(vpred[m], i) > 0) nbAct++; else nbInh++;
         }
-        //if(VERBOSE) cerr << "" << endl;
+        //if(VERBOSE) std::cerr << "" << std::endl;
         if (nbAct + nbInh > 0) {
             f << " + params[C" << VarEnum[i] << "] * Activ" << nbAct << "Inhib" << nbInh << "(";
             // activators
@@ -1137,16 +1137,16 @@ void Generate::clearReactions() {
 
 void Generate::useReactionsFromGraph(Graphe G) {
     if (G.size() != nbVar) {
-        cerr << "ERR : Generate::addReactionsFromGraph, incorrect graph size (" << G.size()
+        std::cerr << "ERR : Generate::addReactionsFromGraph, incorrect graph size (" << G.size()
              << "), versus nb of variables already defined (" << nbVar << ")\n";
         return;
     }
-    if ((int) VarEnum.size() != nbVar) { cerr << "ERR : Generate::addReactionsFromGraph, incorrect varEnum size\n"; }
+    if ((int) VarEnum.size() != nbVar) { std::cerr << "ERR : Generate::addReactionsFromGraph, incorrect varEnum size\n"; }
     for (int i = 0; i < nbVar; ++i) {
         vector<int> succ = G(i);
         for (int j = 0; j < (int) succ.size(); ++j) {
             if ((succ[j] >= nbVar) || (succ[j] < 0)) {
-                cerr << "ERR : Generate::addReactionsFromGraph, out of bounds values in the graph !!\n";
+                std::cerr << "ERR : Generate::addReactionsFromGraph, out of bounds values in the graph !!\n";
             }
             addReaction(VarEnum[i], VarEnum[succ[j]], G(i, succ[j]));
         }
@@ -1159,15 +1159,15 @@ void Generate::useReactionsFromGraph(Graphe G) {
 
 
 string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string timeUnit) {
-    stringstream f(dataTxt);
+    std::stringstream f(dataTxt);
 
-    stringstream of; // output code
-    stringstream overrider;
+    std::stringstream of; // output code
+    std::stringstream overrider;
 
 
     int nbConditions, IDexp;
     f >> nbConditions;
-    cout << "Nb of experiences : " << nbConditions << endl;
+    std::cout << "Nb of experiences : " << nbConditions << std::endl;
 
     //of << "# Automatically generated Data\n";
     of << "double costPart(){\n";
@@ -1178,12 +1178,12 @@ string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string time
 
 
     for (int i = 0; i < nbConditions; ++i) {
-        stringstream recapTransv;
+        std::stringstream recapTransv;
         int nbL, nbV;
         f >> IDexp;
         char essai;
 
-        stringstream toGetComment;
+        std::stringstream toGetComment;
         while ((f.peek() != '\n') && (f >> essai)) toGetComment << essai;
         string toGetComment2 = toGetComment.str();
         f >> nbL >> nbV;
@@ -1194,17 +1194,17 @@ string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string time
             //vector<int> varGlobalIDs;
             f >> strash;    // for 'time'
 
-            // this is not allowed in C++ vector<stringstream>
-            vector<stringstream *> of2;
-            vector<stringstream *> of2Data;
-            vector<stringstream *> foroverrider;
+            // this is not allowed in C++ vector<std::stringstream>
+            vector<std::stringstream *> of2;
+            vector<std::stringstream *> of2Data;
+            vector<std::stringstream *> foroverrider;
             of2.resize(nbV);
             of2Data.resize(nbV);
             foroverrider.resize(nbV);
             for (int i = 0; i < nbV; ++i) {
-                of2[i] = new stringstream();
-                of2Data[i] = new stringstream();
-                foroverrider[i] = new stringstream();
+                of2[i] = new std::stringstream();
+                of2Data[i] = new std::stringstream();
+                foroverrider[i] = new std::stringstream();
             }
 
             for (int j = 0; j < nbV; ++j) {
@@ -1276,7 +1276,7 @@ string generateCostCodeFromData(string dataTxt, bool CostsPerCurves, string time
 
 
     of << "\treturn res;\n}\n";
-    // cout << overrider.str() << endl;
+    // std::cout << overrider.str() << std::endl;
     return of.str();
 
 }

@@ -17,7 +17,9 @@
 #include "../common/myFiles.h"
 #include "../common/myRandom.h"
 #include <vector>
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 int genID();
 

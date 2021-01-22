@@ -28,14 +28,14 @@
 /// =============================== Part Class without graphical interface ========================
 
 double manageSims::getCost(){
-   //cerr << ".Cost." << endl;                                                        //if(dimension > currentModel->getNbParams()) {cerr << "Optimizer has more parameters than model\n"; return -1;}      // commented because would cause delay,
+   //std::cerr << ".Cost." << std::endl;                                                        //if(dimension > currentModel->getNbParams()) {std::cerr << "Optimizer has more parameters than model\n"; return -1;}      // commented because would cause delay,
                                               // this function is used during optimization, where the optimizer use manageSims as a 'generalImplementation' and gives parameters to the 'parameter' field and then call 'getCost'. Therefore, this function has to use the values in parameters[] to launch simulation and retrieve the cost.
     #ifdef ALLOW_OPTIMIZE                               // this requires the field 'parameters' inherited from the class generalImplementation --> need ALLOW_OPTIMIZE
         int NPs =  currentModel->getNbParams();
         for(int i = 0; i < NPs; ++i){                       // the parameters to optimize are real values, the other ones are NAN so they are not used to override the model's parameters.
             if(!std::isnan(parameters[i])) currentModel->setParam(i, parameters[i]);}
     #else
-    cerr << "ERR: manageSims::getCost(), ALLOW_OPTIMIZE should be defined to use this function for optimization. Instead, the current parameter values from the model are taken for this time.\n";
+    std::cerr << "ERR: manageSims::getCost(), ALLOW_OPTIMIZE should be defined to use this function for optimization. Instead, the current parameter values from the model are taken for this time.\n";
     #endif
 
     simulate();
@@ -72,26 +72,26 @@ void manageSims::simulate(){
 /// ====================== Configuration <=> Model (independent of the current experiment) ==========================
 
 bool manageSims::isInConfig(int idParameter, int idConfig){
-    if((idConfig < 0) || (idConfig >= nbCombs)) {cerr << "manageSims::isInConfig(idParameter=" << idParameter << ", idConfig=" << idConfig << "), wrong config index (only " << nbCombs << " combinations defined\n"; return false;};
-    if((idParameter < 0) || (idParameter >= currentModel->getNbParams())) {cerr << "manageSims::isInConfig(idParameter=" << idParameter << ", idConfig=" << idConfig << "), wrong parameter index (only " << currentModel->getNbParams() << " parameters\n"; return false;};
+    if((idConfig < 0) || (idConfig >= nbCombs)) {std::cerr << "manageSims::isInConfig(idParameter=" << idParameter << ", idConfig=" << idConfig << "), wrong config index (only " << nbCombs << " combinations defined\n"; return false;};
+    if((idParameter < 0) || (idParameter >= currentModel->getNbParams())) {std::cerr << "manageSims::isInConfig(idParameter=" << idParameter << ", idConfig=" << idConfig << "), wrong parameter index (only " << currentModel->getNbParams() << " parameters\n"; return false;};
     return(! currentConfig[idParameter][idConfig+4].compare("1"));
 }
 
 void manageSims::saveConfig(string _name){
     if(!_name.compare("")){
-       cerr << "ERR: manageSims::saveConfig, no file name entered" << endl; return;
+       std::cerr << "ERR: manageSims::saveConfig, no file name entered" << std::endl; return;
     }
     int NP = this->currentModel->getNbParams();
     int NV = this->currentModel->getNbVars();
-    cout << "      ... Writing into file " << _name << endl;
-    ofstream f(_name.c_str(), ios::out);
-    if(!f) {cerr << "ERR: manageSims::saveConfig(" << _name << "), file not found" << endl; return;}
+    std::cout << "      ... Writing into file " << _name << std::endl;
+    std::ofstream f(_name.c_str(), std::ios::out);
+    if(!f) {std::cerr << "ERR: manageSims::saveConfig(" << _name << "), file not found" << std::endl; return;}
     f << NP << "\t";
     f << NV << "\t";
     f << nbCombs << "\n";
-    if((int) currentConfig.size() != NP + NV) {cerr << "ERR: currentConfig size problem " << currentConfig.size() << " NP " << NP << " NV " << NV << endl; return;}
-    if(currentConfig.size() == 0) {cerr << "ERR: no config " << endl; return;}
-    if((int) currentConfig[0].size() != nbCombs + 4) {cerr << "ERR: currentConfig size problem " << currentConfig[0].size() << " NC " << nbCombs << endl; return;}
+    if((int) currentConfig.size() != NP + NV) {std::cerr << "ERR: currentConfig size problem " << currentConfig.size() << " NP " << NP << " NV " << NV << std::endl; return;}
+    if(currentConfig.size() == 0) {std::cerr << "ERR: no config " << std::endl; return;}
+    if((int) currentConfig[0].size() != nbCombs + 4) {std::cerr << "ERR: currentConfig size problem " << currentConfig[0].size() << " NC " << nbCombs << std::endl; return;}
     for(int i = 0; i < NP + NV; ++i){
         for(int j = 0; j < nbCombs + 4; ++j){
             f << currentConfig[i][j] << ((j < nbCombs + 3) ? "\t" : "");
@@ -115,10 +115,10 @@ string manageSims::loadConfig(string _name){
     if(recording) currentMacro << "macro" << macroID << ".loadConfig(" << _name << ")\n";
     if(recording) addFileToMacro(_name);
 
-    cout << "   -> Reading configuration file " << _name;
-    ifstream f(_name.c_str(), ios::in);
+    std::cout << "   -> Reading configuration file " << _name;
+    std::ifstream f(_name.c_str(), std::ios::in);
     if(!f) {return string("ERR: loadConfig, file couldn't be opened '") + _name + string("'\n");}
-    stringstream listErrors;
+    std::stringstream listErrors;
     string moreInfo = string("   Expected file format :\n      NbParameters NbVariables NbCombinaisons, \n      followed by a table of NbParameters + NbVariables rows \n      and Nbcomnbinaisons + 4 columns : \n      Param_value ParamMin ParamMax Opt? Comb1 Comb2 ... (one line for each parameter)\n      .<tab>.<tab>.<tab> Simulate?  Comb1 Comb2 ... (one line for each variable) ");
 
     int NP = 0, NV = 0, NC = 0;
@@ -131,7 +131,7 @@ string manageSims::loadConfig(string _name){
     if(listErrors.str().size() > 0) {
         return string("\n   ERR: Incorrect formating\n") + listErrors.str() + moreInfo;
     }
-    cout << "\n      ... got : (" << NP << " params, " << NV << "vars, " << NC << " combs)" << endl;
+    std::cout << "\n      ... got : (" << NP << " params, " << NV << "vars, " << NC << " combs)" << std::endl;
 
     currentConfig.clear();
     currentConfig.resize(NP + NV);
@@ -143,9 +143,9 @@ string manageSims::loadConfig(string _name){
                 if(j == 0) currentModel->setParam(i, (double) atof((currentConfig[i][j]).c_str()));
                 if(j == 2) currentModel->setBounds(i, (double) atof((currentConfig[i][1]).c_str()), (double) atof((currentConfig[i][2]).c_str()) );
             }
-            //cout << (double) atof(currentConfig[i][j].c_str()) << "\t";
+            //std::cout << (double) atof(currentConfig[i][j].c_str()) << "\t";
         }
-        //cout << endl;
+        //std::cout << std::endl;
     }
     f.close();
     nbCombs = NC;
@@ -157,9 +157,9 @@ string manageSims::resetParamSetFromConfig(string _name){
     if(recording) currentMacro << "macro" << macroID << ".resetParamSetFromConfig(" << _name << ")\n";
 
     vector<double> newParameterSet;
-    ifstream f(_name.c_str(), ios::in);
+    std::ifstream f(_name.c_str(), std::ios::in);
     if(!f) {return string("ERR: loadConfig, incorrect file name\n");}
-    stringstream listErrors;
+    std::stringstream listErrors;
     string moreInfo = string("Expected file format :\n   NbParameters NbVariables NbCombinaisons, \n   followed by a table of NbParameters + NbVariables rows \n   and Nbcomnbinaisons + 4 columns : \n   Param_value ParamMin ParamMax Opt? Comb1 Comb2 ...");
 
     int NP = 0, NV = 0, NC = 0;
@@ -206,7 +206,7 @@ void manageSims::resetConfigFromModel(){
         currentConfig[i].resize(NC+4);
         for(int j = 0; j < NC + 4; ++j){
             if(i < NP){
-                stringstream ss;
+                std::stringstream ss;
                 if(j == 0) ss << currentModel->getParam(i);
                 if(j == 1) ss << currentModel->getLowerBound(i);
                 if(j == 2) ss << currentModel->getUpperBound(i);
@@ -225,12 +225,12 @@ void manageSims::updateConfigParamsFromModel(){
     int NV = currentModel->getNbVars();
 
     if(currentConfig.size() == 0) resetConfigFromModel();       // in case no config loaded yet.
-    if((int) currentConfig.size() != NP + NV) {cerr << "ERR: manageSims::updateConfigParamsFromModel(), incompatible sizes between model (NParams = " << NP << ", NVars = " << NV << " and configuration of size NP+NV = " << currentConfig.size() << endl; return;}
+    if((int) currentConfig.size() != NP + NV) {std::cerr << "ERR: manageSims::updateConfigParamsFromModel(), incompatible sizes between model (NParams = " << NP << ", NVars = " << NV << " and configuration of size NP+NV = " << currentConfig.size() << std::endl; return;}
 
     for(int i = 0; i < NP + NV; ++i){
         for(int j = 0; j <= 2; ++j){    // just for parameter value and bounds
             if(i < NP){
-                stringstream ss;
+                std::stringstream ss;
                 if(j == 0) ss << currentModel->getParam(i);
                 if(j == 1) ss << currentModel->getLowerBound(i);
                 if(j == 2) ss << currentModel->getUpperBound(i);
@@ -260,9 +260,9 @@ void manageSims::saveHistory(string _name){
 
     int NP = currentModel->getNbParams();
     int storeMax = 1e9;
-    cout << "      ... Writing into file " << _name << endl;
-    ofstream f(_name.c_str(), ios::out);
-    if(!f) {cerr << "File not Found" << _name << endl; return;}
+    std::cout << "      ... Writing into file " << _name << std::endl;
+    std::ofstream f(_name.c_str(), std::ios::out);
+    if(!f) {std::cerr << "File not Found" << _name << std::endl; return;}
     vector<oneSet*> liste = history.toVector();
     //reverse(liste.begin(), liste.end());
     int ls = liste.size();
@@ -273,7 +273,7 @@ void manageSims::saveHistory(string _name){
     for(int i = 0; (i < ls) && (i < storeMax); ++i){
         f << liste[i]->cost;
         int s = liste[i]->v.size();
-        if(s != NP) cerr << "ERR : save History incorrect size for parameters\n";
+        if(s != NP) std::cerr << "ERR : save History incorrect size for parameters\n";
         for(int j = 0; j < NP; ++j){
             f << "\t" << liste[i]->v[j];
         }
@@ -285,9 +285,9 @@ void manageSims::saveHistory(string _name){
 
 pSets readHistory(string _name){
     int storeMax = 1e9;
-    cout << "      ... Reading history file " << _name << endl;
-    ifstream f(_name.c_str(), ios::in);
-    if(!f) {cerr << "ERR: pSets readHistory(" << _name << "), File not Found" << endl;}
+    std::cout << "      ... Reading history file " << _name << std::endl;
+    std::ifstream f(_name.c_str(), std::ios::in);
+    if(!f) {std::cerr << "ERR: pSets readHistory(" << _name << "), File not Found" << std::endl;}
 
     int NP = 0; // = currentModel->getNbParams();
     int ls = 0; // = liste.size();
@@ -295,7 +295,7 @@ pSets readHistory(string _name){
     f >> ls;
     pSets history = pSets(10000, NP);
     history.clear();
-    if((ls > storeMax) || (ls < 0)) {cerr << "manageSims::loadHistory(...) Incorrect number of lines (" << ls << ")\n"; return history;}
+    if((ls > storeMax) || (ls < 0)) {std::cerr << "manageSims::loadHistory(...) Incorrect number of lines (" << ls << ")\n"; return history;}
 
     for(int i = 0; (i < ls) && (i < storeMax); ++i){
         vector<double>* tempStore = new vector<double>(NP, 0.0);
@@ -315,9 +315,9 @@ pSets readHistory(string _name){
 void manageSims::loadHistory(string _name){
     if(recording) currentMacro << "macro" << macroID << "." << "loadHistory(" << _name << ")" << "\n";
     int storeMax = 1e9;
-    cout << "      ... Reading file " << _name << endl;
-    ifstream f(_name.c_str(), ios::in);
-    if(!f) {cerr << "File not Found" << endl; return;}
+    std::cout << "      ... Reading file " << _name << std::endl;
+    std::ifstream f(_name.c_str(), std::ios::in);
+    if(!f) {std::cerr << "File not Found" << std::endl; return;}
 
     history.clear();
     //vector<oneSet*> liste = history.toVector();
@@ -327,20 +327,20 @@ void manageSims::loadHistory(string _name){
 
     f >> NP;
     f >> ls;
-    cout << "      ... Expecting " << NP << " parameters and " << ls << " lines"<< endl;
-    if(NP != currentModel->getNbParams()) {cerr << "manageSims::loadHistory(...) Incorrect file format : " << NP << " parameters provided while " << currentModel->getNbParams() << " in the model\n"; return;}
-    if((ls > storeMax) || (ls < 0)) {cerr << "manageSims::loadHistory(...) Incorrect number of lines (" << ls << ")\n"; return;}
+    std::cout << "      ... Expecting " << NP << " parameters and " << ls << " lines"<< std::endl;
+    if(NP != currentModel->getNbParams()) {std::cerr << "manageSims::loadHistory(...) Incorrect file format : " << NP << " parameters provided while " << currentModel->getNbParams() << " in the model\n"; return;}
+    if((ls > storeMax) || (ls < 0)) {std::cerr << "manageSims::loadHistory(...) Incorrect number of lines (" << ls << ")\n"; return;}
 
     for(int i = 0; (i < ls) && (i < storeMax); ++i){
         vector<double>* tempStore = new vector<double>(NP, 0.0);
         double tempCost = 0;
         f >> tempCost;
-        //cerr << tempCost << " - ";
+        //std::cerr << tempCost << " - ";
         for(int j = 0; j < NP; ++j){
             f >> (*tempStore)[j];
-            //cerr << j << "=" << (*tempStore)[j] << "\t";
+            //std::cerr << j << "=" << (*tempStore)[j] << "\t";
         }
-        //cerr << endl;
+        //std::cerr << std::endl;
         history.addSet(tempStore, tempCost);
         delete tempStore;
     }
@@ -360,11 +360,11 @@ vector<double> manageSims::useParamSetFromHistory(int indexSet, int indexCombToO
     vector<oneSet*> v = history.toVector();
     //reverse(v.begin(), v.end());
     int s = v.size();
-    if((indexSet < 0) || (indexSet >= s)) {cerr << "ERR: manageSims::useParamSetFromHistory(" << indexSet << "), wrong index (only " << s << " sets in the history) \n"; return vector<double>();}
+    if((indexSet < 0) || (indexSet >= s)) {std::cerr << "ERR: manageSims::useParamSetFromHistory(" << indexSet << "), wrong index (only " << s << " sets in the history) \n"; return vector<double>();}
     oneSet* theSet = v[indexSet];
     int NP = theSet->v.size();
     vector<double> result = vector<double>(NP, NAN);
-    if(NP != (int) currentModel->getNbParams()) {cerr << "ERR: manageSims::useParamSetFromHistory(...), not the same parameter numbers in the history (" << NP << " than in the model " << currentModel->getNbParams() << endl; return result;}
+    if(NP != (int) currentModel->getNbParams()) {std::cerr << "ERR: manageSims::useParamSetFromHistory(...), not the same parameter numbers in the history (" << NP << " than in the model " << currentModel->getNbParams() << std::endl; return result;}
     if(indexCombToOverride < 0){
         currentModel->setParameters(theSet->v); // to unlock simulations if no valid parameters set before
         /*for(int j = 0; j < NP; ++j){
@@ -377,7 +377,7 @@ vector<double> manageSims::useParamSetFromHistory(int indexSet, int indexCombToO
                 result[j] =  theSet->v[j];
             } else result[j] = currentModel->getParam(j);//to avoid NANs
         }
-    } else cerr << "ERR: manageSims::useParamSetFromHistory(set nr:" << indexSet << ", comb nr:" << indexCombToOverride << "), invalid combination index, only " << nbCombs << " defined combinations\n";
+    } else std::cerr << "ERR: manageSims::useParamSetFromHistory(set nr:" << indexSet << ", comb nr:" << indexCombToOverride << "), invalid combination index, only " << nbCombs << " defined combinations\n";
     return result;
 }
 
@@ -411,13 +411,13 @@ void simuWin::buttonPerturbatePushed(){
         for(int i = 0; i < NP; ++i){
             if(!(QString::number(i) + QString("-") + QString(currentModel->getParamName(i).c_str())).compare(chosenTextParameter)) chosenParameter = i;
         }
-        if(chosenParameter < 0) {cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << endl; return;}
+        if(chosenParameter < 0) {std::cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << std::endl; return;}
         if(!okPressed) return;
 
 
         NP = currentExperiment->getNbCond();
         int chosenCondition = 0;
-        if(NP < 1) {cerr << "ERR: buttonPerturbatePushed, Empty experiment!" << endl; return;}
+        if(NP < 1) {std::cerr << "ERR: buttonPerturbatePushed, Empty experiment!" << std::endl; return;}
         if(NP > 1){
             QStringList items;
             for(int i = 0; i < NP; ++i){
@@ -427,7 +427,7 @@ void simuWin::buttonPerturbatePushed(){
             for(int i = 0; i < NP; ++i){
                 if(!(QString::number(i) + QString("-") + QString(currentExperiment->getConditionName(i).c_str())).compare(chosenTextCondition)) chosenCondition = i;
             }
-            if(chosenCondition < 0) {cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << endl; return;}
+            if(chosenCondition < 0) {std::cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << std::endl; return;}
             if(!okPressed) return;
         }
 
@@ -456,7 +456,7 @@ void simuWin::buttonParamSetsPushed(){
         bool okPressed;
         int NP = currentExperiment->getNbCond();
         int chosenCondition = 0;
-        if(NP < 1) {cerr << "ERR: buttonPerturbatePushed, Empty experiment!" << endl; return;}
+        if(NP < 1) {std::cerr << "ERR: buttonPerturbatePushed, Empty experiment!" << std::endl; return;}
         if(NP > 1){
             QStringList items;
             for(int i = 0; i < NP; ++i){
@@ -466,7 +466,7 @@ void simuWin::buttonParamSetsPushed(){
             for(int i = 0; i < NP; ++i){
                 if(!(QString::number(i) + QString("-") + QString(currentExperiment->getConditionName(i).c_str())).compare(chosenTextCondition)) chosenCondition = i;
             }
-            if(chosenCondition < 0) {cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << endl; return;}
+            if(chosenCondition < 0) {std::cerr << "ERR: button perturbate pushed, couldn't find which parameter was chosen - should not happen" << std::endl; return;}
             if(!okPressed) return;
         }
 
@@ -534,8 +534,8 @@ void manageSims::switchToComparingExperiment(int IDcondition, int nbSetsToComp){
     vector<oneSet*> v = history.toVector();
     //reverse(v.begin(), v.end());    // such that first is best
     int s = v.size();
-    if(s == 0) {cerr << "ERR: No parameter set in History - please load or optimize or save sets in history" << endl; return;}
-    nbSetsToComp = min(nbSetsToComp, s);
+    if(s == 0) {std::cerr << "ERR: No parameter set in History - please load or optimize or save sets in history" << std::endl; return;}
+    nbSetsToComp = std::min(nbSetsToComp, s);
 
     for(int i = 0; i < nbSetsToComp; ++i){
         oneSet* theSet = v[i];
@@ -580,7 +580,7 @@ void manageSims::switchToComparingExperiment(int IDcondition, int nbSetsToComp){
 void manageSims::switchBackNormalMode(){
     if((currentMode == modePerturbate) || (currentMode == modeComparison)) {
         // would need to delete the currentExperiment. Not sure the desctructor is ok now, need to work on it
-        if(!savedExperiment){cerr << "ERR: simuwin, switchBackNormalMode, saved experiment is NULL" << endl; return;}
+        if(!savedExperiment){std::cerr << "ERR: simuwin, switchBackNormalMode, saved experiment is NULL" << std::endl; return;}
         currentExperiment = savedExperiment;
         currentMode = MONO_EXPERIMENT;
 
@@ -625,38 +625,38 @@ void manageSims::motherOptimize(string optFileName, int nbSetsToRecord){
     currentModel->needNewParameterSet();
     //delete E; // program destructor first...
     delete Opt;
-    cout << "      ... Optimization Complete, elapsed time : " << myTimes::getDiffTime() << " sec\n";
+    std::cout << "      ... Optimization Complete, elapsed time : " << myTimes::getDiffTime() << " sec\n";
     #else
-    cerr << "manageSims::motherOptimize(...), this function is only allowed when ALLOW_OPTIMIZE is defined, in order to include the optimizations files during compilation.\n";
+    std::cerr << "manageSims::motherOptimize(...), this function is only allowed when ALLOW_OPTIMIZE is defined, in order to include the optimizations files during compilation.\n";
     #endif
 }
 
 string manageSims::motherCreateOptimizerFile(int indexComb, string optMethodText, int parameterToExclude){
-    if(parameterToExclude >= currentModel->getNbParams()) {cerr << "ERR: motherCreateOptimizerFile, incorrect parameter index (to exclude) " << parameterToExclude << endl; return string("");}
-    if(parameterToExclude >= 0) cout << "      ... Excluding parameter from optimization : " << parameterToExclude << " (" << currentModel->getParamName(parameterToExclude) << ")\n";
+    if(parameterToExclude >= currentModel->getNbParams()) {std::cerr << "ERR: motherCreateOptimizerFile, incorrect parameter index (to exclude) " << parameterToExclude << std::endl; return string("");}
+    if(parameterToExclude >= 0) std::cout << "      ... Excluding parameter from optimization : " << parameterToExclude << " (" << currentModel->getParamName(parameterToExclude) << ")\n";
     if(recording) {
         currentMacro << "string optMethod = string(\"" << optMethodText << "\"\n";
         currentMacro << "macro" << macroID << "." << "motherCreateOptimizerFile(" << indexComb << ", optMethod, " << parameterToExclude << ")" << "\n";    }
-    if((indexComb < -1) || (indexComb >= nbCombs)) {cerr << "ERR:manageSims::createOptimizer, index comb is out of bounds. Note that indexComb=-1 means pooling parameters and variables from all combinations\n"; return string("");}
+    if((indexComb < -1) || (indexComb >= nbCombs)) {std::cerr << "ERR:manageSims::createOptimizer, index comb is out of bounds. Note that indexComb=-1 means pooling parameters and variables from all combinations\n"; return string("");}
     int combStart = (indexComb < 0 ? 0 : indexComb);            // indexComb = -1 means pool all the parameters to optimize from each configuration
     int combEnd   = (indexComb < 0 ? nbCombs-1 : indexComb);
 
     int NP = currentModel->getNbParams();
     vector<bool> paramsToOptimize = vector<bool>(NP, false);
 
-    stringstream f;
+    std::stringstream f;
     f << optMethodText;
     f << "\n";
     int nbToOpt = 0;
     for(int i = 0; i < NP; ++i)
         for(int j = combStart; j <= combEnd; ++j){
-            if((!currentConfig[i][4+j].compare("1")) && (i != parameterToExclude) && (!paramsToOptimize[i])) {nbToOpt++; paramsToOptimize[i] = true;}  }//cout << currentConfig[i][4+i] << ".";
-    if(nbToOpt == 0){cerr << "ERR: manageSims::motherCreateOptimizerFile(index=" << indexComb << ",txt) - No parameter selected for optimization -> 0 parameter to optimize !!\n"; return f.str();}
+            if((!currentConfig[i][4+j].compare("1")) && (i != parameterToExclude) && (!paramsToOptimize[i])) {nbToOpt++; paramsToOptimize[i] = true;}  }//std::cout << currentConfig[i][4+i] << ".";
+    if(nbToOpt == 0){std::cerr << "ERR: manageSims::motherCreateOptimizerFile(index=" << indexComb << ",txt) - No parameter selected for optimization -> 0 parameter to optimize !!\n"; return f.str();}
     f << nbToOpt << "\n";
     for(int i = 0; i < NP; ++i){
         if((!paramsToOptimize[i]) || (i == parameterToExclude)) f << "#";   // comments the parameters that will not be optimized
-        //f << "\t" << i << "\t" << currentModel->getLowerBound(i) << "\t" << currentModel->getUpperBound(i) << "\t#" << currentModel->getParamName(i) << endl;
-        f << "\t" << i << "\t" << currentConfig[i][1] << "\t" << currentConfig[i][2] << "\t#" << currentModel->getParamName(i) << endl;
+        //f << "\t" << i << "\t" << currentModel->getLowerBound(i) << "\t" << currentModel->getUpperBound(i) << "\t#" << currentModel->getParamName(i) << std::endl;
+        f << "\t" << i << "\t" << currentConfig[i][1] << "\t" << currentConfig[i][2] << "\t#" << currentModel->getParamName(i) << std::endl;
     }
     f << "\n\n0\nExponential\n0\n";
     return f.str();
@@ -677,12 +677,12 @@ string manageSims::motherCreateOptimizerFile(int indexComb, string optMethodText
 //    -> in MONO_EXPERIMENT mode, then it is overrided only if it is possible (if there is a data-curve for each sub-experiment)
 //    -> in MULTI_EXPERIMENT mode, for each experiment, it is overrided according to the mono-exp separately.
 void manageSims::motherOverrideUsingComb(int newIndex){
-    cerr << "OVER using comb " << newIndex << endl;
-    if((newIndex < -1) || (newIndex >= nbCombs)) {cerr << "Wrong comb index " << newIndex << "\n"; return;}
+    std::cerr << "OVER using comb " << newIndex << std::endl;
+    if((newIndex < -1) || (newIndex >= nbCombs)) {std::cerr << "Wrong comb index " << newIndex << "\n"; return;}
     if(recording) {currentMacro << "macro" << macroID << "." << "motherUseComb(" << newIndex << ")" << "\n";}
     int NP = currentModel->getNbParams();
     int NV = currentModel->getNbVars();
-    if((int) currentConfig.size() != NP + NV) {cerr << "manageSims::motherOverrideUsingComb, Wrong size of saved configuration\n";return;}
+    if((int) currentConfig.size() != NP + NV) {std::cerr << "manageSims::motherOverrideUsingComb, Wrong size of saved configuration\n";return;}
     int combStart = (newIndex < 0 ? 0 : newIndex);
     int combEnd   = (newIndex < 0 ? nbCombs-1 : newIndex);
 
@@ -698,22 +698,22 @@ void manageSims::motherOverrideUsingComb(int newIndex){
         } else {
             for(int pp = 0; pp < listExperiments->nbBigExp(); ++pp){
                 bool localOverride  = override && (listExperiments->getExperiment(pp)->canOverride(currentModel->getExternalName(i)));      // ... and if the variable has data to be overrided
-                /////§§§ toCHeck :: if(localOverride) cerr << "SUCCESS§§§" << endl; else cerr << "wHY§§§" << endl;
+                /////§§§ toCHeck :: if(localOverride) std::cerr << "SUCCESS§§§" << std::endl; else std::cerr << "wHY§§§" << std::endl;
                 listExperiments->getExperiment(pp)->overrideVariable(currentModel->getExternalName(i), localOverride);
             }
         }
-        if(override)    cout << "         is overrided by data :   ";
-        else            cout << "         is simulated :           ";
-        cout << "Variable " << i << "\tglobalId = " << currentModel->getExternalName(i) << "\t(" << currentModel->getName(i) << ")";
-        if(!override) cout << "*";
-        cout << endl;
+        if(override)    std::cout << "         is overrided by data :   ";
+        else            std::cout << "         is simulated :           ";
+        std::cout << "Variable " << i << "\tglobalId = " << currentModel->getExternalName(i) << "\t(" << currentModel->getName(i) << ")";
+        if(!override) std::cout << "*";
+        std::cout << std::endl;
     }
 }
 
 
 // Independent : cuts a segment into n points (log or not)
 vector<double> cutSpace(int nbPoints, bool logarithmic, double base, double vstart, double vending){
-    if((nbPoints < 0) || (nbPoints > 1e9)) { cerr << "ERR: cutSpace, out of bounds number of points " << nbPoints << "\n"; return vector<double>();}
+    if((nbPoints < 0) || (nbPoints > 1e9)) { std::cerr << "ERR: cutSpace, out of bounds number of points " << nbPoints << "\n"; return vector<double>();}
     vector<double> valuesToTest = vector<double>(nbPoints, 0.0);
 
     if(base < 0) base = 2.0;
@@ -723,13 +723,13 @@ vector<double> cutSpace(int nbPoints, bool logarithmic, double base, double vsta
         double interval = (lending - lstart) / (nbPoints - 1);
         for(int i = 0; i < nbPoints; ++i){
             valuesToTest[i] = pow(base, lstart + interval * i);
-            //cout << valuesToTest[i] << endl;
+            //std::cout << valuesToTest[i] << std::endl;
         }
     } else {
         double interval = (vending - vstart) / (nbPoints - 1);
         for(int i = 0; i < nbPoints; ++i){
             valuesToTest[i] = vstart + interval * i;
-            //cout << valuesToTest[i] << endl;
+            //std::cout << valuesToTest[i] << std::endl;
         }
     }
     return valuesToTest;
@@ -756,34 +756,34 @@ void simuWin::sensitivity(){
 // *** Analysis of a single experiment ***
 void manageSims::motherSensitivity(vector<double>& initialSet, int parameterIndex, int nbPoints){
 
-    cout << "Starting sensitivity analysis for parameter set \n" << printVector(initialSet) << endl;
+    std::cout << "Starting sensitivity analysis for parameter set \n" << printVector(initialSet) << std::endl;
     parameters = initialSet;
-    cout << "Cost: " << getCost() << ", Parameter chosen (-1 for all) : " << parameterIndex << endl;
+    std::cout << "Cost: " << getCost() << ", Parameter chosen (-1 for all) : " << parameterIndex << std::endl;
 
-    if(currentMode == MULTI_EXPERIMENT){cerr << "ERR: manageSims::motherSensitivity is not allowed in the MULTI_EXPERIMENTS mode yet\n"; return;}
+    if(currentMode == MULTI_EXPERIMENT){std::cerr << "ERR: manageSims::motherSensitivity is not allowed in the MULTI_EXPERIMENTS mode yet\n"; return;}
     int NP = currentModel->getNbParams();
     if(parameterIndex >= NP) return;
-    if((int) sensitivities.size() != NP) {cerr << "Internal ERR:  manageSims::motherSensitivity, sensitivities has wrong size (" << sensitivities.size() << ")compared to nb of parameters (" << NP << ")\n";}
+    if((int) sensitivities.size() != NP) {std::cerr << "Internal ERR:  manageSims::motherSensitivity, sensitivities has wrong size (" << sensitivities.size() << ")compared to nb of parameters (" << NP << ")\n";}
     //vector<double> initialParamSet = currentModel->getParameters();
     for(int i = 0; i < NP; ++i){
         if((parameterIndex == i) || (parameterIndex < 0)){
-            //cerr << i << endl;
+            //std::cerr << i << std::endl;
             if(sensitivities[i]) delete sensitivities[i];
             sensitivities[i] = new oneParameterAnalysis(initialSet);
-            //cerr << "." << endl;
+            //std::cerr << "." << std::endl;
 
 
             // manually adds the initial parameter set. Note : it should not be sorted later.
             currentModel->setParameters(initialSet);
 
 
-            cout << "PSet=\t" << printVector(initialSet) << endl;
+            std::cout << "PSet=\t" << printVector(initialSet) << std::endl;
             parameters = initialSet;
 
             // Simulates HERE
             double v = getCost();
 
-            cout << "\t cost=" << v << endl;
+            std::cout << "\t cost=" << v << std::endl;
             vector<double> costPerVariable = vector<double>(currentModel->getNbVars(), 0);
             for(int j = 0; j < currentModel->getNbVars(); ++j){
                 costPerVariable[j] = currentExperiment->costVariableInModel(j);
@@ -797,7 +797,7 @@ void manageSims::motherSensitivity(vector<double>& initialSet, int parameterInde
             double lowCorrect = currentModel->getLowerBound(i);
             if(currentModel->getLowerBound(i) < 1e-12) lowCorrect = initialSet[i] / 1000;
             motherRecursiveSensitivity(initialSet, i, (nbPoints == -1) ? 20 : nbPoints, true, 2, lowCorrect, currentModel->getUpperBound(i), 5);
-            //cout << sensitivities[i]->print();
+            //std::cout << sensitivities[i]->print();
         }
     }
 
@@ -811,21 +811,21 @@ void manageSims::motherRecursiveSensitivity(vector<double>& initialSet, int para
     if(recording) currentMacro << "macro" << macroID << "." << ".motherRecursiveSensitivity(" << parameterIndex << "," << nbPoints << "," << (logarithmic ? "true": "false")  << "," << base << "," << vstart << "," << vending << "," << deepLevel << ")" << "\n";
     if(deepLevel == 0) return;
     if(deepLevel < 0) deepLevel = 0;
-    if(deepLevel > 1000) { cerr << "ERR: manageSims::motherSensitivity, out of bounds number of levels " << deepLevel << endl; return;}
-    if((parameterIndex < 0) || (parameterIndex > currentModel->getNbParams())){cerr << "ERR: manageSims::motherSensitivity, wrong parameter index "<< parameterIndex << ", only " << currentModel->getNbParams() << " parameters\n"; return;}
-    if((nbPoints < 0) || (nbPoints > 1e9)) { cerr << "ERR: manageSims::motherSensitivity, out of bounds number of points " << nbPoints << "\n"; return;}
+    if(deepLevel > 1000) { std::cerr << "ERR: manageSims::motherSensitivity, out of bounds number of levels " << deepLevel << std::endl; return;}
+    if((parameterIndex < 0) || (parameterIndex > currentModel->getNbParams())){std::cerr << "ERR: manageSims::motherSensitivity, wrong parameter index "<< parameterIndex << ", only " << currentModel->getNbParams() << " parameters\n"; return;}
+    if((nbPoints < 0) || (nbPoints > 1e9)) { std::cerr << "ERR: manageSims::motherSensitivity, out of bounds number of points " << nbPoints << "\n"; return;}
     if(vstart < 0) vstart = currentModel->getLowerBound(parameterIndex);
     if(vending < 0) vending = currentModel->getUpperBound(parameterIndex);
 
     vector<double> valuesToTest = cutSpace(nbPoints, logarithmic, base, vstart, vending);
     int NV = currentModel->getNbVars();
     for(int i = 0; i < nbPoints; ++i){
-        cout << "sensitivity" << i << ", param" << parameterIndex << " = " << valuesToTest[i] ;
+        std::cout << "sensitivity" << i << ", param" << parameterIndex << " = " << valuesToTest[i] ;
         currentModel->setParameters(initialSet);
         currentModel->setParam(parameterIndex, valuesToTest[i]);
         parameters = currentModel->getParameters();
         double v = getCost();
-        cout << "\t cost=" << v << endl;
+        std::cout << "\t cost=" << v << std::endl;
         vector<double> costPerVariable = vector<double>(NV, 0);
         for(int j = 0; j < NV; ++j){
             costPerVariable[j] = currentExperiment->costVariableInModel(j);
@@ -858,14 +858,14 @@ void simuWin::identifiability(){
     for(int i = 0; i < NP; ++i){
         if(!(QString::number(i) + QString("-") + QString(currentModel->getParamName(i).c_str())).compare(chosenTextParameter)) chosenParameter = i;
     }
-    if(chosenParameter < 0) {cerr << "ERR: identifiability, couldn't find which parameter was chosen - should not happen" << endl; return;}
+    if(chosenParameter < 0) {std::cerr << "ERR: identifiability, couldn't find which parameter was chosen - should not happen" << std::endl; return;}
     //takes long. Better to do it one parameter at a time. Use 'Stop' button if too long."
     //"Please choose which parameter to perform practical identifiability (likelyhood profile)
     if(!okPressed) return;
 
     okPressed = false;
     int nrPoints = QInputDialog::getInt(this, QString("Number of points"),QString("Choose the number of points for the identifiability"), 20, 2, 10000, 1, &okPressed);
-    if((nrPoints < 2) || (nrPoints > 10000)) cerr << "ERR: simuWin::identifiability() picked out of bounds nmumber of points for identifiability " << nrPoints << ", should have been discarded by qt getInt??" << endl;
+    if((nrPoints < 2) || (nrPoints > 10000)) std::cerr << "ERR: simuWin::identifiability() picked out of bounds nmumber of points for identifiability " << nrPoints << ", should have been discarded by qt getInt??" << std::endl;
     if(!okPressed) return;
 
     stopOpt = false;
@@ -873,7 +873,7 @@ void simuWin::identifiability(){
     nbCostCalls = 0;
     //if(ui->lineEditWorkingFolder->text().size() == 0)
     ui->lineEditWorkingFolder->setText(QFileDialog::getExistingDirectory(this, tr("Choose Directory to do identifiability!"), ui->lineEditWorkingFolder->text(),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
-    if(ui->lineEditWorkingFolder->text().size() == 0) {cerr << "No Directory\n"; return;}
+    if(ui->lineEditWorkingFolder->text().size() == 0) {std::cerr << "No Directory\n"; return;}
 
 
     string  optMethodText = optChoice->generate();
@@ -898,30 +898,30 @@ void simuWin::identifiability(){
 
 void manageSims::prepareOptFilesForIdentifibiality(string folder, int parameterIndex, int indexComb, string optMethodText){
     int NP = currentModel->getNbParams();
-    if(parameterIndex >= NP) {cerr << "ERR: manageSims::prepareOptFilesForIdentifibiality, parameterIndex out of bounds (" << parameterIndex << ")\n"; return;}
+    if(parameterIndex >= NP) {std::cerr << "ERR: manageSims::prepareOptFilesForIdentifibiality, parameterIndex out of bounds (" << parameterIndex << ")\n"; return;}
     optFileNamesIdentifiability.clear();
     optFileNamesIdentifiability.resize(NP);
     for(int i = 0; i < NP; ++i){
         if((i == parameterIndex) || (parameterIndex < 0)){
-            stringstream fileName;
+            std::stringstream fileName;
             fileName << folder << "/OptForParam" << i << "InComb" << indexComb << ".txt";
             optFileNamesIdentifiability[i] = fileName.str();
-            cout << "   -> Creating optimizer file for the identifiability of parameter " << i << " (" << currentModel->getParamName(i) << ")" << endl;
+            std::cout << "   -> Creating optimizer file for the identifiability of parameter " << i << " (" << currentModel->getParamName(i) << ")" << std::endl;
             string optFileWithoutTheParameter = motherCreateOptimizerFile(indexComb, optMethodText, i);
-            ofstream f(fileName.str().c_str(), ios::out);
+            std::ofstream f(fileName.str().c_str(), std::ios::out);
             if(f){
                 f << optFileWithoutTheParameter; f.close();
-                cout << "      ... file saved in " << fileName.str() << endl;
-            } else cerr << "ERR: manageSims::prepareOptFilesForIdentifibiality, could not create " << fileName.str() << endl;
+                std::cout << "      ... file saved in " << fileName.str() << std::endl;
+            } else std::cerr << "ERR: manageSims::prepareOptFilesForIdentifibiality, could not create " << fileName.str() << std::endl;
         }
     }
 }
 
 void manageSims::motherIdentifiability(vector<double>& initialSet, int parameterIndex, int nrPoints){
-    if(currentMode == MULTI_EXPERIMENT){cerr << "ERR: manageSims::motherIdentifiability is not allowed in the MULTI_EXPERIMENTS mode\n"; return;}
+    if(currentMode == MULTI_EXPERIMENT){std::cerr << "ERR: manageSims::motherIdentifiability is not allowed in the MULTI_EXPERIMENTS mode\n"; return;}
     int NP = currentModel->getNbParams();
     if(parameterIndex >= NP) return;
-    if((int) identifiabilities.size() != NP) {cerr << "Internal ERR:  manageSims::motherIdentifiability, identifiabilities has wrong size (" << identifiabilities.size() << ")compared to nb of parameters (" << NP << ")\n";}
+    if((int) identifiabilities.size() != NP) {std::cerr << "Internal ERR:  manageSims::motherIdentifiability, identifiabilities has wrong size (" << identifiabilities.size() << ")compared to nb of parameters (" << NP << ")\n";}
     //vector<double> initialParamSet = currentModel->getParameters();
     for(int i = 0; i < NP; ++i){
         if((parameterIndex == i) || (parameterIndex < 0)){
@@ -949,17 +949,17 @@ void manageSims::motherIdentifiability(vector<double>& initialSet, int parameter
                 double lowCorrect = currentModel->getLowerBound(i);
                 if(currentModel->getLowerBound(i) < 1e-12) lowCorrect = initialSet[i] / 1000;
                 motherRecursiveIdentifibiality(initialSet, i, nrPoints, true, 2, lowCorrect, currentModel->getUpperBound(i), 5);
-                cout << "Parameter " << i << " finished" << endl;
+                std::cout << "Parameter " << i << " finished" << std::endl;
 
 
-                //cout << identifiabilities[i]->print();
+                //std::cout << identifiabilities[i]->print();
 
         }
     }
     currentModel->setParameters(initialSet);
     parameters = initialSet;
     //double v = getCost();
-    cout << "Identifiability finished" << endl;
+    std::cout << "Identifiability finished" << std::endl;
 }
 
 void manageSims::motherRecursiveIdentifibiality(vector<double>& initialSet, int parameterIndex, int nbPoints, bool logarithmic, double base, double vstart, double vending, int deepLevel){
@@ -967,9 +967,9 @@ void manageSims::motherRecursiveIdentifibiality(vector<double>& initialSet, int 
     #ifdef ALLOW_OPTIMIZE
     if(deepLevel == 0) return;
     if(deepLevel < 0) deepLevel = 0;
-    if(deepLevel > 1000) { cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of levels " << deepLevel << endl; return;}
-    if((parameterIndex < 0) || (parameterIndex > currentModel->getNbParams())){cerr << "ERR: manageSims::motherRecursiveIdentifibiality, wrong parameter index "<< parameterIndex << ", only " << currentModel->getNbParams() << " parameters\n"; return;}
-    if((nbPoints < 0) || (nbPoints > 1e9)) { cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of points " << nbPoints << "\n"; return;}
+    if(deepLevel > 1000) { std::cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of levels " << deepLevel << std::endl; return;}
+    if((parameterIndex < 0) || (parameterIndex > currentModel->getNbParams())){std::cerr << "ERR: manageSims::motherRecursiveIdentifibiality, wrong parameter index "<< parameterIndex << ", only " << currentModel->getNbParams() << " parameters\n"; return;}
+    if((nbPoints < 0) || (nbPoints > 1e9)) { std::cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of points " << nbPoints << "\n"; return;}
     if(vstart < 0) vstart = currentModel->getLowerBound(parameterIndex);
     if(vending < 0) vending = currentModel->getUpperBound(parameterIndex);
 
@@ -979,7 +979,7 @@ void manageSims::motherRecursiveIdentifibiality(vector<double>& initialSet, int 
         for(int nRep = 0; nRep < 5; ++nRep ){
 
             if(stopOpt == true) {
-                cerr << "Identifiability stopped by the user" << endl;
+                std::cerr << "Identifiability stopped by the user" << std::endl;
                 return; // if the optimization was stopped
             }
 
@@ -988,7 +988,7 @@ void manageSims::motherRecursiveIdentifibiality(vector<double>& initialSet, int 
             nbCostCalls = 0;
             currentModel->setParameters(initialSet);
             currentModel->setParam(parameterIndex, valuesToTest[i]);
-            cout << "      ... Identifiability, point " << i+1 << "." << nRep + 1 << " / " << nbPoints << ", param " << parameterIndex << "(" << currentModel->getParamName(parameterIndex) << ") = " << valuesToTest[i] << " ";
+            std::cout << "      ... Identifiability, point " << i+1 << "." << nRep + 1 << " / " << nbPoints << ", param " << parameterIndex << "(" << currentModel->getParamName(parameterIndex) << ") = " << valuesToTest[i] << " ";
             GeneralImplementation::initialize();
             myRandom::Randomize();
             myTimes::getTime();
@@ -1003,7 +1003,7 @@ void manageSims::motherRecursiveIdentifibiality(vector<double>& initialSet, int 
             currentModel->setParameters(history.toVector()[0]->v);
             parameters = history.toVector()[0]->v;
             double v = getCost();
-            cout << " -> Cost : " << v << endl;
+            std::cout << " -> Cost : " << v << std::endl;
             vector<double> costPerVariable = vector<double>(NV, 0);
             for(int j = 0; j < NV; ++j){
                 costPerVariable[j] = currentExperiment->costVariableInModel(j);
@@ -1017,18 +1017,18 @@ void manageSims::motherRecursiveIdentifibiality(vector<double>& initialSet, int 
         }
     }
 
-    cout << "Identifiability finished for this parameter\n";          
+    std::cout << "Identifiability finished for this parameter\n";
 
     //identifiabilities[parameterIndex]->sort();
     #else
-    cerr << "manageSims::motherRecursiveIdentifibiality(...), this function is only allowed when ALLOW_OPTIMIZE is defined, in order to include the optimizations files during compilation.\n";
+    std::cerr << "manageSims::motherRecursiveIdentifibiality(...), this function is only allowed when ALLOW_OPTIMIZE is defined, in order to include the optimizations files during compilation.\n";
     #endif
 
 }
 
 void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseFolder, int currentConfigID){
-    if(currentMode == MULTI_EXPERIMENT){cerr << "ERR: manageSims::makeIdentifiabilityReport is not allowed in the MULTI_EXPERIMENTS mode\n"; return;}
-    if(parameterID >= currentModel->getNbParams()){cerr << "ERR: manageSims::makeIdentifibialityReport(paramID= " << parameterID << "), out of bounds, only " << currentModel->getNbParams() << " parameters\n"; return;}
+    if(currentMode == MULTI_EXPERIMENT){std::cerr << "ERR: manageSims::makeIdentifiabilityReport is not allowed in the MULTI_EXPERIMENTS mode\n"; return;}
+    if(parameterID >= currentModel->getNbParams()){std::cerr << "ERR: manageSims::makeIdentifibialityReport(paramID= " << parameterID << "), out of bounds, only " << currentModel->getNbParams() << " parameters\n"; return;}
     if(parameterID < 0) {
         for(int i = 0; i < currentModel->getNbParams(); ++i){
             makeIdentifibialityReport(i, existingBaseFolder, currentConfigID);
@@ -1040,7 +1040,7 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
     int NV = currentModel->getNbVars();
     int NE = currentExperiment->getNbCond();
     oneParameterAnalysis* data = identifiabilities[parameterID];
-    stringstream head;
+    std::stringstream head;
     head << "PointNr\tIDparam\tValue\tCost\tNbExps\t";
     for(int i = 0; i < NE; ++i){
         head << "\"" << currentExperiment->getConditionName(i) << "\"\t";
@@ -1053,17 +1053,17 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
     for(int i = 0; i < NP; ++i){
         head << "\"" << currentModel->getParamName(i) << "\"\t";
     }
-    head << endl;
+    head << std::endl;
     head << data->print();
 
-    stringstream fname; fname << existingBaseFolder << "/reportIdentifParam" << parameterID << ".txt";
-    cout << "   -> Identifiability parameter " << parameterID << " saved in " << fname.str() << endl;
-    fstream fp(fname.str(), ios::out); if(fp) {fp << head.str(); fp.close();} else {cerr << "ERR: Failed to write in " << fname.str() << endl;}
+    std::stringstream fname; fname << existingBaseFolder << "/reportIdentifParam" << parameterID << ".txt";
+    std::cout << "   -> Identifiability parameter " << parameterID << " saved in " << fname.str() << std::endl;
+    std::fstream fp(fname.str(), std::ios::out); if(fp) {fp << head.str(); fp.close();} else {std::cerr << "ERR: Failed to write in " << fname.str() << std::endl;}
 
 
 
 
-    stringstream Rscr;
+    std::stringstream Rscr;
     //Rscr << "install.packages(\"stringr\")\n";
     Rscr << "library(stringr) #for str_replace\n";
     Rscr << "setwd(\"" << existingBaseFolder << "\");\n";
@@ -1071,7 +1071,7 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
     Rscr << "#changing . to space in the column names ; saved in nm\n";
     Rscr << "nm <- colnames(a)\n";
     Rscr << "nm <-str_replace_all(nm, fixed(\".\"), \" \")\n";
-    Rscr << "# there are " << NP << " parameters, " << NV << " variables and " << NE << " conditions " << endl;
+    Rscr << "# there are " << NP << " parameters, " << NV << " variables and " << NE << " conditions " << std::endl;
 
     // 1 ------------------- main plot : global cost
     Rscr << "png(filename=\"IdentifP" << parameterID << "A0.png\");\n";
@@ -1088,7 +1088,7 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
     for(int t = 0; t < 2; ++t)
     {
         Rscr << "png(filename=\"IdentifP" << parameterID << "A1-perExperiment" << ((t == 0) ? "-lin" : "-log") << ".png\");\n";
-        Rscr << "axisMax = max(a[,4]/" << NE;
+        Rscr << "axisMax = max_(a[,4]/" << NE;
         for(int i = 0; i < NE; ++i){
             Rscr << ", a[," << 6+i << "]";
         }
@@ -1117,7 +1117,7 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
 
     for(int i = 0; i < NP; ++i){
         if((i != parameterID) && ((currentConfigID < 0) || isInConfig(i, currentConfigID))){
-            Rscr << "axisMax = max(a[,3], a[," << 8+ NE + NV + i << "]);\n";
+            Rscr << "axisMax = max_(a[,3], a[," << 8+ NE + NV + i << "]);\n";
             Rscr << "costMin = min(a[," << 8+ NE + NV + i << "]);\n";
             for(int t = 0; t < 2; ++t){
 
@@ -1132,10 +1132,10 @@ void manageSims::makeIdentifibialityReport(int parameterID, string existingBaseF
         }
     }
 
-    stringstream Rname; Rname << existingBaseFolder << "/RscriptP" << parameterID << ".R";
-    fstream fR(Rname.str(), ios::out); if(fR) {fR << Rscr.str(); fR.close();}
+    std::stringstream Rname; Rname << existingBaseFolder << "/RscriptP" << parameterID << ".R";
+    std::fstream fR(Rname.str(), std::ios::out); if(fR) {fR << Rscr.str(); fR.close();}
 
-    stringstream cmd; cmd << "R --vanilla < " << Rname.str() << endl;
+    std::stringstream cmd; cmd << "R --vanilla < " << Rname.str() << std::endl;
     system(cmd.str().c_str());
 
 }
@@ -1151,8 +1151,8 @@ double tryfunct(double x){
 void tryrecursive(vector<double>& initialSet, int parameterIndex, int nbPoints, bool logarithmic, double base, double vstart, double vending, int deepLevel){
     if(deepLevel == 0) return;
     if(deepLevel < 0) deepLevel = 0;
-    if(deepLevel > 1000) { cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of levels " << deepLevel << endl; return;}
-    if((nbPoints < 0) || (nbPoints > 1e9)) { cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of points " << nbPoints << "\n"; return;}
+    if(deepLevel > 1000) { std::cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of levels " << deepLevel << std::endl; return;}
+    if((nbPoints < 0) || (nbPoints > 1e9)) { std::cerr << "ERR: manageSims::motherRecursiveIdentifibiality, out of bounds number of points " << nbPoints << "\n"; return;}
     if(vstart < 0) vstart = 1.0;
     if(vending < 0) vending = 100.0;
 
@@ -1162,7 +1162,7 @@ void tryrecursive(vector<double>& initialSet, int parameterIndex, int nbPoints, 
 
     //identifiabilities[parameterIndex]->sort();
     #else
-    cerr << "manageSims::motherRecursiveIdentifibiality(...), this function is only allowed when ALLOW_OPTIMIZE is defined, in order to include the optimizations files during compilation.\n";
+    std::cerr << "manageSims::motherRecursiveIdentifibiality(...), this function is only allowed when ALLOW_OPTIMIZE is defined, in order to include the optimizations files during compilation.\n";
     #endif
 
 }
@@ -1225,11 +1225,11 @@ string cure(string tocure){
 
 /* Analysis of a single experiment */
 string manageSims::makeTextReportParamSet(string _folder, int configuration, double simDt, double displayDt){
-    //if(currentMode == MULTI_EXPERIMENT){cerr << "WRN: Be careful that the report is done only for the current experiment (not for all of them) !!\n";}
+    //if(currentMode == MULTI_EXPERIMENT){std::cerr << "WRN: Be careful that the report is done only for the current experiment (not for all of them) !!\n";}
 
     //if(currentConfig.size() == 0) { "ERR: manageSims::makeTextReportParamSet, you have to load a configuration first, before doing a parameter set report. Sorry !\n"; return string("");}
-    if(_folder.size() == 0) {cerr << "ERR: manageSims::makeTextReportParamSet, empty folder name\n"; return string("");}
-    if((configuration < 0) || (configuration >= nbCombs)) {cerr << "ERR: manageSims::makeTextReportParamSet, bad configuration index(" << configuration << " out of " << nbCombs << " possible configurations\n"; return string("");}
+    if(_folder.size() == 0) {std::cerr << "ERR: manageSims::makeTextReportParamSet, empty folder name\n"; return string("");}
+    if((configuration < 0) || (configuration >= nbCombs)) {std::cerr << "ERR: manageSims::makeTextReportParamSet, bad configuration index(" << configuration << " out of " << nbCombs << " possible configurations\n"; return string("");}
 
     // - the folder has to be created before
     // - Recapitulates the list of simulated variables and optimized parameters with their names and boundary,
@@ -1239,16 +1239,16 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
      currentModel->setPrintMode(true, currentModel->print_every_dt);
 
      if(displayDt > 0){
-        if(( displayDt <= 1e-6) || ( displayDt >= 1e12)) {cerr << "ERR: manageSims::makeTextReportParamSet, too huge/small dt for fsaving the kinetics(" << displayDt << ")\n"; return string("");}
+        if(( displayDt <= 1e-6) || ( displayDt >= 1e12)) {std::cerr << "ERR: manageSims::makeTextReportParamSet, too huge/small dt for fsaving the kinetics(" << displayDt << ")\n"; return string("");}
         currentModel->setPrintMode(true, displayDt);    // ui->doubleSpinBoxGraphDT->value();
     }
     if(simDt > 0){
         currentModel->dt = simDt;                       //  ui->doubleSpinBoxSimDT->value();
-        if((simDt <= 1e-9) || (simDt >= 1e12)) {cerr << "ERR: manageSims::makeTextReportParamSet, too huge/small dt for simulation(" << simDt << ")\n"; return string("");}
+        if((simDt <= 1e-9) || (simDt >= 1e12)) {std::cerr << "ERR: manageSims::makeTextReportParamSet, too huge/small dt for simulation(" << simDt << ")\n"; return string("");}
     }
 
-    stringstream f;
-    stringstream tex;
+    std::stringstream f;
+    std::stringstream tex;
     f << "================== Parameter set report =================== \n\n" ;
 
 
@@ -1257,7 +1257,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
 
 
     f << "Fitted parameter values, inside their boundaries : \n";
-    //cerr << currentConfig.size() << "\t" << nbCombs << "\t" << configuration << endl;
+    //std::cerr << currentConfig.size() << "\t" << nbCombs << "\t" << configuration << std::endl;
     for(int i = 0; i < NP; ++i){
         if(!currentConfig[i][4+configuration].compare("1")) f << i << "\t" << currentModel->getParamName(i) << "\t" << currentModel->getParam(i) << "\t" << currentModel->getLowerBound(i) << "\t" << currentModel->getUpperBound(i) << "\n";
         else f << i << "\t" << currentModel->getParamName(i) << "\t" << currentModel->getParam(i) << "\t" << "fixed" << "\t" << "fixed" << "\n";
@@ -1276,7 +1276,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
     tex << "\\end{enumerate}\n";
     tex << "\\subsection{Parameter values and fitting configuration}\n";
     tex << "\\begin{tabular}{| c | l | c | c | c | }\n";
-    tex << "\\hline\n index \t& param. name \t& value simulated \t& max fit bound \t& min fit bound \\\\\n";
+    tex << "\\hline\n index \t& param. name \t& value simulated \t& max_ fit bound \t& min fit bound \\\\\n";
     tex << "\\hline\n\\hline\n";
     for(int i = 0; i < NP; ++i){
         if(!currentConfig[i][4+configuration].compare("1"))
@@ -1301,7 +1301,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
 
     tex << "\\subsection{Cost of the simulation compared to data}\n";
     tex << "The data used to get the cost calculation and to override data are detailed inside the file experiment.txt\n";
-    tex << "\n\\vspace{0.3cm}\nTotal cost for the current parameter set : " << currentExperiment->costVariableInModel() << endl;
+    tex << "\n\\vspace{0.3cm}\nTotal cost for the current parameter set : " << currentExperiment->costVariableInModel() << std::endl;
     tex << "\nThe function used to calculate the cost is:" << costConfig::CurrentCost() << ", i.e.,";
 
     switch(costConfig::typeCost){
@@ -1310,7 +1310,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
         tex << "Note: this cost functions is NOT normalized to the number of datapoints per experiment.\n";
     break;
     case SQUARE_COST_STD:
-        tex << "SQUARE-COST-STD: RSS with standard deviations $\\sigma$ (= max likelyhood): $\\sum_{idExp i,idDataPt j}(\\frac{Xsim_{i,j}- Xdata_{i,j}}{\\sigma_{i,j}}})^2$ (but using $\\sigma_{i,j} = 1$ when $abs(\\sigma_{i,j}}) < 1e^{-8}$) \n";
+        tex << "SQUARE-COST-STD: RSS with standard deviations $\\sigma$ (= max_ likelyhood): $\\sum_{idExp i,idDataPt j}(\\frac{Xsim_{i,j}- Xdata_{i,j}}{\\sigma_{i,j}}})^2$ (but using $\\sigma_{i,j} = 1$ when $abs(\\sigma_{i,j}}) < 1e^{-8}$) \n";
         tex << "Note: this cost functions is NOT normalized to the number of datapoints per experiment.\n";
     break;
     case LOG_COST:
@@ -1318,7 +1318,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
         tex << "Note: this cost functions is NOT normalized to the number of datapoints per experiment.\n";
     break;
     case PROPORTION_COST:
-        tex << "PROPORTION-COST: comparison as ratio to the mean (without using data standard deviation): $\\sum_{idExp i,idDataPt j}\\frac{Xsim_{i,j}}{max(abs(Xdata_{i,j}, 1e-3)})$. Note: if the data is less than $1e-3$, its value is bounded such that this datapoints doesn't get a cost diverging to infinite and taking over the cost compared to other datapoints. If your data falls around this range you might need to change the 1e-3 bound, see inside evaluator.cpp, fitness function\n";
+        tex << "PROPORTION-COST: comparison as ratio to the mean (without using data standard deviation): $\\sum_{idExp i,idDataPt j}\\frac{Xsim_{i,j}}{max_(abs(Xdata_{i,j}, 1e-3)})$. Note: if the data is less than $1e-3$, its value is bounded such that this datapoints doesn't get a cost diverging to infinite and taking over the cost compared to other datapoints. If your data falls around this range you might need to change the 1e-3 bound, see inside evaluator.cpp, fitness function\n";
         tex << "Note: this cost functions is NOT normalized to the number of datapoints per experiment.\n";
     break;
     }
@@ -1358,36 +1358,36 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
     tex << "\\end{centering}\n";
     tex << "\\newpage\n";
 
-    ofstream expT(_folder + "texReport.tex");
-    expT << tex.str() << endl;
+    std::ofstream expT(_folder + "texReport.tex");
+    expT << tex.str() << std::endl;
     expT.close();
 
     // ===================== End of tex file =========================
 
 
-    ofstream expf(_folder + "experiment.txt");
-    expf << currentExperiment->print() << endl;
+    std::ofstream expf(_folder + "experiment.txt");
+    expf << currentExperiment->print() << std::endl;
     expf.close();
 
-    ofstream expS(_folder + "LastSensitivity.txt");
+    std::ofstream expS(_folder + "LastSensitivity.txt");
     int SI = sensitivities.size();
     for(int i = 0; i < SI; ++i){
-        if(sensitivities[i]) expS << sensitivities[i]->print() << endl;
+        if(sensitivities[i]) expS << sensitivities[i]->print() << std::endl;
     }
     expS.close();
 
-    ofstream expI(_folder + "LastIdentifiability.txt");
+    std::ofstream expI(_folder + "LastIdentifiability.txt");
     int SI2 = identifiabilities.size();
     for(int i = 0; i < SI2; ++i){
-        if(identifiabilities[i]) expI << identifiabilities[i]->print() << endl;
+        if(identifiabilities[i]) expI << identifiabilities[i]->print() << std::endl;
     }
     expI.close();
 
 
 
-    //cerr << "Step 1" << endl;
-    //ofstream f1((_folder + string("")).c_str(), ios::out);
-    //if(!f1) {cerr << "File not Found" << endl; return;}
+    //std::cerr << "Step 1" << std::endl;
+    //std::ofstream f1((_folder + string("")).c_str(), std::ios::out);
+    //if(!f1) {std::cerr << "File not Found" << std::endl; return;}
 
 
     int nbExp = currentExperiment->getNbCond();
@@ -1404,8 +1404,8 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
         }
         f << currentModel->getCinetique().print();
     }
-    //cerr << "Step 2" << endl;
-    f << "Total cost of parameter set : " << currentExperiment->costVariableInModel() << endl;
+    //std::cerr << "Step 2" << std::endl;
+    f << "Total cost of parameter set : " << currentExperiment->costVariableInModel() << std::endl;
     for(int j = 0; j < NV; ++j){
         if(! currentModel->over(j)){
             f << "Simulated kinetics for variable " << j << " : " << currentModel->getName(j) << "\n";
@@ -1415,7 +1415,7 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
             vector< vector<double>* > packData;
             for(int i = 0; i < currentExperiment->getNbCond(); ++i){
                 packData.push_back(new vector<double>(currentData[i]->getTimeCourse(j)));
-                //// if(packData[i]->size() != Xs.size()) cerr << "ERR: manageSims::makeTextReportParamSet, exp " << currentExperiment->expName(i) << ", kinetics from different variables have different number of time points\n";
+                //// if(packData[i]->size() != Xs.size()) std::cerr << "ERR: manageSims::makeTextReportParamSet, exp " << currentExperiment->expName(i) << ", kinetics from different variables have different number of time points\n";
             }
             int nbTp = Xs.size();
 
@@ -1433,12 +1433,12 @@ string manageSims::makeTextReportParamSet(string _folder, int configuration, dou
             }
         }
     }
-    //cerr << "Step 3" << endl;
+    //std::cerr << "Step 3" << std::endl;
     f << "Detailed costs \n";
     f << currentExperiment->costReport();
 
 
-    cerr << "Report finished" << endl;
+    std::cerr << "Report finished" << std::endl;
     return f.str();
 }
 
@@ -1465,9 +1465,9 @@ void manageSims::startMacro(string experimentName){
     currentMacro << "manageSims* macro" << macroID << " = new manageSims(experimentName)\n";
 }
 void manageSims::addFileToMacro(string fileName){
-    ifstream inFile;
+    std::ifstream inFile;
     inFile.open(fileName);//open the input file
-    stringstream strStream;
+    std::stringstream strStream;
     strStream << inFile.rdbuf();
     addFileTextToMacro(strStream.str(), fileName);
 }
@@ -1540,8 +1540,8 @@ simuWin::simuWin(MultiExperiments* _Exp, QWidget *parent): manageSims(_Exp),
 
 void simuWin::updateCostLabel(){
     if((costConfig::typeCost != ui->comboBoxCostType->currentIndex()) || (costConfig::typeNorm != ui->comboBoxCostNorm->currentIndex())){
-        cout << "Changing the type of cost function from " << costConfig::CurrentCost() << " to ";
-        cout << ui->comboBoxCostType->currentText().toStdString() << " Norm: " << ui->comboBoxCostNorm->currentText().toStdString() << endl;
+        std::cout << "Changing the type of cost function from " << costConfig::CurrentCost() << " to ";
+        std::cout << ui->comboBoxCostType->currentText().toStdString() << " Norm: " << ui->comboBoxCostNorm->currentText().toStdString() << std::endl;
         int res = QMessageBox::question(this, QString("Confirm Cost Change"), QString("The Cost function will be changed, the history will be cleared and the previous sensitivities/identifiabilities will be cleared. Do you confirm ?"), QMessageBox::Yes | QMessageBox::No);
         if(res == QMessageBox::No) return;
     } else return;
@@ -1571,9 +1571,9 @@ void simuWin::updateCostLabel(){
 
 // not : didn't test whether reset() can be called multiple times ...
 void simuWin::reset(){
-    if(!currentModel) {cerr << "simuWin::reset() was called from a non-existing model"; return;}
-    if((currentMode != MULTI_EXPERIMENT) && (!currentExperiment)) {cerr << "simuWin()::reset() was called from a non-existing experiment (MONO_exp mode)\n"; return;}
-    if((currentMode == MULTI_EXPERIMENT) && (!listExperiments)) {cerr << "simuWin()::reset() was called from a non-existing group of experiment (MULTI_exp mode)\n"; return;}
+    if(!currentModel) {std::cerr << "simuWin::reset() was called from a non-existing model"; return;}
+    if((currentMode != MULTI_EXPERIMENT) && (!currentExperiment)) {std::cerr << "simuWin()::reset() was called from a non-existing experiment (MONO_exp mode)\n"; return;}
+    if((currentMode == MULTI_EXPERIMENT) && (!listExperiments)) {std::cerr << "simuWin()::reset() was called from a non-existing group of experiment (MULTI_exp mode)\n"; return;}
 
     nbCombs = 0;                    // empty configuration to start ...
     removeMode = false;             // the buttons of the configuration panel are in 'Add' or 'Del' mode
@@ -1688,7 +1688,7 @@ void simuWin::reset(){
     if(currentMode == MULTI_EXPERIMENT){
         // Fills combo
         int NE = listExperiments->nbBigExp();
-        cout << "Initializing interface for " << NE << " experiments " << endl;
+        std::cout << "Initializing interface for " << NE << " experiments " << std::endl;
         for(int i = 0; i < NE; ++i){
             ui->comboBoxMultiExperiment->addItem(QString(listExperiments->getExperiment(i)->Identification.c_str()));
         }
@@ -1885,12 +1885,12 @@ void simuWin::reset(){
 void simuWin::coefficientsChanged(QModelIndex left, QModelIndex right){
     int row = left.row();
     int column = left.column();
-    if((right.row() != row) || (right.column() != column)) cerr << "ERR: simuWin::coefficientsChanged, you are not supposed to change more than one cell at a time" << endl;
+    if((right.row() != row) || (right.column() != column)) std::cerr << "ERR: simuWin::coefficientsChanged, you are not supposed to change more than one cell at a time" << std::endl;
     if(currentMode != MULTI_EXPERIMENT) return;
     if((column == 0) && (row >= 0) && (row < listExperiments->nbBigExp())) {
         double paramValue = this->tableMultiExpCosts->item(row, column)->text().toDouble();
         listExperiments->setCoefficient(row, paramValue);
-        cout << "      changing coefficient to " << paramValue << " for experiment: " << listExperiments->getExperiment(row)->Identification << endl;
+        std::cout << "      changing coefficient to " << paramValue << " for experiment: " << listExperiments->getExperiment(row)->Identification << std::endl;
     }
     simulate();         // does currentExperiment->init() inside
 }
@@ -1909,7 +1909,7 @@ void simuWin::currentExperimentChanged(){
         int selected = ui->comboBoxMultiExperiment->currentIndex();
         currentExperiment = listExperiments->getExperiment(selected);
     }
-    if(!currentExperiment) {cerr << "ERR::simuWin::currentExperimentChanged, the new experiment is NULL"; return;}
+    if(!currentExperiment) {std::cerr << "ERR::simuWin::currentExperimentChanged, the new experiment is NULL"; return;}
     int NC = currentExperiment->getNbCond();
 
     for(int i = 0; i < (int) currentData.size(); ++i){
@@ -1925,17 +1925,17 @@ void simuWin::currentExperimentChanged(){
     listSubExps = new QListWidget(ui->comboBoxSubExperiment);    // the combo box for the experiments is made using ListWidgets (instead of usual combo), because they can be enabled / disabled
     listSubExps->hide();
     ui->comboBoxSubExperiment->setModel(listSubExps->model());
-    cout << " -> New exp. selected : " << currentExperiment->Identification << endl; // ui->comboBoxMultiExperiment->currentText().toStdString() << endl;
-    cout << "       Nb Conditions (sub-exp) : " << NC << endl;
+    std::cout << " -> New exp. selected : " << currentExperiment->Identification << std::endl; // ui->comboBoxMultiExperiment->currentText().toStdString() << std::endl;
+    std::cout << "       Nb Conditions (sub-exp) : " << NC << std::endl;
     ui->comboBoxSubExperiment->clear();
     for(int i = 0; i < NC; ++i){
         listSubExps->addItem(currentExperiment->getConditionName(i).c_str());
         //if(currentExperiment->isDoable(i)){
-              cout << "       - " << currentExperiment->getConditionName(i).c_str() << endl;
+              std::cout << "       - " << currentExperiment->getConditionName(i).c_str() << std::endl;
         //} else {
         //    QListWidgetItem *item = listSubExps->item(i);
         //    item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-        //    cout << "       X " << currentExperiment->getNameCondition(i).c_str() << endl;
+        //    std::cout << "       X " << currentExperiment->getNameCondition(i).c_str() << std::endl;
         //}
     }
 
@@ -1954,7 +1954,7 @@ void simuWin::currentExperimentChanged(){
             qcb->setEnabled(true);
             qcb->setChecked(nbExpsOvers == currentExperiment->getNbCond());
             if((nbExpsOvers > 0) && (nbExpsOvers < currentExperiment->getNbCond())){
-                cerr << "ERR: Simuwin::currentExperimentChanged() for exp name " << currentExperiment->Identification << ", the variable " << currentModel->getName(i) << " is overriden for some conditions but not all. This is not allowed." << endl;
+                std::cerr << "ERR: Simuwin::currentExperimentChanged() for exp name " << currentExperiment->Identification << ", the variable " << currentModel->getName(i) << " is overriden for some conditions but not all. This is not allowed." << std::endl;
                 TABLE->item(i+NP,2)->setText(QString("Partially(") + QString::number(nbExpsOvers) + QString("/") + QString(currentExperiment->getNbCond()) + QString(")"));
             }
         } else {
@@ -1996,7 +1996,7 @@ void simuWin::updateParmsFromModel(){
 
 
 void simuWin::paramChangedFromBox(double newValue){
-    cout << "Parameter changed from Box, new value " << newValue << endl;
+    std::cout << "Parameter changed from Box, new value " << newValue << std::endl;
     //QObject::disconnect(ui->doubleSpinBoxLastParam, SIGNAL(valueChanged(double)), this, SLOT(paramChangedFromBox(double)));
     if(lastParamID > -1){
         currentModel->setParam(lastParamID, newValue);
@@ -2012,9 +2012,9 @@ void simuWin::paramChangedFromBox(double newValue){
 
 
 void simuWin::cellClicked(int row, int column){
-    cerr << "cell clicked, ligne=" << row << ", col=" << column << ", newValue = " << TABLE->item(row, column)->text().toStdString() << endl;}
+    std::cerr << "cell clicked, ligne=" << row << ", col=" << column << ", newValue = " << TABLE->item(row, column)->text().toStdString() << std::endl;}
 void simuWin::cellPressed(int row, int column){
-    cerr << "cell clicked, ligne=" << row << ", col=" << column << ", newValue = " << TABLE->item(row, column)->text().toStdString() << endl;}
+    std::cerr << "cell clicked, ligne=" << row << ", col=" << column << ", newValue = " << TABLE->item(row, column)->text().toStdString() << std::endl;}
 
 void simuWin::createComb(){
     QObject::disconnect(TABLE, SIGNAL(cellChanged(int, int)), this, SLOT(cellChanged(int, int)));
@@ -2028,7 +2028,7 @@ void simuWin::createComb(){
     for(int i = 0; i < NP + NV; ++i){
         QWidget* ww = TABLE->cellWidget(i,3);
         if(ww){
-            //cout << i << " is " << ww->metaObject()->className() << endl;
+            //std::cout << i << " is " << ww->metaObject()->className() << std::endl;
             if(((QCheckBox*) TABLE->cellWidget(i,3))->isChecked()){
                 TABLE->item(i,3+nbCombs)->setText(QString("1"));
                 currentConfig[i][nbCombs+3] = "1";
@@ -2042,7 +2042,7 @@ void simuWin::createComb(){
 
         }
     }
-    //cout << "Added" << endl;
+    //std::cout << "Added" << std::endl;
     QObject::connect(TABLE, SIGNAL(cellChanged(int, int)), this, SLOT(cellChanged(int, int)));
 
 }
@@ -2065,12 +2065,12 @@ void simuWin::useComb(int IDComb){
     if(!removeMode){
 
         if(z >= nbCombs) return;
-        cout << "      Note : Use comb nr(0..) " << z <<  endl;
+        std::cout << "      Note : Use comb nr(0..) " << z <<  std::endl;
         int NP = currentModel->getNbParams();
         int NV = currentModel->getNbVars();
         for(int i = 0; i < NP + NV; ++i){
             int check = TABLE->item(i, 4+z)->text().toInt();
-            //cout << check << endl;
+            //std::cout << check << std::endl;
             if(((QCheckBox*) TABLE->cellWidget(i,3))) ((QCheckBox*) TABLE->cellWidget(i,3))->setChecked((check > 0));
             //if((i >= NP)){
             //    currentExperiment->overrideVariable(currentModel->getExternalName(i-NP), check && currentExperiment->canOverride(currentModel->getExternalName(i-NP)));
@@ -2078,9 +2078,9 @@ void simuWin::useComb(int IDComb){
         }
     }
     else {
-        if(IDComb >= 0) cerr << "ERR : simuWin::useComb(int IDComb = " << IDComb << ") is not supposed to be used for deleting" << endl;
+        if(IDComb >= 0) std::cerr << "ERR : simuWin::useComb(int IDComb = " << IDComb << ") is not supposed to be used for deleting" << std::endl;
         if(z >= nbCombs) return;    // and ensures that nbCombs will not get negative at the end
-        cerr << "Delete comb nr(0..) " << z <<  endl;
+        std::cerr << "Delete comb nr(0..) " << z <<  std::endl;
         int res = QMessageBox::question(this, QString("Confirm?"), QString("Confirm the deletion ?"), QMessageBox::Yes | QMessageBox::No);
         if(res == QMessageBox::No) return;
         QObject::disconnect(TABLE, SIGNAL(cellChanged(int, int)), this, SLOT(cellChanged(int, int)));
@@ -2105,10 +2105,10 @@ void simuWin::useComb(int IDComb){
 
 
 void simuWin::changeOverride(int newState){
-    //if(currentMode == MULTI_EXPERIMENT) {cerr << "ERR : change Override called in the Multi-obj mode, return.\n"; return;}
+    //if(currentMode == MULTI_EXPERIMENT) {std::cerr << "ERR : change Override called in the Multi-obj mode, return.\n"; return;}
     int z = sender()->property("VarIndex").toInt();
     if(recording) currentMacro << "macro" << macroID << ".currentModel->applyOverride(macro" << macroID << ".currentModel->getExternalName(" << z << "), " << (newState > 0 ? "true" : "false") << ")\n";
-    cout << "Change override of var " << z << " to " << newState << endl;
+    std::cout << "Change override of var " << z << " to " << newState << std::endl;
     if(currentMode != MULTI_EXPERIMENT){
         if(currentExperiment->canOverride(currentModel->getExternalName(z))){
             currentExperiment->overrideVariable(currentModel->getExternalName(z), (newState > 0));
@@ -2155,7 +2155,7 @@ void simuWin::simulate(){
                 currentExperiment->simulate(i, NULL, true);
                 if(ui->checkBoxDisplayCurves->isChecked()){
                     if(currentData[i]) {delete currentData[i]; currentData[i] = NULL;}
-                    if(i > (int) currentData.size()) cerr << "Something happened to currentData" << endl;
+                    if(i > (int) currentData.size()) std::cerr << "Something happened to currentData" << std::endl;
                     currentData[i] = new TableCourse(currentExperiment->m->getCinetique());
                     if(!currentlyOptimizing) ui->progressBar->setValue((100 * (i+1)) / nbExp);
                     if(currentExperiment->m->penalities > 0){
@@ -2244,7 +2244,7 @@ void simuWin::simulate(){
 }
 
 void simuWin::varChanged(int idVar){
-    //cerr << "var changed " << endl;
+    //std::cerr << "var changed " << std::endl;
     if(currentExperiment){
         if(ui->checkBoxAll->isChecked()){
             if(ui->checkBoxDisplayCurves->isChecked()){
@@ -2256,9 +2256,9 @@ void simuWin::varChanged(int idVar){
                     vector<double> Xs = currentData[i]->getTimePoints(idVar);
                     vector<double> Ys = currentData[i]->getTimeCourse(idVar);
 
-                    //cout << "Data, var " << idVar << ", name " << currentModel->getName(idVar) << ", " << Xs.size() << " - " << Ys.size() << " time-points from simu" << ((Xs.size() > 0) ? Xs[0] : NAN) << " ..." << endl;
+                    //std::cout << "Data, var " << idVar << ", name " << currentModel->getName(idVar) << ", " << Xs.size() << " - " << Ys.size() << " time-points from simu" << ((Xs.size() > 0) ? Xs[0] : NAN) << " ..." << std::endl;
                     // needs to find the index of the variable
-                    //cout << "looks for ID " << currentModel->getExternalName(j) << "\tglobalName=" << currentModel->getExternalName(j) << "\t";
+                    //std::cout << "looks for ID " << currentModel->getExternalName(j) << "\tglobalName=" << currentModel->getExternalName(j) << "\t";
 
                     //int nbTp = Xs.size();
                     //for(int l = 0; l < nbTp; ++l){
@@ -2266,7 +2266,7 @@ void simuWin::varChanged(int idVar){
                     //}
                     currentGraphe->Plot(2*i, Ys, Xs, QString(currentExperiment->getConditionName(i).c_str()), currentGraphe->baseList(i));
 
-                    // Now plots the experimental data: cerr << currentGraphe->nbCurves << " Curves and nbexp" << currentExperiment->nbCond() << endl;
+                    // Now plots the experimental data: std::cerr << currentGraphe->nbCurves << " Curves and nbexp" << currentExperiment->nbCond() << std::endl;
                     int S = currentExperiment->ExpData[i].size();
                     int S2 = currentExperiment->ExpStdDevs[i].size();
                     vector<double> Ys2;
@@ -2276,30 +2276,30 @@ void simuWin::varChanged(int idVar){
                         if(currentExperiment->ExpData[i][j]){
                             int k = currentExperiment->ExpData[i][j]->findPosition(currentModel->getExternalName(idVar));
                             if(k >= 0){         // note: maybe should return an error if k < 0, but it naturally happens when there is no data for this variable
-                                if(Xs2.size() > 0) cerr << "ERR: the same curve is defined in two different datasets. Experiment nr " << j << ", variable " << i << "(" << currentModel->getName(i) << "), total " << S << " datasets defined..." << endl;
+                                if(Xs2.size() > 0) std::cerr << "ERR: the same curve is defined in two different datasets. Experiment nr " << j << ", variable " << i << "(" << currentModel->getName(i) << "), total " << S << " datasets defined..." << std::endl;
                                 Xs2 = currentExperiment->ExpData[i][j]->getTimePoints(k);
                                 Ys2 = currentExperiment->ExpData[i][j]->getTimeCourse(k);
                                 if (currentExperiment->ExpStdDevs[i][j]) Yerrs2 = currentExperiment->ExpStdDevs[i][j]->getTimeCourse(k);
                             }
                             //ui->textBrowserStatus->append();
-                            if(((int) Xs2.size() != (int) Ys2.size())) cerr << "Problems reading exp kinetics, size Xs" << Xs2.size() << ", Ys " << Ys2.size() << "\n";
-                                //cout << "Data for Exp: " << currentExperiment->getNameCondition(i) << ", variable " << currentModel->getExternalName(j) << endl;
-                                //for(int l = 0; l < (int) Xs2.size();++l){ cout << "x=" << Xs2[l] << ", y=" << Ys2[l] << endl;}
+                            if(((int) Xs2.size() != (int) Ys2.size())) std::cerr << "Problems reading exp kinetics, size Xs" << Xs2.size() << ", Ys " << Ys2.size() << "\n";
+                                //std::cout << "Data for Exp: " << currentExperiment->getNameCondition(i) << ", variable " << currentModel->getExternalName(j) << std::endl;
+                                //for(int l = 0; l < (int) Xs2.size();++l){ std::cout << "x=" << Xs2[l] << ", y=" << Ys2[l] << std::endl;}
                             // in case resize in the X axis
                             /*int nbTp2 = Xs2.size();
                             for(int l = 0; l < nbTp2; ++l){
                                 Xs2[l] = Xs2[l]; // / 3600.0;
                             }*/
-                            //cout << "Experiment " << i << ", " << Xs2.size() << " experimental points added to the curve" << endl;
+                            //std::cout << "Experiment " << i << ", " << Xs2.size() << " experimental points added to the curve" << std::endl;
                         }
                     }
                     currentGraphe->Plot(2*i+1, Ys2, Yerrs2, Xs2, QString("") /*QString("Data ") + QString(currentExperiment->expName(i).c_str()) */, currentGraphe->baseList(i), Qt::DotLine, QCPScatterStyle::ssCircle);
 
                     if(S == 0)currentGraphe->Plot(2*i+1, vector<double>(), vector<double>(), QString(""));
-                    //cout << "Finished" << endl;
+                    //std::cout << "Finished" << std::endl;
                 }
             }
-            //cout << endl;
+            //std::cout << std::endl;
             double costExp = currentExperiment->costVariableInModel();
             ui->doubleSpinBoxCostExp->setValue(costExp);
 
@@ -2318,9 +2318,9 @@ void simuWin::varChanged(int idVar){
 
 
 void simuWin::cellChanged(int row, int column){
-    //if(currentMode == MULTI_EXPERIMENT) {cerr << "ERR : cellChanged called in the Multi-obj mode, return."; return;}
+    //if(currentMode == MULTI_EXPERIMENT) {std::cerr << "ERR : cellChanged called in the Multi-obj mode, return."; return;}
 
-    //cerr << "cell changed, ligne=" << row << ", col=" << column << ", newValue = " << TABLE->item(row, column)->text().toStdString() << endl;
+    //std::cerr << "cell changed, ligne=" << row << ", col=" << column << ", newValue = " << TABLE->item(row, column)->text().toStdString() << std::endl;
     QObject::disconnect(ui->doubleSpinBoxLastParam, SIGNAL(valueChanged(double)), this, SLOT(paramChangedFromBox(double)));
     if((column == 0) && (row < currentModel->getNbParams())) {
         double paramValue = TABLE->item(row, column)->text().toDouble();
@@ -2350,7 +2350,7 @@ void simuWin::paramSetDoubleClickedFromHistory(const QModelIndex & QMI){
     //if(!stopOpt){QMessageBox::information(this, QString("Error"), QString("You are not allowed to simulate a new parameter set while an optimization is running")); return;}
     int indexComb = -1;
     if(ui->checkBoxLinkToCombs->isChecked()) indexComb = QInputDialog::getInt(this, QString("Choose Comb:"), QString("You want to apply the clicked parameter set to according to a combination. Please give the associated combination index (starts at 0) ?"), 0, -1 /* min */, nbCombs - 1, 1 /* step */);
-    if(indexComb >= 0) cout << "Overriding only parameters from combination nr :" << indexComb << endl;
+    if(indexComb >= 0) std::cout << "Overriding only parameters from combination nr :" << indexComb << std::endl;
     //if(indexComb >= 0) ui->tableViewHistory->setHorizontalHeader();
     useParamSetFromHistory(row, indexComb);
     updateParmsFromModel();
@@ -2400,14 +2400,14 @@ void simuWin::optimize(){
     if(ui->lineEditWorkingFolder->text().size() == 0)
         ui->lineEditWorkingFolder->setText(QFileDialog::getExistingDirectory(this, tr("Open Directory"), "",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
     string optText = createOptimizerFile();
-    if(ui->lineEditWorkingFolder->text().size() == 0) {cerr << "No Directory\n"; return;}
+    if(ui->lineEditWorkingFolder->text().size() == 0) {std::cerr << "No Directory\n"; return;}
     string optFileName = (ui->lineEditWorkingFolder->text() + QString("Opt.txt")).toStdString();
 
 //double costVar = currentExperiment->costPart(currentModel->getExternalName(j));
 
-    ofstream fichier((const char*) optFileName.c_str(), ios::out);
+    std::ofstream fichier((const char*) optFileName.c_str(), std::ios::out);
     if(fichier){
-        fichier << optText << "\n0\n" << endl;
+        fichier << optText << "\n0\n" << std::endl;
         fichier.close();}
     else {QMessageBox::information(this, QString("Error"), QString("The optimizer file could not be written in the provided file location : ") + (ui->lineEditWorkingFolder->text()));
         return;}
@@ -2436,11 +2436,11 @@ void simuWin::optimize(){
                 Opt->bestGlobal.print();
                 //delete E; // program destructor first...
                 delete Opt;
-                cout << "Optimization Complete\n";
+                std::cout << "Optimization Complete\n";
 
     #else
     QMessageBox::information(this, QString("Error"), QString("ERR : SimuWin::optimize(), function not available, you should do #define ALLOW_OPTIMIZATION in common.h and compile again ! \n"));
-    cerr << "ERR : SimuWin::optimize(), function not available, you should do #define ALLOW_OPTIMIZATION\n";
+    std::cerr << "ERR : SimuWin::optimize(), function not available, you should do #define ALLOW_OPTIMIZATION\n";
     #endif
     stopOpt = true;
     currentlyOptimizing = false;
@@ -2473,7 +2473,7 @@ double simuWin::getCost(){
         refreshHistory();
     }
 
-    //if(dimension > currentModel->getNbParams) {cerr << "Optimizer has more parameters than model\n"; return -1;}
+    //if(dimension > currentModel->getNbParams) {std::cerr << "Optimizer has more parameters than model\n"; return -1;}
 
     // applies the values from the optimizer (stored in parameters[i]) into the model
 
@@ -2503,7 +2503,7 @@ double simuWin::getCost(){
 }
 #else
 double simuWin::getCost(){
-    cerr << "ERR : SimuWin::getCost(), function not available, you should do #define ALLOW_OPTIMIZATION\n";
+    std::cerr << "ERR : SimuWin::getCost(), function not available, you should do #define ALLOW_OPTIMIZATION\n";
     return 0;
 }
 #endif
@@ -2529,7 +2529,7 @@ void simuWin::refreshHistory(){
     int NP = currentModel->getNbParams();
     int show = ui->spinBoxDisplay->value();
     if(tableHistory->rowCount() != show){
-        cout << "Re-sizing history table \n";
+        std::cout << "Re-sizing history table \n";
         tableHistory->clear();
         tableHistory = new QStandardItemModel(show, NP + 1, ui->tableViewHistory);
         for(int i = 0; i < NP+1; ++i){
@@ -2548,13 +2548,13 @@ void simuWin::refreshHistory(){
         tableHistory->setHorizontalHeaderItem(i+1, new QStandardItem(QString(currentModel->getParamName(i).c_str())));
     }
     vector<oneSet*> liste = history.toVector();
-    //cerr << "Size of history : " << history.toVector().size() << endl;
+    //std::cerr << "Size of history : " << history.toVector().size() << std::endl;
     //reverse(liste.begin(), liste.end());
     int ls = liste.size();
     for(int i = 0; (i < ls) && (i < show); ++i){
         tableHistory->item(i,0)->setText(QString::number(liste[i]->cost));
         int s = liste[i]->v.size();
-        if(s != NP) cerr << "ERR : refresh History incorrect size for parameters\n";
+        if(s != NP) std::cerr << "ERR : refresh History incorrect size for parameters\n";
         for(int j = 0; j < NP; ++j){
             tableHistory->item(i, j+1)->setText(QString::number(liste[i]->v[j]));
         }
@@ -2580,8 +2580,8 @@ void simuWin::saveHistory(QString _name){
     int ls = liste.size();
 
     int store = ls; //  ui->spinBoxStore->value();
-    cout << "      ... Writing into file " << _name.toStdString() << endl;
-    ofstream f(_name.toStdString().c_str(), ios::out);
+    std::cout << "      ... Writing into file " << _name.toStdString() << std::endl;
+    std::ofstream f(_name.toStdString().c_str(), std::ios::out);
     if(!f) {QMessageBox::information(this, QString("Error"), QString("File not Found")); return;}
     f << NP << "\t";
     f << store << "\t";
@@ -2590,7 +2590,7 @@ void simuWin::saveHistory(QString _name){
     for(int i = 0; (i < ls) && (i < store); ++i){
         f << liste[i]->cost;
         int s = liste[i]->v.size();
-        if(s != NP) cerr << "ERR : save History incorrect size for parameters\n";
+        if(s != NP) std::cerr << "ERR : save History incorrect size for parameters\n";
         for(int j = 0; j < NP; ++j){
             f << "\t" << liste[i]->v[j];
         }
@@ -2614,7 +2614,7 @@ void simuWin::loadHistory(QString _name){
 //#ifdef ALLOW_OPTIMIZE
 string simuWin::createOptimizerFile(){
     // generates the text file for the optimizer and the text file for
-    stringstream f;
+    std::stringstream f;
     f << optChoice->generate();
     f << "\n";
     int NV = currentModel->getNbParams();
@@ -2629,7 +2629,7 @@ string simuWin::createOptimizerFile(){
     for(int i = 0; i < NV; ++i){
         if(! ((QCheckBox*) TABLE->cellWidget(i,3))->isChecked()) f << "#";
         f << "\t" << i << "\t";
-        f << currentModel->getLowerBound(i) << "\t" << currentModel->getUpperBound(i) << "\t#" << currentModel->getParamName(i) << endl;
+        f << currentModel->getLowerBound(i) << "\t" << currentModel->getUpperBound(i) << "\t#" << currentModel->getParamName(i) << std::endl;
     }
     f << "\n\n0\nExponential\n0\n";
     ui->plainTextEditOptFile->setPlainText(QString(f.str().c_str()));
@@ -2651,7 +2651,7 @@ string simuWin::loadConfig(string _name){
     string raisedErrors = manageSims::loadConfig(_name);
 
     if(raisedErrors.size() > 0) {
-         cout<< "\n Raised errors while loading config: \n"<< raisedErrors <<endl;
+         std::cout<< "\n Raised errors while loading config: \n"<< raisedErrors <<std::endl;
          QMessageBox::information(this, QString("Error"), QString("Problems with file format :\n") + QString(raisedErrors.c_str()));
          return raisedErrors;
     }
@@ -2699,8 +2699,8 @@ void simuWin::saveConfig(string _name){
 
     int NP = currentModel->getNbParams();
     int NV = currentModel->getNbVars();
-    cout << "      ... Writing into file " << _name << endl;
-    ofstream f(_name.c_str(), ios::out);
+    std::cout << "      ... Writing into file " << _name << std::endl;
+    std::ofstream f(_name.c_str(), std::ios::out);
     if(!f) {QMessageBox::information(this, QString("Error"), QString("File not Found")); return;}
     f << NP << "\t";
     f << NV << "\t";
@@ -2729,9 +2729,9 @@ void simuWin::changeRecord(int z){
 }
 
 void simuWin::costReport(){
-    if(currentMode == MULTI_EXPERIMENT) {cerr << "ERR : cost Report called in the Multi-obj mode, return."; return;}
+    if(currentMode == MULTI_EXPERIMENT) {std::cerr << "ERR : cost Report called in the Multi-obj mode, return."; return;}
 
-    cout << "Comparison between experiment and simulation" << endl;
+    std::cout << "Comparison between experiment and simulation" << std::endl;
     currentExperiment->costReport();
 }
 
@@ -2740,7 +2740,7 @@ string textFileForFolder(string explanations){
     replace( explanations.begin(), explanations.end(), '_', '-');
     static int count = 0;
     string picOpt = string("height=1.4in");
-    stringstream st;
+    std::stringstream st;
     st << "\\documentclass[10pt,a4paper,final]{article}\n";
     st << "\\usepackage[utf8]{inputenc}\n";
     st << "\\usepackage{amsmath}\n";
@@ -2757,7 +2757,7 @@ string textFileForFolder(string explanations){
     st << "\\begin{document}\n";
     st << "\\setcounter{figure}{" << count << "}\n";
 
-    //st << explanations << endl;*/
+    //st << explanations << std::endl;*/
     /*st << "\\begin{figure}[]\n";
     st << "\\begin{center}\n";
     st << "\\begin{subfigure}[b]{0.45\\textwidth}\n";
@@ -2829,7 +2829,7 @@ string textFileForFolder(string explanations){
 
 // problem : this config is created from nothing, so it takes the current parameter values from the model
 vector<string> simuWin::makeFigReportParamSet(string _folder, string explanations){
-    //cerr << "WRN : simuWin::makeFigReportParamSet(), not too sure about this function" << endl;
+    //std::cerr << "WRN : simuWin::makeFigReportParamSet(), not too sure about this function" << std::endl;
     if(_folder.size() == 0) _folder = (QFileDialog::getExistingDirectory(this, tr("Open Directory (Create it yourself if necessary)"), ui->lineEditWorkingFolder->text(),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks)).toStdString() + string("/");
     replace( explanations.begin(), explanations.end(), '_', '-');
 
@@ -2844,7 +2844,7 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
 
         // Latex preface for a PDF report
         string picOpt = string("height=1.4in");
-        stringstream st;
+        std::stringstream st;
         st << "\\documentclass[10pt,a4paper,final]{article}\n";
         st << "\\usepackage[utf8]{inputenc}\n";
         st << "\\usepackage{amsmath}\n";
@@ -2857,13 +2857,13 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
         st << "\\usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}\n";
         st << "\\begin{document}\n";
         //st << "\\setcounter{figure}{" << count << "}\n";
-        st << explanations << endl;
+        st << explanations << std::endl;
 
         useComb(nbCombs-1); // starts at 0
         //loadConfig(_folder + string("ConfigPlusCurrent.txt"));
         string res = makeTextReportParamSet(_folder, nbCombs-1, ui->doubleSpinBoxSimDT->value(), ui->doubleSpinBoxGraphDT->value());
-        ofstream f1((_folder + string("SimResult.txt")).c_str(), ios::out);
-        cout << "      ... writing in " << _folder + string("SimResult.txt") << endl;
+        std::ofstream f1((_folder + string("SimResult.txt")).c_str(), std::ios::out);
+        std::cout << "      ... writing in " << _folder + string("SimResult.txt") << std::endl;
         if(f1) {f1 << res; f1.close();}
 
         st << "\\input{" << _folder << "texReport.tex}\n";
@@ -2882,13 +2882,13 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
 
         //simulate(); is already done by makeTextReportParamSet
 
-        cout << "      ... Saving plots in " << _folder << endl;
+        std::cout << "      ... Saving plots in " << _folder << std::endl;
         for(int i = 0; i < NV; ++i){
                 ui->comboBoxVariable->setCurrentIndex(i);
                 varChanged(i);// and on top have the good title !
                 string add = string("Unsim-"); ////// DOES NOT WORK !!! string(((TABLE->cellWidget(NP+i,3)) && (!((QCheckBox*) TABLE->cellWidget(NP+i,3))->isChecked())) ? "Sim-" : "Unsim-" );
                 QString outFile = QString((_folder + add + currentModel->getName(i) + ".png").c_str());
-                //cout << "Var " << i << ", Figure saved in " << outFile.toStdString() << endl;
+                //std::cout << "Var " << i << ", Figure saved in " << outFile.toStdString() << std::endl;
                 //currentGraphe->bigPlot
 
                 currentGraphe->exportToPng(outFile);
@@ -2906,8 +2906,8 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
         st << "\\end{figure}\n";
         st << "\\clearpage\n";
         st << "\\end{document}\n";
-        ofstream ftex(_folder + string("SimResult.tex"));
-        ftex << st.str() << endl;
+        std::ofstream ftex(_folder + string("SimResult.tex"));
+        ftex << st.str() << std::endl;
         ftex.close();
         compileLatex(_folder, _folder + string("SimResult.tex"));
     }
@@ -2922,8 +2922,8 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
             createFolder(subFolder);
             res.push_back(subFolder);
             string res = makeTextReportParamSet(subFolder, nbCombs-1, ui->doubleSpinBoxSimDT->value(), ui->doubleSpinBoxGraphDT->value());
-            ofstream f1((subFolder + string("SimResult.txt")).c_str(), ios::out);
-            cout << "      ... writing in " << subFolder + string("SimResult.txt") << endl;
+            std::ofstream f1((subFolder + string("SimResult.txt")).c_str(), std::ios::out);
+            std::cout << "      ... writing in " << subFolder + string("SimResult.txt") << std::endl;
             if(f1) {f1 << res; f1.close();}
 
             int NV = currentModel->getNbVars();
@@ -2938,13 +2938,13 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
 
             //simulate(); is already done by makeTextReportParamSet
 
-            cout << "      ... Saving plots in " << subFolder << endl;
+            std::cout << "      ... Saving plots in " << subFolder << std::endl;
             for(int i = 0; i < NV; ++i){
                     ui->comboBoxVariable->setCurrentIndex(i);
                     varChanged(i);// and on top have the good title !
                     string add = string("Unsim-"); ////// DOES NOT WORK !!! string(((TABLE->cellWidget(NP+i,3)) && (!((QCheckBox*) TABLE->cellWidget(NP+i,3))->isChecked())) ? "Sim-" : "Unsim-" );
                     QString outFile = QString((subFolder + add + currentModel->getName(i) + ".png").c_str());
-                    //cout << "Var " << i << ", Figure saved in " << outFile.toStdString() << endl;
+                    //std::cout << "Var " << i << ", Figure saved in " << outFile.toStdString() << std::endl;
                     //currentGraphe->bigPlot
                     currentGraphe->exportToPng(outFile);
 
@@ -2964,9 +2964,9 @@ vector<string> simuWin::makeFigReportParamSet(string _folder, string explanation
 }
 
 void simuWin::setColorScale(int newScale){
-    //if(nbGraphes == 0) cerr << "WRN: simuWin::setColorScale(), no graph yet to " << endl;
+    //if(nbGraphes == 0) std::cerr << "WRN: simuWin::setColorScale(), no graph yet to " << std::endl;
     //for(int i = 0; i < this->nbGraphes; ++i){
-        if(!currentGraphe) {cerr << "ERR: simuWin::setColorScale(), graphes not initialized yet " << endl; return;}
+        if(!currentGraphe) {std::cerr << "ERR: simuWin::setColorScale(), graphes not initialized yet " << std::endl; return;}
         currentGraphe->setColorScale(newScale);
     //}
 }
@@ -2994,9 +2994,9 @@ void simuWin::loadOptim(string _name){
      QTextStream ReadFile(&file);
      //ui->textEditOptimizerFile->setText(ReadFile.readAll());
 
-     cout << "      ... Reading file " << _name << endl;
-     ifstream fichier(_name.c_str(), ios::in);
-     if(!fichier) cerr << "file not found\n" << endl;
+     std::cout << "      ... Reading file " << _name << std::endl;
+     std::ifstream fichier(_name.c_str(), std::ios::in);
+     if(!fichier) std::cerr << "file not found\n" << std::endl;
      fichier.close();
 }
 
@@ -3028,11 +3028,11 @@ void simuWin::saveSet(string _name){
 
 
 void simuWin::resetParams(){
-    cout << "Reset Parameters\n";
+    std::cout << "Reset Parameters\n";
     currentModel->setBaseParameters();
     //for(int i = 0; i < currentModel->getNbParams(); ++i){
         //currentModel->setParam(i, currentModel->getLowerBound(i));
-        //cout << i << " , " << currentModel->getParam(i) << endl;
+        //std::cout << i << " , " << currentModel->getParam(i) << std::endl;
     //}
     //currentExperiment->m->initialise();
     updateParmsFromModel();
@@ -3072,7 +3072,7 @@ void simuWin::optimizeThread(){
 #endif
 
 evolution::evolution(int _sizeGroups) : sizeGroups(_sizeGroups), currentGroup(0), nbInCurrentGroup(0) {
-    if((sizeGroups < 1) || (sizeGroups > 1e6)) {cerr << "ERR evolution : size group (" << sizeGroups << " is out of bounds. 1e6 taken\n"; sizeGroups = 1e6;}
+    if((sizeGroups < 1) || (sizeGroups > 1e6)) {std::cerr << "ERR evolution : size group (" << sizeGroups << " is out of bounds. 1e6 taken\n"; sizeGroups = 1e6;}
     clear();
 }
 
@@ -3095,7 +3095,7 @@ void evolution::newValue(double _v){
     if(nbInCurrentGroup == sizeGroups) {
         static int cptNew = 0;
         cptNew++;
-        if(cptNew > 10000) cerr << "WRN: Would need to free memory inside evolution::newValue" << endl;
+        if(cptNew > 10000) std::cerr << "WRN: Would need to free memory inside evolution::newValue" << std::endl;
         tables.push_back(new vector<double>(sizeGroups, 1e12));
         nbInCurrentGroup = 0;
         double sum = 0;
@@ -3106,11 +3106,11 @@ void evolution::newValue(double _v){
             double val = (* tables[currentGroup])[i];
             sum += val;
             ecarts += val * val;
-            locmin = min(locmin, val);
-            locmax = max(locmax, val);
+            locmin = std::min(locmin, val);
+            locmax = std::max(locmax, val);
         }
         if(currentGroup > 0) {
-            locmin = min(locmin, mins[currentGroup-1]); // indice to check
+            locmin = std::min(locmin, mins[currentGroup-1]); // indice to check
         }
         mins.push_back(locmin);
         maxs.push_back(locmax);
@@ -3124,7 +3124,7 @@ void evolution::newValue(double _v){
 }
 
 string evolution::print(){
-    stringstream f;
+    std::stringstream f;
     f << "Evolution of cost over time, evaluated for every group of (" << sizeGroups << ") new simulations\n";
     f << currentGroup << "\t" << 5 << "\n";
     f << "nb\tMin\tMax\tAverage\tStdDev\n";

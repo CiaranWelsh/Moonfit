@@ -14,7 +14,14 @@ if (UNIX)
     target_link_libraries(${target} PUBLIC stdc++fs)
 endif ()
 
-
+add_dependencies(
+        ${target}
+        myCommon
+        optimizers
+        SRES-static
+        Framework
+        linux2win
+)
 
 
 install(

@@ -10,7 +10,9 @@
 #include "individual.h"
 #include "../common/myRandom.h"
 #include "../common/myTimes.h"
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 ///
 /// @brief A general class implementing simple genetic algorithm with cross-over ans mutation

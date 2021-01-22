@@ -43,7 +43,7 @@ individual::individual(vector<double>* newGenome, vector<double>* newStepSizes){
 	Genome_.resize(nGenes_);
 	EquivParam_.resize(nGenes_);
 	if((int) newStepSizes->size() != nGenes_){
-		cerr << "You want to create an individual with not the same number of genes and stepSizes\n";
+		std::cerr << "You want to create an individual with not the same number of genes and stepSizes\n";
 		return;
 	}
 	StepSize_.resize(nGenes_, 1.0);
@@ -65,11 +65,11 @@ void individual::copy(individual* i2){
 	StepSize_.resize(nGenes_);
 	EquivParam_.resize(nGenes_);
 	if((int) i2->StepSize_.size() != nGenes_){
-		cerr << "Copy : pattern parent for copy is incorrect : not the same number of genes and parameters\n";
+		std::cerr << "Copy : pattern parent for copy is incorrect : not the same number of genes and parameters\n";
 		return;
 	}
 	if((int) i2->EquivParam_.size() != nGenes_){
-		cerr << "Copy : pattern parent for copy is incorrect : not the same number of EquivPara and parameters\n";
+		std::cerr << "Copy : pattern parent for copy is incorrect : not the same number of EquivPara and parameters\n";
 		return;
 	}
 	for(int i = 0; i < nGenes_; ++i){
@@ -148,7 +148,7 @@ void individual::setStepSizes(vector<double>* newStepSizes){
 	//modified_ = true;
 	//ID = GenID();
 	if((int) (*newStepSizes).size() != nGenes_){
-		cerr << "To set a stepsize vectror, it should have the same length as the genome\n";
+		std::cerr << "To set a stepsize vectror, it should have the same length as the genome\n";
 		return;
 	}
 	StepSize_.resize(nGenes_);
@@ -168,7 +168,7 @@ void individual::setEquivParam(int i, double value){
 
 void individual::setEquivParams(vector<double> * newEquivParams){
 	if((int) (*newEquivParams).size() != nGenes_){
-		cerr << "To set a EquivParam vectror, it should have the same length as the genome\n";
+		std::cerr << "To set a EquivParam vectror, it should have the same length as the genome\n";
 		return;
 	}
 	EquivParam_.resize(nGenes_);
@@ -241,7 +241,7 @@ bool individual::improve(individual* contestant){
 }
 
 void individual::print(){
-    cout << "\t";
+    std::cout << "\t";
     std::cout << "E=" << cost() << "\t";
     std::cout << "ID=" << myID() << "\t";
     std::cout << "Age=" << age() << "\n";

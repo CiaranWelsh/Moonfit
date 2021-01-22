@@ -161,14 +161,14 @@ void choose::dataSetSelected(int ds) {
 
     if (currentExperiment) {
         int nb = currentExperiment->nbExp();
-        cerr << "       Nb Exps : " << nb << endl;
+        std::cerr << "       Nb Exps : " << nb << std::endl;
         ui->comboBoxExperiment->clear();
         for (int i = 0; i < nb; ++i) {
             if (currentExperiment->isDoable(i)) {
                 ui->comboBoxExperiment->addItem(currentExperiment->expName(i).c_str());
-                cerr << "   - " << currentExperiment->expName(i).c_str() << endl;
+                std::cerr << "   - " << currentExperiment->expName(i).c_str() << std::endl;
             } else {
-                cerr << "   X " << currentExperiment->expName(i).c_str() << endl;
+                std::cerr << "   X " << currentExperiment->expName(i).c_str() << std::endl;
             }
         }
 

@@ -11,8 +11,8 @@ target_link_libraries(${target} PRIVATE
         optimizers
         SRES-static
         Framework
-        linux2win
         Moonfit
+        linux2win
         )
 
 target_compile_definitions(${target} PRIVATE ModelStructureA)

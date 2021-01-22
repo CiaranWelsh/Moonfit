@@ -86,7 +86,9 @@ You don't need these modules for QCP, and they are not suitable for static compi
 #include <string>
 #include <vector>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 
 void createFolder(const string& folderName);       // because this sh** is OS dependent, better in a function
 

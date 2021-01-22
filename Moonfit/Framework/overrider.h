@@ -10,7 +10,9 @@
 #include <string>
 #include <map>
 
-using namespace std;
+// using namespace std;
+using std::string;
+using std::vector;
 using namespace tk;     // for the spline library, see spline.h
 
 /// @defgroup Overrider Overrider
