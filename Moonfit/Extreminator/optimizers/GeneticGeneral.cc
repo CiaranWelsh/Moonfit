@@ -1957,7 +1957,7 @@ bool GeneticGeneral::metropolis(double E1, double E2){
 }
 
 void GeneticGeneral::MegaTest(){
-	std::cerr << setiosflags(std::ios::fixed);
+	std::cerr << std::setiosflags(std::ios::fixed);
     resetCostCalls();
 	int numMutations;
 	int popSize;
