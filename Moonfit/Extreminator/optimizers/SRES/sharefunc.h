@@ -22,6 +22,8 @@
  ** Organization: Oak Ridge National Laboratory                     **
  *********************************************************************/
 
+#ifndef SHAREFUNC_H
+#define SHAREFUNC_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -49,7 +51,7 @@ extern "C" {
  ** void ShareRandVec(s, n, min, max_)                               **
  ** return s=vec(n)                                                 **
  *********************************************************************/
-double ShareRand(double , double );
+double ShareRand(double, double);
 void ShareRandVec(double *, int, double, double);
 
 /*********************************************************************
@@ -62,7 +64,7 @@ void ShareRandVec(double *, int, double, double);
  ** source code from                                                **
  **        http://remus.rutgers.edu/~rhoads/Code/code.html          **
  *********************************************************************/
-double ShareNormalRand(double , double );
+double ShareNormalRand(double, double);
 void ShareNormalRandVec(double *, int, double, double);
 
 /*********************************************************************
@@ -82,8 +84,8 @@ void ShareSeed(unsigned int, unsigned int *);
  ** to free memories                                                **
  ** ShareFreeM1c(s)                                                 **
  *********************************************************************/
-char * ShareMallocM1c(int);
-char * ShareReallocM1c(char *, int);
+char *ShareMallocM1c(int);
+char *ShareReallocM1c(char *, int);
 void ShareFreeM1c(char *);
 /*********************************************************************
  ** to malloc memories                                              **
@@ -93,14 +95,14 @@ void ShareFreeM1c(char *);
  ** to free memories                                                **
  ** ShareFreeM2c(s, size)                                           **
  *********************************************************************/
-char ** ShareMallocM2c(int,int);
-char ** ShareReallocM2c(char **, int, int);
+char **ShareMallocM2c(int, int);
+char **ShareReallocM2c(char **, int, int);
 void ShareFreeM2c(char **, int);
 /*********************************************************************
  ** to malloc memories                                              **
  ** ShareMallocM1i(size): size*int                                  **
  *********************************************************************/
-int * ShareMallocM1i(int);
+int *ShareMallocM1i(int);
 /*********************************************************************
  ** to free memories                                                **
  ** ShareFreeM1i(s)                                                 **
@@ -110,7 +112,7 @@ void ShareFreeM1i(int *);
  ** to malloc memories                                              **
  ** ShareMallocM1d(size): size*double                               **
  *********************************************************************/
-double * ShareMallocM1d(int);
+double *ShareMallocM1d(int);
 /*********************************************************************
  ** to free memories                                                **
  ** ShareFreeM1d(s)                                                 **
@@ -123,7 +125,7 @@ void ShareFreeM1d(double *);
  ** to free memories                                                **
  ** ShareFreeM2d(s, size)                                           **
  *********************************************************************/
-double **ShareMallocM2d(int , int);
+double **ShareMallocM2d(int, int);
 void ShareFreeM2d(double **, int);
 /*********************************************************************
  ** to malloc memories                                              **
@@ -132,8 +134,8 @@ void ShareFreeM2d(double **, int);
  ** to free memories                                                **
  ** ShareFreeM3d(s, size1, size2)                                   **
  *********************************************************************/
-double ***ShareMallocM3d(int , int , int );
-void ShareFreeM3d(double ***, int , int );
+double ***ShareMallocM3d(int, int, int);
+void ShareFreeM3d(double ***, int, int);
 /*********************************************************************
  ** to check if it's equal to zero                                  **
  ** if(x<min) return true                                           **
@@ -153,7 +155,7 @@ int ShareIsZero(double);
  **   sepa: mark string                                             **
  **   len: number of sub strings                                    **
  *********************************************************************/
-char ** ShareSplitStr(const char *, const char *, int *, int );
+char **ShareSplitStr(const char *, const char *, int *, int);
 /*********************************************************************
  ** ShareChop(s)                                                    **
  ** cut the '\n' from the tail of a string                          **
@@ -165,3 +167,4 @@ void ShareChop(char *);
 #ifdef __cplusplus
 }
 #endif
+#endif // #define SHAREFUNC_H

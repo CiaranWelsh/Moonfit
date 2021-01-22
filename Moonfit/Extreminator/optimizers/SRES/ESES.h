@@ -31,9 +31,14 @@
  **      Applications and Reviews. 35(2):233-243.                   **
  *********************************************************************/
 
+#ifndef ESES_H
+#define ESES_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "sres_export.h"
 
 #ifndef _es_es_h
 #define _es_es_h
@@ -86,8 +91,8 @@ typedef double(*ESfcnTrsfm)(double);
  ** tar_: learning rates: tau_ = varphi((sqrt(2*dim)                **
  *********************************************************************/
 typedef struct {
-    ESfcnFG fg;
-    ESfcnTrsfm *trsfm;
+    ESfcnFG fg;             // cost fn: like sum of squares (cw)
+    ESfcnTrsfm *trsfm;      // trnsform fn: like log10 (cw)
     int seed;
     int constraint;
     int dim;
@@ -101,6 +106,39 @@ typedef struct {
     double chi, tau, tau_;
     int es, eslambda;
 } ESParameter;
+
+/**
+ * @brief (CW) Create a pointer to the ESParameter struct. Variables within the
+ * ESParameter struct remain uninitialized (see SRES.cc, optimize). A pointer to
+ * ESParameter* is used as input to ESInitial, which (presumably) populates it.
+ * @details It seems that we cannot export a struct like we can a class so instead
+ * we (CW) create a quick constructor to create a pointer for ESParameter. The @return
+ * ESparameter* type is dynamically allocated and must be free'd with freeESParameter()
+ * @author (CW)
+ */
+ESParameter *makeESParameter();
+
+/**
+ * (CW) Free an ESParameter created by makeESParameter.
+ */
+void freeESParameter(ESParameter *parameter);
+
+
+/**
+ * @brief A "do nothing" transform function that conforms
+ * to the interface dictated by ESFcnTrsfm
+ * @author (CW)
+ */
+double do_nothing_transform(double x);
+
+/**
+ * @brief A method adhering to the interface defined by ESfcnFG
+ * @details Not yet sure what to do here. In SRES.cc they implement the
+ * cost method, which uses their individual class and their own SRES
+ * CPP object.
+ * @author (CW)
+ */
+void rss_cost(double *x, double *f, double *g); // (CW) still to implement, but how/
 
 /*********************************************************************
  ** ESIndividual: struct for each individual/genome                 **
@@ -117,6 +155,19 @@ typedef struct {
     double *g;
 } ESIndividual;
 
+/**
+ * @brief (CW) create a pointer to an ESIndividual
+ * @details Heap allocated. Free with freeIndividual
+ */
+ESIndividual *makeIndividual();
+
+
+/**
+ * @brief (CW) free an ESIndividual
+ */
+void freeIndividual(ESIndividual *individual);
+
+
 /*********************************************************************
  ** ESPopulation: struct for population                             **
  ** member[lambda]: each individual in this population              **
@@ -130,6 +181,17 @@ typedef struct {
     double *phi;
     int *index;
 } ESPopulation;
+
+/**
+ * @brief Create a ESPopulation
+ * @details heap allocated. User free's with freeESPopulation
+ */
+ESPopulation *makePopulation();
+
+/**
+ * @brief free a ESPopulation* allocated by ESPopulation
+ */
+void freePopulation(ESPopulation* population);
 
 /*********************************************************************
  ** ESStatistics: struct for ES-statistics                          **
@@ -185,6 +247,16 @@ void ESInitial(unsigned int, ESParameter **, ESfcnTrsfm *, \
                ESfcnFG, int, int, int, double *, double *, int, int, int, \
                double, double, double, int, \
                ESPopulation **, ESStatistics **);
+
+/**
+ * @brief (CW) same as ESInitial but the parameter ESfcnFC is instead
+ * passed in as a pointer. This should help us with port to python
+ */
+void ESInitialWithPtrFitnessFcn(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
+               ESfcnFG *fg, int es, int constraint, int dim, double *ub, \
+               double *lb, int miu, int lambda, int gen, \
+               double gamma, double alpha, double varphi, int retry, \
+               ESPopulation **population, ESStatistics **stats);
 
 void ESDeInitial(ESParameter *, ESPopulation *, ESStatistics *);
 
@@ -365,3 +437,4 @@ void ESMutate(ESPopulation *, ESParameter *);
 }
 #endif
 
+#endif // ESES_H

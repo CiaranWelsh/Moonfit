@@ -10,8 +10,8 @@ SRES::SRES(BaseOptimizationProblem *S, std::ifstream &F_IN) : BaseOptimizer(S,F_
 	num_tries = (int) argument(0);
 }
 
-SRES* CurrentClass = NULL;
-individual* CurrentIndividual = NULL;
+SRES* CurrentClass = nullptr;
+individual* CurrentIndividual = nullptr;
 
 void cost(double *x, double *f, double *g){
 	for(size_t i = 0; i < CurrentClass->numIndex(); ++i){
@@ -80,6 +80,7 @@ void SRES::optimize(){
 
 	while(stats->curgen < param->gen)
 	{
+	    //(CW) multithreading opportunity
         ESStep(population, param, stats, pf);
         if(nbCostCalls() > num_tries) break;
 	}

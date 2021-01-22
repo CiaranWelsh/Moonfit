@@ -37,6 +37,55 @@
 #include "sharefunc.h"
 #include "ESSRSort.h"
 #include "ESES.h"
+#include <memory>
+
+/**
+ * Some functions added by CW for
+ * allocating pointers to structs that we need
+ * in python to pass to init function
+ */
+
+void freePtr(void *ptr) {
+    if (ptr == nullptr)
+        return;
+    free(ptr);
+}
+
+ESParameter *makeESParameter() {
+    auto *param = (ESParameter *) malloc(sizeof(ESParameter));
+    return param;
+}
+
+void freeESParameter(ESParameter *parameter) {
+    freePtr((void *) parameter);
+}
+
+ESIndividual *makeIndividual() {
+    auto *individual = (ESIndividual *) malloc(sizeof(ESIndividual));
+    return individual;
+}
+
+void freeIndividual(ESIndividual *individual) {
+    freePtr((void *) individual);
+}
+
+ESPopulation *makePopulation() {
+    auto *population = (ESPopulation *) malloc(sizeof(ESPopulation));
+
+}
+
+void freePopulation(ESPopulation *population) {
+    freePtr((void *) population);
+}
+
+
+double do_nothing_transform(double x) {
+    return x;
+}
+
+void rss_cost(double *x, double *f, double *g) {
+    // NOTE: (CW) still to implement this. But how?
+}
 
 /*********************************************************************
  ** Initialize: parameters,populations and random seed              **
@@ -71,32 +120,43 @@
  ** ESDeInitial(param,population,stats)                             **
  ** free param and population                                       **
  *********************************************************************/
-void ESInitial(unsigned int seed, ESParameter ** param,ESfcnTrsfm *trsfm,  \
-               ESfcnFG fg, int es, int constraint, int dim, double* ub,   \
-               double *lb, int miu, int lambda, int gen,  \
-               double gamma, double alpha, double varphi, int retry,  \
-               ESPopulation ** population, ESStatistics **stats)
-{
-  unsigned int outseed;
+void ESInitial(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
+               ESfcnFG fg, int es, int constraint, int dim, double *ub, \
+               double *lb, int miu, int lambda, int gen, \
+               double gamma, double alpha, double varphi, int retry, \
+               ESPopulation **population, ESStatistics **stats) {
+    unsigned int outseed;
 
-  ShareSeed(seed, &outseed);
-  ESInitialParam(param, trsfm, fg, es, outseed,constraint, dim, ub, lb,   \
+    ShareSeed(seed, &outseed);
+    ESInitialParam(param, trsfm, fg, es, outseed, constraint, dim, ub, lb, \
                  miu, lambda, gen, gamma, alpha, varphi, retry);
-  ESInitialPopulation(population, (*param));
-  ESInitialStat(stats, (*population), (*param));
+    ESInitialPopulation(population, (*param));
+    ESInitialStat(stats, (*population), (*param));
 
-  printf("\n========\nseed = %u\n========\n", outseed);
-  fflush(NULL);
+    printf("\n========\nseed = %u\n========\n", outseed);
+    fflush(NULL);
 
-  return;
+    return;
 }
-void ESDeInitial(ESParameter *param, ESPopulation *population,   \
-                 ESStatistics *stats)
-{
-  ESDeInitialPopulation(population, param);
-  ESDeInitialParam(param);
-  ESDeInitialStat(stats);
-  return;
+
+void ESInitialWithPtrFitnessFcn(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
+               ESfcnFG *fg, int es, int constraint, int dim, double *ub, \
+               double *lb, int miu, int lambda, int gen, \
+               double gamma, double alpha, double varphi, int retry, \
+               ESPopulation **population, ESStatistics **stats) {
+    ESInitial(seed, param, trsfm, \
+               *fg, es, constraint, dim, ub, \
+                lb, miu, lambda, gen, \
+               gamma, alpha, varphi, retry, \
+               population, stats);
+}
+
+void ESDeInitial(ESParameter *param, ESPopulation *population, \
+                 ESStatistics *stats) {
+    ESDeInitialPopulation(population, param);
+    ESDeInitialParam(param);
+    ESDeInitialStat(stats);
+    return;
 }
 
 /*********************************************************************
@@ -129,64 +189,60 @@ void ESDeInitial(ESParameter *param, ESPopulation *population,   \
  ** ESDeInitialParam(param)                                         **
  ** free param                                                      **
  *********************************************************************/
-void ESInitialParam(ESParameter **param,ESfcnTrsfm *trsfm,  \
-                    ESfcnFG fg, int es, unsigned int seed,  \
-                    int constraint, int dim,  double *ub, double *lb,   \
-                    int miu, int lambda, int gen,  \
-                    double gamma, double alpha,  \
-                    double varphi, int retry)
-{
-  int i;
+void ESInitialParam(ESParameter **param, ESfcnTrsfm *trsfm, \
+                    ESfcnFG fg, int es, unsigned int seed, \
+                    int constraint, int dim, double *ub, double *lb, \
+                    int miu, int lambda, int gen, \
+                    double gamma, double alpha, \
+                    double varphi, int retry) {
+    int i;
 
-  (*param) = (ESParameter *)ShareMallocM1c(sizeof(ESParameter));
-  (*param)->trsfm = NULL;
-  (*param)->fg = NULL;
-  (*param)->ub = NULL;
-  (*param)->lb = NULL;
-  (*param)->spb = NULL;
+    (*param) = (ESParameter *) ShareMallocM1c(sizeof(ESParameter));
+    (*param)->trsfm = nullptr;
+    (*param)->fg = nullptr;
+    (*param)->ub = nullptr;
+    (*param)->lb = nullptr;
+    (*param)->spb = nullptr;
 
-  (*param)->spb = ShareMallocM1d(dim);
-  for(i=0; i<dim; i++)
-    (*param)->spb[i] = (ub[i] - lb[i])/sqrt(dim);
+    (*param)->spb = ShareMallocM1d(dim);
+    for (i = 0; i < dim; i++)
+        (*param)->spb[i] = (ub[i] - lb[i]) / sqrt(dim);
 
-  (*param)->trsfm = trsfm;
-  (*param)->fg = fg;
-  (*param)->es = es;
-  (*param)->seed = seed;
-  (*param)->constraint = constraint;
-  (*param)->dim = dim;
-  (*param)->ub = ub;
-  (*param)->lb = lb;
-  (*param)->miu = miu;
-  (*param)->lambda = lambda;
-  (*param)->gen = gen;
-  (*param)->gamma = gamma;
-  (*param)->alpha = alpha;
-  (*param)->varphi = varphi;
-  (*param)->retry = retry;
+    (*param)->trsfm = trsfm;
+    (*param)->fg = fg;
+    (*param)->es = es;
+    (*param)->seed = seed;
+    (*param)->constraint = constraint;
+    (*param)->dim = dim;
+    (*param)->ub = ub;
+    (*param)->lb = lb;
+    (*param)->miu = miu;
+    (*param)->lambda = lambda;
+    (*param)->gen = gen;
+    (*param)->gamma = gamma;
+    (*param)->alpha = alpha;
+    (*param)->varphi = varphi;
+    (*param)->retry = retry;
 
-  if(es == esDefESSlash)
-    (*param)->eslambda = lambda;
-  else if(es == esDefESPlus)
-    (*param)->eslambda = lambda + miu;
-  else
-    (*param)->eslambda = lambda;
+    if (es == esDefESSlash)
+        (*param)->eslambda = lambda;
+    else if (es == esDefESPlus)
+        (*param)->eslambda = lambda + miu;
+    else
+        (*param)->eslambda = lambda;
 
-  (*param)->chi = 1.0/(2*dim) + 1.0/(2*sqrt(dim));
-  (*param)->varphi = sqrt((2.0/(*param)->chi)*log((1.0/alpha)    \
-                  *(exp(varphi*varphi*(*param)->chi/2)-(1-alpha))));
-  (*param)->tau = (*param)->varphi/(sqrt(2*sqrt(dim)));
-  (*param)->tau_ = (*param)->varphi/(sqrt(2*dim));
-
-
-  return;
+    (*param)->chi = 1.0 / (2 * dim) + 1.0 / (2 * sqrt(dim));
+    (*param)->varphi = sqrt((2.0 / (*param)->chi) * log((1.0 / alpha)    \
+ * (exp(varphi * varphi * (*param)->chi / 2) - (1 - alpha))));
+    (*param)->tau = (*param)->varphi / (sqrt(2 * sqrt(dim)));
+    (*param)->tau_ = (*param)->varphi / (sqrt(2 * dim));
 }
-void ESDeInitialParam(ESParameter *param)
-{
-  ShareFreeM1d(param->spb);
-  ShareFreeM1c((char *)param);
-  param = NULL;
-  return;
+
+void ESDeInitialParam(ESParameter *param) {
+    ShareFreeM1d(param->spb);
+    ShareFreeM1c((char *) param);
+    param = NULL;
+    return;
 }
 
 /*********************************************************************
@@ -203,55 +259,53 @@ void ESDeInitialParam(ESParameter *param)
  ** ESDeInitialPopulation(population, param)                        **
  ** free population                                                 **
  *********************************************************************/
-void ESInitialPopulation(ESPopulation **population, ESParameter *param)
-{
-  int i;
-  int eslambda;
+void ESInitialPopulation(ESPopulation **population, ESParameter *param) {
+    int i;
+    int eslambda;
 
-  eslambda = param->eslambda;
+    eslambda = param->eslambda;
 
-  (*population) = (ESPopulation *)ShareMallocM1c(sizeof(ESPopulation));
-  (*population)->member = NULL;
-  (*population)->f = NULL;
-  (*population)->phi = NULL;
-  (*population)->index = NULL;
+    (*population) = (ESPopulation *) ShareMallocM1c(sizeof(ESPopulation));
+    (*population)->member = NULL;
+    (*population)->f = NULL;
+    (*population)->phi = NULL;
+    (*population)->index = NULL;
 
-  (*population)->member = (ESIndividual **)  \
-                   ShareMallocM1c(eslambda*sizeof(ESIndividual *));
-  (*population)->f = ShareMallocM1d(eslambda);
-  (*population)->phi = ShareMallocM1d(eslambda);
+    (*population)->member = (ESIndividual **) \
+                   ShareMallocM1c(eslambda * sizeof(ESIndividual *));
+    (*population)->f = ShareMallocM1d(eslambda);
+    (*population)->phi = ShareMallocM1d(eslambda);
 
-  (*population)->index = ShareMallocM1i(eslambda);
+    (*population)->index = ShareMallocM1i(eslambda);
 
-  for(i=0; i<eslambda; i++)
-  {
-    (*population)->member[i] = NULL;
-    ESInitialIndividual(&((*population)->member[i]), param);
-    (*population)->index[i] = i;
-    (*population)->f[i] = (*population)->member[i]->f;
-    (*population)->phi[i] = (*population)->member[i]->phi;
-  }
+    for (i = 0; i < eslambda; i++) {
+        (*population)->member[i] = NULL;
+        ESInitialIndividual(&((*population)->member[i]), param);
+        (*population)->index[i] = i;
+        (*population)->f[i] = (*population)->member[i]->f;
+        (*population)->phi[i] = (*population)->member[i]->phi;
+    }
 
-  return;
+    return;
 }
-void ESDeInitialPopulation(ESPopulation *population, ESParameter *param)
-{
-  int i;
-  int eslambda;
 
-  eslambda = param->eslambda;
+void ESDeInitialPopulation(ESPopulation *population, ESParameter *param) {
+    int i;
+    int eslambda;
 
-  for(i=0; i<eslambda; i++)
-    ESDeInitialIndividual(population->member[i]);
-  ShareFreeM1c((char *)(population->member));
+    eslambda = param->eslambda;
 
-  ShareFreeM1d(population->f);
-  ShareFreeM1d(population->phi);
-  ShareFreeM1i(population->index);
-  ShareFreeM1c((char*)population);
-  population = NULL;
+    for (i = 0; i < eslambda; i++)
+        ESDeInitialIndividual(population->member[i]);
+    ShareFreeM1c((char *) (population->member));
 
-  return;
+    ShareFreeM1d(population->f);
+    ShareFreeM1d(population->phi);
+    ShareFreeM1i(population->index);
+    ShareFreeM1c((char *) population);
+    population = NULL;
+
+    return;
 }
 
 
@@ -273,125 +327,120 @@ void ESDeInitialPopulation(ESPopulation *population, ESParameter *param)
  ** ESPrintSp(indvdl, param)                                        **
  ** print individual information, indvdl->sp                        **
  *********************************************************************/
-void ESInitialIndividual(ESIndividual **indvdl, ESParameter *param)
-{
-  int i;
-  int dim;
-  int constraint;
-  ESfcnFG fg;
-  double *ub, *lb;
+void ESInitialIndividual(ESIndividual **indvdl, ESParameter *param) {
+    int i;
+    int dim;
+    int constraint;
+    ESfcnFG fg;
+    double *ub, *lb;
 
-  dim = param->dim;
-  constraint = param->constraint;
-  fg = param->fg;
-  ub = param->ub;
-  lb = param->lb;
+    dim = param->dim;
+    constraint = param->constraint;
+    fg = param->fg;
+    ub = param->ub;
+    lb = param->lb;
 
-  (*indvdl) = (ESIndividual *)ShareMallocM1c(sizeof(ESIndividual));
-  (*indvdl)->op = NULL;
-  (*indvdl)->sp = NULL;
-  (*indvdl)->g = NULL;
+    (*indvdl) = (ESIndividual *) ShareMallocM1c(sizeof(ESIndividual));
+    (*indvdl)->op = NULL;
+    (*indvdl)->sp = NULL;
+    (*indvdl)->g = NULL;
 
-  (*indvdl)->op = ShareMallocM1d(dim);
-  (*indvdl)->sp = ShareMallocM1d(dim);
-  (*indvdl)->g = ShareMallocM1d(constraint);
+    (*indvdl)->op = ShareMallocM1d(dim);
+    (*indvdl)->sp = ShareMallocM1d(dim);
+    (*indvdl)->g = ShareMallocM1d(constraint);
 
-  for(i=0; i<dim; i++)
-  {
-    (*indvdl)->op[i] = ShareRand(lb[i], ub[i]);
-    (*indvdl)->sp[i] = (ub[i] - lb[i])/sqrt(dim);
-  }
+    for (i = 0; i < dim; i++) {
+        (*indvdl)->op[i] = ShareRand(lb[i], ub[i]);
+        (*indvdl)->sp[i] = (ub[i] - lb[i]) / sqrt(dim);
+    }
 
-  fg((*indvdl)->op, &((*indvdl)->f), (*indvdl)->g);
-  (*indvdl)->phi = 0.0;
-  for(i=0; i<constraint; i++)
-  {
-    if((*indvdl)->g[i] > 0.0)
-      (*indvdl)->phi += ((*indvdl)->g[i])*((*indvdl)->g[i]);
-  }
+    fg((*indvdl)->op, &((*indvdl)->f), (*indvdl)->g);
+    (*indvdl)->phi = 0.0;
+    for (i = 0; i < constraint; i++) {
+        if ((*indvdl)->g[i] > 0.0)
+            (*indvdl)->phi += ((*indvdl)->g[i]) * ((*indvdl)->g[i]);
+    }
 
-  return;
+    return;
 }
-void ESDeInitialIndividual(ESIndividual *indvdl)
-{
-  ShareFreeM1d(indvdl->g);
-  ShareFreeM1d(indvdl->op);
-  ShareFreeM1d(indvdl->sp);
-  ShareFreeM1c((char *)indvdl);
-  indvdl = NULL;
 
-  return;
+void ESDeInitialIndividual(ESIndividual *indvdl) {
+    ShareFreeM1d(indvdl->g);
+    ShareFreeM1d(indvdl->op);
+    ShareFreeM1d(indvdl->sp);
+    ShareFreeM1c((char *) indvdl);
+    indvdl = NULL;
+
+    return;
 }
-void ESPrintIndividual(ESIndividual *indvdl, ESParameter *param)
-{
-  return;
+
+void ESPrintIndividual(ESIndividual *indvdl, ESParameter *param) {
+    return;
 }
-void ESPrintOp(ESIndividual *indvdl, ESParameter *param)
-{
-  int i;
-  int dim;
-  ESfcnTrsfm *trsfm;
 
-  trsfm = param->trsfm;
-  dim = param->dim;
+void ESPrintOp(ESIndividual *indvdl, ESParameter *param) {
+    int i;
+    int dim;
+    ESfcnTrsfm *trsfm;
 
-  if(trsfm == NULL)
-    for(i=0; i<dim; i++)
-      printf("\t%f", indvdl->op[i]);
-  else
-    for(i=0; i<dim; i++)
-      if(trsfm[i] == NULL)
-        printf("\t%f", indvdl->op[i]);
-      else
-        printf("\t%f", (trsfm[i])(indvdl->op[i]));
+    trsfm = param->trsfm;
+    dim = param->dim;
 
-  return;
+    if (trsfm == NULL)
+        for (i = 0; i < dim; i++)
+            printf("\t%f", indvdl->op[i]);
+    else
+        for (i = 0; i < dim; i++)
+            if (trsfm[i] == NULL)
+                printf("\t%f", indvdl->op[i]);
+            else
+                printf("\t%f", (trsfm[i])(indvdl->op[i]));
+
+    return;
 }
-void ESPrintSp(ESIndividual *indvdl, ESParameter *param)
-{
-  int i;
-  int dim;
-  ESfcnTrsfm *trsfm;
 
-  trsfm = param->trsfm;
-  dim = param->dim;
-  if(trsfm == NULL)
-    for(i=0; i<dim; i++)
-      printf("\t%f", indvdl->sp[i]);
-  else
-    for(i=0; i<dim; i++)
-      if(trsfm[i] == NULL)
-        printf("\t%f", indvdl->sp[i]);
-      else
-        printf("\t%f", (trsfm[i])(indvdl->sp[i]));
+void ESPrintSp(ESIndividual *indvdl, ESParameter *param) {
+    int i;
+    int dim;
+    ESfcnTrsfm *trsfm;
 
-  return;
+    trsfm = param->trsfm;
+    dim = param->dim;
+    if (trsfm == NULL)
+        for (i = 0; i < dim; i++)
+            printf("\t%f", indvdl->sp[i]);
+    else
+        for (i = 0; i < dim; i++)
+            if (trsfm[i] == NULL)
+                printf("\t%f", indvdl->sp[i]);
+            else
+                printf("\t%f", (trsfm[i])(indvdl->sp[i]));
+
+    return;
 }
 
 /*********************************************************************
  ** copy a individual                                               **
  ** ESCopyIndividual(from, to, param)                               **
  *********************************************************************/
-void ESCopyIndividual(ESIndividual *from, ESIndividual *to, ESParameter *param)
-{
-  int i;
-  int dim;
-  int constraint;
+void ESCopyIndividual(ESIndividual *from, ESIndividual *to, ESParameter *param) {
+    int i;
+    int dim;
+    int constraint;
 
-  dim = param->dim;
-  constraint = param->constraint;
+    dim = param->dim;
+    constraint = param->constraint;
 
-  for(i=0; i<dim; i++)
-  {
-    to->op[i] = from->op[i];
-    to->sp[i] = from->sp[i];
-  }
-  for(i=0; i<constraint; i++)
-    to->g[i] = from->g[i];
-  to->f = from->f;
-  to->phi = from->phi;
+    for (i = 0; i < dim; i++) {
+        to->op[i] = from->op[i];
+        to->sp[i] = from->sp[i];
+    }
+    for (i = 0; i < constraint; i++)
+        to->g[i] = from->g[i];
+    to->f = from->f;
+    to->phi = from->phi;
 
-  return;
+    return;
 }
 
 /*********************************************************************
@@ -404,36 +453,35 @@ void ESCopyIndividual(ESIndividual *from, ESIndividual *to, ESParameter *param)
  ** ESDeInitialStat(stats)                                          **
  ** free statistics                                                 **
  *********************************************************************/
-void ESInitialStat(ESStatistics **stats, ESPopulation *population,   \
-                   ESParameter *param)
-{
-  (*stats) = (ESStatistics *)ShareMallocM1c(sizeof(ESStatistics));
-  (*stats)->bestgen = 0;
-  (*stats)->curgen = 0;
-  (*stats)->bestindvdl = NULL;
-  (*stats)->thisbestindvdl = NULL;
-  (*stats)->dt = 0;
-  time(&((*stats)->begintime));
-  time(&((*stats)->nowtime));
+void ESInitialStat(ESStatistics **stats, ESPopulation *population, \
+                   ESParameter *param) {
+    (*stats) = (ESStatistics *) ShareMallocM1c(sizeof(ESStatistics));
+    (*stats)->bestgen = 0;
+    (*stats)->curgen = 0;
+    (*stats)->bestindvdl = NULL;
+    (*stats)->thisbestindvdl = NULL;
+    (*stats)->dt = 0;
+    time(&((*stats)->begintime));
+    time(&((*stats)->nowtime));
 
-  ESInitialIndividual(&((*stats)->bestindvdl), param);
-  ESInitialIndividual(&((*stats)->thisbestindvdl), param); 
+    ESInitialIndividual(&((*stats)->bestindvdl), param);
+    ESInitialIndividual(&((*stats)->thisbestindvdl), param);
 
 /*********************************************************************
  ** dont do stat when initializing                                  ** 
  ** ESDoStat((*stats), population, param);                          **
  *********************************************************************/
 
-  return;
+    return;
 }
-void ESDeInitialStat(ESStatistics *stats)
-{
-  ESDeInitialIndividual(stats->bestindvdl);
-  ESDeInitialIndividual(stats->thisbestindvdl);
-  ShareFreeM1c((char*)stats);
-  stats = NULL;
 
-  return;
+void ESDeInitialStat(ESStatistics *stats) {
+    ESDeInitialIndividual(stats->bestindvdl);
+    ESDeInitialIndividual(stats->thisbestindvdl);
+    ShareFreeM1c((char *) stats);
+    stats = NULL;
+
+    return;
 }
 
 /*********************************************************************
@@ -448,63 +496,58 @@ void ESDeInitialStat(ESStatistics *stats)
  ** print statistics information                                    **
  ** gen=,time=,dt=,bestgen=,bestfitness=,bestindividual=,           **
  *********************************************************************/
-void ESDoStat(ESStatistics *stats, ESPopulation *population,   \
-              ESParameter *param)
-{
-  int i;
-  int eslambda;
-  int flag,count;
+void ESDoStat(ESStatistics *stats, ESPopulation *population, \
+              ESParameter *param) {
+    int i;
+    int eslambda;
+    int flag, count;
 
-  eslambda = param->eslambda;
+    eslambda = param->eslambda;
 
-  stats->curgen +=1;
-  time(&(stats->nowtime));
-  stats->dt = stats->nowtime - stats->begintime;
+    stats->curgen += 1;
+    time(&(stats->nowtime));
+    stats->dt = stats->nowtime - stats->begintime;
 
-  flag = -1;
-  count = 0;
-  for(i=0; i<eslambda; i++)
-  {
-    if(ShareIsZero(population->phi[i])==shareDefTrue )
-      count++;
-    else
-      continue;
-    if(flag < 0)
-    {
-      flag = i;
-      continue;
+    flag = -1;
+    count = 0;
+    for (i = 0; i < eslambda; i++) {
+        if (ShareIsZero(population->phi[i]) == shareDefTrue)
+            count++;
+        else
+            continue;
+        if (flag < 0) {
+            flag = i;
+            continue;
+        }
+        if (population->f[i] < population->f[flag])
+            flag = i;
     }
-    if(population->f[i] < population->f[flag])
-      flag = i;
-  }
-  if(count <=0)
+    if (count <= 0)
+        return;
+
+    ESCopyIndividual(population->member[flag], stats->thisbestindvdl, param);
+    if (population->f[flag] <= stats->bestindvdl->f  \
+ || ShareIsZero(stats->bestindvdl->phi) == shareDefFalse) {
+        ESCopyIndividual(population->member[flag], stats->bestindvdl, param);
+        stats->bestgen = stats->curgen;
+    }
+
     return;
-
-  ESCopyIndividual(population->member[flag], stats->thisbestindvdl, param);
-  if( population->f[flag] <= stats->bestindvdl->f  \
-      || ShareIsZero(stats->bestindvdl->phi)==shareDefFalse )
-  {
-    ESCopyIndividual(population->member[flag], stats->bestindvdl, param);
-    stats->bestgen = stats->curgen;
-  }
-
-  return;
 }
 
-void ESPrintStat(ESStatistics *stats, ESParameter *param)
-{
-  
-  printf("gen=%d,dt=%d,bestgen=%d,bestfitness=%f,phi=%f,\nbestindividual=",  \
-          stats->curgen,stats->dt,stats->bestgen,stats->bestindvdl->f,  \
-          stats->bestindvdl->phi);
-  ESPrintOp(stats->bestindvdl, param);
-  printf("\n");
-  printf("      variance=");
-  ESPrintSp(stats->bestindvdl, param);
-  printf("\n");
-  fflush(NULL);
+void ESPrintStat(ESStatistics *stats, ESParameter *param) {
 
-  return;
+    printf("gen=%d,dt=%d,bestgen=%d,bestfitness=%f,phi=%f,\nbestindividual=", \
+          stats->curgen, stats->dt, stats->bestgen, stats->bestindvdl->f, \
+          stats->bestindvdl->phi);
+    ESPrintOp(stats->bestindvdl, param);
+    printf("\n");
+    printf("      variance=");
+    ESPrintSp(stats->bestindvdl, param);
+    printf("\n");
+    fflush(NULL);
+
+    return;
 }
 
 /*********************************************************************
@@ -515,57 +558,54 @@ void ESPrintStat(ESStatistics *stats, ESParameter *param)
  ** -> Mutate (recalculate f/g/phi) -> do statistics analysis on    **
  ** this generation -> print statistics information                 **
  *********************************************************************/
-void ESStep(ESPopulation *population, ESParameter *param,   \
-            ESStatistics *stats, double pf)
-{
+void ESStep(ESPopulation *population, ESParameter *param, \
+            ESStatistics *stats, double pf) {
 
-  ESSRSort(population->f, population->phi, pf, param->eslambda,   \
+    ESSRSort(population->f, population->phi, pf, param->eslambda, \
            param->eslambda, population->index);
-  ESSortPopulation(population, param);
+    ESSortPopulation(population, param);
 
-  ESSelectPopulation(population, param);
+    ESSelectPopulation(population, param);
 
-  ESMutate(population, param);    
+    ESMutate(population, param);
 
-  ESDoStat(stats, population, param);
+    ESDoStat(stats, population, param);
 
-  ESPrintStat(stats, param);
+    ESPrintStat(stats, param);
 
-  return;
+    return;
 }
 
 /*********************************************************************
  ** sort population based on Index by ESSRSort                      **
  ** ESSortPopulation(population, param)                             **
  *********************************************************************/
-void ESSortPopulation(ESPopulation *population, ESParameter *param)
-{
-  int i;
-  int eslambda;
-  int *index;
-  ESIndividual **oldmember, **newmember;
+void ESSortPopulation(ESPopulation *population, ESParameter *param) {
+    int i;
+    int eslambda;
+    int *index;
+    ESIndividual **oldmember, **newmember;
 
-  eslambda = param->eslambda;
-  oldmember = population->member;
-  index = population->index;
-  newmember = NULL;
-  newmember = (ESIndividual **)ShareMallocM1c(eslambda*sizeof(ESIndividual *));
+    eslambda = param->eslambda;
+    oldmember = population->member;
+    index = population->index;
+    newmember = NULL;
+    newmember = (ESIndividual **) ShareMallocM1c(eslambda * sizeof(ESIndividual *));
 
-  for(i=0; i<eslambda; i++)
-    newmember[i] = oldmember[index[i]];
+    for (i = 0; i < eslambda; i++)
+        newmember[i] = oldmember[index[i]];
 
-  for(i=0; i<eslambda; i++)
-  {
-    oldmember[i] = newmember[i];
-    population->f[i] = newmember[i]->f;
-    population->phi[i] = newmember[i]->phi;
-    index[i] = i;
-  }
+    for (i = 0; i < eslambda; i++) {
+        oldmember[i] = newmember[i];
+        population->f[i] = newmember[i]->f;
+        population->phi[i] = newmember[i]->phi;
+        index[i] = i;
+    }
 
-  ShareFreeM1c((char *)newmember);
-  newmember = NULL;
+    ShareFreeM1c((char *) newmember);
+    newmember = NULL;
 
-  return;
+    return;
 }
 
 /*********************************************************************
@@ -574,33 +614,30 @@ void ESSortPopulation(ESPopulation *population, ESParameter *param)
  ** select first miu offsprings to fill up the next generation      **
  ** miu -> lambda : 1..miu,1..miu,..,lambda                         **
  *********************************************************************/
-void ESSelectPopulation(ESPopulation *population, ESParameter *param)
-{
-  int i,j;
-  int miu, lambda, eslambda;
+void ESSelectPopulation(ESPopulation *population, ESParameter *param) {
+    int i, j;
+    int miu, lambda, eslambda;
 
-  miu = param->miu;
-  lambda = param->lambda;
-  eslambda = param->eslambda;
+    miu = param->miu;
+    lambda = param->lambda;
+    eslambda = param->eslambda;
 
-  for(i=miu,j=0; i<lambda; i++,j++)
-  {
-    if(j==miu)
-      j = 0;
-    ESCopyIndividual(population->member[j], population->member[i], param);
-    population->f[i] = population->member[j]->f;
-    population->phi[i] = population->member[j]->phi;
-  }
-  for(i=lambda, j=0; i<eslambda; i++,j++)
-  {
-    if(j==miu)
-      j = 0;
-    ESCopyIndividual(population->member[j], population->member[i], param);
-    population->f[i] = population->member[j]->f;
-    population->phi[i] = population->member[j]->phi;
-  }
+    for (i = miu, j = 0; i < lambda; i++, j++) {
+        if (j == miu)
+            j = 0;
+        ESCopyIndividual(population->member[j], population->member[i], param);
+        population->f[i] = population->member[j]->f;
+        population->phi[i] = population->member[j]->phi;
+    }
+    for (i = lambda, j = 0; i < eslambda; i++, j++) {
+        if (j == miu)
+            j = 0;
+        ESCopyIndividual(population->member[j], population->member[i], param);
+        population->f[i] = population->member[j]->f;
+        population->phi[i] = population->member[j]->phi;
+    }
 
-  return;
+    return;
 }
 
 /*********************************************************************
@@ -629,128 +666,114 @@ void ESSelectPopulation(ESPopulation *population, ESParameter *param)
  ** 
  ** re-calculate f/g/phi                                            **
  *********************************************************************/
-void ESMutate(ESPopulation * population, ESParameter *param)
-{
-  int i, j, k;
-  int miu, dim,lambda, constraint;
-  double gamma, alpha;
-  double tau, tau_;
-  int retry;
-  double randscalar;
-  double *randvec;
-  double *spb, *ub, *lb;
-  ESIndividual *indvdl;
-  double **sp_, **op_;
-  double tmp;
-  ESfcnFG fg;
-  
-  randvec = NULL;
-  sp_ = NULL;
-  op_ = NULL;
+void ESMutate(ESPopulation *population, ESParameter *param) {
+    int i, j, k;
+    int miu, dim, lambda, constraint;
+    double gamma, alpha;
+    double tau, tau_;
+    int retry;
+    double randscalar;
+    double *randvec;
+    double *spb, *ub, *lb;
+    ESIndividual *indvdl;
+    double **sp_, **op_;
+    double tmp;
+    ESfcnFG fg;
 
-  miu = param->miu;
-  lambda = param->lambda;
-  constraint = param->constraint;
-  gamma = param->gamma;
-  alpha = param->alpha;
-  tau = param->tau;
-  tau_ = param->tau_;
-  retry = param->retry;
-  spb = param->spb;
-  ub = param->ub;
-  lb = param->lb;
-  dim = param->dim;
-  fg = param->fg;
-  randvec = ShareMallocM1d(dim);
-  sp_ = ShareMallocM2d(lambda, dim);
-  op_ = ShareMallocM2d(lambda, dim);
+    randvec = NULL;
+    sp_ = NULL;
+    op_ = NULL;
 
-  for(i=0; i<lambda; i++)
-  {
-    indvdl = population->member[i];
-    for(j=0; j<dim; j++)
-    {
-      sp_[i][j] = indvdl->sp[j];
-      op_[i][j] = indvdl->op[j];
-    }
-  }
+    miu = param->miu;
+    lambda = param->lambda;
+    constraint = param->constraint;
+    gamma = param->gamma;
+    alpha = param->alpha;
+    tau = param->tau;
+    tau_ = param->tau_;
+    retry = param->retry;
+    spb = param->spb;
+    ub = param->ub;
+    lb = param->lb;
+    dim = param->dim;
+    fg = param->fg;
+    randvec = ShareMallocM1d(dim);
+    sp_ = ShareMallocM2d(lambda, dim);
+    op_ = ShareMallocM2d(lambda, dim);
 
-  for(i=miu-1; i<lambda; i++)
-  {
-    randscalar = ShareNormalRand(0,1);
-    ShareNormalRandVec(randvec, dim, 0, 1);
-    indvdl = population->member[i];
-    for(j=0; j<dim; j++)
-    {
-      tmp = indvdl->sp[j] *exp(tau_ *randscalar +tau*randvec[j]);
-      if( tmp > spb[j] )
-        tmp = spb[j];
-      indvdl->sp[j] = tmp;
-    }
-  }
-
-  for(i=0; i<miu-1; i++)
-  {
-    indvdl = population->member[i];
-    for(j=0; j<dim; j++)
-      indvdl->op[j] = indvdl->op[j] + gamma*(op_[0][j] - op_[i+1][j]);
-  }
-  for(i=miu-1; i<lambda; i++)
-  {
-    indvdl = population->member[i];
-    for(j=0; j<dim; j++)
-      indvdl->op[j] = indvdl->op[j] + indvdl->sp[j] * ShareNormalRand(0, 1);
-  }
-
-  for(i=0; i<lambda; i++)
-  {
-    indvdl = population->member[i];
-    for(j=0; j<dim; j++)
-    {
-      tmp = indvdl->op[j];
-      if(tmp > ub[j] || tmp < lb[j])
-      {
-        for(k=0; k<retry; k++)
-        {
-          tmp = op_[i][j] + indvdl->sp[j]*ShareNormalRand(0,1);
-          if(!(tmp > ub[j] || tmp < lb[j]))
-            break;
+    for (i = 0; i < lambda; i++) {
+        indvdl = population->member[i];
+        for (j = 0; j < dim; j++) {
+            sp_[i][j] = indvdl->sp[j];
+            op_[i][j] = indvdl->op[j];
         }
-        if(k >= retry)
-          tmp = op_[i][j];
-        indvdl->op[j] = tmp;
-      }
     }
-  }
 
-  for(i=miu-1; i<lambda; i++)
-  {
-    indvdl = population->member[i];
-    for(j=0; j<dim; j++)
-      indvdl->sp[j] = sp_[i][j] + alpha *(indvdl->sp[j] - sp_[i][j]);
-  }
-
-  for(i=0; i<lambda; i++)
-  {
-    indvdl = population->member[i];
-    fg(indvdl->op, &(indvdl->f), indvdl->g);
-    indvdl->phi = 0.0;
-    for(j=0; j<constraint; j++)
-    {
-      if(indvdl->g[j] > 0.0)
-        indvdl->phi += (indvdl->g[j] * indvdl->g[j]);
+    for (i = miu - 1; i < lambda; i++) {
+        randscalar = ShareNormalRand(0, 1);
+        ShareNormalRandVec(randvec, dim, 0, 1);
+        indvdl = population->member[i];
+        for (j = 0; j < dim; j++) {
+            tmp = indvdl->sp[j] * exp(tau_ * randscalar + tau * randvec[j]);
+            if (tmp > spb[j])
+                tmp = spb[j];
+            indvdl->sp[j] = tmp;
+        }
     }
-    population->f[i] = indvdl->f;
-    population->phi[i] = indvdl->phi;
-  }
 
-  ShareFreeM1d(randvec);
-  randvec = NULL;
-  ShareFreeM2d(sp_, lambda);
-  sp_ = NULL;
-  ShareFreeM2d(op_, lambda);
-  op_ = NULL;
+    for (i = 0; i < miu - 1; i++) {
+        indvdl = population->member[i];
+        for (j = 0; j < dim; j++)
+            indvdl->op[j] = indvdl->op[j] + gamma * (op_[0][j] - op_[i + 1][j]);
+    }
+    for (i = miu - 1; i < lambda; i++) {
+        indvdl = population->member[i];
+        for (j = 0; j < dim; j++)
+            indvdl->op[j] = indvdl->op[j] + indvdl->sp[j] * ShareNormalRand(0, 1);
+    }
 
-  return;
+    for (i = 0; i < lambda; i++) {
+        indvdl = population->member[i];
+        for (j = 0; j < dim; j++) {
+            tmp = indvdl->op[j];
+            if (tmp > ub[j] || tmp < lb[j]) {
+                for (k = 0; k < retry; k++) {
+                    tmp = op_[i][j] + indvdl->sp[j] * ShareNormalRand(0, 1);
+                    if (!(tmp > ub[j] || tmp < lb[j]))
+                        break;
+                }
+                if (k >= retry)
+                    tmp = op_[i][j];
+                indvdl->op[j] = tmp;
+            }
+        }
+    }
+
+    for (i = miu - 1; i < lambda; i++) {
+        indvdl = population->member[i];
+        for (j = 0; j < dim; j++)
+            indvdl->sp[j] = sp_[i][j] + alpha * (indvdl->sp[j] - sp_[i][j]);
+    }
+
+    for (i = 0; i < lambda; i++) {
+        indvdl = population->member[i];
+        fg(indvdl->op, &(indvdl->f), indvdl->g);
+        indvdl->phi = 0.0;
+        for (j = 0; j < constraint; j++) {
+            if (indvdl->g[j] > 0.0)
+                indvdl->phi += (indvdl->g[j] * indvdl->g[j]);
+        }
+        population->f[i] = indvdl->f;
+        population->phi[i] = indvdl->phi;
+    }
+
+    ShareFreeM1d(randvec);
+    randvec = NULL;
+    ShareFreeM2d(sp_, lambda);
+    sp_ = NULL;
+    ShareFreeM2d(op_, lambda);
+    op_ = NULL;
+
+    return;
 }
 

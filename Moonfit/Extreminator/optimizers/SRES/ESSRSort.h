@@ -26,6 +26,9 @@
  **   http://cerium.raunvis.hi.is/~tpr/software/sres/               **
  *********************************************************************/
 
+#ifndef ESSRSORT_H
+#define ESSRSORT_H
+
 #ifdef __cplusplus 
 extern "C" {
 #endif
@@ -64,3 +67,5 @@ void ESSRSort(double *, double *, double , int , int , int *);
 #ifdef __cplusplus 
 }
 #endif
+
+#endif // #define ESSRSORT_H

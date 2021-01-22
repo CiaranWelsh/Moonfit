@@ -77,15 +77,28 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -lstdc++fs")
 endif ()
 
+option(BUILD_PYTHON "build the python API (for SRES only)" OFF)
+set(README_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.md")
 
 ############################################################################
 #       include src
 #
+if (BUILD_PYTHON)
+    find_package(Python)
+    # configure the python setup.py
+    set(PYTHON_SETUP_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in)
+    set(PYTHON_SETUP_FILE ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
+    configure_file(${PYTHON_SETUP_CONFIG_FILE} ${PYTHON_SETUP_FILE} @ONLY)
+
+endif ()
+
 add_subdirectory(Linux2Windows)
 
 add_subdirectory(Moonfit)
 
 add_subdirectory(Elfaki2020)
+
+
 
 
 ############################################################################
