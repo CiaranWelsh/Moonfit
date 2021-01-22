@@ -141,8 +141,8 @@ using namespace std;
 #if __cplusplus >= 201703L
 std::vector<std::string> listSubDirectories(const std::string& dir){
     std::vector<std::string> r;
-    for(auto& p : std::filesystem::recursive_directory_iterator(dir))
-        if (p.is_directory())
+    for(auto& p : fs::recursive_directory_iterator(dir))
+        if (fs::exists(p))
             r.push_back(p.path().string());
     return r;
 }
@@ -192,7 +192,6 @@ vector<string> listSubDirectories(string dir)
     return res;
 }
 #endif // ifdef WINDOWS
-#endif // #if __cplusplus >= 201703L
 
 
 
@@ -218,6 +217,8 @@ vector<string> listSubDirectories(string namedir) {
 }
 
 #endif
+#endif // #if __cplusplus >= 201703L
+
 
 #if __cplusplus >= 201703L
 string currentDir() {
