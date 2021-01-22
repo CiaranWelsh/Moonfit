@@ -20,7 +20,7 @@ stages:
           - script: |
               mkdir -p $(BUILD_DIR)
               cd $(BUILD_DIR)
-              cmake -DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR)
+              cmake -DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR) ..
               cmake --build $(BUILD_DIR) --target install --config Release -j 12
 
 
@@ -48,7 +48,7 @@ stages:
           - script: |
               mkdir -p $(BUILD_DIR)
               cd $(BUILD_DIR)
-              cmake -DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR)
+              cmake -DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR) ..
               cmake --build $(BUILD_DIR) --target install --config Release -j 12
 
 
@@ -70,7 +70,7 @@ stages:
           - powershell: |
               New-Item -ItemType Directory -Force -Path $(BUILD_DIR)
               cd $(BUILD_DIR)
-              cmake -DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR)
+              cmake -DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR) ..
               cmake --build $(BUILD_DIR) --target install --config Release -j 12
 
 
