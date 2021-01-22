@@ -83,7 +83,6 @@ You don't need these modules for QCP, and they are not suitable for static compi
 #include <sys/stat.h>
 #endif
 
-
 #include <string>
 #include <vector>
 

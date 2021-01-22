@@ -26,7 +26,7 @@ endfunction()
 set(TestExecutables)
 
 add_test_executable(BuildTheExampleModels ON TestExecutables BuildTheExampleModels.cpp)
-
+target_compile_definitions(BuildTheExampleModels PRIVATE TESTINGMODE)
 
 
 

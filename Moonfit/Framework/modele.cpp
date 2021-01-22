@@ -23,13 +23,12 @@ class mySim {
 public:
     Model *mm;
 
-    mySim(Model *_mm) : mm(_mm) {}
+    explicit mySim(Model *_mm) : mm(_mm) {}
 
-    void operator()(const vector<double> &_x, vector<double> &_dxdt, const double t) {
+    void operator()(const vector<double> &_x, vector<double> &_dxdt, const double t) const {
 #ifdef USE_OVERRIDERS
         mm->applyOverride((vector<double> &) _x, (double) t);
 #endif
-
         mm->derivatives(_x, _dxdt, t);
 
 #ifdef USE_OVERRIDERS
@@ -46,7 +45,9 @@ double evalErr(vector<double> &v1ref, vector<double> &v2, int size) {
     return res / size;
 }
 
-/// Integrates the ODEs (in the model in mySim), updating the start vector, from t to nxt, with the minimum dt dtmin (and maximum dt dtmin * 500, starting from dtmin * 10)
+/// Integrates the ODEs (in the model in mySim),
+/// updating the start vector, from t to nxt,
+/// with the minimum dt dtmin (and maximum dt dtmin * 500, starting from dtmin * 10)
 size_t myintegrate(mySim BS, vector<double> &start, double t, double nxt, double dtmin) {
     bool diverge = false;
     int size = start.size();
@@ -149,9 +150,11 @@ size_t RK4integrate( mySim BS , vector<double> &start , double t , double nxt , 
 void Model::simulate(double sec_max, Evaluator *E) {
     if (!E) cerr << "No Evaluator\n";
     if (saveKinetics) newCinetiqueIfRequired(); else deleteCinetique();
-    mySim BS = mySim(this);
+    auto BS = mySim(this);
 
-    double nxt = 0;         // nxt will be the next stopping point each time (for recording kinetics or for getting specific value)
+    // nxt will be the next stopping point each time (for recording kinetics or for getting specific value)
+    double nxt = 0;
+
     double t_init = t;
     size_t steps = 0;
 
@@ -162,6 +165,8 @@ void Model::simulate(double sec_max, Evaluator *E) {
         if (saveKinetics) {
             nxt = min(nxt, print_every_dt * (double) ((int) (t / print_every_dt + 1e-8) + 1));
         } // the 1e-8 is due to compensate the errors. Indeed, (0.03 / 0.01) = 3 but (int) (0.03 / 0.01) was giving 2 ...
+#undef USE_EVALUATORS
+
 #ifdef USE_EVALUATORS
         if (E) nxt = min(nxt, E->nextPoint());
 #endif
@@ -584,32 +589,28 @@ string Model::getParamName(int i) {
     if ((i < 0) || (i >= nbParams)) {
         cerr << "ERR- Model::getParamName(" << i << "), out of bounds (" << nbParams << " params)" << endl;
         return "";
-    }
-    else return paramNames[i];
+    } else return paramNames[i];
 }
 
 double Model::getLowerBound(int i) {
     if ((i < 0) || (i >= nbParams)) {
         cerr << "ERR- Model::getLowerBound(" << i << "), out of bounds (" << nbParams << " params)" << endl;
         return 0;
-    }
-    else return paramLowBounds[i];
+    } else return paramLowBounds[i];
 }
 
 double Model::getUpperBound(int i) {
     if ((i < 0) || (i >= nbParams)) {
         cerr << "ERR- Model::getUpperBound(" << i << "), out of bounds (" << nbParams << " params)" << endl;
         return 0;
-    }
-    else return paramUpBounds[i];
+    } else return paramUpBounds[i];
 }
 
 void Model::setBounds(int i, double vLow, double vHi) {
     if ((i < 0) || (i >= nbParams)) {
         cerr << "ERR- Model::setBound(" << i << "), out of bounds (" << nbParams << " params)" << endl;
         return;
-    }
-    else {
+    } else {
         paramLowBounds[i] = vLow;
         paramUpBounds[i] = vHi;
     }

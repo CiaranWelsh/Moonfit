@@ -75,37 +75,42 @@ public:
 
 public:
     /// 2 - The functions the sub-model HAS TO implement : time evolution for dt at time t, initialise and base parameter values
-    virtual void derivatives(const vector<double> &x, vector<double> &dxdt,
-                             const double t);    /// @brief computes the derivatives (at t) from position x
-    virtual void
-    setBaseParameters();                       /// @brief gives a correct set of parameters, if you don't load other set.
-    virtual void initialise(
-            long long _background = DEFAULT_BACKGROUND_VALUE);           /// @brief initialise, (parameters should be set before initializing) - sets t = 0 if necessary.
+
+    /// @brief computes the derivatives (at t) from position x
+    virtual void derivatives(const vector<double> &x, vector<double> &dxdt, double t);
+
+    /// @brief gives a correct set of parameters, if you don't load other set.
+    virtual void setBaseParameters();
+
+    /// @brief initialise, (parameters should be set before initializing) - sets t = 0 if necessary.
     /// @brief to avoid confusion, this function should not change the parameter values !!
     /// @brief the background parameter allows to give options of simulation (such as deficient mice)
-    virtual void
-    finalize() {}                               /// @brief It can be helpful that the experiments notifies the model when a simulation is finished.
-    /// @brief For ODE models it might be not important, but for agent-based memory might need to be cleared
+    virtual void initialise(long long _background = DEFAULT_BACKGROUND_VALUE);
 
+    /// @brief It can be helpful that the experiments notifies the model when a simulation is finished.
+    /// @brief For ODE models it might be not important, but for agent-based memory might need to be cleared
+    virtual void finalize() {}
 
     /// 2b - This function is already implemented in the mother class, but as an option you can override it in the subclass
-    virtual void loadParameters(
-            string file_name);          /// @brief reads parameters from a text file with format : "NB_PARAMS\tparam1\tparam2\tparam3 ..."
-    virtual void saveParameters(
-            string file_name);          /// @brief writes parameters from a text file with format : "NB_PARAMS\tparam1\tparam2\tparam3 ..."
+    /// @brief reads parameters from a text file with format : "NB_PARAMS\tparam1\tparam2\tparam3 ..."
+    virtual void loadParameters(string file_name);
+
+    /// @brief writes parameters from a text file with format : "NB_PARAMS\tparam1\tparam2\tparam3 ..."
+    virtual void saveParameters(string file_name);
 
     /// 2c - A function to perform personnalized actions by the model, without a specific function, but by a name of action, (ex : adding a cytokine at day 2)
-    virtual void action(string name,
-                        double parameter);     /// @brief function to perform personnalized actions by the model by a name of action,
+    /// @brief function to perform personnalized actions by the model by a name of action,
+    virtual void action(string name,double parameter);
+
     virtual void action(string name, vector<double> parameters);
 
     /// 2d - An additional function that can be designed by the user to simulate variable depending on other ones. Exemple: percents, ratios, etc ...
-    virtual void updateDerivedVariables(
-            double _t = 0);     /// @brief  Will be called when the solver stops at each point -> use it to calculate variables that depend on other ones
+    /// @brief  Will be called when the solver stops at each point -> use it to calculate variables that depend on other ones
     /// (i.e. not defined by their derivatives). This is called only after solving, NOT DURING!
     /// for variables that need to be calculated during solving od ODEs, they need to be calculated INSIDE derivatives,
     /// but they should not access val[]. They only can modify x[] and dxdt[] the arguments of derivatives,
     /// because the solver can be at any point or trying things or diverging, independently of the one that will be saved in val[] at the end.
+    virtual void updateDerivedVariables(double _t = 0);
 
 
 public:
@@ -195,24 +200,30 @@ public:
 
 ///     vectors that can be filled by the subclass :
 
-    vector<string> getListExternalNames() { return extNames; }
-
+    vector<string> getListExternalNames() const {
+        return extNames;
+    }
 
 ///     Then, the values of variables can be accessed with the 'external ID' with the following functions
 ///     these already implemented functions can be overrided if wanted (for instance if changing the value of a variable needs to be done in a particular way)
 public:
-    virtual void setValue(string nameExternalVariable,
-                          double val);      /// @brief to modify the value of a variable from the global ID of it
-    virtual void addValue(string nameExternalVariable,
-                          double val);      /// @brief to modify the value of a variable from the global ID of it
-    virtual double
-    getValue(string nameExternalVariable);                  /// @brief to get the value of a variable from its global ID
-    virtual bool isVarKnown(
-            string externalNameVariable);                /// @brief to know if a variable can be simulated by the model (from its global ID)
-    virtual vector<int>
-    internValName(string externalNameVariable);        /// @brief index of variables for this external name
-    virtual int uniqueInternValName(
-            string externalNameVariable);      /// @brief index of variables for this external name; raises an error if there are multiple...
+    /// @brief to modify the value of a variable from the global ID of it
+    virtual void setValue(string nameExternalVariable,double val);
+
+    /// @brief to modify the value of a variable from the global ID of it
+    virtual void addValue(string nameExternalVariable,double val);
+
+    /// @brief to get the value of a variable from its global ID
+    virtual double getValue(string nameExternalVariable);
+
+    /// @brief to know if a variable can be simulated by the model (from its global ID)
+    virtual bool isVarKnown(string externalNameVariable);
+
+    /// @brief index of variables for this external name
+    virtual vector<int> internValName(string externalNameVariable);
+
+    /// @brief index of variables for this external name; raises an error if there are multiple...
+    virtual int uniqueInternValName(string externalNameVariable);
 
 /// 7 - Working directly with the parameters of a model (important for managing the interface with the optimizer (fitting class))
 
@@ -255,9 +266,10 @@ public:
 
 #endif
 
-    bool over(int indexLocal);      /// @brief says if a variable is overrided (then, no need to calculate derivatives)
+    /// @brief says if a variable is overrided (then, no need to calculate derivatives)
     /// if no USE_OVERRIDERS defined, then returns false ! So a program can use this
     /// function independently of the define options
+    bool over(int indexLocal);
 
 /// 10 - names and boundaries for parameters
 
@@ -310,7 +322,7 @@ protected:
 struct modelAgentBased : public Model {
     modelAgentBased(int _nbVars, int _nbParams) : Model(_nbVars, _nbParams) {}
 
-    void simulate(double sec_max, Evaluator *E);
+    void simulate(double sec_max, Evaluator *E) override;
 
     /// @brief Function to be implemented by the user, that will perform time-steps between t=tstart to t=tend
     virtual void timeStep(const double tstart, const double tend) {}

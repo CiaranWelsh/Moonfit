@@ -4,3 +4,21 @@ add_subdirectory(Framework)
 set(target Moonfit)
 add_library(${target} STATIC moonfit.h common)
 target_link_libraries(${target} PUBLIC myCommon optimizers ESES Framework)
+
+
+
+
+install(
+        TARGETS ${target}
+        EXPORT ${target}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+
+
+
+
+
+

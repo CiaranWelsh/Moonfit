@@ -1,0 +1,102 @@
+geneticAlgorithm	14
+0	#CEP  - Classical Evolutionary Programming
+8          #Proportional / From Worst / Basic Sampling
+7	1      #SBX Cross-Over
+1          #Mutation normal all points
+0          #NO_NEED_REPLACEMENT
+0          #Select Best
+7	0.005	#MUTATIVE_SEPARATED
+1      #Nb Repeats
+50000	#Max nb of simulations-costs
+250	#Population Size
+0.2	#Proportion of CrossOver (vs offspring) in new individuals
+0.5	#Fork coeff (%renewed each generation)
+
+9
+	0	5	15	#flu_peak
+	1	0.25	10	#flu_std
+#	2	5e-5	0.1	#fETP_tDN
+#	3	4.5	19	#NdivDN
+#	4	0.1	5	#pDN
+#	5	0.001	0.5	#dDN
+#	6	0.3	4	#T_DN
+#	7	4	8	#NdivDP
+#	8	0.1	5	#peDP
+#	9	0.0001	0.8	#deDP
+#	10	0.0001	0.2	#prestDP
+#	11	0.01	10	#drestDP
+#	12	0.01	5	#out_tDP
+#	13	0.01	0.4	#diffDPtoSP4
+#	14	0.01	0.4	#diffDPtoSP8
+#	15	0.01	0.8	#ptTconv
+#	16	0.01	2	#dtTconv
+#	17	0.01	2	#diffSP4P69PosToNeg
+#	18	0.005	2	#out_tTconv
+#	19	0.01	0.8	#ptSP8
+#	20	0.01	2	#dtSP8
+#	21	0.01	2	#diffSP8P69PosToNeg
+#	22	0.005	2	#out_SP8
+	23	0.0002	0.2	#ftDP_tTregP25
+	24	0.0002	0.2	#ftDP_tTregFP3
+#	25	0.001	2	#ptTregP25
+	26	0.01	2	#ftTregP25_tDPTreg
+#	27	0.01	2	#dtTregP25
+#	28	0.001	2	#ptTregFP3
+	29	0.15	0.6	#ftTregFP3_tDPTreg
+#	30	0.01	2	#dtTregFP3
+#	31	0.001	2	#ptDPTregs
+#	32	0.01	2	#dtDPTregs
+#	33	0.005	2	#out_tDPTregs
+#	34	1	2	#NdivSP4
+#	35	0.01	2	#pSP4
+#	36	0.01	2	#dSP4
+#	37	0.01	1	#pcConvLastGenSP4
+#	38	1	2	#NdivSP8
+#	39	0.01	2	#pSP8
+#	40	0.01	2	#dSP8
+#	41	0.01	1	#pcConvLastGenSP8
+#	42	0.0001	0.1	#out_tTregP25
+#	43	0.0001	0.1	#out_tTregFP3
+#	44	0.1	0.8	#fracTtoS
+#	45	0.001	1	#dsTconv
+#	46	0.001	1	#dsTreg
+#	47	0.001	1	#dsCD8
+#	48	0.001	1	#dsBcells
+#	49	0.2	0.6	#decayRag
+#	50	0.01	20	#hypInflowCoeffETP
+#	51	0.01	20	#hypDeathCoeffDN
+	52	0.01	20	#hypDeathCoeffAddEarlyDP
+	53	0.01	20	#hypDeathCoeffDP
+#	54	1	5	#hypDeathCoeffTconv
+#	55	1	5	#hypDeathCoeffProFp3
+#	56	1	5	#hypDeathCoeffPro25
+#	57	1	5	#hypDeathCoeffDPTregs
+#	58	1	5	#hypDeathCoeffSP8
+#	59	0.01	20	#hypOutputCoeffOutDP
+#	60	0.01	20	#hypOutputCoeffOutTconv
+#	61	0.01	20	#hypOutputCoeffOutDPTregs
+#	62	0.01	20	#hypOutputCoeffOutProFP3
+#	63	0.01	20	#hypOutputCoeffOutPro25
+#	64	0.01	20	#hypOutputCoeffOutSP8
+#	65	0.01	20	#hypFasterCoeffDNtoDP
+#	66	0.01	20	#hypFasterCoeffDPtolDP
+#	67	1	20	#hypFasterCoeffProFP3
+#	68	0.01	20	#hypFasterCoeffPro25
+#	69	0.01	20	#hypFasterCoeffTconv
+#	70	0.01	20	#hypFasterCoeffSP8
+#	71	0.0001	0.5	#hypOutputCoeffDNtoDP
+#	72	0.01	20	#hypSpeedDivDN
+#	73	0.01	20	#hypSpeedDivDP
+#	74	0.01	20	#hypSpeedDivTregPro25
+#	75	0.01	20	#hypSpeedDivTregProFP3
+#	76	0.01	20	#hypSpeedDivDPTreg
+#	77	0.01	20	#hypSpeedDivTconv
+#	78	0.01	20	#hypSpeedDivCD8
+	79	150	800	#logisticThymus
+#	80	0.1	10	#logisticStrength
+
+
+0
+Exponential
+0
+
