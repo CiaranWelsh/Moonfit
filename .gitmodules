@@ -1,3 +1,6 @@
 [submodule "googletest"]
 	path = googletest
 	url = https://github.com/google/googletest.git
+[submodule "Linux2Windows"]
+	path = Linux2Windows
+	url = https://github.com/CiaranWelsh/Linux2Windows.git

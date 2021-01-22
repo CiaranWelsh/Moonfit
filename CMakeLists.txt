@@ -64,16 +64,16 @@ set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+message(STATUS "CMAKE_CXX_STANDARD ${CMAKE_CXX_STANDARD}")
 if (NOT WIN32)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -lstdc++fs")
 endif ()
-set(CXX_STANDARD_REQUIRED ON)
 
 
 ############################################################################
 #       include src
 #
-
+add_subdirectory(Linux2Windows)
 
 add_subdirectory(Moonfit)
 

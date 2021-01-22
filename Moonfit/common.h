@@ -88,7 +88,7 @@ You don't need these modules for QCP, and they are not suitable for static compi
 
 using namespace std;
 
-void createFolder(string folderName);       // because this sh** is OS dependent, better in a function
+void createFolder(const string& folderName);       // because this sh** is OS dependent, better in a function
 
 vector<string> listSubDirectories(string dir);
 

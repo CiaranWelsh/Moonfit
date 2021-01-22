@@ -7,6 +7,7 @@
 #include <ctime>
 #include <iostream>
 #include <stdio.h>
+
 using namespace std;
 
 #ifdef WINDOWS
@@ -14,48 +15,77 @@ using namespace std;
 #include <io.h>
 #endif
 #if defined(UNIX) || defined(MAC)
+
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
 #endif
 
-bool dirExists(string dirName)
-{
+bool dirExists(string dirName) {
 
-    #if defined(UNIX) || defined(MAC)
+#if defined(UNIX) || defined(MAC)
     struct stat info;
 
-    if(stat( dirName.c_str(), &info ) != 0)
+    if (stat(dirName.c_str(), &info) != 0)
         return false;
-    else if(info.st_mode & S_IFDIR)
+    else if (info.st_mode & S_IFDIR)
         return true;
     else
         return false;
-    #endif
-    #ifdef WINDOWS
+#endif
+#ifdef WINDOWS
 
-      DWORD ftyp = GetFileAttributesA(dirName.c_str()); // from Kernel32.dll
-      if (ftyp == INVALID_FILE_ATTRIBUTES)
-        return false;  //something is wrong with your path!
+    DWORD ftyp = GetFileAttributesA(dirName.c_str()); // from Kernel32.dll
+    if (ftyp == INVALID_FILE_ATTRIBUTES)
+      return false;  //something is wrong with your path!
 
-      if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
-        return true;   // this is a directory!
+    if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+      return true;   // this is a directory!
 
-      return false;    // this is not a directory!
-    #endif
+    return false;    // this is not a directory!
+#endif
 }
 
+#if __cplusplus >= 201703L // c++17 or above
+
+// if using gcc 8.0 or greater we can use <filesystem>
+// otherwise we need experimental/filesystem
+/*
+ * For gcc 4.0.1
+ * #define __GNUC__ 4
+ * #define __GNUC_MINOR__ 0
+ * #define __GNUC_PATCHLEVEL__ 1
+ *
+ */
+#if __GNUC__ >= 8
+#   include <filesystem>
+#   define FILESYSTEM std::filesystem
+# else
+#include <experimental/filesystem>
+#   define FILESYSTEM std::experimental::filesystem
+#endif
+
+void createFolder(const string &folderName) {
+    if (FILESYSTEM::is_directory(folderName)) {
+        return;
+    } else {
+        FILESYSTEM::create_directory(folderName);
+    }
+}
+
+#else
 
 void createFolder(string folderName){
 
 #ifdef WINDOWS
-// .................. Now this is all the shit required to create a folder in windows : .............. need to be in the wchar* type, not char*, so need to convert.
-const char *p= folderName.c_str(); const WCHAR *pwcsName;
-int nChars = MultiByteToWideChar(CP_ACP, 0, p, -1, NULL, 0);
-pwcsName = new WCHAR[nChars];
-MultiByteToWideChar(CP_ACP, 0, p, -1, (LPWSTR)pwcsName, nChars);
-CreateDirectory(pwcsName, NULL); delete [] pwcsName;
+    // .................. Now this is all the shit required to create a folder in windows : .............. need to be in the wchar* type, not char*, so need to convert.
+    const char *p= folderName.c_str(); const WCHAR *pwcsName;
+    int nChars = MultiByteToWideChar(CP_ACP, 0, p, -1, NULL, 0);
+    pwcsName = new WCHAR[nChars];
+    MultiByteToWideChar(CP_ACP, 0, p, -1, (LPWSTR)pwcsName, nChars);
+    CreateDirectory(pwcsName, NULL); delete [] pwcsName;
 #endif
 
 #if defined(UNIX) || defined(MAC)
@@ -63,13 +93,15 @@ const int dir_err = mkdir(folderName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IX
 if ((-1 == dir_err) && (errno != EEXIST)){cerr << "Error creating directory : " << folderName << endl;}
 #endif
 }
+#endif
 
-string removeFolderFromFile(string file){
+
+string removeFolderFromFile(string file) {
     int S = file.size();
     int cpt = 0;
-    for(int i = 0; i < S; ++i){
-        if((file[i] == '\\') || (file[i] == '/')){
-            cpt = i+1;
+    for (int i = 0; i < S; ++i) {
+        if ((file[i] == '\\') || (file[i] == '/')) {
+            cpt = i + 1;
         }
     }
     return file.substr(cpt, S - cpt);
@@ -128,26 +160,26 @@ vector<string> listSubDirectories(string dir)
 }
 #endif
 #if defined(UNIX) || defined(MAC)
+
 // here, keep the whole path
-vector<string> listSubDirectories(string namedir)
-{
+vector<string> listSubDirectories(string namedir) {
     vector<string> res;
-    DIR* dir = opendir(namedir.c_str());
+    DIR *dir = opendir(namedir.c_str());
     struct dirent *entry;
-    if (!(entry = readdir(dir)))  {return res;}
+    if (!(entry = readdir(dir))) { return res; }
     do {
-        if ((!string(entry->d_name).compare(string(".")))|| (!string(entry->d_name).compare(".."))) // didnt find strcomp ... don't like it anyways
-           continue;
-        if (entry->d_type == DT_DIR){
+        if ((!string(entry->d_name).compare(string("."))) ||
+            (!string(entry->d_name).compare(".."))) // didnt find strcomp ... don't like it anyways
+            continue;
+        if (entry->d_type == DT_DIR) {
             res.push_back(namedir + string(entry->d_name) + string("/"));
-        }
-        else
-        {//cout << "This is a file : " << fileinfo.name << endl;
+        } else {//cout << "This is a file : " << fileinfo.name << endl;
         }
     } while ((entry = readdir(dir)) != NULL);
     closedir(dir);
     return res;
 }
+
 #endif
 
 
@@ -162,13 +194,15 @@ string currentDir(){
 #endif
 
 #if defined(UNIX) || defined(MAC)
-string currentDir(){
+
+string currentDir() {
     char originalDirectory[1024];
     getcwd(originalDirectory, 1024);
     string res = string(originalDirectory);
     //replace(res.begin(), res.end(), '\\', '/');
     return res;
 }
+
 #endif
 
 
@@ -183,35 +217,36 @@ string currentDir(){
   return
 }*/
 
-string getParentFolder(string dir){
-    if(dir.size() == 0) return dir;
-    if((dir[dir.size()-1] == '\\') || (dir[dir.size()-1] == '/')) {
-        dir = dir.substr(0, dir.size()-1);
+string getParentFolder(string dir) {
+    if (dir.size() == 0) return dir;
+    if ((dir[dir.size() - 1] == '\\') || (dir[dir.size() - 1] == '/')) {
+        dir = dir.substr(0, dir.size() - 1);
     }
-    size_t found=dir.find_last_of("/\\"); //,dir.find_last_of("/\/")) ; /// §§§§ THIS SHOULD BE TESTED IN LINUX
-    return dir.substr(0,found) + string("/");
+    size_t found = dir.find_last_of("/\\"); //,dir.find_last_of("/\/")) ; /// §§§§ THIS SHOULD BE TESTED IN LINUX
+    return dir.substr(0, found) + string("/");
 }
 
-vector<string> getAllResultSubFolders(string dir){
+vector<string> getAllResultSubFolders(string dir) {
     vector<string> res;
     //if(dir.size() == 0) dir = folder;
-    if(dir.size() == 0) return res;
+    if (dir.size() == 0) return res;
 
     vector<string> foldersToRead;
     foldersToRead.push_back(dir);
     int cpt = 0;
 
-    while((foldersToRead.size() > 0) && (cpt < 1000)){
+    while ((foldersToRead.size() > 0) && (cpt < 1000)) {
         string nextFolder = foldersToRead.back();
         foldersToRead.pop_back();
         res.push_back(nextFolder);
         vector<string> newFolders = listSubDirectories(nextFolder);
-        for(int i = 0; i < (int) newFolders.size();++i){
+        for (int i = 0; i < (int) newFolders.size(); ++i) {
             foldersToRead.push_back(newFolders[i]);
         }
         cpt++;
     }
-    if(cpt == 1000) cerr << "ERR:  getAllResultSubFolders(" << dir << "), too many subfolder, or infinite loop." << endl;
+    if (cpt == 1000)
+        cerr << "ERR:  getAllResultSubFolders(" << dir << "), too many subfolder, or infinite loop." << endl;
     return res;
 }
 
@@ -261,29 +296,29 @@ vector<string> listFilesInDir(string dir, string containing)
 #endif
 
 #ifdef UNIX
+
 // here, keep the whole path
-vector<string> listFilesInDir(string namedir, string containing)
-{
+vector<string> listFilesInDir(string namedir, string containing) {
     vector<string> res;
-    DIR* dir = opendir(namedir.c_str());
+    DIR *dir = opendir(namedir.c_str());
     struct dirent *entry;
-    if (!(entry = readdir(dir)))  {return res;}
+    if (!(entry = readdir(dir))) { return res; }
     do {
-        if ((!string(entry->d_name).compare(string(".")))|| (!string(entry->d_name).compare(".."))) // didnt find strcomp ... don't like it anyways
-           continue;
-        if (entry->d_type ==  DT_REG){ // regular file
-            string tp =  string(entry->d_name);
-            if(((containing.size() > 0) && (tp.find(containing) != std::string::npos)) || (containing.size() == 0)){
+        if ((!string(entry->d_name).compare(string("."))) ||
+            (!string(entry->d_name).compare(".."))) // didnt find strcomp ... don't like it anyways
+            continue;
+        if (entry->d_type == DT_REG) { // regular file
+            string tp = string(entry->d_name);
+            if (((containing.size() > 0) && (tp.find(containing) != std::string::npos)) || (containing.size() == 0)) {
                 res.push_back(tp);
             }
-        }
-        else
-        {//cout << "This is a file : " << fileinfo.name << endl;
+        } else {//cout << "This is a file : " << fileinfo.name << endl;
         }
     } while ((entry = readdir(dir)) != NULL);
     closedir(dir);
     return res;
 }
+
 #endif
 
 #ifdef MAC
@@ -303,15 +338,16 @@ vector<string> listFilesInDir(string namedir, string containing)
 // second solution : look inside the exe folder if there is THDiff.pro
 // third solution : look ../ and look for THdiff.pro
 
-string locateProjectDirectory(string projectFileToFind){
-    if(projectFileToFind.size() == 0) projectFileToFind = string("AllProjects.pro");
+string locateProjectDirectory(string projectFileToFind) {
+    if (projectFileToFind.size() == 0) projectFileToFind = string("AllProjects.pro");
     string exeFolder = currentDir();
 #ifdef MAC
     exeFolder = string("../../../../") + exeFolder;
 #endif
-    if(listFilesInDir(getParentFolder(exeFolder) + string("Sources/"), projectFileToFind).size() > 0) return getParentFolder(exeFolder) + string("Sources/");
-    if(listFilesInDir(exeFolder, projectFileToFind).size() > 0) return exeFolder;
-    if(listFilesInDir(getParentFolder(exeFolder), projectFileToFind).size() > 0) return getParentFolder(exeFolder);
+    if (listFilesInDir(getParentFolder(exeFolder) + string("Sources/"), projectFileToFind).size() > 0)
+        return getParentFolder(exeFolder) + string("Sources/");
+    if (listFilesInDir(exeFolder, projectFileToFind).size() > 0) return exeFolder;
+    if (listFilesInDir(getParentFolder(exeFolder), projectFileToFind).size() > 0) return getParentFolder(exeFolder);
     return string("NotFound!!!");
 
     /* for info, different ways to access folders:
@@ -332,25 +368,25 @@ string locateProjectDirectory(string projectFileToFind){
     */
 }
 
-vector<string> findAllResultFolders(string dir){
+vector<string> findAllResultFolders(string dir) {
     vector<string> liste1 = getAllResultSubFolders(dir);
     vector<string> res;
-    for(int i = 0; i < (int) liste1.size(); ++i){
-        if(listFilesInDir(liste1[i],string("History.txt")).size() > 0){
+    for (int i = 0; i < (int) liste1.size(); ++i) {
+        if (listFilesInDir(liste1[i], string("History.txt")).size() > 0) {
             res.push_back(liste1[i]);
         }
     }
     return res;
 }
 
-void printVector(vector<string> l){
+void printVector(vector<string> l) {
     cout << "[" << l.size() << "] ";
-    for(int i = 0; i < (int) l.size(); ++i){
+    for (int i = 0; i < (int) l.size(); ++i) {
         cout << l[i] << ((i < (int) l.size()) ? "\n" : "");
     }
 }
 
-void testDirectoryFunctions(){
+void testDirectoryFunctions() {
     string exeFolder = currentDir();
     printVector(getAllResultSubFolders(exeFolder));
     cout << getParentFolder(exeFolder) << endl;
@@ -364,50 +400,51 @@ void testDirectoryFunctions(){
     }
 }*/
 
-string printVector(vector<double> &v){
+string printVector(vector<double> &v) {
     stringstream ss;
     int s = v.size();
     ss << "V(" << s << ") :";
-    for(int i = 0; i < s; ++i){
+    for (int i = 0; i < s; ++i) {
         ss << "\t" << v[i];
     }
     return ss.str();
 }
 
-void compileLatex(string folderRes, string texFile){
+void compileLatex(string folderRes, string texFile) {
     ofstream action(folderRes + string("doPDF.bat"), ios::out);
-    action << string("cd ") + folderRes + string("\npdflatex -interaction=nonstopmode ") + texFile + string(" > resLatexCompil.txt\n");
+    action << string("cd ") + folderRes + string("\npdflatex -interaction=nonstopmode ") + texFile +
+              string(" > resLatexCompil.txt\n");
     action.close();
-    #ifdef WINDOWS
+#ifdef WINDOWS
     system((folderRes + string("doPDF.bat\n")).c_str());
-    #endif
-    #if defined(UNIX) || defined(MAC)
+#endif
+#if defined(UNIX) || defined(MAC)
     system((string("cd ") + folderRes + string("\nchmod +x doPDF.bat\n./doPDF.bat > resLatexCompil.txt \n")).c_str());
-    #endif
+#endif
 }
 
 
-string codeTime(){
+string codeTime() {
     time_t now = time(0);
     stringstream code;
     tm *ltm = localtime(&now);
     code << ltm->tm_mday;
-    code << "-"<< 1 + ltm->tm_mon;
-    code << "-"<< 1900 + ltm->tm_year;
-    code << "at"<< 1 + ltm->tm_hour << "-";
+    code << "-" << 1 + ltm->tm_mon;
+    code << "-" << 1900 + ltm->tm_year;
+    code << "at" << 1 + ltm->tm_hour << "-";
     code << 1 + ltm->tm_min << "-";
     code << 1 + ltm->tm_sec;
     return code.str();
 }
 
 
-void mergePDFs(vector<string> & listFiles, string outputFile, string compilingFolder){
+void mergePDFs(vector<string> &listFiles, string outputFile, string compilingFolder) {
     cout << "=> Merging files into one PDF ...\n";
     ofstream st(outputFile, ios::out);
     st << "\\documentclass{article}% or something else\n";
     st << "\\usepackage{pdfpages}\n";
     st << "\\begin{document}\n";
-    for(int kf = 0; kf < (int) listFiles.size(); ++kf){
+    for (int kf = 0; kf < (int) listFiles.size(); ++kf) {
         st << "\\includepdf[pages=-]{" << listFiles[kf] << "}\n";
     }
     st << "\\end{document}\n";
@@ -416,83 +453,140 @@ void mergePDFs(vector<string> & listFiles, string outputFile, string compilingFo
 }
 
 
-
-string optName(typeOptimizer toUse){
-    switch (toUse){
-    case GeneticFast: { return string("Genetic Algorithm, only a few rounds for tests"); break;}
-    case SRESFast: { return string("SRES, only a few rounds for tests"); break;}
-    case Genetic25k: { return string("Genetic Algorithm, 25 000 cost evaluations"); break;}
-    case Genetic50k: { return string("Genetic Algorithm, 50 000 cost evaluations"); break;}
-    case Genetic100k: { return string("Genetic Algorithm, 100 000 cost evaluations"); break;}
-    case Genetic250k: { return string("Genetic Algorithm, 250 000 cost evaluations"); break;}
-    case Genetic500k: { return string("Genetic Algorithm, 500 000 cost evaluations"); break;}
-    case Genetic1M: { return string("Genetic Algorithm, 1 000 000 cost evaluations"); break;}
-    case SRES25k: { return string("SRES, 25 000 cost evaluations"); break;}
-    case SRES50k: { return string("SRES, 50 000 cost evaluations"); break;}
-    case SRES100k: { return string("SRES, 100 000 cost evaluations"); break;}
-    case SRES250k: { return string("SRES, 250 000 cost evaluations"); break;}
-    case SRES500k: { return string("SRES, 500 000 cost evaluations"); break;}
-    case SRES1M: { return string("SRES, 1 000 000 cost evaluations"); break;}
-    case GeneticAllCombs25k: { return string("Genetic Algorithm, All Operators, 25 000 cost evaluations"); break;}
-    case GeneticAllCombs50k: { return string("Genetic Algorithm, All Operators, 50 000 cost evaluations"); break;}
-    case GeneticAllCombs100k: { return string("Genetic Algorithm, All Operators, 100 000 cost evaluations"); break;}
-    case GeneticAllCombs250k: { return string("Genetic Algorithm, All Operators, 250 000 cost evaluations"); break;}
-    default: {return string("");}
+string optName(typeOptimizer toUse) {
+    switch (toUse) {
+        case GeneticFast: {
+            return string("Genetic Algorithm, only a few rounds for tests");
+            break;
+        }
+        case SRESFast: {
+            return string("SRES, only a few rounds for tests");
+            break;
+        }
+        case Genetic25k: {
+            return string("Genetic Algorithm, 25 000 cost evaluations");
+            break;
+        }
+        case Genetic50k: {
+            return string("Genetic Algorithm, 50 000 cost evaluations");
+            break;
+        }
+        case Genetic100k: {
+            return string("Genetic Algorithm, 100 000 cost evaluations");
+            break;
+        }
+        case Genetic250k: {
+            return string("Genetic Algorithm, 250 000 cost evaluations");
+            break;
+        }
+        case Genetic500k: {
+            return string("Genetic Algorithm, 500 000 cost evaluations");
+            break;
+        }
+        case Genetic1M: {
+            return string("Genetic Algorithm, 1 000 000 cost evaluations");
+            break;
+        }
+        case SRES25k: {
+            return string("SRES, 25 000 cost evaluations");
+            break;
+        }
+        case SRES50k: {
+            return string("SRES, 50 000 cost evaluations");
+            break;
+        }
+        case SRES100k: {
+            return string("SRES, 100 000 cost evaluations");
+            break;
+        }
+        case SRES250k: {
+            return string("SRES, 250 000 cost evaluations");
+            break;
+        }
+        case SRES500k: {
+            return string("SRES, 500 000 cost evaluations");
+            break;
+        }
+        case SRES1M: {
+            return string("SRES, 1 000 000 cost evaluations");
+            break;
+        }
+        case GeneticAllCombs25k: {
+            return string("Genetic Algorithm, All Operators, 25 000 cost evaluations");
+            break;
+        }
+        case GeneticAllCombs50k: {
+            return string("Genetic Algorithm, All Operators, 50 000 cost evaluations");
+            break;
+        }
+        case GeneticAllCombs100k: {
+            return string("Genetic Algorithm, All Operators, 100 000 cost evaluations");
+            break;
+        }
+        case GeneticAllCombs250k: {
+            return string("Genetic Algorithm, All Operators, 250 000 cost evaluations");
+            break;
+        }
+        default: {
+            return string("");
+        }
     }
     return string("");
 }
 
-string optFileHeader(typeOptimizer toUse){
+string optFileHeader(typeOptimizer toUse) {
 
     stringstream headerOptimizer;
-    switch (toUse){
-        case SRESFast:{
+    switch (toUse) {
+        case SRESFast: {
             headerOptimizer << "SRES	1   \n50\n";
             break;
         }
-        case SRES25k:{
+        case SRES25k: {
             headerOptimizer << "SRES	1   \n25000\n";
             break;
         }
-        case SRES50k:{
+        case SRES50k: {
             headerOptimizer << "SRES	1   \n50000\n";
             break;
         }
-        case SRES100k:{
+        case SRES100k: {
             headerOptimizer << "SRES	1   \n100000\n";
             break;
         }
-        case SRES250k:{
+        case SRES250k: {
             headerOptimizer << "SRES	1   \n250000\n";
             break;
         }
-        case SRES500k:{
+        case SRES500k: {
             headerOptimizer << "SRES	1   \n500000\n";
             break;
         }
-        case SRES1M:        {
+        case SRES1M: {
             headerOptimizer << "SRES	1   \n1000000\n";
             break;
         }
 
-        default:{}
+        default: {
+        }
     }
     // finished for SRES
 
     bool TESTE_ALL_CROSSMUT = false;
-    switch (toUse){
+    switch (toUse) {
         case GeneticAllCombs25k:
         case GeneticAllCombs50k:
         case GeneticAllCombs100k:
-        case GeneticAllCombs250k:   {
+        case GeneticAllCombs250k: {
             TESTE_ALL_CROSSMUT = true;
             break;
         }
-        default:{}
+        default: {
+        }
     }
 
 
-    switch (toUse){
+    switch (toUse) {
         case GeneticFast:
         case Genetic25k:
         case Genetic50k:
@@ -503,9 +597,10 @@ string optFileHeader(typeOptimizer toUse){
         case GeneticAllCombs25k:
         case GeneticAllCombs50k:
         case GeneticAllCombs100k:
-        case GeneticAllCombs250k:   {
+        case GeneticAllCombs250k: {
             headerOptimizer << "geneticAlgorithm	14\n";
-            headerOptimizer << (TESTE_ALL_CROSSMUT ? "10         #CEP  - All Mut&Cross\n" : "0	#CEP  - Classical Evolutionary Programming\n");
+            headerOptimizer << (TESTE_ALL_CROSSMUT ? "10         #CEP  - All Mut&Cross\n"
+                                                   : "0	#CEP  - Classical Evolutionary Programming\n");
             headerOptimizer << "8          #Proportional / From Worst / Basic Sampling\n";
             headerOptimizer << "7	1      #SBX Cross-Over\n";
             headerOptimizer << "1          #Mutation normal all points\n";
@@ -515,49 +610,55 @@ string optFileHeader(typeOptimizer toUse){
             headerOptimizer << "1      #Nb Repeats\n";
             break;
         }
-        default:{}
+        default: {
+        }
     }
 
-    switch (toUse){
-        case GeneticFast:{
+    switch (toUse) {
+        case GeneticFast: {
             headerOptimizer << "50	#Max nb of simulations-costs\n";
             headerOptimizer << "50	#Population Size\n";
             break;
         }
-        case Genetic25k: case GeneticAllCombs25k:{
+        case Genetic25k:
+        case GeneticAllCombs25k: {
             headerOptimizer << "25000	#Max nb of simulations-costs\n";
             headerOptimizer << "250	#Population Size\n";
             break;
         }
-        case Genetic50k: case GeneticAllCombs50k:{
+        case Genetic50k:
+        case GeneticAllCombs50k: {
             headerOptimizer << "50000	#Max nb of simulations-costs\n";
             headerOptimizer << "250	#Population Size\n";
             break;
         }
-        case Genetic100k:  case GeneticAllCombs100k:{
+        case Genetic100k:
+        case GeneticAllCombs100k: {
             headerOptimizer << "100000	#Max nb of simulations-costs\n";
             headerOptimizer << "500	#Population Size\n";
             break;
         }
-        case Genetic250k: case GeneticAllCombs250k:{
+        case Genetic250k:
+        case GeneticAllCombs250k: {
             headerOptimizer << "250000	#Max nb of simulations-costs\n";
             headerOptimizer << "750	#Population Size\n";
             break;
         }
-        case Genetic500k:{
+        case Genetic500k: {
             headerOptimizer << "500000	#Max nb of simulations-costs\n";
             headerOptimizer << "1000	#Population Size\n";
             break;
         }
-        case Genetic1M:{
+        case Genetic1M: {
             headerOptimizer << "1000000	#Max nb of simulations-costs\n";
             headerOptimizer << "2000	#Population Size\n";
             break;
         }
-        default:{}
+        default: {
+        }
     }
 
-    switch (toUse){
+    switch (toUse) {
         case GeneticFast:
         case Genetic25k:
         case Genetic50k:
@@ -568,12 +669,13 @@ string optFileHeader(typeOptimizer toUse){
         case GeneticAllCombs25k:
         case GeneticAllCombs50k:
         case GeneticAllCombs100k:
-        case GeneticAllCombs250k:   {
+        case GeneticAllCombs250k: {
             headerOptimizer << "0.2	#Proportion of CrossOver (vs offspring) in new individuals\n";
             headerOptimizer << "0.5	#Fork coeff (%renewed each generation)\n";
             break;
         }
-    default:{}
+        default: {
+        }
     }
     return headerOptimizer.str();
 

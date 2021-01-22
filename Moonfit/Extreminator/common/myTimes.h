@@ -16,7 +16,8 @@
 #else
 #include <sys/times.h>
 #endif
-#include <unistd.h>
+// (CW) replaced unistd with cross platform version from linux2win
+#include "linux2win/linux2win_unistd.h"
 
 ///
 /// @brief Namespace with functions for measuring time aspects

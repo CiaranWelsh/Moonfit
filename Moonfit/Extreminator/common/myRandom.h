@@ -17,7 +17,10 @@
 #define M_PI 3.14159265358979323846
 #endif
 #include <cstdlib>
-#include <sys/time.h>
+
+// (CW) sys/time replaced with cross platform version
+//#include <sys/time.h>
+#include "linux2win/linux2win_time.h"
 
 #ifndef USE_BOOST
 #include <random>
