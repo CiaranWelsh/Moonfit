@@ -37,7 +37,7 @@ using namespace std;
 //#define CPLUSPLUS(X) #X
 //#define SCPLUSPLUS(X) CPLUSPLUS(X)
 //#pragma message( "The value of __cplusplus is: " SCPLUSPLUS(__cplusplus) )
-#   if __GNU__
+#   ifdef __linux__
 /*
  *      For gcc 4.0.1
  *      #define __GNUC__ 4
@@ -59,7 +59,7 @@ namespace fs = std::experimental::filesystem;
 #   include <filesystem>
 namespace fs = std::filesystem;
 
-#   endif //__GNU__
+#   endif //__linux__
 #endif // __cplusplus >= 201703L
 
 
