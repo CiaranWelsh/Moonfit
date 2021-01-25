@@ -79,11 +79,10 @@ class _SRES:
         return_type=ct.c_uint64  # return type: ESParameter*
     )
 
-    # ESParameter ** makeESParameterPtrPtr();
     freeESParameter = util.load_func(
         funcname="freeESParameter",
-        argtypes=[],  # void
-        return_type=ct.c_uint64  # return type: ESParameter**
+        argtypes=[ct.c_uint64],  # void
+        return_type=None  # return type: ESParameter**
     )
 
     # ESfcnFG * getCostFunPtr()
@@ -173,14 +172,14 @@ class _SRES:
             ct.c_int64,  # int es,
             ct.c_int64,  # int constraint,
             ct.c_int64,  # int dim,
-            ct.c_int64,  # double *ub,
-            ct.c_int64,  # double *lb,
+            ct.POINTER(ct.c_double*2),  # double *ub,
+            ct.POINTER(ct.c_double*2),  # double *lb,
             ct.c_int64,  # int miu,
             ct.c_int64,  # int lambda,
             ct.c_int64,  # int gen,
-            ct.c_int64,  # double gamma,
-            ct.c_int64,  # double alpha,
-            ct.c_int64,  # double varphi,
+            ct.c_double,  # double gamma,
+            ct.c_double,  # double alpha,
+            ct.c_double,  # double varphi,
             ct.c_int64,  # int retry,
             ct.c_int64,  # ESPopulation **population
             ct.c_int64,  # ESStatistics **stats
