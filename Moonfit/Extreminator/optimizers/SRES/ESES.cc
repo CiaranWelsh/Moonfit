@@ -51,13 +51,16 @@ void freePtr(void *ptr) {
     free(ptr);
 }
 
-ESParameter *makeESParameter() {
-    auto *param = (ESParameter *) malloc(sizeof(ESParameter));
-    return param;
+ESParameter **makeESParameter() {
+    ESParameter **pp;
+    pp = (ESParameter **) malloc(sizeof(ESParameter *));
+    *pp = (ESParameter *) malloc(sizeof(ESParameter));
+    return pp;
 }
 
-void freeESParameter(ESParameter *parameter) {
-    freePtr((void *) parameter);
+void freeESParameter(ESParameter **parameter) {
+    freePtr(*parameter);
+    freePtr(parameter);
 }
 
 ESIndividual *makeIndividual() {
@@ -69,15 +72,29 @@ void freeIndividual(ESIndividual *individual) {
     freePtr((void *) individual);
 }
 
-ESPopulation *makePopulation() {
-    auto *population = (ESPopulation *) malloc(sizeof(ESPopulation));
-    return population;
+ESPopulation **makePopulation() {
+    ESPopulation **pop;
+    pop = (ESPopulation **) malloc(sizeof(ESPopulation *));
+    *pop = (ESPopulation *) malloc(sizeof(ESPopulation));
+    return pop;
 }
 
-void freePopulation(ESPopulation *population) {
-    freePtr((void *) population);
+void freePopulation(ESPopulation **population) {
+    freePtr(*population);
+    freePtr(population);
 }
 
+ESStatistics **makeESStatistics() {
+    ESStatistics **stat;
+    stat = (ESStatistics **) malloc(sizeof(ESStatistics *));
+    *stat = (ESStatistics *) malloc(sizeof(ESStatistics));
+    return stat;
+}
+
+void freeESStatistics(ESStatistics** statistics){
+    freePtr(*statistics);
+    freePtr(statistics);
+}
 
 double do_nothing_transform(double x) {
     return x;

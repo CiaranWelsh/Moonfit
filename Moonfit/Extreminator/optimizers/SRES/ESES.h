@@ -59,6 +59,16 @@ extern "C" {
  *********************************************************************/
 typedef void(*ESfcnFG)(double *, double *, double *);
 
+void cost_function(double* x, double*f, double* g){
+    /**
+     * A little stuck with this. Lets just try something and see how it goes.
+     * Lets just say that double *x points to the first elem
+     * in array of individual fitness scores
+     */
+}
+
+
+
 /*********************************************************************
  ** function to transform x(op) and sp                              **
  ** double f(double)                                                **
@@ -116,12 +126,12 @@ typedef struct {
  * ESparameter* type is dynamically allocated and must be free'd with freeESParameter()
  * @author (CW)
  */
-ESParameter *makeESParameter();
+ESParameter **makeESParameter();
 
 /**
- * (CW) Free an ESParameter created by makeESParameter.
+ * (CW) Free an ESParameter created by makeESParameterPtr.
  */
-void freeESParameter(ESParameter *parameter);
+void freeESParameter(ESParameter **parameter);
 
 
 /**
@@ -132,13 +142,6 @@ void freeESParameter(ESParameter *parameter);
 double do_nothing_transform(double x);
 
 /**
- * @brief A method adhering to the interface defined by ESfcnFG
- * @details Not yet sure what to do here. In SRES.cc they implement the
- * cost method, which uses their individual class and their own SRES
- * CPP object.
- * @author (CW)
- */
-void rss_cost(double *x, double *f, double *g); // (CW) still to implement, but how/
 
 /*********************************************************************
  ** ESIndividual: struct for each individual/genome                 **
@@ -186,12 +189,12 @@ typedef struct {
  * @brief Create a ESPopulation
  * @details heap allocated. User free's with freeESPopulation
  */
-ESPopulation *makePopulation();
+ESPopulation **makePopulation();
 
 /**
  * @brief free a ESPopulation* allocated by ESPopulation
  */
-void freePopulation(ESPopulation* population);
+void freePopulation(ESPopulation** population);
 
 /*********************************************************************
  ** ESStatistics: struct for ES-statistics                          **
@@ -209,6 +212,10 @@ typedef struct {
     int bestgen, curgen;
     ESIndividual *bestindvdl, *thisbestindvdl;
 } ESStatistics;
+
+ESStatistics** makeESStatistics();
+
+void freeESStatistics(ESStatistics** statistics);
 
 /*********************************************************************
  ** initialize: parameters,populations and random seed              **

@@ -5,7 +5,7 @@ import sys
 from typing import List
 
 
-class Util:
+class _Util:
 
     def __init__(self):
         self._lib = self.load_lib()
@@ -23,11 +23,7 @@ class Util:
         this_directory = os.path.join(os.path.dirname(__file__))
         one_directory_up = os.path.dirname(this_directory)
 
-        dirs = [one_directory_up]
-        dlls = []
-        for i in dirs:
-            dlls += glob.glob(os.path.join(i, "**/*SRES*" + self._get_shared_library_extension()))
-        print("dlls", dlls)
+        dlls = glob.glob(os.path.join(one_directory_up, "**/*SRES*" + self._get_shared_library_extension()))
         if len(dlls) == 0:
             raise ValueError("SRES library not found")
         elif len(dlls) > 1:
@@ -55,7 +51,7 @@ class Util:
 
 
 # instantiate util which loads the library
-util = Util()
+util = _Util()
 
 
 # now we can use Util.load_func
@@ -83,18 +79,13 @@ class _SRES:
         return_type=ct.c_uint64  # return type: ESParameter*
     )
 
-    """
-    /**
-     * (CW) Free an ESParameter created by makeESParameter.
-     */
-    """
-    # void freeESParameter(ESParameter *parameter);
+    # ESParameter ** makeESParameterPtrPtr();
     freeESParameter = util.load_func(
         funcname="freeESParameter",
-        argtypes=[ct.c_uint64,  # ESParameter*
-                  ],
-        return_type=None  # Returns
+        argtypes=[],  # void
+        return_type=ct.c_uint64  # return type: ESParameter**
     )
+
     """
     /*********************************************************************
      ** initialize: parameters,populations and random seed              **
@@ -146,23 +137,26 @@ class _SRES:
 
     ESInitialWithPtrFitnessFcn = util.load_func(
         funcname="ESInitialWithPtrFitnessFcn",
-        argtypes=[ct.c_uint64,  # unsigned int
-                  ct.c_uint64,  # ESParameter**
-                  ct.c_uint64,  # ESfcnTrsfm *
-                  ct.c_uint64,  # int
-                  ct.c_uint64,  # int
-                  ct.c_uint64,  # double*
-                  ct.c_uint64,  # double*
-                  ct.c_uint64,  # int
-                  ct.c_uint64,  # int
-                  ct.c_uint64,  # int
-                  ct.c_uint64,  # double*
-                  ct.c_uint64,  # double*
-                  ct.c_uint64,  # double*
-                  ct.c_uint64,  # int
-                  ct.c_uint64,  # ESPopulation**
-                  ct.c_uint64,  # ESStatistics**
-                  ],
+        argtypes=[
+            ct.c_int64,  # unsigned int seed,
+            ct.c_int64,  # ESParameter **param,
+            ct.c_int64,  # ESfcnTrsfm *trsfm,
+            ct.c_int64,  # ESfcnFG* fg,
+            ct.c_int64,  # int es,
+            ct.c_int64,  # int constraint,
+            ct.c_int64,  # int dim,
+            ct.c_int64,  # double *ub,
+            ct.c_int64,  # double *lb,
+            ct.c_int64,  # int miu,
+            ct.c_int64,  # int lambda,
+            ct.c_int64,  # int gen,
+            ct.c_int64,  # double gamma,
+            ct.c_int64,  # double alpha,
+            ct.c_int64,  # double varphi,
+            ct.c_int64,  # int retry,
+            ct.c_int64,  # ESPopulation **population
+            ct.c_int64,  # ESStatistics **stats
+        ],
         return_type=None)
 
     """
@@ -197,7 +191,7 @@ class _SRES:
      */
      """
     # ESPopulation *makePopulation();
-    makePopulation = util.load_func(
+    makeESPopulation = util.load_func(
         funcname="makePopulation",
         argtypes=[],
         return_type=ct.c_uint64  # ESPopulation *
@@ -208,10 +202,35 @@ class _SRES:
      */
     """
     # void freePopulation(ESPopulation* population);
-    freePopulation = util.load_func(
+    freeESPopulation = util.load_func(
         funcname="freePopulation",
         argtypes=[
             ct.c_uint64,  # ESPopulation *
+        ],
+        return_type=None
+    )
+
+    """/**
+     * @brief Create a ESPopulation 
+     * @details heap allocated. User free's with freeESPopulation
+     */
+     """
+    # ESPopulation *makePopulation();
+    makeESStatistics = util.load_func(
+        funcname="makeESStatistics",
+        argtypes=[],
+        return_type=ct.c_uint64  # ESPopulation *
+    )
+
+    """/**
+     * @brief free a ESPopulation* allocated by ESPopulation
+     */
+    """
+    # void freeESStatistics(ESStatistics* statistics);
+    freeESStatistics = util.load_func(
+        funcname="freeESStatistics",
+        argtypes=[
+            ct.c_uint64,  # ESStatistics*
         ],
         return_type=None
     )
