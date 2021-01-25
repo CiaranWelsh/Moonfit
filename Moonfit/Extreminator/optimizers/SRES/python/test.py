@@ -51,38 +51,31 @@ class Test(unittest.TestCase):
         alpha = 0.2
         varalphi = 1
         retry = 10
-        pf = 0.45
         es = 0
         miu = 30
         lamb = 200
         gen = 1750
 
-
-        # @ct.CFUNCTYPE(None, ct.c_double, ct.c_double)
-        # def ESfcnTrsfm(x):
-        #     return x
-
         ptr = self.sres.ESInitialWithPtrFitnessFcn(
-            seed,                                      # unsigned int seed,
-            esparam,                                # ESParameter **param,
-            trsf,                                      # ESfcnTrsfm *trsfm,
-            costFun,                                      # ESfcnFG* fg,
-            es,                                      # int es,
-            0,                                      # int constraint,
-            2,                                      # int dim,
-            DoubleArrayLen2(* [10.0]*2),                  # double *ub,
-            DoubleArrayLen2(* [0.1]*2),                   # double *lb,
-            miu,                                     # int miu,
-            lamb,                                      # int lambda,
-            gen,                                      # int gen,
-            gamma,                                      # double gamma,
-            alpha,                                      # double alpha,
-            varalphi,                                      # double varphi,
-            retry,                                      # int retry,
-            stats,                                      # ESPopulation **population
-            pop,                                      # ESStatistics **stats
+            seed,                              # unsigned int seed,
+            esparam,                           # ESParameter **param,
+            trsf,                              # ESfcnTrsfm *trsfm,
+            costFun,                           # ESfcnFG* fg,
+            es,                                # int es,
+            0,                                 # int constraint,
+            2,                                 # int dim,
+            DoubleArrayLen2(* [10.0]*2),       # double *ub,
+            DoubleArrayLen2(* [0.1]*2),        # double *lb,
+            miu,                               # int miu,
+            lamb,                              # int lambda,
+            gen,                               # int gen,
+            gamma,                             # double gamma,
+            alpha,                             # double alpha,
+            varalphi,                          # double varphi,
+            retry,                             # int retry,
+            stats,                             # ESPopulation **population
+            pop,                               # ESStatistics **stats
         )
-        print(ptr)
 
         self.sres.freeESParameter(esparam)
         self.sres.freeESStatistics(stats)
