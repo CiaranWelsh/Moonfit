@@ -59,14 +59,14 @@ extern "C" {
  *********************************************************************/
 typedef void(*ESfcnFG)(double *, double *, double *);
 
-void cost_function(double* x, double*f, double* g){
-    /**
-     * A little stuck with this. Lets just try something and see how it goes.
-     * Lets just say that double *x points to the first elem
-     * in array of individual fitness scores
-     */
-}
+void costy_fun(double *x, double *f, double *g);
 
+/**
+ * @brief returns a pointer to the cost_function function.
+ */
+ESfcnFG *getCostFunPtr();
+
+void freeCostFunPtr(ESfcnFG* f);
 
 
 /*********************************************************************
@@ -74,6 +74,17 @@ void cost_function(double* x, double*f, double* g){
  ** double f(double)                                                **
  *********************************************************************/
 typedef double(*ESfcnTrsfm)(double);
+
+/**
+ * @brief A "do nothing" transform function that conforms
+ * to the interface dictated by ESFcnTrsfm
+ * @author (CW)
+ */
+double do_nothing_transform(double x);
+
+ESfcnTrsfm * getTransformFun();
+
+void freeTransformFun(ESfcnTrsfm * fun);
 
 /*********************************************************************
  ** ESParameter: struct for ES-parameter                            **
@@ -134,12 +145,7 @@ ESParameter **makeESParameter();
 void freeESParameter(ESParameter **parameter);
 
 
-/**
- * @brief A "do nothing" transform function that conforms
- * to the interface dictated by ESFcnTrsfm
- * @author (CW)
- */
-double do_nothing_transform(double x);
+
 
 /**
 
@@ -194,7 +200,7 @@ ESPopulation **makePopulation();
 /**
  * @brief free a ESPopulation* allocated by ESPopulation
  */
-void freePopulation(ESPopulation** population);
+void freePopulation(ESPopulation **population);
 
 /*********************************************************************
  ** ESStatistics: struct for ES-statistics                          **
@@ -213,9 +219,9 @@ typedef struct {
     ESIndividual *bestindvdl, *thisbestindvdl;
 } ESStatistics;
 
-ESStatistics** makeESStatistics();
+ESStatistics **makeESStatistics();
 
-void freeESStatistics(ESStatistics** statistics);
+void freeESStatistics(ESStatistics **statistics);
 
 /*********************************************************************
  ** initialize: parameters,populations and random seed              **

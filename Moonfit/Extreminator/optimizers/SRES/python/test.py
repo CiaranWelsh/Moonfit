@@ -25,17 +25,26 @@ class Test(unittest.TestCase):
         self.assertIsNotNone(cptr)
         self.sres.freeESPopulation(cptr)
 
+    def test_makeCostFunPtr(self):
+        cptr = self.sres.getCostFunPtr()
+        self.assertIsNotNone(cptr)
+        self.sres.freeCostFunPtr(cptr)
+
+    def test_how_to_make_array_using_ctypes(self):
+        DoubleArrayLen2 = ct.c_double*2
+        print(DoubleArrayLen2)
+        arr = DoubleArrayLen2(*[0.1, 0.1])
+        print(arr)
+
     def test_ESInitialWithPtrFitnessFcn(self):
-        # Allocate space for **ESParameter
         esparam = self.sres.makeESParameter()
-
         stats = self.sres.makeESStatistics()
-
         pop = self.sres.makeESPopulation()
+        costFun = self.sres.getCostFunPtr()
+        trsf = self.sres.getTransformFun()
 
         # https://stackoverflow.com/questions/51131433/how-to-pass-lists-into-a-ctypes-function-on-python/51132594
         DoubleArrayLen2 = ct.c_double*2
-
 
         seed = 0
         gamma = 0.85
@@ -49,20 +58,20 @@ class Test(unittest.TestCase):
         gen = 1750
 
 
-        @ct.CFUNCTYPE(None, ct.c_double, ct.c_double)
-        def ESfcnTrsfm(x):
-            return x
+        # @ct.CFUNCTYPE(None, ct.c_double, ct.c_double)
+        # def ESfcnTrsfm(x):
+        #     return x
 
         ptr = self.sres.ESInitialWithPtrFitnessFcn(
             seed,                                      # unsigned int seed,
             esparam,                                # ESParameter **param,
-            0,                                      # ESfcnTrsfm *trsfm,
-            0,                                      # ESfcnFG* fg,
+            trsf,                                      # ESfcnTrsfm *trsfm,
+            costFun,                                      # ESfcnFG* fg,
             es,                                      # int es,
             0,                                      # int constraint,
             2,                                      # int dim,
-            DoubleArrayLen2([10.0]*2),                  # double *ub,
-            DoubleArrayLen2([0.1]*2),                   # double *lb,
+            DoubleArrayLen2(* [10.0]*2),                  # double *ub,
+            DoubleArrayLen2(* [0.1]*2),                   # double *lb,
             miu,                                     # int miu,
             lamb,                                      # int lambda,
             gen,                                      # int gen,
@@ -78,6 +87,8 @@ class Test(unittest.TestCase):
         self.sres.freeESParameter(esparam)
         self.sres.freeESStatistics(stats)
         self.sres.freeESPopulation(pop)
+        self.sres.freeCostFunPtr(costFun)
+        self.sres.freeTransformFun(trsf)
 
 
 

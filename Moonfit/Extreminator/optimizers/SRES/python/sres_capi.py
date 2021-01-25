@@ -86,6 +86,34 @@ class _SRES:
         return_type=ct.c_uint64  # return type: ESParameter**
     )
 
+    # ESfcnFG * getCostFunPtr()
+    getCostFunPtr = util.load_func(
+        funcname="getCostFunPtr",
+        argtypes=[],
+        return_type=ct.c_uint64
+    )
+
+    # void freeCostFunPtr(ESfcnFG * f)
+    freeCostFunPtr = util.load_func(
+        funcname="getCostFunPtr",
+        argtypes=[ct.c_uint64],
+        return_type=None
+    )
+
+    # ESfcnTrsfm * getTransformFun()
+    getTransformFun = util.load_func(
+        funcname="getTransformFun",
+        argtypes=[],
+        return_type=ct.c_uint64
+    )
+
+    # void freeTransformFun(ESfcnTrsfm * fun)
+
+    freeTransformFun = util.load_func(
+        funcname="freeTransformFun",
+        argtypes=[ct.c_uint64],
+        return_type=None
+    )
     """
     /*********************************************************************
      ** initialize: parameters,populations and random seed              **
@@ -249,26 +277,6 @@ class _SRES:
             ct.c_double
         ],
         return_type=ct.c_double
-    )
-
-    """
-    /**
-     * @brief A method adhering to the interface defined by ESfcnFG
-     * @details Not yet sure what to do here. In SRES.cc they implement the
-     * cost method, which uses their individual class and their own SRES
-     * CPP object.
-     * @author (CW)
-     */
-    """
-    # void rss_cost(double *x, double *f, double *g); // (CW) still to implement, but how/
-    rss_cost = util.load_func(
-        funcname="rss_cost",
-        argtypes=[
-            ct.c_uint64,  # double*
-            ct.c_uint64,  # double*
-            ct.c_uint64  # double*
-        ],
-        return_type=None
     )
 
     # void ESDeInitial(ESParameter *, ESPopulation *, ESStatistics *);

@@ -45,6 +45,58 @@
  * in python to pass to init function
  */
 
+
+
+void costy_fun(double *x, double *f, double *g) {
+    /*
+     *      * A little stuck with this. Lets just try something and see how it goes.
+     * Lets just say that double *x points to the first elem
+     * in array of candidate parameters. Looking at some of the other code
+     * in this repository, I think that double f* is a pointer to be filled
+     * and is the cost associated with the model parameters x.
+     * So this function needs to accept model parameters,
+     * do simulation with them and compare with experimental data
+     * Then assign the value of each individual to f.
+     *
+     * Okay so I found that x, f and g map to
+     * members of the ESIndividual struct.
+     * x = op[dim] = genes / objective parameters
+     * f = fitness
+     * g[constraint] : constraint value
+     *
+     * so x are the model parameters and f the fitness associated with them?
+     * So lets pass in a value for f, the precomputed cost function from Python
+     * and just do nothing with this function???
+     */
+};
+
+ESfcnFG *getCostFunPtr() {
+    // could turn this into a factory. Input strings on python end
+    // and switch between potential options on the C end.
+    auto *fun = (ESfcnFG *) malloc(sizeof(ESfcnFG *));
+    *fun = &costy_fun;
+    return fun;
+}
+
+void freeCostFunPtr(ESfcnFG *f) {
+    free(f);
+}
+
+double do_nothing_transform(double x) {
+    return x;
+}
+
+ESfcnTrsfm *getTransformFun() {
+    auto *fun = (ESfcnTrsfm *) malloc(sizeof(ESfcnTrsfm *));
+    *fun = &do_nothing_transform;
+    return fun;
+}
+
+void freeTransformFun(ESfcnTrsfm *fun) {
+    free(fun);
+}
+
+
 void freePtr(void *ptr) {
     if (ptr == nullptr)
         return;
@@ -91,14 +143,11 @@ ESStatistics **makeESStatistics() {
     return stat;
 }
 
-void freeESStatistics(ESStatistics** statistics){
+void freeESStatistics(ESStatistics **statistics) {
     freePtr(*statistics);
     freePtr(statistics);
 }
 
-double do_nothing_transform(double x) {
-    return x;
-}
 
 void rss_cost(double *x, double *f, double *g) {
     // NOTE: (CW) still to implement this. But how?
