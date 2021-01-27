@@ -160,8 +160,8 @@ void ShareNormalRandVec(double *s, int n, double mean, double dev) {
  ** SharefreeM1c(s)                                                 **
  *********************************************************************/
 char *ShareMallocM1c(int size) {
-    char *s = NULL;
-    if ((s = (char *) calloc(size, sizeof(char))) == NULL) {
+    char *s = nullptr;
+    if ((s = (char *) calloc(size, sizeof(char))) == nullptr) {
         printf("char * malloc error!\n");
         exit(1);
     }
@@ -173,7 +173,7 @@ char *ShareReallocM1c(char *s, int size) {
         s = ShareMallocM1c(size);
         return s;
     }
-    if ((s = (char *) realloc(s, size * sizeof(char))) == NULL) {
+    if ((s = (char *) realloc(s, size * sizeof(char))) == nullptr) {
         printf("char * realloc error!");
         exit(1);
     }
@@ -197,9 +197,9 @@ void ShareFreeM1c(char *s) {
  *********************************************************************/
 char **ShareMallocM2c(int size1, int size2) {
     int i;
-    char **s = NULL;
+    char **s = nullptr;
 
-    if ((s = (char **) calloc(size1, sizeof(char *))) == NULL) {
+    if ((s = (char **) calloc(size1, sizeof(char *))) == nullptr) {
         printf("char ** malloc error!\n");
         exit(1);
     }
@@ -213,7 +213,7 @@ char **ShareMallocM2c(int size1, int size2) {
 char **ShareReallocM2c(char **s, int size1, int size2) {
     int i;
 
-    if ((s = (char **) realloc(s, size1 * sizeof(char *))) == NULL) {
+    if ((s = (char **) realloc(s, size1 * sizeof(char *))) == nullptr) {
         printf("char ** realloc error!");
         exit(1);
     }
@@ -241,8 +241,8 @@ void ShareFreeM2c(char **s, int size) {
  ** ShareMallocM1i(size): size*int                                  **
  *********************************************************************/
 int *ShareMallocM1i(int size) {
-    int *s = NULL;
-    if ((s = (int *) calloc(size, sizeof(int))) == NULL) {
+    int *s = nullptr;
+    if ((s = (int *) calloc(size, sizeof(int))) == nullptr) {
         printf("int * malloc error!\n");
         exit(1);
     }
@@ -264,8 +264,8 @@ void ShareFreeM1i(int *s) {
  ** ShareMallocM1d(size): size*double                               **
  *********************************************************************/
 double *ShareMallocM1d(int size) {
-    double *s = NULL;
-    if ((s = (double *) calloc(size, sizeof(double))) == NULL) {
+    double *s = nullptr;
+    if ((s = (double *) calloc(size, sizeof(double))) == nullptr) {
         printf("double * malloc error!\n");
         exit(1);
     }
@@ -291,9 +291,9 @@ void ShareFreeM1d(double *s) {
  *********************************************************************/
 double **ShareMallocM2d(int size1, int size2) {
     int i;
-    double **s = NULL;
+    double **s = nullptr;
 
-    if ((s = (double **) calloc(size1, sizeof(double *))) == NULL) {
+    if ((s = (double **) calloc(size1, sizeof(double *))) == nullptr) {
         printf("double ** malloc error!\n");
         exit(1);
     }
@@ -326,9 +326,9 @@ void ShareFreeM2d(double **s, int size) {
  *********************************************************************/
 double ***ShareMallocM3d(int size1, int size2, int size3) {
     int i;
-    double ***s = NULL;
+    double ***s = nullptr;
 
-    if ((s = (double ***) calloc(size1, sizeof(double **))) == NULL) {
+    if ((s = (double ***) calloc(size1, sizeof(double **))) == nullptr) {
         printf("double *** malloc error!\n");
         exit(1);
     }
@@ -380,8 +380,8 @@ char **ShareSplitStr(const char *buf0, const char *sepa, int *len, int flag) {
     char buf[shareDefMaxLine];
     char *str0, *str1, *str2;
     int num = 0;
-    char *s = NULL;
-    char **strarr = NULL;
+    char *s = nullptr;
+    char **strarr = nullptr;
     int n;
 
     n = (strlen(buf0) + 1 > shareDefMaxLine) ? shareDefMaxLine - 1 : strlen(buf0);
@@ -394,7 +394,7 @@ char **ShareSplitStr(const char *buf0, const char *sepa, int *len, int flag) {
 
     while (str0 <= str2) {
         str1 = strstr(str0, sepa);
-        if (str1 == NULL)
+        if (str1 == nullptr)
             str1 = str2;
 
         if (((str1 >= str0) && (flag == shareDefNullYes))   \

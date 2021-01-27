@@ -34,11 +34,11 @@
 #ifndef ESES_H
 #define ESES_H
 
+#include <ctime>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "sres_export.h"
 
 #ifndef _es_es_h
 #define _es_es_h
@@ -49,9 +49,25 @@ extern "C" {
 #define esDefAlpha 0.2
 #define esDefVarphi 1
 #define esDefRetry 10
+
 #define esDefESPlus 0
 #define esDefESSlash 1
 
+
+
+/**
+ * ctypes tests
+ */
+
+typedef struct {
+    int x;
+    int y;
+} Point ;
+
+
+Point* makePoint(int x, int y);
+
+void freePoint(Point* point);
 /*********************************************************************
  ** function of fitness and constraints                             **
  ** to calculate fitness and constraints and assign to ESIndividual **
@@ -59,37 +75,54 @@ extern "C" {
  *********************************************************************/
 typedef void(*ESfcnFG)(double *, double *, double *);
 
-void costy_fun(double *x, double *f, double *g);
+typedef void(*f1)(double*, double*);
+
+void function_that_takes_a_function(f1 fn, double *input, double* output);
+
+//typedef void(*ESfcnFG)();
+
+
+void fake_cost(double* x, double *f, double* g);
+
 
 /**
- * @brief returns a pointer to the cost_function function.
+ * KEep this function for now. I used it
+ * for testing how to pass double arrays from
+ * Python to C.
  */
-ESfcnFG *getCostFunPtr();
+void fakeFun(double* d);
 
-void freeCostFunPtr(ESfcnFG* f);
+
+
+
+/**
+ *
+ */
+//void function_that_takes_a_function(ESfcnFG* fn);
 
 
 /*********************************************************************
- ** function to transform x(op) and sp                              **
+ ** function to doNothingTransform x(op) and sp                     **
  ** double f(double)                                                **
  *********************************************************************/
 typedef double(*ESfcnTrsfm)(double);
 
 /**
- * @brief A "do nothing" transform function that conforms
+ * @brief A "do nothing" doNothingTransform function that conforms
  * to the interface dictated by ESFcnTrsfm
  * @author (CW)
  */
 double do_nothing_transform(double x);
 
-ESfcnTrsfm * getTransformFun();
+ESfcnTrsfm *getTransformFun(int numEstimatedParams);
 
-void freeTransformFun(ESfcnTrsfm * fun);
+void freeTransformFun(ESfcnTrsfm *fun);
+
 
 /*********************************************************************
  ** ESParameter: struct for ES-parameter                            **
  ** fg: functions of fitness and constraints                        **
- ** trsfm: to transform sp/op                                       **
+ ** trsfm: to doNothingTransform sp/op                              **
  ** es: ES process, esDefESPlus/esDefESSlash                        **
  ** eslambda: lambda+miu or lambda according to ES process          **
  ** seed: random seed                                               **
@@ -140,11 +173,15 @@ typedef struct {
 ESParameter **makeESParameter();
 
 /**
+ * @brief dereferences a ESParameter**
+ * @returns ESParameter*
+ */
+ESParameter  *derefESParameter(ESParameter** param);
+
+/**
  * (CW) Free an ESParameter created by makeESParameterPtr.
  */
 void freeESParameter(ESParameter **parameter);
-
-
 
 
 /**
@@ -195,7 +232,9 @@ typedef struct {
  * @brief Create a ESPopulation
  * @details heap allocated. User free's with freeESPopulation
  */
-ESPopulation **makePopulation();
+ESPopulation **makeESPopulation();
+
+ESPopulation  *derefESPopulation(ESPopulation ** param);
 
 /**
  * @brief free a ESPopulation* allocated by ESPopulation
@@ -221,6 +260,8 @@ typedef struct {
 
 ESStatistics **makeESStatistics();
 
+ESStatistics *derefESStatistics(ESStatistics** param);
+
 void freeESStatistics(ESStatistics **statistics);
 
 /*********************************************************************
@@ -232,7 +273,7 @@ void freeESStatistics(ESStatistics **statistics);
  ** outseed: seed value assigned , for next use                     **
  ** param: point to parameter                                       **
  ** fg: functions of fitness and constraints                        **
- ** trsfm: to transform sp/op                                       **
+ ** trsfm: to doNothingTransform sp/op                                       **
  ** es: ES process, esDefESPlus/esDefESSlash                        **
  ** constraint: number of constraints                               **
  ** dim: dimension/number of genes in genome                        **
@@ -279,7 +320,7 @@ void ESDeInitial(ESParameter *, ESPopulation *, ESStatistics *);
  **                dim,ub,lb,miu,lambda,gen)                        **
  ** param: point to parameter                                       **
  ** fg: functions of fitness and constraints                        **
- ** trsfm: to transform sp/op                                       **
+ ** trsfm: to doNothingTransform sp/op                                       **
  ** es: ES process, esDefESPlus/esDefESSlash                        **
  ** seed: reserve seed for next use                                 **
  ** constraint: number of constraints                               **

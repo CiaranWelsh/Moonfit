@@ -22,7 +22,7 @@ void cost(double *x, double *f, double *g){
 	*f = CurrentIndividual->cost();	
 }
 
-double transform(double x){
+double doNothingTransform(double x){
 	return x;
 }
 
@@ -72,7 +72,7 @@ void SRES::optimize(){
 	}
 	
 	for(i=0;i<dim;i++)
-		trsfm[i] = transform;
+		trsfm[i] = doNothingTransform;
 
 	ESInitial(seed, &param, trsfm, cost, es,constraint, dim, ub, lb,  \
 		miu, lambda, gen, gamma, alpha, varphi,  \

@@ -39,12 +39,55 @@
 #include "ESES.h"
 #include <memory>
 
+void fakeFun(double *d) {
+    printf("I'm a double pointer from C: %f, %f\n", *d, *(d + 1));
+}
+
+void fake_cost(double *x, double *f, double *g) {
+    printf("x: %d, %d\n");
+}
+
+void function_that_takes_a_function(f1 fn, double *input, double *output) {
+    printf("I'm a function that takes a function\n");
+    printf("input: %f\n", *input);
+    printf("output before callback %f\n", *output);
+
+
+    // need to allocate memory and assign this f pointer to a function
+//    (*fn)(d1, d2, g);
+    (*fn)(input, output);
+    printf("output after callback: %f\n", *output);
+}
+
+
+Point *makePoint(int x, int y) {
+    /**
+     *
+     * https://stackoverflow.com/questions/38661635/ctypes-struct-returned-from-library
+     */
+
+    Point *point = (Point *) malloc(sizeof(Point));
+    int *p1 = (int *) malloc(sizeof(int));
+    int *p2 = (int *) malloc(sizeof(int));
+    point->x = x;
+    point->y = y;
+    return point;
+}
+
+void freePoint(Point *point) {
+    free(point);
+}
+
+
 /**
  * Some functions added by CW for
  * allocating pointers to structs that we need
  * in python to pass to init function
  */
 
+void foo(void (*functionPtr)(int, int), int a, int b) {
+
+}
 
 
 void costy_fun(double *x, double *f, double *g) {
@@ -67,6 +110,9 @@ void costy_fun(double *x, double *f, double *g) {
      * so x are the model parameters and f the fitness associated with them?
      * So lets pass in a value for f, the precomputed cost function from Python
      * and just do nothing with this function???
+     *
+     *
+     *
      */
 };
 
@@ -86,14 +132,21 @@ double do_nothing_transform(double x) {
     return x;
 }
 
-ESfcnTrsfm *getTransformFun() {
-    auto *fun = (ESfcnTrsfm *) malloc(sizeof(ESfcnTrsfm *));
-    *fun = &do_nothing_transform;
-    return fun;
+ESfcnTrsfm *getTransformFun(int numEstimatedParams) {
+//    auto *fun = (ESfcnTrsfm *) malloc(sizeof(ESfcnTrsfm *));
+//    *fun = &do_nothing_transform;
+//    return fun;
+    ESfcnTrsfm *trsfm = (ESfcnTrsfm *) malloc(numEstimatedParams * sizeof(ESfcnTrsfm));
+    for (int i = 0; i < numEstimatedParams; i++) {
+        trsfm[i] = do_nothing_transform;
+    }
+    return trsfm;
 }
 
-void freeTransformFun(ESfcnTrsfm *fun) {
-    free(fun);
+void freeTransformFun(ESfcnTrsfm *fun, int numEstimatedParams) {
+    for (int i = 0; i < numEstimatedParams; i++) {
+        free(fun + i);
+    }
 }
 
 
@@ -110,6 +163,11 @@ ESParameter **makeESParameter() {
     return pp;
 }
 
+ESParameter *derefESParameter(ESParameter **param) {
+    return *param;
+}
+
+
 void freeESParameter(ESParameter **parameter) {
     freePtr(*parameter);
     freePtr(parameter);
@@ -124,7 +182,7 @@ void freeIndividual(ESIndividual *individual) {
     freePtr((void *) individual);
 }
 
-ESPopulation **makePopulation() {
+ESPopulation **makeESPopulation() {
     ESPopulation **pop;
     pop = (ESPopulation **) malloc(sizeof(ESPopulation *));
     *pop = (ESPopulation *) malloc(sizeof(ESPopulation));
@@ -141,6 +199,14 @@ ESStatistics **makeESStatistics() {
     stat = (ESStatistics **) malloc(sizeof(ESStatistics *));
     *stat = (ESStatistics *) malloc(sizeof(ESStatistics));
     return stat;
+}
+
+ESPopulation *derefESPopulation(ESPopulation **param) {
+    return *param;
+}
+
+ESStatistics *derefESStatistics(ESStatistics **param) {
+    return *param;
 }
 
 void freeESStatistics(ESStatistics **statistics) {
@@ -161,7 +227,7 @@ void rss_cost(double *x, double *f, double *g) {
  ** seed: random seed, usually esDefSeed=0 (pid*time)               **
  ** outseed: seed value assigned , for next use                     **
  ** param: point to parameter                                       **
- ** trsfm: to transform sp/op                                       **
+ ** trsfm: to doNothingTransform sp/op                                       **
  ** fg: functions of fitness and constraints                        **
  ** es: ES process, esDefESPlus/esDefESSlash                        **
  ** constraint: number of constraints                               **
@@ -191,16 +257,44 @@ void ESInitial(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
                double *lb, int miu, int lambda, int gen, \
                double gamma, double alpha, double varphi, int retry, \
                ESPopulation **population, ESStatistics **stats) {
+
+    printf("seed:         %d\n", seed);
+    printf("param:        %d\n", param);
+    printf("trsfm:        %d\n", trsfm);
+    printf("fg:           %d\n", fg);
+    printf("es:           %d\n", es);
+    printf("constraint:   %d\n", constraint);
+    printf("dim:          %d\n", dim);
+    printf("ub:           %d\n", ub);
+    printf("lb:           %d\n", lb);
+    printf("miu:          %d\n", miu);
+    printf("lambda:       %d\n", lambda);
+    printf("gen:          %d\n", gen);
+    printf("gamma:        %f\n", gamma);
+    printf("alpha:        %f\n", alpha);
+    printf("varphi:       %f\n", varphi);
+    printf("retry:        %d\n", retry);
+    printf("population:   %d\n", population);
+    printf("stats:        %d\n", stats);
+
     unsigned int outseed;
 
     ShareSeed(seed, &outseed);
     ESInitialParam(param, trsfm, fg, es, outseed, constraint, dim, ub, lb, \
                  miu, lambda, gen, gamma, alpha, varphi, retry);
+
+//    printf("population from ESInitial: %d\n", population);
+//    printf("*population from ESInitial: %d\n", (*population)->index);
+
     ESInitialPopulation(population, (*param));
+
+//    for (int i = 0; i < 30; i++) {
+//        printf("this should say '%d' but actually says : %d\n", i, (*population)->index[i]);
+//    }
     ESInitialStat(stats, (*population), (*param));
 
     printf("\n========\nseed = %u\n========\n", outseed);
-    fflush(NULL);
+    fflush(nullptr);
 
     return;
 }
@@ -230,7 +324,7 @@ void ESDeInitial(ESParameter *param, ESPopulation *population, \
  ** ESInitialParam(param, trsfm, fg,constraint,                     **
  **                dim,ub,lb,miu,lambda,gen)                        **
  ** param: point to parameter                                       **
- ** trsfm: to transform sp/op                                       **
+ ** trsfm: to doNothingTransform sp/op                                       **
  ** fg: functions of fitness and constraints                        **
  ** es: ES process, esDefESPlus/esDefESSlash                        **
  ** seed: reserve seed for next use                                 **
@@ -307,7 +401,7 @@ void ESInitialParam(ESParameter **param, ESfcnTrsfm *trsfm, \
 void ESDeInitialParam(ESParameter *param) {
     ShareFreeM1d(param->spb);
     ShareFreeM1c((char *) param);
-    param = NULL;
+    param = nullptr;
     return;
 }
 
@@ -326,16 +420,17 @@ void ESDeInitialParam(ESParameter *param) {
  ** free population                                                 **
  *********************************************************************/
 void ESInitialPopulation(ESPopulation **population, ESParameter *param) {
+    printf("in ESInitialPopulation\n");
     int i;
     int eslambda;
 
     eslambda = param->eslambda;
 
     (*population) = (ESPopulation *) ShareMallocM1c(sizeof(ESPopulation));
-    (*population)->member = NULL;
-    (*population)->f = NULL;
-    (*population)->phi = NULL;
-    (*population)->index = NULL;
+    (*population)->member = nullptr;
+    (*population)->f = nullptr;
+    (*population)->phi = nullptr;
+    (*population)->index = nullptr;
 
     (*population)->member = (ESIndividual **) \
                    ShareMallocM1c(eslambda * sizeof(ESIndividual *));
@@ -345,7 +440,8 @@ void ESInitialPopulation(ESPopulation **population, ESParameter *param) {
     (*population)->index = ShareMallocM1i(eslambda);
 
     for (i = 0; i < eslambda; i++) {
-        (*population)->member[i] = NULL;
+//        printf("assigning index i: %d\n", i);
+        (*population)->member[i] = nullptr;
         ESInitialIndividual(&((*population)->member[i]), param);
         (*population)->index[i] = i;
         (*population)->f[i] = (*population)->member[i]->f;
@@ -369,7 +465,7 @@ void ESDeInitialPopulation(ESPopulation *population, ESParameter *param) {
     ShareFreeM1d(population->phi);
     ShareFreeM1i(population->index);
     ShareFreeM1c((char *) population);
-    population = NULL;
+    population = nullptr;
 
     return;
 }
@@ -407,9 +503,9 @@ void ESInitialIndividual(ESIndividual **indvdl, ESParameter *param) {
     lb = param->lb;
 
     (*indvdl) = (ESIndividual *) ShareMallocM1c(sizeof(ESIndividual));
-    (*indvdl)->op = NULL;
-    (*indvdl)->sp = NULL;
-    (*indvdl)->g = NULL;
+    (*indvdl)->op = nullptr;
+    (*indvdl)->sp = nullptr;
+    (*indvdl)->g = nullptr;
 
     (*indvdl)->op = ShareMallocM1d(dim);
     (*indvdl)->sp = ShareMallocM1d(dim);
@@ -435,7 +531,7 @@ void ESDeInitialIndividual(ESIndividual *indvdl) {
     ShareFreeM1d(indvdl->op);
     ShareFreeM1d(indvdl->sp);
     ShareFreeM1c((char *) indvdl);
-    indvdl = NULL;
+    indvdl = nullptr;
 
     return;
 }
@@ -452,12 +548,12 @@ void ESPrintOp(ESIndividual *indvdl, ESParameter *param) {
     trsfm = param->trsfm;
     dim = param->dim;
 
-    if (trsfm == NULL)
+    if (trsfm == nullptr)
         for (i = 0; i < dim; i++)
             printf("\t%f", indvdl->op[i]);
     else
         for (i = 0; i < dim; i++)
-            if (trsfm[i] == NULL)
+            if (trsfm[i] == nullptr)
                 printf("\t%f", indvdl->op[i]);
             else
                 printf("\t%f", (trsfm[i])(indvdl->op[i]));
@@ -472,12 +568,12 @@ void ESPrintSp(ESIndividual *indvdl, ESParameter *param) {
 
     trsfm = param->trsfm;
     dim = param->dim;
-    if (trsfm == NULL)
+    if (trsfm == nullptr)
         for (i = 0; i < dim; i++)
             printf("\t%f", indvdl->sp[i]);
     else
         for (i = 0; i < dim; i++)
-            if (trsfm[i] == NULL)
+            if (trsfm[i] == nullptr)
                 printf("\t%f", indvdl->sp[i]);
             else
                 printf("\t%f", (trsfm[i])(indvdl->sp[i]));
@@ -524,8 +620,8 @@ void ESInitialStat(ESStatistics **stats, ESPopulation *population, \
     (*stats) = (ESStatistics *) ShareMallocM1c(sizeof(ESStatistics));
     (*stats)->bestgen = 0;
     (*stats)->curgen = 0;
-    (*stats)->bestindvdl = NULL;
-    (*stats)->thisbestindvdl = NULL;
+    (*stats)->bestindvdl = nullptr;
+    (*stats)->thisbestindvdl = nullptr;
     (*stats)->dt = 0;
     time(&((*stats)->begintime));
     time(&((*stats)->nowtime));
@@ -534,7 +630,7 @@ void ESInitialStat(ESStatistics **stats, ESPopulation *population, \
     ESInitialIndividual(&((*stats)->thisbestindvdl), param);
 
 /*********************************************************************
- ** dont do stat when initializing                                  ** 
+ ** dont do stat when initializing                                  **
  ** ESDoStat((*stats), population, param);                          **
  *********************************************************************/
 
@@ -545,7 +641,7 @@ void ESDeInitialStat(ESStatistics *stats) {
     ESDeInitialIndividual(stats->bestindvdl);
     ESDeInitialIndividual(stats->thisbestindvdl);
     ShareFreeM1c((char *) stats);
-    stats = NULL;
+    stats = nullptr;
 
     return;
 }
@@ -611,7 +707,7 @@ void ESPrintStat(ESStatistics *stats, ESParameter *param) {
     printf("      variance=");
     ESPrintSp(stats->bestindvdl, param);
     printf("\n");
-    fflush(NULL);
+    fflush(nullptr);
 
     return;
 }
@@ -626,18 +722,25 @@ void ESPrintStat(ESStatistics *stats, ESParameter *param) {
  *********************************************************************/
 void ESStep(ESPopulation *population, ESParameter *param, \
             ESStatistics *stats, double pf) {
-
+    printf("Population index thing\n");
+    printf("sorting population\n");
     ESSRSort(population->f, population->phi, pf, param->eslambda, \
            param->eslambda, population->index);
+    printf("Sorting population again\n");
     ESSortPopulation(population, param);
+    printf("Population sorted\nSelecting from population\n");
 
     ESSelectPopulation(population, param);
+    printf("PArams selected\nnow mutating\n");
 
     ESMutate(population, param);
+    printf("Done mutation\nNow Doing stats\n");
 
     ESDoStat(stats, population, param);
+    printf("Stats done\n now printing stats\n\n");
 
     ESPrintStat(stats, param);
+    printf("We're one happy step algorithm\n");
 
     return;
 }
@@ -655,7 +758,7 @@ void ESSortPopulation(ESPopulation *population, ESParameter *param) {
     eslambda = param->eslambda;
     oldmember = population->member;
     index = population->index;
-    newmember = NULL;
+    newmember = nullptr;
     newmember = (ESIndividual **) ShareMallocM1c(eslambda * sizeof(ESIndividual *));
 
     for (i = 0; i < eslambda; i++)
@@ -669,7 +772,7 @@ void ESSortPopulation(ESPopulation *population, ESParameter *param) {
     }
 
     ShareFreeM1c((char *) newmember);
-    newmember = NULL;
+    newmember = nullptr;
 
     return;
 }
@@ -729,7 +832,7 @@ void ESSelectPopulation(ESPopulation *population, ESParameter *param) {
  ** if still not in bound then op = op_                             **
  ** exponential smoothing                                           **
  ** sp(miu->lambda): sp = sp_ + alpha * (sp - sp_)                  **
- ** 
+ **
  ** re-calculate f/g/phi                                            **
  *********************************************************************/
 void ESMutate(ESPopulation *population, ESParameter *param) {
@@ -746,9 +849,9 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
     double tmp;
     ESfcnFG fg;
 
-    randvec = NULL;
-    sp_ = NULL;
-    op_ = NULL;
+    randvec = nullptr;
+    sp_ = nullptr;
+    op_ = nullptr;
 
     miu = param->miu;
     lambda = param->lambda;
@@ -767,6 +870,7 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
     sp_ = ShareMallocM2d(lambda, dim);
     op_ = ShareMallocM2d(lambda, dim);
 
+    printf("ESMutate: 1\n");
     for (i = 0; i < lambda; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++) {
@@ -774,6 +878,7 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
             op_[i][j] = indvdl->op[j];
         }
     }
+    printf("ESMutate: 2\n");
 
     for (i = miu - 1; i < lambda; i++) {
         randscalar = ShareNormalRand(0, 1);
@@ -786,17 +891,20 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
             indvdl->sp[j] = tmp;
         }
     }
+    printf("ESMutate: 3\n");
 
     for (i = 0; i < miu - 1; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++)
             indvdl->op[j] = indvdl->op[j] + gamma * (op_[0][j] - op_[i + 1][j]);
     }
+    printf("ESMutate: 4\n");
     for (i = miu - 1; i < lambda; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++)
             indvdl->op[j] = indvdl->op[j] + indvdl->sp[j] * ShareNormalRand(0, 1);
     }
+    printf("ESMutate: 5\n");
 
     for (i = 0; i < lambda; i++) {
         indvdl = population->member[i];
@@ -814,32 +922,63 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
             }
         }
     }
+    printf("ESMutate: 6\n");
 
     for (i = miu - 1; i < lambda; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++)
             indvdl->sp[j] = sp_[i][j] + alpha * (indvdl->sp[j] - sp_[i][j]);
     }
+    printf("ESMutate: 7\n");
 
     for (i = 0; i < lambda; i++) {
+        printf("i is: %d", i);
+        printf("HERE1\n");
         indvdl = population->member[i];
+        printf("HERE2\n");
+
+        indvdl->op;
+        printf("before->op, %f\n", *(indvdl->op));
+        &(indvdl->f);
+        printf("before->f %f\n", indvdl->f);
+        indvdl->g;
+        printf("before->g %f\n", *(indvdl->g));
+
+
         fg(indvdl->op, &(indvdl->f), indvdl->g);
+
+
+        indvdl->op;
+        printf("after->op, %f\n", *(indvdl->op));
+        &(indvdl->f);
+        printf("after->f %f\n", indvdl->f);
+        indvdl->g;
+        printf("after->g %f\n", *(indvdl->g));
+
+
+
         indvdl->phi = 0.0;
+        printf("HERE4\n");
         for (j = 0; j < constraint; j++) {
-            if (indvdl->g[j] > 0.0)
+            printf("HERE5\n");
+            if (indvdl->g[j] > 0.0) {
                 indvdl->phi += (indvdl->g[j] * indvdl->g[j]);
+            }
         }
+        printf("HERE6\n");
         population->f[i] = indvdl->f;
+        printf("HERE7\n");
         population->phi[i] = indvdl->phi;
+        printf("HERE8\n");
     }
+    printf("ESMutate: 8\n");
 
     ShareFreeM1d(randvec);
-    randvec = NULL;
+    randvec = nullptr;
     ShareFreeM2d(sp_, lambda);
-    sp_ = NULL;
+    sp_ = nullptr;
     ShareFreeM2d(op_, lambda);
-    op_ = NULL;
-
+    op_ = nullptr;
     return;
 }
 

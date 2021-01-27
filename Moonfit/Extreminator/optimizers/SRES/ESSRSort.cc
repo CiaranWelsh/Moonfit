@@ -28,6 +28,7 @@
 
 #include "sharefunc.h"
 #include "ESSRSort.h"
+#include <cstdio>
 
 /*********************************************************************
  ** void ESSRSort(f,phi,pf,eslambda,N,I)                            **
@@ -51,53 +52,62 @@
  **     break                                                       **
  *********************************************************************/
 
-void
-ESSRSort(double *f, double *phi, double pf, int eslambda, int N, int *I)
-{
-  int i, j;
-  double u;
-  int nSwap;
-  int tmp;
+void ESSRSort(double *f, double *phi,
+              double pf, int eslambda, int N, int *I) {
+//    printf("1\n");
+    int i, j;
+//    printf("2\n");
+    double u;
+//    printf("3\n");
+    int nSwap;
+//    printf("4\n");
+    int tmp;
+//    printf("5\n");
 
-  for(i=0; i<N; i++)
-  {
-    nSwap = 0;
-    for(j=0; j<eslambda-1; j++)
-    {
-      u = ShareRand(0,1);
+    for (i = 0; i < N; i++) {
+//        printf("6\n");
+        nSwap = 0;
+//        printf("7\n");
+        for (j = 0; j < eslambda - 1; j++) {
+//            printf("8\n");
+            u = ShareRand(0, 1);
+//            printf("fail after me\n");
 /*********************************************************************
  ** it's difficult to test if a double value is zero or not         **
  ** for example, a variable 'x',                                    **
  ** if 'x < double precision', then 'x==0' is true                  **
  *********************************************************************/
-      if( (ShareIsZero(phi[I[j]]-phi[I[j+1]]) ==shareDefTrue  \
-                     && ShareIsZero(phi[I[j]])==shareDefTrue)  \
-          || u < pf )
-      {
-        if( f[I[j]] > f[I[j+1]] )
-        {
-          tmp = I[j];
-          I[j] = I[j+1];
-          I[j+1] = tmp;
-          nSwap++;
-        }
-      }
-      else
-      {
-        if( phi[I[j]] > phi[I[j+1]]  )
-        {
-          tmp = I[j];
-          I[j] = I[j+1];
-          I[j+1] = tmp;
-          nSwap++;
-        }
-      }
-    }
-    if(nSwap <=0)
-      break;
-  }
+//            printf("I[j]: %d\n", I[j]);
+//            printf("fail before me\n");
+//            printf("phi Ij: %f\n", phi[I[j]]);
 
-  return;
+            if ((ShareIsZero(phi[I[j]] - phi[I[j + 1]]) == shareDefTrue  \
+ && ShareIsZero(phi[I[j]]) == shareDefTrue)  \
+ || u < pf) {
+//                printf("10\n");
+                if (f[I[j]] > f[I[j + 1]]) {
+                    tmp = I[j];
+                    I[j] = I[j + 1];
+                    I[j + 1] = tmp;
+                    nSwap++;
+                }
+            } else {
+//                printf("12\n");
+                if (phi[I[j]] > phi[I[j + 1]]) {
+                    tmp = I[j];
+                    I[j] = I[j + 1];
+                    I[j + 1] = tmp;
+                    nSwap++;
+                }
+            }
+        }
+//        printf("13\n");
+        if (nSwap <= 0)
+            break;
+    }
+//    printf("14\n");
+
+    return;
 }
 
 

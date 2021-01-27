@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
-
-#todo look at ths: https://stackoverflow.com/questions/33484591/callbacks-with-ctypes-how-to-call-a-python-function-from-c
-# and
+from sres import _SRES
+import ctypes as ct
 import tellurium as te
+
+# number of generations
+NGEN = 100
 
 MODEL = """
 model newModel
@@ -23,68 +25,97 @@ def getSimulationData(k1: float, k2: float):
     setattr(model, "k1", k1)
     setattr(model, "k2", k2)
     data = model.simulate(0, 10, 11)
-    df = pd.DataFrame(data, columns=data.colnames)
-    df.set_index("time")
-    return df
+    return data
 
 
+EXP_DATA = getSimulationData(0.1, 0.1)
 
-def cost_fun(exp: pd.DataFrame, sim: pd.DataFrame):
+
+@ct.CFUNCTYPE(None, ct.POINTER(ct.c_double * 2), ct.POINTER(ct.c_double), ct.POINTER(ct.c_double))
+def cost_fun(x, f, g):
+    parameter_ids = model.getGlobalParameterIds()
+    for parameter_i in range(len(parameter_ids)):
+        setattr(model, parameter_ids[parameter_i], x[parameter_i])
+    sim = model.simulate(0, 10, 11)
     cost = 0
-    for i in range(exp.shape[0]):
-        for j in range(exp.shape[1]):
-            cost += (exp.iloc[i, j] - sim.iloc[i, j])**2
-    return cost
+    for i in range(EXP_DATA.shape[0]):
+        for j in range(EXP_DATA.shape[1]):
+            cost += (EXP_DATA.iloc[i, j] - sim.iloc[i, j]) ** 2
 
+    # assign cost to the value pointed to by f
+    # using this https://stackoverflow.com/a/1556482/3059024
+    # how to implement *f = cost?
+    # and this: https://stackoverflow.com/a/61543646/3059024
+    print("sadfasd")
+    f = cost
+
+"""
+This callback thing isn't working. Relook atht docs. If no, is there a way I 
+can wrap the generation of this function in another function? 
+"""
 
 
 if __name__ == "__main__":
-    exp_data = getSimulationData(0.1, 0.1)
+    from sres_capi import *
 
-    N = 10
+    sres = _SRES()
+    esparam = sres.makeESParameter()
+    stats = sres.makeESStatistics()
+    pop = sres.makeESPopulation()
+    # costFun = sres.getCostFunPtr()
+    trsf = sres.getTransformFun(2)
 
-    cost = 100000000
+    # https://stackoverflow.com/questions/51131433/how-to-pass-lists-into-a-ctypes-function-on-python/51132594
+    DoubleArrayLen2 = ct.c_double * 2
 
-    best_params = []
+    pop_size = 30
+    seed = 0
+    gamma = 0.85
+    alpha = 0.2
+    varalphi = 1
+    retry = 10
+    es = 0
 
-    # Random selection
-    for i in range(N):
-        # pick new parameters to test
-        # this is the bit that the SRES algo will perform
-        k1, k2 = np.random.uniform(0.1, 10, 2)
+    ub = DoubleArrayLen2(10.0, 10.0)  # double *ub,
+    lb = DoubleArrayLen2(0.1, 0.1)  # double *lb,
 
-        cost_tmp = cost_fun(exp_data, getSimulationData(k1, k2))
-        print("cost_tmp: ", cost_tmp)
+    print(type(cost_fun))
 
-        # update
-        if (cost_tmp < cost):
-            best_params += [k1, k2]
-            cost = cost_tmp
+    sres.ESInitialWithPtrFitnessFcn(
+        seed,  # unsigned int seed,
+        esparam,  # ESParameter **param,
+        trsf,  # ESfcnTrsfm *trsfm,
+        cost_fun,  # ESfcnFG* fg,
+        es,  # int es,
+        0,  # int constraint,
+        2,  # int dim,
+        ub,
+        lb,
+        pop_size,  # int miu,
+        pop_size,  # int lambda,
+        NGEN,  # int gen,
+        gamma,  # double gamma,
+        alpha,  # double alpha,
+        varalphi,  # double varphi,
+        retry,  # int retry,
+        stats,  # ESPopulation **population
+        pop,  # ESStatistics **stats
+    )
 
-    print("Best cost value is: ", cost)
-    print("Best parameters: " , best_params)
-    print("Simulation data with best params: ")
-    best_df = getSimulationData(best_params[0], best_params[2])
-    df_dct = dict(sim=best_df, exp=exp_data)
-    print(pd.concat(df_dct, axis=1))
+    # curgen = 0
+    # while curgen < NGEN:
+    #     sres.ESStep(
+    #         sres.derefESPopulation(pop),
+    #         sres.derefESParameter(esparam),
+    #         sres.derefESStatistics(stats),
+    #     )
+    #     curgen += 1
+    #
+    # sres.ESDeInitial(
+    #     sres.derefESParameter(esparam),
+    #     sres.derefESPopulation(pop),
+    #     sres.derefESStatistics(stats)
+    # )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # sres.freeCostFunPtr(costFun)
+    sres.freeTransformFun(trsf)

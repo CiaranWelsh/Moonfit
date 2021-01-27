@@ -56,9 +56,85 @@ util = _Util()
 
 # now we can use Util.load_func
 
+class Point(ct.Structure):
+    """Example of using structs with ctypes.
+    https://stackoverflow.com/questions/65901925/how-to-create-a-c-struct-from-python-using-ctypes/65902099?noredirect=1#65902099
+    On the C end we have:
+
+        typedef struct Point {
+            int x;
+            int y;
+        } Point ;
+
+        Point* makePoint(int x, int y){
+            Point *point = (Point*) malloc(sizeof (Point));
+            point->x = x;
+            point->y = y;
+            return point;
+        }
+
+        void freePoint(Point* point){
+            free(point);
+        }
+
+    Then in Python:
+
+        >>> lib = ct.CDLL(library)
+        >>> lib.makePoint.restype = ct.POINTER(Point) # aka this class
+    Then you can do
+        >>> lib.makePoint.restype = ct.POINTER(Point)
+        >>> p = lib.makePoint(4, 5)
+        >>> print(p.contents.x)
+        >>> print(p.contents.y)
+    Be exceptionally careful with types! int in C maps to c_int32 in ctypes.
+
+    """
+    _fields_ = [
+        ("x", ct.c_int32),
+        ("y", ct.c_int32),
+    ]
+
+
+
 class _SRES:
-    """
-    """
+    DoubleArrayLen2 = ct.c_double * 2
+    DoubleArrayLen2Ptr = ct.POINTER(DoubleArrayLen2)
+    ESFcnFG_CALLBACK = ct.CFUNCTYPE(None, ct.POINTER(ct.c_double * 2), ct.POINTER(ct.c_double), ct.POINTER(ct.c_double))
+    F1_CALLBACK = ct.CFUNCTYPE(None, ct.POINTER(ct.c_double*2))
+
+    def _makeDoubleArrayPtr(self, input: List[float]):
+        ctypes_double_type = ct.c_double*len(input)
+        my_double_arr = ctypes_double_type(*input)
+        return ct.pointer(my_double_arr)
+
+    # function_that_takes_a_function = util.load_func(
+    #     "function_that_takes_a_function",
+    #     argtypes=[
+    #         F1_CALLBACK
+    #     ],
+    #     return_type=None
+    # )
+
+    fakeFun = util.load_func(
+        funcname="fakeFun",
+        argtypes=[
+            ct.POINTER(ct.c_double*2)
+        ],
+        return_type=None
+    )
+
+    # Point* makePoint(int x, int y);
+    makePoint = util.load_func(
+        funcname="makePoint",
+        argtypes=[
+            ct.c_int32,
+            ct.c_int32
+        ],
+        return_type=ct.c_void_p
+    )
+
+    # void freePoint(Point* point);
+
 
     """
     /**
@@ -72,11 +148,11 @@ class _SRES:
      */
     """
 
-    # ESParameter *makeESParameter();
+    # ESParameter **makeESParameter();
     makeESParameter = util.load_func(
         funcname="makeESParameter",
         argtypes=[],  # void
-        return_type=ct.c_uint64  # return type: ESParameter*
+        return_type=ct.c_uint64  # return type: ESParameter**
     )
 
     freeESParameter = util.load_func(
@@ -85,34 +161,20 @@ class _SRES:
         return_type=None  # return type: ESParameter**
     )
 
-    # ESfcnFG * getCostFunPtr()
-    getCostFunPtr = util.load_func(
-        funcname="getCostFunPtr",
-        argtypes=[],
-        return_type=ct.c_uint64
-    )
-
-    # void freeCostFunPtr(ESfcnFG * f)
-    freeCostFunPtr = util.load_func(
-        funcname="getCostFunPtr",
+    # ESParameter  *deRefESParamPP(ESParameter** param);
+    derefESParameter = util.load_func(
+        funcname="derefESParameter",
         argtypes=[ct.c_uint64],
-        return_type=None
+        return_type=ct.c_uint64
     )
 
     # ESfcnTrsfm * getTransformFun()
     getTransformFun = util.load_func(
         funcname="getTransformFun",
-        argtypes=[],
+        argtypes=[ct.c_int32],
         return_type=ct.c_uint64
     )
 
-    # void freeTransformFun(ESfcnTrsfm * fun)
-
-    freeTransformFun = util.load_func(
-        funcname="freeTransformFun",
-        argtypes=[ct.c_uint64],
-        return_type=None
-    )
     """
     /*********************************************************************
      ** initialize: parameters,populations and random seed              **
@@ -161,30 +223,55 @@ class _SRES:
     #                ESfcnFG*, int, int, int, double *, double *, int, int, int, \
     #                double, double, double, int, \
     #                ESPopulation **, ESStatistics **);
-
-    ESInitialWithPtrFitnessFcn = util.load_func(
-        funcname="ESInitialWithPtrFitnessFcn",
+    ESInitial = util.load_func(
+        funcname="ESInitial",
         argtypes=[
-            ct.c_int64,  # unsigned int seed,
+            ct.c_int32,  # unsigned int seed,
             ct.c_int64,  # ESParameter **param,
             ct.c_int64,  # ESfcnTrsfm *trsfm,
-            ct.c_int64,  # ESfcnFG* fg,
-            ct.c_int64,  # int es,
-            ct.c_int64,  # int constraint,
-            ct.c_int64,  # int dim,
-            ct.POINTER(ct.c_double*2),  # double *ub,
-            ct.POINTER(ct.c_double*2),  # double *lb,
-            ct.c_int64,  # int miu,
-            ct.c_int64,  # int lambda,
-            ct.c_int64,  # int gen,
+            ESFcnFG_CALLBACK,  # ESfcnFG fg, --> already a fn ptr!
+            ct.c_int32,  # int es, 0 or 1; ES process, esDefESPlus/esDefESSlash
+            ct.c_int32,  # int constraint,
+            ct.c_int32,  # int dim,
+            DoubleArrayLen2Ptr,
+            DoubleArrayLen2Ptr,
+            ct.c_int32,  # int miu,
+            ct.c_int32,  # int lambda,
+            ct.c_int32,  # int gen,
             ct.c_double,  # double gamma,
             ct.c_double,  # double alpha,
             ct.c_double,  # double varphi,
-            ct.c_int64,  # int retry,
+            ct.c_int32,  # int retry,
             ct.c_int64,  # ESPopulation **population
             ct.c_int64,  # ESStatistics **stats
         ],
         return_type=None)
+
+
+    ESInitialWithPtrFitnessFcn = util.load_func(
+        funcname="ESInitialWithPtrFitnessFcn",
+        argtypes=[
+            ct.c_int32,  # unsigned int seed,
+            ct.c_int64,  # ESParameter **param,
+            ct.c_int64,  # ESfcnTrsfm *trsfm,
+            ESFcnFG_CALLBACK,  # ESfcnFG* fg,
+            ct.c_int32,  # int es,
+            ct.c_int32,  # int constraint,
+            ct.c_int32,  # int dim,
+            DoubleArrayLen2Ptr,
+            DoubleArrayLen2Ptr,
+            ct.c_int32,  # int miu,
+            ct.c_int32,  # int lambda,
+            ct.c_int32,  # int gen,
+            ct.c_double,  # double gamma,
+            ct.c_double,  # double alpha,
+            ct.c_double,  # double varphi,
+            ct.c_int32,  # int retry,
+            ct.c_int64,  # ESPopulation **population
+            ct.c_int64,  # ESStatistics **stats
+        ],
+        return_type=None)
+
 
     """
     /**
@@ -217,10 +304,17 @@ class _SRES:
      * @details heap allocated. User free's with freeESPopulation
      */
      """
-    # ESPopulation *makePopulation();
+    # ESPopulation *makeESPopulation();
     makeESPopulation = util.load_func(
-        funcname="makePopulation",
+        funcname="makeESPopulation",
         argtypes=[],
+        return_type=ct.c_uint64  # ESPopulation *
+    )
+
+    # ESPopulation  *derefESPopulation(ESPopulation ** param);
+    derefESPopulation = util.load_func(
+        funcname="derefESPopulation",
+        argtypes=[ct.c_uint64],
         return_type=ct.c_uint64  # ESPopulation *
     )
 
@@ -237,12 +331,7 @@ class _SRES:
         return_type=None
     )
 
-    """/**
-     * @brief Create a ESPopulation 
-     * @details heap allocated. User free's with freeESPopulation
-     */
-     """
-    # ESPopulation *makePopulation();
+    # ESStatistics *makeESStatistics();
     makeESStatistics = util.load_func(
         funcname="makeESStatistics",
         argtypes=[],
@@ -260,6 +349,15 @@ class _SRES:
             ct.c_uint64,  # ESStatistics*
         ],
         return_type=None
+    )
+
+    # ESStatistics * derefESStatistics(ESStatistics ** param);
+    derefESStatistics = util.load_func(
+        funcname="derefESStatistics",
+        argtypes=[
+            ct.c_uint64,  # ESStatistics*
+        ],
+        return_type=ct.c_int64
     )
 
     """
@@ -524,9 +622,9 @@ class _SRES:
     ESStep = util.load_func(
         funcname="ESStep",
         argtypes=[
-            ct.c_uint64,  # ESPopulation *,
-            ct.c_uint64,  # ESParameter *,
-            ct.c_uint64,  # ESStatistics *,
+            ct.c_int64,  # ESPopulation *,
+            ct.c_int64,  # ESParameter  *,
+            ct.c_int64,  # ESStatistics *,
             ct.c_double,  # double
         ],
         return_type=None)

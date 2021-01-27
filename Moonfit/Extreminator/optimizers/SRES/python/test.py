@@ -64,8 +64,8 @@ class Test(unittest.TestCase):
             es,                                # int es,
             0,                                 # int constraint,
             2,                                 # int dim,
-            DoubleArrayLen2(* [10.0]*2),       # double *ub,
-            DoubleArrayLen2(* [0.1]*2),        # double *lb,
+            DoubleArrayLen2(10.0, 10.0),       # double *ub,
+            DoubleArrayLen2(0.1, 0.1),        # double *lb,
             miu,                               # int miu,
             lamb,                              # int lambda,
             gen,                               # int gen,
@@ -85,7 +85,20 @@ class Test(unittest.TestCase):
 
 
 
-
+    def test(self):
+        MODEL = """
+        model newModel
+            r1: A => B; k1*A;
+            r2: B => A; k2*B;
+            A = 10;
+            B = 0.1;
+            k1 = 0.1;
+            k2 = 0.1;
+        end
+        """
+        import tellurium as te
+        model = te.loada(MODEL)
+        print(model.getGlobalParameterIds())
 
 
 

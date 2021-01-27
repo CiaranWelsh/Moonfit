@@ -161,7 +161,7 @@ public:
     string generateParamBorders();
 };
 
-/// 5 - Independent function to transform a kinetics in text file into a C++ cost function
+/// 5 - Independent function to doNothingTransform a kinetics in text file into a C++ cost function
 ///     that can be used in a sub-class of Experiments
 
 string generateCostCodeFromData(string, bool CostsPerCurves = true, string timeUnit = string(" DAY"));
