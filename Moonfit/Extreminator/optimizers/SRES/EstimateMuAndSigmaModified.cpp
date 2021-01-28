@@ -67,82 +67,82 @@ void func_to_pass_in(double *x, double* y) {
 
 int main() {
 
-    double input = 4.0;
-    double output = 0.0;
-    function_that_takes_a_function(func_to_pass_in, &input, &output);
-    printf("Output is still : %f\n", output);
+//    double input = 4.0;
+//    double output = 0.0;
+//    function_that_takes_a_function(func_to_pass_in, &input, &output);
+//    printf("Output is still : %f\n", output);
 
-//    int i;
-//    ESParameter **param = makeESParameter();
-//    ESPopulation **population = makeESPopulation();
-//    ESStatistics **stats = makeESStatistics();
-//    ESfcnTrsfm *trsfm;
-//    unsigned int seed;
-//    int es;
-//    int constraint, dim;
-//    int miu, lambda;
-//    double gamma, alpha, varphi;
-//    int retry;
-//    double pf;
-//
-//    seed = 0;
-//    gamma = Gamma;
-//    alpha = Alpha;
-//    varphi = Varphi;
-//    retry = Retry;
-//    pf = 0.45;
-//    es = ESPlus;
-//    int ngen = 50;
-//
-//    constraint = 0;
-//    dim = 2;
-//    miu = 30;
-//    lambda = 200;
-//    double ub[2] = {10.0, 10.0};
-//    double lb[2] = {0.1, 0.1};
-//
-//
-////    trsfm = (ESfcnTrsfm *) malloc(dim * sizeof(ESfcnTrsfm));
-////    for (i = 0; i < dim; i++) {
-////        trsfm[i] = doNothingTransform;
-////    }
-//    trsfm = getTransformFun(2);
-//
-//    auto *simple_cost_ptr = (ESfcnFG *) malloc(sizeof(ESfcnFG));
-//    *simple_cost_ptr = simple_cost;
-//
-//    ESInitial(
-//            seed,
-//            param,
-//            trsfm,
-//            *simple_cost_ptr,
-//            es,
-//            constraint,
-//            dim,
-//            ub,
-//            lb,
-//            miu,
-//            lambda,
-//            ngen,
-//            gamma,
-//            alpha,
-//            varphi,
-//            retry,
-//            population,
-//            stats
-//    );
-//    unsigned int nbCostCalls = 0;
-//
-//    while (derefESStatistics(stats)->curgen < derefESParameter(param)->gen) {
-//        //(CW) multithreading opportunity
-//        ESStep(
-//                derefESPopulation(population),
-//                derefESParameter(param),
-//                derefESStatistics(stats),
-//                pf
-//        );
-//        nbCostCalls++;
+    int i;
+    ESParameter **param = makeESParameter();
+    ESPopulation **population = makeESPopulation();
+    ESStatistics **stats = makeESStatistics();
+    ESfcnTrsfm *trsfm;
+    unsigned int seed;
+    int es;
+    int constraint, dim;
+    int miu, lambda;
+    double gamma, alpha, varphi;
+    int retry;
+    double pf;
+
+    seed = 0;
+    gamma = Gamma;
+    alpha = Alpha;
+    varphi = Varphi;
+    retry = Retry;
+    pf = 0.45;
+    es = ESPlus;
+    int ngen = 50;
+
+    constraint = 0;
+    dim = 2;
+    miu = 30;
+    lambda = 200;
+    double ub[2] = {10.0, 10.0};
+    double lb[2] = {0.1, 0.1};
+
+
+//    trsfm = (ESfcnTrsfm *) malloc(dim * sizeof(ESfcnTrsfm));
+//    for (i = 0; i < dim; i++) {
+//        trsfm[i] = doNothingTransform;
 //    }
+    trsfm = getTransformFun(2);
+
+    auto *simple_cost_ptr = (ESfcnFG *) malloc(sizeof(ESfcnFG));
+    *simple_cost_ptr = simple_cost;
+
+    ESInitial(
+            seed,
+            param,
+            trsfm,
+            *simple_cost_ptr,
+            es,
+            constraint,
+            dim,
+            ub,
+            lb,
+            miu,
+            lambda,
+            ngen,
+            gamma,
+            alpha,
+            varphi,
+            retry,
+            population,
+            stats
+    );
+    unsigned int nbCostCalls = 0;
+
+    while (derefESStatistics(stats)->curgen < derefESParameter(param)->gen) {
+        //(CW) multithreading opportunity
+        ESStepThatTakesDoublePointers(
+                population,
+                param,
+                stats,
+                pf
+        );
+        nbCostCalls++;
+    }
 
 //    ESDeInitial(derefESParameter(param), derefESPopulation(population), derefESStatistics(stats));
 //

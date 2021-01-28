@@ -43,20 +43,33 @@ void fakeFun(double *d) {
     printf("I'm a double pointer from C: %f, %f\n", *d, *(d + 1));
 }
 
-void fake_cost(double *x, double *f, double *g) {
-    printf("x: %d, %d\n");
-}
 
 void function_that_takes_a_function(f1 fn, double *input, double *output) {
-    printf("I'm a function that takes a function\n");
-    printf("input: %f\n", *input);
-    printf("output before callback %f\n", *output);
+    printf("From C: I'm a function that takes a function\n");
+    printf("From C: input: %f\n", *input);
+    printf("From C: output before callback %f\n", *output);
 
-
-    // need to allocate memory and assign this f pointer to a function
-//    (*fn)(d1, d2, g);
     (*fn)(input, output);
-    printf("output after callback: %f\n", *output);
+    printf("From C: output after callback: %f\n", *output);
+}
+
+void function_that_takes_f2(f2 fn, double *input, double *output, double *ignored) {
+    printf("From C: I'm a function that takes a function\n");
+    printf("From C: input: %f\n", *input);
+    printf("From C: output before callback %f\n", *output);
+
+    (*fn)(input, output, ignored);
+    printf("From C: output after callback: %f\n", *output);
+}
+
+void function_that_takes_ESfcnFG(ESfcnFG fg) {
+    printf("From C: hello from function_that_takes_ESfcnFG\n");
+    double *x;
+    x[0] = 1.0;
+    x[1] = 2.0;
+    double f = 1.0;
+    double g = 0.0;
+//    fg(x, &f, &g);
 }
 
 
@@ -299,17 +312,6 @@ void ESInitial(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
     return;
 }
 
-void ESInitialWithPtrFitnessFcn(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
-               ESfcnFG *fg, int es, int constraint, int dim, double *ub, \
-               double *lb, int miu, int lambda, int gen, \
-               double gamma, double alpha, double varphi, int retry, \
-               ESPopulation **population, ESStatistics **stats) {
-    ESInitial(seed, param, trsfm, \
-               *fg, es, constraint, dim, ub, \
-                lb, miu, lambda, gen, \
-               gamma, alpha, varphi, retry, \
-               population, stats);
-}
 
 void ESDeInitial(ESParameter *param, ESPopulation *population, \
                  ESStatistics *stats) {
@@ -516,7 +518,9 @@ void ESInitialIndividual(ESIndividual **indvdl, ESParameter *param) {
         (*indvdl)->sp[i] = (ub[i] - lb[i]) / sqrt(dim);
     }
 
+    printf("From C: individual init, before calling fn: (*indvdl)->f: %f\n", (*indvdl)->f);
     fg((*indvdl)->op, &((*indvdl)->f), (*indvdl)->g);
+    printf("From C: individual init, after calling fn: (*indvdl)->f: %f\n", (*indvdl)->f);
     (*indvdl)->phi = 0.0;
     for (i = 0; i < constraint; i++) {
         if ((*indvdl)->g[i] > 0.0)
@@ -745,6 +749,31 @@ void ESStep(ESPopulation *population, ESParameter *param, \
     return;
 }
 
+void ESStepThatTakesDoublePointers(ESPopulation **population, ESParameter **param, \
+            ESStatistics **stats, double pf) {
+    printf("Population index thing\n");
+    printf("sorting population\n");
+    ESSRSort((*population)->f, (*population)->phi, pf, (*param)->eslambda, \
+           (*param)->eslambda, (*population)->index);
+    printf("Sorting population again\n");
+    ESSortPopulation((*population), (*param));
+    printf("Population sorted\nSelecting from population\n");
+//
+//    ESSelectPopulation((*population), (*param));
+//    printf("PArams selected\nnow mutating\n");
+//
+//    ESMutate((*population), (*param));
+//    printf("Done mutation\nNow Doing stats\n");
+//
+//    ESDoStat((*stats), (*population), (*param));
+//    printf("Stats done\n now printing stats\n\n");
+//
+//    ESPrintStat((*stats), (*param));
+//    printf("We're one happy step algorithm\n");
+
+    return;
+}
+
 /*********************************************************************
  ** sort population based on Index by ESSRSort                      **
  ** ESSortPopulation(population, param)                             **
@@ -932,30 +961,33 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
     printf("ESMutate: 7\n");
 
     for (i = 0; i < lambda; i++) {
-        printf("i is: %d", i);
+        printf("i is: %d\n", i);
         printf("HERE1\n");
         indvdl = population->member[i];
         printf("HERE2\n");
 
-        indvdl->op;
-        printf("before->op, %f\n", *(indvdl->op));
-        &(indvdl->f);
-        printf("before->f %f\n", indvdl->f);
-        indvdl->g;
-        printf("before->g %f\n", *(indvdl->g));
+        printf("From C: before->op, %f\n", *(indvdl->op));
+        printf("From C: before->f %f\n", indvdl->f);
+        printf("From C: before->g %f\n", *(indvdl->g));
+        printf("From C: before->g %f\n", *(indvdl->g));
 
-
+        /**
+         * So the problem is either:
+         *      1) one of the parameters
+         *      2) the function itself
+         */
+//        double *x1 = (double *) malloc(sizeof(double) * 1000);
+//        x1[0] = 0.1;
+//        x1[1] = 0.2;
+//
+//        double x2 = 5.0;
+//        double x3 = 0.0;
+//        (*fg)(x1, &x2, &x3);
         fg(indvdl->op, &(indvdl->f), indvdl->g);
-
-
-        indvdl->op;
-        printf("after->op, %f\n", *(indvdl->op));
-        &(indvdl->f);
-        printf("after->f %f\n", indvdl->f);
-        indvdl->g;
-        printf("after->g %f\n", *(indvdl->g));
-
-
+        printf("This if after\n");
+        printf("From C: after->op, %f\n", *(indvdl->op));
+        printf("From C: after->f %f\n", indvdl->f);
+        printf("From C: after->g %f\n", *(indvdl->g));
 
         indvdl->phi = 0.0;
         printf("HERE4\n");

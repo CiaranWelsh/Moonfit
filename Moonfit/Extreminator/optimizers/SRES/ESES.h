@@ -74,11 +74,15 @@ void freePoint(Point* point);
  ** fg(x,dim, f, g)                                                 **
  *********************************************************************/
 typedef void(*ESfcnFG)(double *, double *, double *);
+//typedef void(*ESfcnFG)(double *);
 
 typedef void(*f1)(double*, double*);
+typedef void(*f2)(double*, double*, double*);
 
 void function_that_takes_a_function(f1 fn, double *input, double* output);
+void function_that_takes_f2(f2 fn, double *input, double* output, double* ignored);
 
+void function_that_takes_ESfcnFG(ESfcnFG fg);
 //typedef void(*ESfcnFG)();
 
 
@@ -443,6 +447,7 @@ void ESPrintStat(ESStatistics *, ESParameter *);
  *********************************************************************/
 void ESStep(ESPopulation *, ESParameter *, ESStatistics *, double);
 
+void ESStepThatTakesDoublePointers(ESPopulation **population, ESParameter **param, ESStatistics **stats, double pf);
 /*********************************************************************
  ** sort population based on Index by ESSRSort                      **
  ** ESSortPopulation(population, param)                             **

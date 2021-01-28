@@ -95,15 +95,15 @@ class Point(ct.Structure):
     ]
 
 
-
 class _SRES:
     DoubleArrayLen2 = ct.c_double * 2
+    Int32ArrayLen2 = ct.c_int32 * 2
     DoubleArrayLen2Ptr = ct.POINTER(DoubleArrayLen2)
     ESFcnFG_CALLBACK = ct.CFUNCTYPE(None, ct.POINTER(ct.c_double * 2), ct.POINTER(ct.c_double), ct.POINTER(ct.c_double))
-    F1_CALLBACK = ct.CFUNCTYPE(None, ct.POINTER(ct.c_double*2))
+    F1_CALLBACK = ct.CFUNCTYPE(None, ct.POINTER(ct.c_double * 2))
 
     def _makeDoubleArrayPtr(self, input: List[float]):
-        ctypes_double_type = ct.c_double*len(input)
+        ctypes_double_type = ct.c_double * len(input)
         my_double_arr = ctypes_double_type(*input)
         return ct.pointer(my_double_arr)
 
@@ -115,10 +115,17 @@ class _SRES:
     #     return_type=None
     # )
 
+    # function_that_takes_ESfcnFG = util.load_func(
+    #     funcname="function_that_takes_ESfcnFG",
+    #     argtypes=[
+    #
+    #     ]
+    # )
+
     fakeFun = util.load_func(
         funcname="fakeFun",
         argtypes=[
-            ct.POINTER(ct.c_double*2)
+            ct.POINTER(ct.c_double * 2)
         ],
         return_type=None
     )
@@ -134,7 +141,6 @@ class _SRES:
     )
 
     # void freePoint(Point* point);
-
 
     """
     /**
@@ -246,32 +252,6 @@ class _SRES:
             ct.c_int64,  # ESStatistics **stats
         ],
         return_type=None)
-
-
-    ESInitialWithPtrFitnessFcn = util.load_func(
-        funcname="ESInitialWithPtrFitnessFcn",
-        argtypes=[
-            ct.c_int32,  # unsigned int seed,
-            ct.c_int64,  # ESParameter **param,
-            ct.c_int64,  # ESfcnTrsfm *trsfm,
-            ESFcnFG_CALLBACK,  # ESfcnFG* fg,
-            ct.c_int32,  # int es,
-            ct.c_int32,  # int constraint,
-            ct.c_int32,  # int dim,
-            DoubleArrayLen2Ptr,
-            DoubleArrayLen2Ptr,
-            ct.c_int32,  # int miu,
-            ct.c_int32,  # int lambda,
-            ct.c_int32,  # int gen,
-            ct.c_double,  # double gamma,
-            ct.c_double,  # double alpha,
-            ct.c_double,  # double varphi,
-            ct.c_int32,  # int retry,
-            ct.c_int64,  # ESPopulation **population
-            ct.c_int64,  # ESStatistics **stats
-        ],
-        return_type=None)
-
 
     """
     /**
@@ -628,6 +608,18 @@ class _SRES:
             ct.c_double,  # double
         ],
         return_type=None)
+
+    # void ESStep(ESPopulation **, ESParameter**, ESStatistics**, double);
+    ESStepThatTakesDoublePointers = util.load_func(
+        funcname="ESStepThatTakesDoublePointers",
+        argtypes=[
+            ct.c_int64,  # ESPopulation *,
+            ct.c_int64,  # ESParameter  *,
+            ct.c_int64,  # ESStatistics *,
+            ct.c_double,  # double
+        ],
+        return_type=None)
+
     """
     /*********************************************************************
      ** sort population based on Index by ESSRSort                      **
