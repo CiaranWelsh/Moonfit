@@ -7,10 +7,11 @@ import ctypes as ct
 class SRES(ABC):
     _sres = _SresCApi()
 
+    # note when seed is 0, it'll be randomized. Special case.
     def __init__(self, ngen: int, ub: List[float], lb: List[float],
                  parent_popsize: int = 50, child_popsize: int = 200, es: int = 1,
                  gamma: float = 0.85, alpha: float = 0.2,
-                 varphi: float = 1.0, retry: int = 1, seed: int = 1):
+                 varphi: float = 1.0, retry: int = 1, seed: int = 0):
         self.dim = ct.c_int32(len(ub))
         self.seed = ct.c_int32(seed)
         self.es = ct.c_int32(es)

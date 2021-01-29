@@ -76,10 +76,9 @@ typedef double(*ESfcnTrsfm)(double);
  */
 double do_nothing_transform(double x);
 
-ESfcnTrsfm *getTransformFun(int numEstimatedParams);
+ESfcnTrsfm **makeTransformFun(int numEstimatedParams);
 
-void freeTransformFun(ESfcnTrsfm *fun);
-
+void freeTransformFun(ESfcnTrsfm **fun, int numEstimatedParams);
 
 /*********************************************************************
  ** ESParameter: struct for ES-parameter                            **
@@ -142,6 +141,7 @@ ESParameter  *derefESParameter(ESParameter** param);
 
 /**
  * (CW) Free an ESParameter created by makeESParameterPtr.
+ * Note that only the double ptr is freed
  */
 void freeESParameter(ESParameter **parameter);
 
@@ -201,7 +201,7 @@ ESPopulation  *derefESPopulation(ESPopulation ** param);
 /**
  * @brief free a ESPopulation* allocated by ESPopulation
  */
-void freePopulation(ESPopulation **population);
+void freeESPopulation(ESPopulation **population);
 
 /*********************************************************************
  ** ESStatistics: struct for ES-statistics                          **
@@ -274,7 +274,7 @@ void ESInitialWithPtrFitnessFcn(unsigned int seed, ESParameter **param, ESfcnTrs
                double gamma, double alpha, double varphi, int retry, \
                ESPopulation **population, ESStatistics **stats);
 
-void ESDeInitial(ESParameter *, ESPopulation *, ESStatistics *);
+void ESDeInitial(ESParameter **param, ESPopulation **population, ESStatistics **stats);
 
 /*********************************************************************
  ** initialize parameters                                           **
@@ -311,7 +311,7 @@ void ESInitialParam(ESParameter **, ESfcnTrsfm *, ESfcnFG, int, \
                     int, int, double *, double *, int, int, int, \
                     double, double, double, int);
 
-void ESDeInitialParam(ESParameter *);
+void ESDeInitialParam(ESParameter **param);
 
 /*********************************************************************
  ** initialize population                                           **
@@ -329,7 +329,7 @@ void ESDeInitialParam(ESParameter *);
  *********************************************************************/
 void ESInitialPopulation(ESPopulation **, ESParameter *);
 
-void ESDeInitialPopulation(ESPopulation *, ESParameter *);
+void ESDeInitialPopulation(ESPopulation **population, ESParameter **param);
 
 /*********************************************************************
  ** initialize individual                                           **
@@ -377,7 +377,7 @@ void ESCopyIndividual(ESIndividual *, ESIndividual *, ESParameter *);
  *********************************************************************/
 void ESInitialStat(ESStatistics **, ESPopulation *, ESParameter *);
 
-void ESDeInitialStat(ESStatistics *);
+void ESDeInitialStat(ESStatistics **stats);
 
 /*********************************************************************
  ** do statistics                                                   **

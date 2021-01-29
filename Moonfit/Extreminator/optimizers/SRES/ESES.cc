@@ -39,44 +39,57 @@
 #include "ESES.h"
 #include <memory>
 
+void freePtr(void *ptr) {
+    if (ptr == nullptr)
+        return;
+    free(ptr);
+    ptr = nullptr;
+}
+
+typedef double(*ESfcnTrsfm)(double);
 
 double do_nothing_transform(double x) {
     return x;
 }
 
-ESfcnTrsfm *getTransformFun(int numEstimatedParams) {
-    auto *trsfm = (ESfcnTrsfm *) malloc(numEstimatedParams * sizeof(ESfcnTrsfm));
+ESfcnTrsfm **makeTransformFun(int numEstimatedParams) {
+    ESfcnTrsfm xp = &do_nothing_transform;
+    ESfcnTrsfm *xpp = &xp;
+    auto **trsfm = (ESfcnTrsfm **) malloc(sizeof(ESfcnTrsfm *) * numEstimatedParams);
     for (int i = 0; i < numEstimatedParams; i++) {
-        trsfm[i] = do_nothing_transform;
+        trsfm[i] = xpp;
     }
     return trsfm;
 }
 
-void freeTransformFun(ESfcnTrsfm *fun, int numEstimatedParams) {
-    for (int i = 0; i < numEstimatedParams; i++) {
-        free(fun + i);
-    }
+void freeTransformFun(ESfcnTrsfm **fun, int numEstimatedParams) {
+    free(fun);
+    fun = nullptr;
 }
 
-void freePtr(void *ptr) {
-    if (ptr == nullptr)
-        return;
-    free(ptr);
-}
+
+
+
+//void freeTransformFun(ESfcnTrsfm *fun) {
+//    free(fun);
+//}
+
 
 ESParameter **makeESParameter() {
-    ESParameter **pp;
-    pp = (ESParameter **) malloc(sizeof(ESParameter *));
-    *pp = (ESParameter *) malloc(sizeof(ESParameter));
+    auto **pp = (ESParameter **) malloc(sizeof(ESParameter *));
+    if (pp == nullptr) {
+        printf("ESParameter** not allocated\n", stderr);
+    }
+
+//    (*pp) = (ESParameter *) malloc(sizeof(ESParameter));
+//    if (*pp == nullptr){
+//        printf("ESParameter* not allocated\n", stderr);
+//    }
     return pp;
 }
 
-ESParameter *derefESParameter(ESParameter **param) {
-    return *param;
-}
 
 void freeESParameter(ESParameter **parameter) {
-    freePtr(*parameter);
     freePtr(parameter);
 }
 
@@ -90,41 +103,34 @@ void freeIndividual(ESIndividual *individual) {
 }
 
 ESPopulation **makeESPopulation() {
-    ESPopulation **pop;
-    pop = (ESPopulation **) malloc(sizeof(ESPopulation *));
-    *pop = (ESPopulation *) malloc(sizeof(ESPopulation));
+    auto **pop = (ESPopulation **) malloc(sizeof(ESPopulation *));
+    if (pop == nullptr) {
+        printf("Allocation of memory for ESPopulation** failed\n", stderr);
+    }
+//    *pop = (ESPopulation *) malloc(sizeof(ESPopulation));
     return pop;
 }
 
-void freePopulation(ESPopulation **population) {
+void freeESPopulation(ESPopulation **population) {
     freePtr(*population);
     freePtr(population);
 }
 
 ESStatistics **makeESStatistics() {
-    ESStatistics **stat;
-    stat = (ESStatistics **) malloc(sizeof(ESStatistics *));
-    *stat = (ESStatistics *) malloc(sizeof(ESStatistics));
+    ESStatistics **stat = (ESStatistics **) malloc(sizeof(ESStatistics *));
+    if (stat == nullptr) {
+        printf("Allocation of memory for ESStatistics failed\n", stderr);
+    }
+//    *stat = (ESStatistics *) malloc(sizeof(ESStatistics));
     return stat;
 }
 
-ESPopulation *derefESPopulation(ESPopulation **param) {
-    return *param;
-}
-
-ESStatistics *derefESStatistics(ESStatistics **param) {
-    return *param;
-}
 
 void freeESStatistics(ESStatistics **statistics) {
     freePtr(*statistics);
     freePtr(statistics);
 }
 
-
-void rss_cost(double *x, double *f, double *g) {
-    // NOTE: (CW) still to implement this. But how?
-}
 
 /*********************************************************************
  ** Initialize: parameters,populations and random seed              **
@@ -181,11 +187,13 @@ void ESInitial(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
 }
 
 
-void ESDeInitial(ESParameter *param, ESPopulation *population, \
-                 ESStatistics *stats) {
+void ESDeInitial(ESParameter **param, ESPopulation **population, \
+                 ESStatistics **stats) {
     ESDeInitialPopulation(population, param);
     ESDeInitialParam(param);
     ESDeInitialStat(stats);
+
+
     return;
 }
 
@@ -268,10 +276,14 @@ void ESInitialParam(ESParameter **param, ESfcnTrsfm *trsfm, \
     (*param)->tau_ = (*param)->varphi / (sqrt(2 * dim));
 }
 
-void ESDeInitialParam(ESParameter *param) {
-    ShareFreeM1d(param->spb);
-    ShareFreeM1c((char *) param);
-    param = nullptr;
+void ESDeInitialParam(ESParameter **param) {
+    ShareFreeM1d((*param)->spb);
+    ShareFreeM1c((char *) *param);
+//    free(*param);
+    free(param);
+//    (*param) = nullptr;
+//    free(param);
+//    param = nullptr;
     return;
 }
 
@@ -290,7 +302,6 @@ void ESDeInitialParam(ESParameter *param) {
  ** free population                                                 **
  *********************************************************************/
 void ESInitialPopulation(ESPopulation **population, ESParameter *param) {
-    printf("in ESInitialPopulation\n");
     int i;
     int eslambda;
 
@@ -320,20 +331,21 @@ void ESInitialPopulation(ESPopulation **population, ESParameter *param) {
     return;
 }
 
-void ESDeInitialPopulation(ESPopulation *population, ESParameter *param) {
+void ESDeInitialPopulation(ESPopulation **population, ESParameter **param) {
     int i;
     int eslambda;
 
-    eslambda = param->eslambda;
+    eslambda = (*param)->eslambda;
 
     for (i = 0; i < eslambda; i++)
-        ESDeInitialIndividual(population->member[i]);
-    ShareFreeM1c((char *) (population->member));
+        ESDeInitialIndividual((*population)->member[i]);
+    ShareFreeM1c((char *) ((*population)->member));
 
-    ShareFreeM1d(population->f);
-    ShareFreeM1d(population->phi);
-    ShareFreeM1i(population->index);
-    ShareFreeM1c((char *) population);
+    ShareFreeM1d((*population)->f);
+    ShareFreeM1d((*population)->phi);
+    ShareFreeM1i((*population)->index);
+    ShareFreeM1c((char *) (*population));
+    free(population);
     population = nullptr;
 
     return;
@@ -506,10 +518,11 @@ void ESInitialStat(ESStatistics **stats, ESPopulation *population, \
     return;
 }
 
-void ESDeInitialStat(ESStatistics *stats) {
-    ESDeInitialIndividual(stats->bestindvdl);
-    ESDeInitialIndividual(stats->thisbestindvdl);
-    ShareFreeM1c((char *) stats);
+void ESDeInitialStat(ESStatistics **stats) {
+    ESDeInitialIndividual((*stats)->bestindvdl);
+    ESDeInitialIndividual((*stats)->thisbestindvdl);
+    ShareFreeM1c((char *) *stats);
+    free(stats);
     stats = nullptr;
 
     return;

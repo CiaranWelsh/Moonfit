@@ -106,7 +106,7 @@ int main() {
 //    for (i = 0; i < dim; i++) {
 //        trsfm[i] = doNothingTransform;
 //    }
-    trsfm = getTransformFun(2);
+    trsfm = makeTransformFun(2);
 
     auto *simple_cost_ptr = (ESfcnFG *) malloc(sizeof(ESfcnFG));
     *simple_cost_ptr = simple_cost;
