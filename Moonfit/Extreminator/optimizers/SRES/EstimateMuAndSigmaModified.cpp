@@ -97,7 +97,7 @@ int main() {
     constraint = 0;
     dim = 2;
     miu = 30;
-    lambda = 200;
+    lambda = 20;
     double ub[2] = {10.0, 10.0};
     double lb[2] = {0.1, 0.1};
 
@@ -133,21 +133,21 @@ int main() {
     );
     unsigned int nbCostCalls = 0;
 
-    while (derefESStatistics(stats)->curgen < derefESParameter(param)->gen) {
-        //(CW) multithreading opportunity
-        ESStepThatTakesDoublePointers(
-                population,
-                param,
-                stats,
-                pf
-        );
-        nbCostCalls++;
-    }
+//    while (derefESStatistics(stats)->curgen < derefESParameter(param)->gen) {
+//        //(CW) multithreading opportunity
+//        ESStep(
+//                population,
+//                param,
+//                stats,
+//                pf
+//        );
+//        nbCostCalls++;
+//    }
 
 //    ESDeInitial(derefESParameter(param), derefESPopulation(population), derefESStatistics(stats));
-//
+
 //    freeData(EXP_DATA);
-//    freeESParameter(param);
+    freeESParameter(param);
 //    freeESStatistics(stats);
 //    freePopulation(population);
 

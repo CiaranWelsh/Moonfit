@@ -108,7 +108,7 @@ int main() {
 
     while (stats->curgen < param->gen) {
         //(CW) multithreading opportunity
-        ESStep(population, param, stats, pf);
+        ESStep(&population, &param, &stats, pf);
         nbCostCalls ++;
     }
 

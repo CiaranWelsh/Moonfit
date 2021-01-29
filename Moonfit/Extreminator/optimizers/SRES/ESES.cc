@@ -39,117 +39,13 @@
 #include "ESES.h"
 #include <memory>
 
-void fakeFun(double *d) {
-    printf("I'm a double pointer from C: %f, %f\n", *d, *(d + 1));
-}
-
-
-void function_that_takes_a_function(f1 fn, double *input, double *output) {
-    printf("From C: I'm a function that takes a function\n");
-    printf("From C: input: %f\n", *input);
-    printf("From C: output before callback %f\n", *output);
-
-    (*fn)(input, output);
-    printf("From C: output after callback: %f\n", *output);
-}
-
-void function_that_takes_f2(f2 fn, double *input, double *output, double *ignored) {
-    printf("From C: I'm a function that takes a function\n");
-    printf("From C: input: %f\n", *input);
-    printf("From C: output before callback %f\n", *output);
-
-    (*fn)(input, output, ignored);
-    printf("From C: output after callback: %f\n", *output);
-}
-
-void function_that_takes_ESfcnFG(ESfcnFG fg) {
-    printf("From C: hello from function_that_takes_ESfcnFG\n");
-    double *x;
-    x[0] = 1.0;
-    x[1] = 2.0;
-    double f = 1.0;
-    double g = 0.0;
-//    fg(x, &f, &g);
-}
-
-
-Point *makePoint(int x, int y) {
-    /**
-     *
-     * https://stackoverflow.com/questions/38661635/ctypes-struct-returned-from-library
-     */
-
-    Point *point = (Point *) malloc(sizeof(Point));
-    int *p1 = (int *) malloc(sizeof(int));
-    int *p2 = (int *) malloc(sizeof(int));
-    point->x = x;
-    point->y = y;
-    return point;
-}
-
-void freePoint(Point *point) {
-    free(point);
-}
-
-
-/**
- * Some functions added by CW for
- * allocating pointers to structs that we need
- * in python to pass to init function
- */
-
-void foo(void (*functionPtr)(int, int), int a, int b) {
-
-}
-
-
-void costy_fun(double *x, double *f, double *g) {
-    /*
-     *      * A little stuck with this. Lets just try something and see how it goes.
-     * Lets just say that double *x points to the first elem
-     * in array of candidate parameters. Looking at some of the other code
-     * in this repository, I think that double f* is a pointer to be filled
-     * and is the cost associated with the model parameters x.
-     * So this function needs to accept model parameters,
-     * do simulation with them and compare with experimental data
-     * Then assign the value of each individual to f.
-     *
-     * Okay so I found that x, f and g map to
-     * members of the ESIndividual struct.
-     * x = op[dim] = genes / objective parameters
-     * f = fitness
-     * g[constraint] : constraint value
-     *
-     * so x are the model parameters and f the fitness associated with them?
-     * So lets pass in a value for f, the precomputed cost function from Python
-     * and just do nothing with this function???
-     *
-     *
-     *
-     */
-};
-
-ESfcnFG *getCostFunPtr() {
-    // could turn this into a factory. Input strings on python end
-    // and switch between potential options on the C end.
-    auto *fun = (ESfcnFG *) malloc(sizeof(ESfcnFG *));
-    *fun = &costy_fun;
-    return fun;
-}
-
-void freeCostFunPtr(ESfcnFG *f) {
-    free(f);
-}
 
 double do_nothing_transform(double x) {
     return x;
 }
 
 ESfcnTrsfm *getTransformFun(int numEstimatedParams) {
-//    auto *fun = (ESfcnTrsfm *) malloc(sizeof(ESfcnTrsfm *));
-//    *fun = &do_nothing_transform;
-//    return fun;
-    ESfcnTrsfm *trsfm = (ESfcnTrsfm *) malloc(numEstimatedParams * sizeof(ESfcnTrsfm));
+    auto *trsfm = (ESfcnTrsfm *) malloc(numEstimatedParams * sizeof(ESfcnTrsfm));
     for (int i = 0; i < numEstimatedParams; i++) {
         trsfm[i] = do_nothing_transform;
     }
@@ -161,7 +57,6 @@ void freeTransformFun(ESfcnTrsfm *fun, int numEstimatedParams) {
         free(fun + i);
     }
 }
-
 
 void freePtr(void *ptr) {
     if (ptr == nullptr)
@@ -179,7 +74,6 @@ ESParameter **makeESParameter() {
 ESParameter *derefESParameter(ESParameter **param) {
     return *param;
 }
-
 
 void freeESParameter(ESParameter **parameter) {
     freePtr(*parameter);
@@ -271,39 +165,13 @@ void ESInitial(unsigned int seed, ESParameter **param, ESfcnTrsfm *trsfm, \
                double gamma, double alpha, double varphi, int retry, \
                ESPopulation **population, ESStatistics **stats) {
 
-    printf("seed:         %d\n", seed);
-    printf("param:        %d\n", param);
-    printf("trsfm:        %d\n", trsfm);
-    printf("fg:           %d\n", fg);
-    printf("es:           %d\n", es);
-    printf("constraint:   %d\n", constraint);
-    printf("dim:          %d\n", dim);
-    printf("ub:           %d\n", ub);
-    printf("lb:           %d\n", lb);
-    printf("miu:          %d\n", miu);
-    printf("lambda:       %d\n", lambda);
-    printf("gen:          %d\n", gen);
-    printf("gamma:        %f\n", gamma);
-    printf("alpha:        %f\n", alpha);
-    printf("varphi:       %f\n", varphi);
-    printf("retry:        %d\n", retry);
-    printf("population:   %d\n", population);
-    printf("stats:        %d\n", stats);
-
     unsigned int outseed;
 
     ShareSeed(seed, &outseed);
     ESInitialParam(param, trsfm, fg, es, outseed, constraint, dim, ub, lb, \
                  miu, lambda, gen, gamma, alpha, varphi, retry);
 
-//    printf("population from ESInitial: %d\n", population);
-//    printf("*population from ESInitial: %d\n", (*population)->index);
-
     ESInitialPopulation(population, (*param));
-
-//    for (int i = 0; i < 30; i++) {
-//        printf("this should say '%d' but actually says : %d\n", i, (*population)->index[i]);
-//    }
     ESInitialStat(stats, (*population), (*param));
 
     printf("\n========\nseed = %u\n========\n", outseed);
@@ -442,7 +310,6 @@ void ESInitialPopulation(ESPopulation **population, ESParameter *param) {
     (*population)->index = ShareMallocM1i(eslambda);
 
     for (i = 0; i < eslambda; i++) {
-//        printf("assigning index i: %d\n", i);
         (*population)->member[i] = nullptr;
         ESInitialIndividual(&((*population)->member[i]), param);
         (*population)->index[i] = i;
@@ -518,9 +385,7 @@ void ESInitialIndividual(ESIndividual **indvdl, ESParameter *param) {
         (*indvdl)->sp[i] = (ub[i] - lb[i]) / sqrt(dim);
     }
 
-    printf("From C: individual init, before calling fn: (*indvdl)->f: %f\n", (*indvdl)->f);
     fg((*indvdl)->op, &((*indvdl)->f), (*indvdl)->g);
-    printf("From C: individual init, after calling fn: (*indvdl)->f: %f\n", (*indvdl)->f);
     (*indvdl)->phi = 0.0;
     for (i = 0; i < constraint; i++) {
         if ((*indvdl)->g[i] > 0.0)
@@ -724,54 +589,19 @@ void ESPrintStat(ESStatistics *stats, ESParameter *param) {
  ** -> Mutate (recalculate f/g/phi) -> do statistics analysis on    **
  ** this generation -> print statistics information                 **
  *********************************************************************/
-void ESStep(ESPopulation *population, ESParameter *param, \
-            ESStatistics *stats, double pf) {
-    printf("Population index thing\n");
-    printf("sorting population\n");
-    ESSRSort(population->f, population->phi, pf, param->eslambda, \
-           param->eslambda, population->index);
-    printf("Sorting population again\n");
-    ESSortPopulation(population, param);
-    printf("Population sorted\nSelecting from population\n");
-
-    ESSelectPopulation(population, param);
-    printf("PArams selected\nnow mutating\n");
-
-    ESMutate(population, param);
-    printf("Done mutation\nNow Doing stats\n");
-
-    ESDoStat(stats, population, param);
-    printf("Stats done\n now printing stats\n\n");
-
-    ESPrintStat(stats, param);
-    printf("We're one happy step algorithm\n");
-
-    return;
-}
-
-void ESStepThatTakesDoublePointers(ESPopulation **population, ESParameter **param, \
+void ESStep(ESPopulation **population, ESParameter **param, \
             ESStatistics **stats, double pf) {
-    printf("Population index thing\n");
-    printf("sorting population\n");
     ESSRSort((*population)->f, (*population)->phi, pf, (*param)->eslambda, \
            (*param)->eslambda, (*population)->index);
-    printf("Sorting population again\n");
-    ESSortPopulation((*population), (*param));
-    printf("Population sorted\nSelecting from population\n");
-//
-//    ESSelectPopulation((*population), (*param));
-//    printf("PArams selected\nnow mutating\n");
-//
-//    ESMutate((*population), (*param));
-//    printf("Done mutation\nNow Doing stats\n");
-//
-//    ESDoStat((*stats), (*population), (*param));
-//    printf("Stats done\n now printing stats\n\n");
-//
-//    ESPrintStat((*stats), (*param));
-//    printf("We're one happy step algorithm\n");
+    ESSortPopulation(*population, *param);
 
-    return;
+    ESSelectPopulation(*population, *param);
+
+    ESMutate(*population, *param);
+
+    ESDoStat(*stats, *population, *param);
+
+    ESPrintStat(*stats, *param);
 }
 
 /*********************************************************************
@@ -899,7 +729,6 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
     sp_ = ShareMallocM2d(lambda, dim);
     op_ = ShareMallocM2d(lambda, dim);
 
-    printf("ESMutate: 1\n");
     for (i = 0; i < lambda; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++) {
@@ -907,7 +736,6 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
             op_[i][j] = indvdl->op[j];
         }
     }
-    printf("ESMutate: 2\n");
 
     for (i = miu - 1; i < lambda; i++) {
         randscalar = ShareNormalRand(0, 1);
@@ -920,20 +748,17 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
             indvdl->sp[j] = tmp;
         }
     }
-    printf("ESMutate: 3\n");
 
     for (i = 0; i < miu - 1; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++)
             indvdl->op[j] = indvdl->op[j] + gamma * (op_[0][j] - op_[i + 1][j]);
     }
-    printf("ESMutate: 4\n");
     for (i = miu - 1; i < lambda; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++)
             indvdl->op[j] = indvdl->op[j] + indvdl->sp[j] * ShareNormalRand(0, 1);
     }
-    printf("ESMutate: 5\n");
 
     for (i = 0; i < lambda; i++) {
         indvdl = population->member[i];
@@ -951,59 +776,26 @@ void ESMutate(ESPopulation *population, ESParameter *param) {
             }
         }
     }
-    printf("ESMutate: 6\n");
 
     for (i = miu - 1; i < lambda; i++) {
         indvdl = population->member[i];
         for (j = 0; j < dim; j++)
             indvdl->sp[j] = sp_[i][j] + alpha * (indvdl->sp[j] - sp_[i][j]);
     }
-    printf("ESMutate: 7\n");
 
     for (i = 0; i < lambda; i++) {
-        printf("i is: %d\n", i);
-        printf("HERE1\n");
         indvdl = population->member[i];
-        printf("HERE2\n");
-
-        printf("From C: before->op, %f\n", *(indvdl->op));
-        printf("From C: before->f %f\n", indvdl->f);
-        printf("From C: before->g %f\n", *(indvdl->g));
-        printf("From C: before->g %f\n", *(indvdl->g));
-
-        /**
-         * So the problem is either:
-         *      1) one of the parameters
-         *      2) the function itself
-         */
-//        double *x1 = (double *) malloc(sizeof(double) * 1000);
-//        x1[0] = 0.1;
-//        x1[1] = 0.2;
-//
-//        double x2 = 5.0;
-//        double x3 = 0.0;
-//        (*fg)(x1, &x2, &x3);
         fg(indvdl->op, &(indvdl->f), indvdl->g);
-        printf("This if after\n");
-        printf("From C: after->op, %f\n", *(indvdl->op));
-        printf("From C: after->f %f\n", indvdl->f);
-        printf("From C: after->g %f\n", *(indvdl->g));
 
         indvdl->phi = 0.0;
-        printf("HERE4\n");
         for (j = 0; j < constraint; j++) {
-            printf("HERE5\n");
             if (indvdl->g[j] > 0.0) {
                 indvdl->phi += (indvdl->g[j] * indvdl->g[j]);
             }
         }
-        printf("HERE6\n");
         population->f[i] = indvdl->f;
-        printf("HERE7\n");
         population->phi[i] = indvdl->phi;
-        printf("HERE8\n");
     }
-    printf("ESMutate: 8\n");
 
     ShareFreeM1d(randvec);
     randvec = nullptr;

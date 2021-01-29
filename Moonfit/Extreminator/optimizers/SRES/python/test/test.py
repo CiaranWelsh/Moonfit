@@ -1,29 +1,51 @@
 import unittest
 
-from sres_capi import _Util, _SRES
+from ..sres import SRES
 import ctypes as ct
+
+from sres import SRES
+import numpy as np
+import ctypes as ct
+
+
+def generateData(mu, sigma):
+    return np.random.normal(mu, sigma, 10)
+
+
+EXP_DATA = generateData(5, 0.1)
+
+
+
+@SRES.COST_FUNCTION_CALLBACK
+def cost_fun(x, f, g):
+    sim = generateData(x.contents[0], x.contents[1])
+    cost = 0
+    for i in range(10):
+        cost += (EXP_DATA[i] - sim[i]) ** 2
+    f.contents.value = cost
+
 
 
 class Test(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.sres = _SRES()
+        self.sres = SRES(ngen=100, lb=[0.01] * 2, ub=[10] * 2, seed=1234)
 
     def test_makeESParameter(self):
-        cptr = self.sres.makeESParameter()
+        cptr = self.sres._makeESParameter()
         self.assertIsNotNone(cptr)
         # free the pointer
-        self.sres.freeESParameter(cptr)
+        self.sres._freeESParameter(cptr)
 
     def test_makeESStatistics(self):
-        cptr = self.sres.makeESStatistics()
+        cptr = self.sres._makeESStatistics()
         self.assertIsNotNone(cptr)
-        self.sres.freeESStatistics(cptr)
+        self.sres._freeESStatistics(cptr)
 
     def test_makeESPopulation(self):
-        cptr = self.sres.makeESPopulation()
+        cptr = self.sres._makeESPopulation()
         self.assertIsNotNone(cptr)
-        self.sres.freeESPopulation(cptr)
+        self.sres._freeESPopulation(cptr)
 
     def test_makeCostFunPtr(self):
         cptr = self.sres.getCostFunPtr()
@@ -31,20 +53,20 @@ class Test(unittest.TestCase):
         self.sres.freeCostFunPtr(cptr)
 
     def test_how_to_make_array_using_ctypes(self):
-        DoubleArrayLen2 = ct.c_double*2
+        DoubleArrayLen2 = ct.c_double * 2
         print(DoubleArrayLen2)
         arr = DoubleArrayLen2(*[0.1, 0.1])
         print(arr)
 
     def test_ESInitialWithPtrFitnessFcn(self):
-        esparam = self.sres.makeESParameter()
-        stats = self.sres.makeESStatistics()
-        pop = self.sres.makeESPopulation()
+        esparam = self.sres._makeESParameter()
+        stats = self.sres._makeESStatistics()
+        pop = self.sres._makeESPopulation()
         costFun = self.sres.getCostFunPtr()
-        trsf = self.sres.getTransformFun()
+        trsf = self.sres._getTransformFun()
 
         # https://stackoverflow.com/questions/51131433/how-to-pass-lists-into-a-ctypes-function-on-python/51132594
-        DoubleArrayLen2 = ct.c_double*2
+        DoubleArrayLen2 = ct.c_double * 2
 
         seed = 0
         gamma = 0.85
@@ -57,33 +79,31 @@ class Test(unittest.TestCase):
         gen = 1750
 
         ptr = self.sres.ESInitialWithPtrFitnessFcn(
-            seed,                              # unsigned int seed,
-            esparam,                           # ESParameter **param,
-            trsf,                              # ESfcnTrsfm *trsfm,
-            costFun,                           # ESfcnFG* fg,
-            es,                                # int es,
-            0,                                 # int constraint,
-            2,                                 # int dim,
-            DoubleArrayLen2(10.0, 10.0),       # double *ub,
-            DoubleArrayLen2(0.1, 0.1),        # double *lb,
-            miu,                               # int miu,
-            lamb,                              # int lambda,
-            gen,                               # int gen,
-            gamma,                             # double gamma,
-            alpha,                             # double alpha,
-            varalphi,                          # double varphi,
-            retry,                             # int retry,
-            stats,                             # ESPopulation **population
-            pop,                               # ESStatistics **stats
+            seed,  # unsigned int seed,
+            esparam,  # ESParameter **param,
+            trsf,  # ESfcnTrsfm *trsfm,
+            costFun,  # ESfcnFG* fg,
+            es,  # int es,
+            0,  # int constraint,
+            2,  # int dim,
+            DoubleArrayLen2(10.0, 10.0),  # double *ub,
+            DoubleArrayLen2(0.1, 0.1),  # double *lb,
+            miu,  # int miu,
+            lamb,  # int lambda,
+            gen,  # int gen,
+            gamma,  # double gamma,
+            alpha,  # double alpha,
+            varalphi,  # double varphi,
+            retry,  # int retry,
+            stats,  # ESPopulation **population
+            pop,  # ESStatistics **stats
         )
 
-        self.sres.freeESParameter(esparam)
-        self.sres.freeESStatistics(stats)
-        self.sres.freeESPopulation(pop)
+        self.sres._freeESParameter(esparam)
+        self.sres._freeESStatistics(stats)
+        self.sres._freeESPopulation(pop)
         self.sres.freeCostFunPtr(costFun)
         self.sres.freeTransformFun(trsf)
-
-
 
     def test(self):
         MODEL = """
@@ -99,15 +119,6 @@ class Test(unittest.TestCase):
         import tellurium as te
         model = te.loada(MODEL)
         print(model.getGlobalParameterIds())
-
-
-
-
-
-
-
-
-
 
     # def test_makeIndividual(self):
     #     self.sres.makeIndividual()
@@ -177,40 +188,3 @@ class Test(unittest.TestCase):
     #
     #
     #
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

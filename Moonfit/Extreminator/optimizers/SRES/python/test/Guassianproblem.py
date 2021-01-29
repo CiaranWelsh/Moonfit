@@ -1,19 +1,19 @@
 import pandas as pd
 import numpy as np
-from sres import _SRES, _lib
+from sres import SRES, _lib
 import ctypes as ct
 import tellurium as te
 from math import pi as PI
 import unittest
 
-sres = _SRES()
+sres = SRES(2)
 
 
 def generateData(mu, sigma):
     return np.random.normal(mu, sigma, 10)
 
 
-EXP_DATA = generateData(0.1, 0.1)
+EXP_DATA = generateData(5, 0.1)
 
 
 class Test(unittest.TestCase):
@@ -21,6 +21,7 @@ class Test(unittest.TestCase):
     def setUp(self) -> None:
         pass
 
+    @sres.COST_FUNCTION_CALLBACK
     def test_ctypes_callback_fn_example(self):
         from ctypes import cdll
 
@@ -160,11 +161,11 @@ class Test(unittest.TestCase):
         happens on the C end
         :return:
         """
-        sres = _SRES()
-        param = sres.makeESParameter()
-        stats = sres.makeESStatistics()
-        population = sres.makeESPopulation()
-        trsfm = sres.getTransformFun(2)
+        sres = SRES()
+        param = sres._makeESParameter()
+        stats = sres._makeESStatistics()
+        population = sres._makeESPopulation()
+        trsfm = sres._getTransformFun(2)
 
         # https://stackoverflow.com/questions/51131433/how-to-pass-lists-into-a-ctypes-function-on-python/51132594
 
@@ -230,7 +231,7 @@ class Test(unittest.TestCase):
         while curgen < 10:
             print("Current gen: ", curgen)
             print("From Python: Call to sres.ESStep")
-            sres.ESStep(
+            sres._ESStep(
                 sres.derefESPopulation(population),
                 sres.derefESParameter(param),
                 sres.derefESStatistics(stats),
@@ -255,11 +256,11 @@ class Test(unittest.TestCase):
         ESStep function in C so that it takes double pointers.
         :return:
         """
-        sres = _SRES()
-        param = sres.makeESParameter()
-        stats = sres.makeESStatistics()
-        population = sres.makeESPopulation()
-        trsfm = sres.getTransformFun(2)
+        sres = SRES()
+        param = sres._makeESParameter()
+        stats = sres._makeESStatistics()
+        population = sres._makeESPopulation()
+        trsfm = sres._getTransformFun(2)
 
         # https://stackoverflow.com/questions/51131433/how-to-pass-lists-into-a-ctypes-function-on-python/51132594
 
@@ -278,7 +279,7 @@ class Test(unittest.TestCase):
 
         # How to verify that this works?
         ub = ct.pointer(sres.DoubleArrayLen2(10.0, 10.0))  # double *ub,
-        lb = ct.pointer(sres.DoubleArrayLen2(0.1, 0.1))  # double *lb,
+        lb = ct.pointer(sres.DoubleArrayLen2(0.01, 0.01))  # double *lb,
 
         ESfcnFG_TYPE = ct.CFUNCTYPE(
             None,
@@ -288,7 +289,6 @@ class Test(unittest.TestCase):
         )
 
         def cost_fun(x, f, g):
-            print("From Python : Hello")
             sim = generateData(x.contents[0], x.contents[1])
             cost = 0
             for i in range(10):
@@ -298,12 +298,12 @@ class Test(unittest.TestCase):
             # copy the value from Python to C. If we don't do this, the value gets deleted.
             ct.memmove(ct.cast(f, ct.c_void_p).value, ct.cast(cost_dbl_ptr, ct.c_void_p).value, ct.sizeof(ct.c_double))
 
-        print("From Python: Call to sres.ESInitial")
+        f = ESfcnFG_TYPE(cost_fun)
         sres.ESInitial(
             seed,
             param,
             trsfm,
-            ESfcnFG_TYPE(cost_fun),
+            f,
             es,
             constraint,
             dim,
@@ -319,22 +319,15 @@ class Test(unittest.TestCase):
             population,
             stats
         )
-        print("From Python: Call to sres.ESInitial has finished")
 
         curgen = 0
-        while curgen < 10:
-            print("From Python:: Current gen: ", curgen)
-            print("From Python: population:", population)
-            print("From Python: param:", param)
-            print("From Python: stats:", stats)
-            print("From Python: Call to sres.ESStepThatTakesDoublePointers")
-            sres.ESStepThatTakesDoublePointers(
-                population,
-                param,
-                stats,
+        while curgen < 1000:
+            sres._ESStep(
+                sres.derefESPopulation(population),
+                sres.derefESParameter(param),
+                sres.derefESStatistics(stats),
                 0.45
             )
-            print("From Python: Call to sres.ESStep has finished")
             curgen += 1
 
         # sres.ESDeInitial(
@@ -345,6 +338,21 @@ class Test(unittest.TestCase):
 
         # sres.freeCostFunPtr(costFun)
         # sres.freeTransformFun(trsf)
+
+    def test_sres(self):
+
+        sres = SRES(dim=2)
+
+        @sres.COST_FUNCTION_CALLBACK
+        def cost_fun(x, f, g):
+            sim = generateData(x.contents[0], x.contents[1])
+            cost = 0
+            for i in range(10):
+                cost += (EXP_DATA[i] - sim[i]) ** 2
+            f.contents.value = cost
+
+        sres.cost_function = cost_fun
+
 
 
 if __name__ == "__main__":

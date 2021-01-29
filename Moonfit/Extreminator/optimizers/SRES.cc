@@ -81,7 +81,7 @@ void SRES::optimize(){
 	while(stats->curgen < param->gen)
 	{
 	    //(CW) multithreading opportunity
-        ESStep(population, param, stats, pf);
+        ESStep(&population, &param, &stats, pf);
         if(nbCostCalls() > num_tries) break;
 	}
 

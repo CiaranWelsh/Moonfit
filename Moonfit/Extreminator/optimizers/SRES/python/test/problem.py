@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sres import _SRES
+from sres import SRES
 import ctypes as ct
 import tellurium as te
 
@@ -58,12 +58,12 @@ can wrap the generation of this function in another function?
 if __name__ == "__main__":
     from sres_capi import *
 
-    sres = _SRES()
-    esparam = sres.makeESParameter()
-    stats = sres.makeESStatistics()
-    pop = sres.makeESPopulation()
+    sres = SRES()
+    esparam = sres._makeESParameter()
+    stats = sres._makeESStatistics()
+    pop = sres._makeESPopulation()
     # costFun = sres.getCostFunPtr()
-    trsf = sres.getTransformFun(2)
+    trsf = sres._getTransformFun(2)
 
     # https://stackoverflow.com/questions/51131433/how-to-pass-lists-into-a-ctypes-function-on-python/51132594
     DoubleArrayLen2 = ct.c_double * 2

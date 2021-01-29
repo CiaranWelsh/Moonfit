@@ -55,54 +55,12 @@ extern "C" {
 
 
 
-/**
- * ctypes tests
- */
-
-typedef struct {
-    int x;
-    int y;
-} Point ;
-
-
-Point* makePoint(int x, int y);
-
-void freePoint(Point* point);
 /*********************************************************************
  ** function of fitness and constraints                             **
  ** to calculate fitness and constraints and assign to ESIndividual **
  ** fg(x,dim, f, g)                                                 **
  *********************************************************************/
 typedef void(*ESfcnFG)(double *, double *, double *);
-//typedef void(*ESfcnFG)(double *);
-
-typedef void(*f1)(double*, double*);
-typedef void(*f2)(double*, double*, double*);
-
-void function_that_takes_a_function(f1 fn, double *input, double* output);
-void function_that_takes_f2(f2 fn, double *input, double* output, double* ignored);
-
-void function_that_takes_ESfcnFG(ESfcnFG fg);
-//typedef void(*ESfcnFG)();
-
-
-void fake_cost(double* x, double *f, double* g);
-
-
-/**
- * KEep this function for now. I used it
- * for testing how to pass double arrays from
- * Python to C.
- */
-void fakeFun(double* d);
-
-
-
-
-/**
- *
- */
-//void function_that_takes_a_function(ESfcnFG* fn);
 
 
 /*********************************************************************
@@ -445,7 +403,7 @@ void ESPrintStat(ESStatistics *, ESParameter *);
  ** -> Mutate (recalculate f/g/phi) -> do statistics analysis on    **
  ** this generation -> print statistics information                 **
  *********************************************************************/
-void ESStep(ESPopulation *, ESParameter *, ESStatistics *, double);
+void ESStep(ESPopulation **, ESParameter **, ESStatistics **, double);
 
 void ESStepThatTakesDoublePointers(ESPopulation **population, ESParameter **param, ESStatistics **stats, double pf);
 /*********************************************************************
