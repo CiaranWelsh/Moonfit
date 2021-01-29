@@ -4,3 +4,6 @@
 [submodule "Linux2Windows"]
 	path = Linux2Windows
 	url = https://github.com/CiaranWelsh/Linux2Windows.git
+[submodule "sanitizers-cmake"]
+	path = sanitizers-cmake
+	url = https://github.com/arsenm/sanitizers-cmake.git

@@ -37,6 +37,15 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/sanitizers-cmake/cmake" ${CMAKE_MODULE_PATH})
+
+find_package(Sanitizers)
+
+if (${Sanitizers_FOUND})
+    message(STATUS "Found Sanitizers")
+else ()
+    message(STATUS "Sanitizers not found")
+endif ()
 # setup some paths that will be used for the INSTALL_RPATH paths on systems that
 # support it. Adapt the "ORIGIN" to the APPLE use case
 if (APPLE)
@@ -57,6 +66,7 @@ set(CMAKE_INSTALL_RPATH ${base} ${base}/${INSTALL_RPATH_DIRECTORIES})
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
+
 
 # Wierd bug on windows:
 # the __cplusplus macro always defaults to 199711L regardless of which version of

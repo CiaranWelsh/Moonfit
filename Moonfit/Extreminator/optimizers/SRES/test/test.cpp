@@ -67,6 +67,7 @@ TEST_F(SresTests, CheckThatESPopulationCanBeCreatedAndDestroyedWithoutLeaks){
 
 TEST_F(SresTests, CheckDoNothingTransform){
     ESfcnTrsfm** trsfm = makeTransformFun(2);
+
     freeTransformFun(trsfm, 2);
 }
 
@@ -76,7 +77,7 @@ TEST_F(SresTests, CheckESInitialNoLeak){
     unsigned int seed = 1;
     int es = 1;
     int constraint = 0;
-    int dim = 2;
+    int dim = 6;
     double gamma = 0.85;
     double alpha = 0.2;
     int varphi = 1;
@@ -91,7 +92,6 @@ TEST_F(SresTests, CheckESInitialNoLeak){
     ESPopulation **population = makeESPopulation();
     ESStatistics **stats = makeESStatistics();
     ESfcnTrsfm **trsfm = makeTransformFun(dim);
-    trsfm = makeTransformFun(dim);
 
     ESInitial(
             seed,
@@ -124,7 +124,7 @@ TEST_F(SresTests, CheckESInitialWithStepNoLeaks){
     unsigned int seed = 1;
     int es = 1;
     int constraint = 0;
-    int dim = 2;
+    int dim = 6;
     double gamma = 0.85;
     double alpha = 0.2;
     int varphi = 1;
@@ -139,7 +139,6 @@ TEST_F(SresTests, CheckESInitialWithStepNoLeaks){
     ESPopulation **population = makeESPopulation();
     ESStatistics **stats = makeESStatistics();
     ESfcnTrsfm **trsfm = makeTransformFun(dim);
-    trsfm = makeTransformFun(dim);
 
     ESInitial(
             seed,
@@ -162,11 +161,8 @@ TEST_F(SresTests, CheckESInitialWithStepNoLeaks){
             stats
     );
 
-//    ESStep(population, param, stats, pf);
-
     ESDeInitial(param, population, stats);
-
-//    freeTransformFun(trsfm, 2);
+    freeTransformFun(trsfm, 2);
 }
 
 

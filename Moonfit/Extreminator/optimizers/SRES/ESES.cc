@@ -55,7 +55,7 @@ double do_nothing_transform(double x) {
 ESfcnTrsfm **makeTransformFun(int numEstimatedParams) {
     ESfcnTrsfm xp = &do_nothing_transform;
     ESfcnTrsfm *xpp = &xp;
-    auto **trsfm = (ESfcnTrsfm **) malloc(sizeof(ESfcnTrsfm *) * numEstimatedParams);
+    ESfcnTrsfm **trsfm = (ESfcnTrsfm **) malloc(sizeof(ESfcnTrsfm *) * numEstimatedParams);
     for (int i = 0; i < numEstimatedParams; i++) {
         trsfm[i] = xpp;
     }
@@ -63,6 +63,25 @@ ESfcnTrsfm **makeTransformFun(int numEstimatedParams) {
 }
 
 void freeTransformFun(ESfcnTrsfm **fun, int numEstimatedParams) {
+    free(fun);
+    fun = nullptr;
+}
+
+/**
+ * 1 Invalid free + 2 leaks definitely lost, both of which
+ * originate from :
+ *  auto **trsfm = (ESfcnTrsfm **) malloc(sizeof(ESfcnTrsfm *) * numEstimatedParams);
+ */
+void freeTransformFun2(ESfcnTrsfm **fun, int numEstimatedParams) {
+    free(fun);
+    fun = nullptr;
+}
+
+/**
+ * 1 leak definitely lost, originating from this line:
+ *  auto **trsfm = (ESfcnTrsfm **) malloc(sizeof(ESfcnTrsfm *) * numEstimatedParams);
+ */
+void freeTransformFun3(ESfcnTrsfm **fun, int numEstimatedParams) {
     free(fun);
     fun = nullptr;
 }
